@@ -9,8 +9,10 @@
 // inside <li>. Keep the font strings in utils/kp-font in sync with the
 // CSS bullet rules in globals.css.
 //
-// Redactions: Greek letters in bullet text (α β γ δ ε ζ η θ) are
-// rendered as italic, accent-colored variables with a hover tooltip.
+// Redactions: Greek letters in bullet text are rendered as italic,
+// accent-colored variables with a hover tooltip. The matched glyph set
+// lives in src/me.ts (REDACTED_GLYPH_RE) and must stay in sync with the
+// redaction registry in data/resume.json.
 // The convention signals "I know the figure, intentionally not sharing it
 // publicly" — turns a leak risk into a discretion signal. Markers are
 // chosen so KP measures them as the actual visible glyph (no marker
@@ -22,6 +24,7 @@ import {
   useRef,
   type ReactNode,
 } from 'react';
+import { REDACTED_GLYPH_RE } from '../me';
 import { REDACTION_BY_GLYPH } from '../redactions';
 import { layoutParagraph, measureText } from '../utils/kp';
 import { hyphenate as hyphenateText } from '../utils/hyphenate';
@@ -31,7 +34,7 @@ import { KP_BULLET_FONT, KP_PRINT_BULLET_WIDTH } from '../utils/kp-font';
 import './KPText.css';
 
 const REDACTED_TOOLTIP =
-  'Metric withheld out of respect for collaborators. See note below; reach out for more.';
+  'Withheld out of respect for collaborators. See note below; reach out for more.';
 
 interface KPTextProps {
   text?: string;
@@ -87,22 +90,20 @@ export function KPText({ text, prefix, prefixNode, firstLineIndent }: KPTextProp
   );
 }
 
-const REDACTED_RE = /[αβγδεζηθ]/g;
-
 function withRedactions(text: string | undefined): ReactNode {
   if (!text) return null;
-  if (!REDACTED_RE.test(text)) return text;
-  REDACTED_RE.lastIndex = 0;
+  if (!REDACTED_GLYPH_RE.test(text)) return text;
+  REDACTED_GLYPH_RE.lastIndex = 0;
   const parts: ReactNode[] = [];
   let last = 0;
   let m: RegExpExecArray | null;
-  while ((m = REDACTED_RE.exec(text)) !== null) {
+  while ((m = REDACTED_GLYPH_RE.exec(text)) !== null) {
     if (m.index > last) parts.push(text.slice(last, m.index));
     const r = REDACTION_BY_GLYPH.get(m[0]);
     if (!r) {
       // Unregistered Greek letter — render as plain text rather than
-      // a broken anchor. (Should not happen given REDACTED_RE matches
-      // exactly the registered glyphs.)
+      // a broken anchor. (Should not happen given REDACTED_GLYPH_RE
+      // matches exactly the registered glyphs.)
       parts.push(m[0]);
     } else {
       parts.push(
