@@ -43,6 +43,10 @@ export interface MediaGroup {
   // reads better as a swipeable carousel on phone than as the default
   // portrait-split phone gallery + landscape strip.
   mobile_layout?: MediaLayout;
+  // Hide the per-item `tag` overlay across the whole group. Strip layouts
+  // already suppress tags; this also suppresses them in carousel/grid/
+  // stack layouts where tags otherwise sit in the corner of each card.
+  hide_tags?: boolean;
   items: MediaItem[];
 }
 

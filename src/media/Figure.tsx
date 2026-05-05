@@ -13,8 +13,8 @@ interface FigureProps {
   media?: MediaGroup;
 }
 
-function renderItems(items: MediaItem[], scope: MediaItem[]): ReactNode {
-  return items.map((p) => <FigureCard key={p.id} p={p} scope={scope} />);
+function renderItems(items: MediaItem[], scope: MediaItem[], hideTag?: boolean): ReactNode {
+  return items.map((p) => <FigureCard key={p.id} p={p} scope={scope} hideTag={hideTag} />);
 }
 
 export function Figure({ media }: FigureProps) {
@@ -41,9 +41,10 @@ export function Figure({ media }: FigureProps) {
   const layout = (isMobile && media.mobile_layout) ? media.mobile_layout : media.layout;
   const align = media.align ?? 'right';
   const size = media.size ?? 'md';
+  const hideTag = media.hide_tags;
 
   if (layout === 'carousel') {
-    return <FigureCarousel matches={items} />;
+    return <FigureCarousel matches={items} hideTags={hideTag} />;
   }
 
   // Phone-row split (mobile only): when a strip layout has portrait-aspect
@@ -57,11 +58,11 @@ export function Figure({ media }: FigureProps) {
       return (
         <>
           <div className={`${s.figure} ${s.phones} ${nClass(portraits.length)}`}>
-            {renderItems(portraits, portraits)}
+            {renderItems(portraits, portraits, hideTag)}
           </div>
           {landscapes.length > 0 && (
             <div className={`${s.figure} ${s.strip} ${nClass(landscapes.length)}`}>
-              {renderItems(landscapes, landscapes)}
+              {renderItems(landscapes, landscapes, hideTag)}
             </div>
           )}
         </>
@@ -82,7 +83,7 @@ export function Figure({ media }: FigureProps) {
 
   return (
     <div className={cls}>
-      {renderItems(items, items)}
+      {renderItems(items, items, hideTag)}
     </div>
   );
 }

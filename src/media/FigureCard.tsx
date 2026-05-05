@@ -15,9 +15,12 @@ import type { MediaItem } from '../types';
 interface FigureCardProps {
   p: MediaItem;
   scope: MediaItem[];
+  // Suppress the corner tag overlay only — the tag stays in the data so
+  // the lightbox caption can still show it. Used by MediaGroup.hide_tags.
+  hideTag?: boolean;
 }
 
-export function FigureCard({ p, scope }: FigureCardProps): ReactNode {
+export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
   const { open } = useContext(MediaCtx);
   const ar = p.aspect || 1;
   const cardStyle = { '--ar': ar } as CSSProperties;
@@ -36,7 +39,7 @@ export function FigureCard({ p, scope }: FigureCardProps): ReactNode {
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
           allowFullScreen
         />
-        {p.tag && <span className="figure-tag">{p.tag}</span>}
+        {p.tag && !hideTag && <span className="figure-tag">{p.tag}</span>}
       </div>
     );
   }
@@ -79,7 +82,7 @@ export function FigureCard({ p, scope }: FigureCardProps): ReactNode {
           height={1000}
         />
       )}
-      {p.tag && <span className="figure-tag">{p.tag}</span>}
+      {p.tag && !hideTag && <span className="figure-tag">{p.tag}</span>}
     </button>
   );
 }

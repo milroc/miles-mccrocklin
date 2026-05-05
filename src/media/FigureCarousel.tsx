@@ -8,9 +8,10 @@ import s from './FigureCarousel.module.css';
 
 interface FigureCarouselProps {
   matches: MediaItem[];
+  hideTags?: boolean;
 }
 
-export function FigureCarousel({ matches }: FigureCarouselProps) {
+export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const arranged = useMemo(() => arrangeByPriority(matches), [matches]);
 
@@ -37,7 +38,7 @@ export function FigureCarousel({ matches }: FigureCarouselProps) {
     <div className={s.wrap}>
       <div className={s.carousel} ref={ref}>
         <div className={s.track}>
-          {arranged.map((p) => <FigureCard key={p.id} p={p} scope={arranged} />)}
+          {arranged.map((p) => <FigureCard key={p.id} p={p} scope={arranged} hideTag={hideTags} />)}
         </div>
       </div>
     </div>

@@ -743,6 +743,7 @@
           "media": {
             "layout": "strip",
             "mobile_layout": "carousel",
+            "hide_tags": true,
             "items": [
               {
                 "id": "ui-forecast-web",
