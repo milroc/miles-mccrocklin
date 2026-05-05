@@ -1,6 +1,6 @@
 // Throwaway editor for media in data/resume.json.
-// Drag thumbnails within a carousel to set ordering (writes `priority`),
-// edit text fields inline.
+// Drag thumbnails within a carousel to reorder items in their parent array
+// (the array order IS the priority). Edit text fields inline.
 // Run: `bun scripts/edit-media.ts` then open http://localhost:4318
 
 import { serve } from "bun";
@@ -13,7 +13,6 @@ type MediaItem = {
   path: (string | number)[];
   src: string;
   fields: Record<string, string>;
-  priority: number | null;
 };
 
 function findMedia(node: unknown, path: (string | number)[], out: MediaItem[]): void {
@@ -28,8 +27,7 @@ function findMedia(node: unknown, path: (string | number)[], out: MediaItem[]): 
       for (const [k, v] of Object.entries(obj)) {
         if (typeof v === "string") fields[k] = v;
       }
-      const priority = typeof obj.priority === "number" ? obj.priority : null;
-      out.push({ path, src: obj.src, fields, priority });
+      out.push({ path, src: obj.src, fields });
     }
     for (const [k, v] of Object.entries(obj)) {
       findMedia(v, [...path, k], out);
@@ -49,10 +47,23 @@ function deleteAtPath(root: any, path: (string | number)[], key: string): void {
   delete cur[key];
 }
 
+function getAtPath(root: any, path: (string | number)[]): any {
+  let cur = root;
+  for (const p of path) cur = cur[p];
+  return cur;
+}
+
 type Update = {
   path: (string | number)[];
   fields?: Record<string, string>;
-  priority?: number | null;
+};
+
+// Reorder a media items[] array in place. parentPath points at the array
+// itself (e.g. ["summary_media", "items"]). originalIndices is the new
+// order expressed as a permutation of the original index list.
+type Reorder = {
+  parentPath: (string | number)[];
+  originalIndices: number[];
 };
 
 const server = serve({
@@ -72,8 +83,13 @@ const server = serve({
     }
 
     if (url.pathname === "/api/save" && req.method === "POST") {
-      const { updates } = (await req.json()) as { updates: Update[] };
+      const { updates, reorders } = (await req.json()) as {
+        updates: Update[];
+        reorders: Reorder[];
+      };
       const json = JSON.parse(await Bun.file(RESUME_PATH).text());
+      // Field updates first — paths are still valid because no array has
+      // been touched yet.
       for (const u of updates) {
         if (u.fields) {
           for (const [k, v] of Object.entries(u.fields)) {
@@ -81,10 +97,14 @@ const server = serve({
             else setAtPath(json, u.path, k, v);
           }
         }
-        if ("priority" in u) {
-          if (u.priority === null) deleteAtPath(json, u.path, "priority");
-          else setAtPath(json, u.path, "priority", u.priority);
-        }
+      }
+      // Then reorders: replace each parent array with a permutation.
+      for (const r of reorders || []) {
+        const arr = getAtPath(json, r.parentPath);
+        if (!Array.isArray(arr)) continue;
+        const next = r.originalIndices.map((i) => arr[i]);
+        arr.length = 0;
+        arr.push(...next);
       }
       await Bun.write(RESUME_PATH, JSON.stringify(json, null, 2) + "\n");
       return Response.json({ ok: true });
@@ -300,16 +320,28 @@ const editorPanel = document.getElementById('editor-panel');
 
 let items = [];           // server snapshot, never mutated
 let dirtyFields = new Map();  // index -> Record<string,string> (override of .fields)
-let dirtyPriority = new Map(); // index -> number | null
-let order = new Map();    // groupKey -> number[] of item indices in display order
+let order = new Map();        // groupKey -> number[] of item indices in display order
+let originalOrder = new Map(); // groupKey -> number[] (snapshot at load time)
 
 function setStatus(text, cls) {
   status.textContent = text;
   status.className = 'status' + (cls ? ' ' + cls : '');
 }
 
+function dirtyOrderGroups() {
+  const out = [];
+  for (const [k, cur] of order) {
+    const orig = originalOrder.get(k);
+    if (!orig || cur.length !== orig.length) continue;
+    for (let i = 0; i < cur.length; i++) {
+      if (cur[i] !== orig[i]) { out.push(k); break; }
+    }
+  }
+  return out;
+}
+
 function dirtyCount() {
-  return new Set([...dirtyFields.keys(), ...dirtyPriority.keys()]).size;
+  return dirtyFields.size + dirtyOrderGroups().length;
 }
 
 function refreshSaveBtn() {
@@ -338,29 +370,35 @@ function effectiveFields(i) {
   return dirtyFields.get(i) ?? items[i].fields;
 }
 
-function effectivePriority(i) {
-  return dirtyPriority.has(i) ? dirtyPriority.get(i) : items[i].priority;
-}
-
 function buildGroups() {
+  order.clear();
+  originalOrder.clear();
   const groups = new Map();
   items.forEach((item, i) => {
     const k = groupKeyOf(item.path);
     if (!groups.has(k)) groups.set(k, []);
     groups.get(k).push(i);
   });
+  // Array order in resume.json IS the priority. Sort by trailing path
+  // index so the display matches the JSON's authored order.
   for (const [k, idxs] of groups) {
     idxs.sort((a, b) => {
-      const pa = items[a].priority ?? Infinity;
-      const pb = items[b].priority ?? Infinity;
-      if (pa !== pb) return pa - pb;
       const la = items[a].path[items[a].path.length - 1];
       const lb = items[b].path[items[b].path.length - 1];
       return Number(la) - Number(lb);
     });
     order.set(k, idxs);
+    originalOrder.set(k, [...idxs]);
   }
   return groups;
+}
+
+function isOrderDirty(k) {
+  const cur = order.get(k);
+  const orig = originalOrder.get(k);
+  if (!cur || !orig || cur.length !== orig.length) return false;
+  for (let i = 0; i < cur.length; i++) if (cur[i] !== orig[i]) return true;
+  return false;
 }
 
 function render() {
@@ -388,10 +426,11 @@ function render() {
     \`;
     const listEl = groupEl.querySelector('.group-list');
 
+    const groupDirty = isOrderDirty(k);
     idxs.forEach((i, displayIdx) => {
       if (!filtered.includes(i)) return;
       const f = effectiveFields(i);
-      const isDirty = dirtyFields.has(i) || dirtyPriority.has(i);
+      const isDirty = dirtyFields.has(i) || groupDirty;
       const card = document.createElement('div');
       card.className = 'card' + (isDirty ? ' dirty' : '');
       card.draggable = true;
@@ -401,12 +440,10 @@ function render() {
         ? \`<video src="/\${items[i].src}" muted preload="metadata" playsinline></video>\`
         : \`<img src="/\${items[i].src}" loading="lazy" alt="" />\`;
       const caption = f.caption || f.alt || f.description || '';
-      const prio = effectivePriority(i);
-      const rank = prio == null ? '–' : prio;
       card.innerHTML = \`
         <div class="card-thumb">
           \${thumb}
-          <div class="card-rank">#\${displayIdx + 1} · p\${rank}</div>
+          <div class="card-rank">#\${displayIdx + 1}</div>
           <div class="card-handle">⠿</div>
         </div>
         <div class="card-meta">
@@ -491,17 +528,8 @@ function reorderWithin(gk, fromIdx, toIdx, e) {
   if (!before) insertAt += 1;
   arr.splice(insertAt, 0, fromIdx);
 
-  // Recompute priorities for the whole group: 1..N
-  arr.forEach((itemIdx, i) => {
-    const newPrio = i + 1;
-    const orig = items[itemIdx].priority;
-    if (orig === newPrio) {
-      dirtyPriority.delete(itemIdx);
-    } else {
-      dirtyPriority.set(itemIdx, newPrio);
-    }
-  });
-
+  // The order Map is now the single source of truth for this group.
+  // Dirty status is derived by comparing against originalOrder.
   render();
 }
 
@@ -607,7 +635,8 @@ function updateCardCaption(i) {
       meta.insertBefore(div, editBtn);
     }
   } else if (cap) cap.remove();
-  card.classList.toggle('dirty', dirtyFields.has(i) || dirtyPriority.has(i));
+  const k = groupKeyOf(items[i].path);
+  card.classList.toggle('dirty', dirtyFields.has(i) || isOrderDirty(k));
 }
 
 search.addEventListener('input', render);
@@ -615,24 +644,36 @@ search.addEventListener('input', render);
 saveBtn.addEventListener('click', async () => {
   saveBtn.disabled = true;
   setStatus('saving…');
-  const idxs = new Set([...dirtyFields.keys(), ...dirtyPriority.keys()]);
-  const updates = [...idxs].map(i => {
-    const u = { path: items[i].path };
-    if (dirtyFields.has(i)) u.fields = dirtyFields.get(i);
-    if (dirtyPriority.has(i)) u.priority = dirtyPriority.get(i);
-    return u;
+  const updates = [...dirtyFields.keys()].map(i => ({
+    path: items[i].path,
+    fields: dirtyFields.get(i),
+  }));
+  const dirtyGroups = dirtyOrderGroups();
+  const reorders = dirtyGroups.map(k => {
+    // Build the parent path: the group key is path.slice(0, -1).join('.'),
+    // so any item in the group exposes the parent path via its own path.
+    const sample = order.get(k)[0];
+    const parentPath = items[sample].path.slice(0, -1);
+    // originalIndices: for each new position, the item's ORIGINAL index in
+    // the parent array (the trailing path segment at load time).
+    const originalIndices = order.get(k).map(i =>
+      Number(items[i].path[items[i].path.length - 1])
+    );
+    return { parentPath, originalIndices };
   });
   const res = await fetch('/api/save', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ updates }),
+    body: JSON.stringify({ updates, reorders }),
   });
   if (!res.ok) {
     setStatus('save failed', 'dirty');
     saveBtn.disabled = false;
     return;
   }
-  // Update in-memory snapshot so dirty state clears
+  // After a save that reordered groups, the on-disk paths have shifted.
+  // Easiest correct path: refetch from the server so items[].path matches
+  // disk again. Same for the originalOrder snapshot.
   for (const i of dirtyFields.keys()) {
     const merged = { ...dirtyFields.get(i) };
     for (const k of Object.keys(merged)) {
@@ -640,14 +681,15 @@ saveBtn.addEventListener('click', async () => {
     }
     items[i].fields = merged;
   }
-  for (const i of dirtyPriority.keys()) {
-    items[i].priority = dirtyPriority.get(i);
-  }
   dirtyFields.clear();
-  dirtyPriority.clear();
-  setStatus('saved', 'saved');
-  setTimeout(refreshSaveBtn, 800);
-  render();
+  if (dirtyGroups.length) {
+    setStatus('saved, reloading…', 'saved');
+    await load();
+  } else {
+    setStatus('saved', 'saved');
+    setTimeout(refreshSaveBtn, 800);
+    render();
+  }
 });
 
 async function load() {

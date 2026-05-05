@@ -29,7 +29,6 @@ export interface MediaItem {
   tag?: string;
   aspect?: number;
   poster?: string;
-  priority?: number;
   span?: { col?: number; row?: number };
 }
 
