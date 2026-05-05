@@ -35,25 +35,15 @@ export function Figure({ media }: FigureProps) {
   const isMobile = useMediaQuery('(max-width: 720px)');
   if (!media || !media.items.length) return null;
   const items = media.items;
-  const layout = media.layout;
+  // Per-viewport layout override: mobile_layout wins on mobile, falls back
+  // to layout otherwise. Lets one media group split desktop (strip) from
+  // phone (carousel) without duplicating the items array.
+  const layout = (isMobile && media.mobile_layout) ? media.mobile_layout : media.layout;
   const align = media.align ?? 'right';
   const size = media.size ?? 'md';
 
   if (layout === 'carousel') {
     return <FigureCarousel matches={items} />;
-  }
-
-  // Uniform 16:9 frame (mobile only): bypass the portrait-vs-landscape
-  // split and render everything in one strip with a black-padded 16:9
-  // box per card. Portrait items get pillarboxed; landscape items fit
-  // edge-to-edge. Used for media groups where mixed aspects should
-  // still read as one row (e.g. Forecast: phone screenshots + 16:9 gif).
-  if (layout === 'strip' && isMobile && media.frame === 'uniform-16-9') {
-    return (
-      <div className={`${s.figure} ${s.strip} ${s.uniformFrame} ${nClass(items.length)}`}>
-        {renderItems(items, items)}
-      </div>
-    );
   }
 
   // Phone-row split (mobile only): when a strip layout has portrait-aspect

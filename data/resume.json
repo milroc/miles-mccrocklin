@@ -742,7 +742,7 @@
           ],
           "media": {
             "layout": "strip",
-            "frame": "uniform-16-9",
+            "mobile_layout": "carousel",
             "items": [
               {
                 "id": "ui-forecast-web",
