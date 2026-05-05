@@ -25,6 +25,8 @@ jobs:
           enablement: true
       - run: bun install --frozen-lockfile
       - run: bun run build
+        env:
+          GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
       - name: Smoke check build output
         run: |
           test -f dist/index.html || (echo "missing dist/index.html"; exit 1)
