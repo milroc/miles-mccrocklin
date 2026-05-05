@@ -662,7 +662,7 @@
               "visibility": "all"
             },
             {
-              "text": "Led 10 ICs on the Bulletin Publishing team through a scale-up and eventual de-prioritization with two reorgs. Found a new team for every UI engineer who needed one, then rebuilt mine around the back-end work that became Professional Mode.",
+              "text": "Led 10 ICs on the Bulletin Publishing UI team through its scale-up and ultimate sunset. Placed every UI engineer who needed a new team, then rebuilt mine around the back-end work that became Professional Mode.",
               "visibility": "all"
             }
           ],
@@ -699,7 +699,7 @@
               "visibility": "all"
             },
             {
-              "text": "Set up the team's experimentation framework. After the launch announcements, the team had to pivot from rapid idea exploration to triaging inbound interest and figuring out which ideas actually drove growth and retention.",
+              "text": "Set up the team's experimentation framework, driving the post-launch shift from rapid idea exploration to isolating the surfaces that drove growth and retention.",
               "visibility": "all"
             }
           ],
@@ -751,11 +751,11 @@
           "role": "Fact Checking Tech Lead",
           "achievements": [
             {
-              "text": "Tech lead and first engineer (team grew to 8) on the product Facebook's external fact-checking partners used to rate viral content on Facebook and Instagram. Launched with 9 partners (AP, PolitiFact); scaled to 80 organizations, hundreds of journalists, and 60 languages.",
+              "text": "Tech lead (team grew to 8) on the product Facebook's external fact-checking partners used to rate viral content on Facebook and Instagram. Launched with 5 partners; scaled to 80 organizations (including Reuters, AFP, and PolitiFact), hundreds of journalists, and 60 languages.",
               "visibility": "all"
             },
             {
-              "text": "Architected the misinformation detection system from web links only (~γ% of posts) up to 100% of content across Facebook (posts, photos, video). Shipped Instagram support a quarter later, then Ads. The platform powered every misinformation policy launch after that, and it's still in production today outside the US.",
+              "text": "Architected the misinformation detection system from web links only (~γ% of posts) up to 100% of content across Facebook (posts, photos, video). Shipped Instagram support a quarter later, then Ads. The platform powered every misinformation policy launch after that and is still in production today.",
               "visibility": "not_1pager"
             },
             {
@@ -799,11 +799,11 @@
           "focus": "NLP Internal Tools & Products",
           "achievements": [
             {
-              "text": "Rebuilt Grapevine, an internal privacy-preserving NLP analytics tool over Facebook and Instagram content, into Audience Insights for creative advertising agencies. Offered free to grow the size of the ad pie.",
+              "text": "Rebuilt Ψ, an internal privacy-preserving NLP analytics tool over Facebook and Instagram content, into Audience Insights for creative advertising agencies. Offered free to grow the size of the ad pie.",
               "visibility": "all"
             },
             {
-              "text": "Main UI engineer on Grapevine (rebuilt the UI) and StormChaser, NLP analytics tools used by η Facebook employees: Sales driving revenue, Communications running real-time election reporting alongside Fox News and other newsrooms, and Safety Check monitoring crises around the world.",
+              "text": "Main UI engineer on Ψ (rebuilt the UI) and Ω, NLP analytics tools used by η Facebook employees: Sales driving revenue, Communications running real-time election reporting alongside Fox News and other newsrooms, and Safety Check monitoring crises around the world.",
               "visibility": "not_1pager"
             },
             {
@@ -1136,6 +1136,16 @@
       "id": "eta",
       "glyph": "η",
       "context": "Internal-tool user base across Sales, Communications, and Safety Check at Facebook."
+    },
+    {
+      "id": "psi",
+      "glyph": "Ψ",
+      "context": "Internal Meta privacy-preserving NLP analytics tool over Facebook and Instagram content; precursor to the public Audience Insights product."
+    },
+    {
+      "id": "omega",
+      "glyph": "Ω",
+      "context": "Internal Meta NLP analytics tool used across Sales, Communications, and Safety Check."
     }
   ]
 }
