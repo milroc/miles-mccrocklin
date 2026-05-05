@@ -8,6 +8,7 @@
 import {
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
   type MouseEvent as ReactMouseEvent,
@@ -21,7 +22,15 @@ interface MediaProviderProps {
   children: ReactNode;
 }
 
+// The slide list is rendered three times so we can shift scrollLeft by one
+// "set width" whenever the active position crosses out of the middle copy.
+// The jump lands on a visually identical slide, so navigation feels infinite.
+const COPIES = 3;
+
 export function MediaProvider({ children }: MediaProviderProps) {
+  // openIdx is an index into the *rendered* track (which contains COPIES ×
+  // scope.length slides). null when the lightbox is closed. The logical
+  // photo index (used for counter, caption, video play) is `openIdx % N`.
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [scope, setScope] = useState<MediaItem[] | null>(null);
   const [chromeVisible, setChromeVisible] = useState(true);
@@ -40,19 +49,35 @@ export function MediaProvider({ children }: MediaProviderProps) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
 
+  // Loop landmarks (re-measured on open and on resize). copyBStart is the
+  // offsetLeft of the first slide in the middle copy; copyCStart is the
+  // first slide of the right clone. setWidth is the distance between
+  // identical slides one copy apart.
+  const setWidthRef = useRef(0);
+  const copyBStartRef = useRef(0);
+  const copyCStartRef = useRef(0);
+  const jumpingRef = useRef(false);
+
+  const list = scope ?? [];
+  const N = list.length;
+  const logicalIdx = openIdx == null ? null : ((openIdx % N) + N) % N;
+  const cur = logicalIdx != null ? list[logicalIdx] ?? null : null;
+
   const open = (scopeItems: MediaItem[], id: string): void => {
     // Drop embeds from the lightbox scope — the lightbox renders <img> /
     // <video>, so an embed (Facebook plugin, YouTube, etc.) shows up as a
     // broken image while its iframe in the page beneath the modal keeps
     // playing. Embed cards are non-clickable divs, so id is always an
     // image/video and survives the filter.
-    const list = scopeItems.filter((p) => p.type !== 'embed');
-    const i = list.findIndex((x) => x.id === id);
+    const filtered = scopeItems.filter((p) => p.type !== 'embed');
+    const i = filtered.findIndex((x) => x.id === id);
     if (i >= 0) {
       const active = (typeof document !== 'undefined' ? document.activeElement : null);
       triggerRef.current = active instanceof HTMLElement ? active : null;
-      setScope(list);
-      setOpenIdx(i);
+      setScope(filtered);
+      // Open into the middle copy so the user can swipe in either
+      // direction immediately without hitting an edge.
+      setOpenIdx(filtered.length + i);
       setChromeVisible(true);
     }
   };
@@ -76,7 +101,31 @@ export function MediaProvider({ children }: MediaProviderProps) {
     }
   };
 
-  const list = scope ?? [];
+  // Render the slide list three times. Stable identity per copy via a
+  // prefixed key so React reuses DOM nodes across re-renders.
+  const renderedSlides = useMemo(() => {
+    const out: { p: MediaItem; key: string; renderedIdx: number }[] = [];
+    for (let c = 0; c < COPIES; c++) {
+      list.forEach((p, i) => {
+        out.push({ p, key: `${c}-${p.id}`, renderedIdx: c * list.length + i });
+      });
+    }
+    return out;
+  }, [list]);
+
+  // Measure the loop landmarks. Called after the track is sized and any
+  // time it resizes. Returns false if the track isn't laid out yet.
+  const measureLoop = (): boolean => {
+    const track = trackRef.current;
+    if (!track || !N) return false;
+    const slides = track.children;
+    if (slides.length < N * COPIES) return false;
+    const a = (slides[0] as HTMLElement).offsetLeft;
+    copyBStartRef.current = (slides[N] as HTMLElement).offsetLeft;
+    copyCStartRef.current = (slides[2 * N] as HTMLElement).offsetLeft;
+    setWidthRef.current = copyBStartRef.current - a;
+    return setWidthRef.current > 0;
+  };
 
   // Place the track at the active slide on first render. We can't compute
   // `openIdx * track.clientWidth` because on desktop the slides are 72vw
@@ -91,11 +140,26 @@ export function MediaProvider({ children }: MediaProviderProps) {
     if (!slide) return;
     programmaticScrollRef.current = true;
     slide.scrollIntoView({ behavior: 'instant' as ScrollBehavior, inline: 'center', block: 'nearest' });
-    requestAnimationFrame(() => { programmaticScrollRef.current = false; });
+    requestAnimationFrame(() => {
+      programmaticScrollRef.current = false;
+      measureLoop();
+    });
     // Only re-anchor when the lightbox first opens — subsequent index
     // changes are driven BY scroll (or arrow keys, which scroll
     // programmatically with smooth behavior, also gated by
     // programmaticScrollRef).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openIdx == null]);
+
+  // Re-measure on viewport resize while open so the loop boundaries stay
+  // accurate as the user rotates a device or resizes the window.
+  useEffect(() => {
+    if (openIdx == null) return;
+    const track = trackRef.current;
+    if (!track) return;
+    const ro = new ResizeObserver(() => measureLoop());
+    ro.observe(track);
+    return () => ro.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openIdx == null]);
 
@@ -158,12 +222,15 @@ export function MediaProvider({ children }: MediaProviderProps) {
     }, 500);
   };
 
-  // Sync openIdx ← scroll position. The slide-width assumption (slide ==
-  // viewport) is only true on mobile; on desktop slides are 72vw with 14vw
-  // peek. So instead of `Math.round(scrollLeft / clientWidth)`, find the
-  // slide whose center is closest to the viewport's snap-center.
+  // Sync openIdx ← scroll position, then loop-normalize. The slide-width
+  // assumption (slide == viewport) is only true on mobile; on desktop
+  // slides are 72vw with 14vw peek. So instead of `Math.round(scrollLeft
+  // / clientWidth)`, find the slide whose center is closest to the
+  // viewport's snap-center. After picking the active slide, if the scroll
+  // position has crossed out of the middle copy, shift scrollLeft by one
+  // set width so we land on the visually identical slide back in copy B.
   const onScroll = (): void => {
-    if (programmaticScrollRef.current) return;
+    if (programmaticScrollRef.current || jumpingRef.current) return;
     const track = trackRef.current;
     if (!track || track.clientWidth === 0) return;
     const trackCenter = track.scrollLeft + track.clientWidth / 2;
@@ -175,8 +242,33 @@ export function MediaProvider({ children }: MediaProviderProps) {
       const d = Math.abs(slideCenter - trackCenter);
       if (d < bestDist) { bestDist = d; closest = i; }
     }
-    if (closest !== openIdx && closest >= 0 && closest < list.length) {
-      setOpenIdx(closest);
+    const setWidth = setWidthRef.current;
+    const left = track.scrollLeft;
+    let nextIdx = closest;
+    let nextLeft: number | null = null;
+    if (setWidth) {
+      if (left >= copyCStartRef.current) {
+        nextLeft = left - setWidth;
+        nextIdx = closest - N;
+      } else if (left < copyBStartRef.current) {
+        nextLeft = left + setWidth;
+        nextIdx = closest + N;
+      }
+    }
+    if (nextLeft != null) {
+      jumpingRef.current = true;
+      // Disable snap during the jump so mandatory scroll-snap doesn't try
+      // to re-snap to the position we just left.
+      const prevSnap = track.style.scrollSnapType;
+      track.style.scrollSnapType = 'none';
+      track.scrollLeft = nextLeft;
+      requestAnimationFrame(() => {
+        track.style.scrollSnapType = prevSnap;
+        jumpingRef.current = false;
+      });
+    }
+    if (nextIdx !== openIdx && nextIdx >= 0 && nextIdx < N * COPIES) {
+      setOpenIdx(nextIdx);
     }
   };
 
@@ -205,14 +297,17 @@ export function MediaProvider({ children }: MediaProviderProps) {
     });
   };
 
-  // Smooth-scroll the track to a given index. Same fix as the initial
-  // useLayoutEffect: scrollIntoView against the actual slide element, not
-  // arithmetic on track.clientWidth (which doesn't match slide width on
-  // desktop).
+  // Smooth-scroll the track to a given rendered index. Same fix as the
+  // initial useLayoutEffect: scrollIntoView against the actual slide
+  // element, not arithmetic on track.clientWidth (which doesn't match
+  // slide width on desktop). The destination may briefly land in copy A
+  // or C (one slide off either edge of B); after the smooth scroll
+  // settles, the onScroll loop normalizer pulls it back into B. The
+  // pre/post slides are visually identical so the snap-back is invisible.
   const navigateTo = (next: number): void => {
     const track = trackRef.current;
     if (!track) return;
-    if (next < 0 || next >= list.length) return;
+    if (next < 0 || next >= track.children.length) return;
     const slide = track.children[next] as HTMLElement | undefined;
     if (!slide) return;
     programmaticScrollRef.current = true;
@@ -220,8 +315,12 @@ export function MediaProvider({ children }: MediaProviderProps) {
     setOpenIdx(next);
     setChromeVisible(true);
     armChromeTimer();
-    // Smooth scroll completes around the next animation frame batch.
-    window.setTimeout(() => { programmaticScrollRef.current = false; }, 400);
+    // Smooth scroll completes around the next animation frame batch; run
+    // the normalizer once it does.
+    window.setTimeout(() => {
+      programmaticScrollRef.current = false;
+      onScroll();
+    }, 400);
   };
 
   useEffect(() => {
@@ -297,13 +396,12 @@ export function MediaProvider({ children }: MediaProviderProps) {
     return () => dialog.removeEventListener('focusin', onFocusIn);
   }, [openIdx == null]);
 
-  const cur = openIdx != null ? list[openIdx] ?? null : null;
   const lightboxClass = `${s.lightbox} ${chromeVisible ? s.chromeVisible : s.chromeHidden}`;
 
   return (
     <MediaCtx.Provider value={{ open }}>
       {children}
-      {cur && openIdx != null && (
+      {cur && openIdx != null && logicalIdx != null && (
         <div
           className={lightboxClass}
           role="dialog"
@@ -323,8 +421,8 @@ export function MediaProvider({ children }: MediaProviderProps) {
             >
               <span aria-hidden="true">×</span>
             </button>
-            <span className={s.counter} aria-label={`Photo ${openIdx + 1} of ${list.length}`}>
-              {openIdx + 1} / {list.length}
+            <span className={s.counter} aria-label={`Photo ${logicalIdx + 1} of ${N}`}>
+              {logicalIdx + 1} / {N}
             </span>
           </div>
           <div
@@ -333,17 +431,22 @@ export function MediaProvider({ children }: MediaProviderProps) {
             onScroll={onScroll}
             onClick={onTrackClick}
           >
-            {list.map((p, i) => (
+            {renderedSlides.map(({ p, key, renderedIdx }) => (
               // The video here has no `controls`, so aria-hidden on the
               // slide wrapper does not strand focusable descendants. If
               // controls are ever added, this aria-hidden has to move or
               // the inactive slides need `inert` instead.
-              <div key={p.id} className={s.slide} data-idx={i} aria-hidden={i !== openIdx}>
+              <div
+                key={key}
+                className={s.slide}
+                data-idx={renderedIdx}
+                aria-hidden={renderedIdx !== openIdx}
+              >
                 {p.type === 'video' ? (
                   <video
                     src={p.src}
                     poster={p.poster}
-                    autoPlay={i === openIdx && !prefersReducedMotion()}
+                    autoPlay={renderedIdx === openIdx && !prefersReducedMotion()}
                     loop={!prefersReducedMotion()}
                     playsInline
                     muted
@@ -354,21 +457,19 @@ export function MediaProvider({ children }: MediaProviderProps) {
               </div>
             ))}
           </div>
-          {list.length > 1 && (
+          {N > 1 && (
             <>
               <button
                 type="button"
                 className={`${s.nav} ${s.prev}`}
                 onClick={(e) => { e.stopPropagation(); navigateTo(openIdx - 1); }}
                 aria-label="Previous photo"
-                disabled={openIdx === 0}
               >‹</button>
               <button
                 type="button"
                 className={`${s.nav} ${s.next}`}
                 onClick={(e) => { e.stopPropagation(); navigateTo(openIdx + 1); }}
                 aria-label="Next photo"
-                disabled={openIdx === list.length - 1}
               >›</button>
             </>
           )}
