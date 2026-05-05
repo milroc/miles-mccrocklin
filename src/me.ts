@@ -35,6 +35,11 @@ export const LINKEDIN_HANDLE_TEXT = 'miles-mccrocklin';
 
 export const REDACTION_DESCRIPTION = 'Greek letters above mark figures and names intentionally withheld out of respect for the people who built the work with me. Each is described below; reach out to learn more about my role on these efforts'
 
+// Greek glyphs used as inline redaction anchors in bullet prose. Keep in
+// sync with the `redactions` array in data/resume.json — every glyph
+// listed here must have a matching registry entry, and vice versa.
+export const REDACTED_GLYPH_RE = /[αβγδεζηθΨΩ]/g;
+
 // Community group names that should render in the mono "code" register.
 // Used to build a regex at the call site.
 export const CODE_GROUPS = ['d3.unconf()', 'd3.js'] as const;
