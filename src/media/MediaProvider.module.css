@@ -60,9 +60,14 @@
   -webkit-user-select: none;
   -webkit-user-drag: none;
   -webkit-touch-callout: none;
-  /* Allow native pinch-zoom on the active photo without enabling pan
-     (which would fight scroll-snap). */
-  touch-action: pinch-zoom;
+  /* `pinch-zoom` alone blocks panning, so on mobile a swipe that starts on
+     the image (~the entire slide on phone) never reaches the scroll-snap
+     track and the lightbox feels stuck. `pan-x pinch-zoom` keeps native
+     pinch-zoom and lets horizontal swipes through to the parent. */
+  touch-action: pan-x pinch-zoom;
+}
+.track {
+  touch-action: pan-x pinch-zoom;
 }
 /* Peek slides on either side act as the prev/next hit area — click them
    to navigate to that slide. */
