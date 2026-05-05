@@ -15,9 +15,12 @@ import type { MediaItem } from '../types';
 interface FigureCardProps {
   p: MediaItem;
   scope: MediaItem[];
+  // Suppress the corner tag overlay only — the tag stays in the data so
+  // the lightbox caption can still show it. Used by MediaGroup.hide_tags.
+  hideTag?: boolean;
 }
 
-export function FigureCard({ p, scope }: FigureCardProps): ReactNode {
+export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
   const { open } = useContext(MediaCtx);
   const ar = p.aspect || 1;
   const cardStyle = { '--ar': ar } as CSSProperties;
@@ -36,7 +39,7 @@ export function FigureCard({ p, scope }: FigureCardProps): ReactNode {
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
           allowFullScreen
         />
-        {p.tag && <span className="figure-tag">{p.tag}</span>}
+        {p.tag && !hideTag && <span className="figure-tag">{p.tag}</span>}
       </div>
     );
   }
@@ -64,9 +67,22 @@ export function FigureCard({ p, scope }: FigureCardProps): ReactNode {
           preload="metadata"
         />
       ) : (
-        <img src={p.src} alt={p.caption || ''} loading="lazy" />
+        // Explicit width/height (derived from aspect) gives the browser an
+        // intrinsic-size hint so loading="lazy" + an aspect-ratio'd parent
+        // don't collapse the lazy box to 0×0 before the image arrives —
+        // observed on community-section heavyweight JPEGs where the
+        // IntersectionObserver never fired and the image stayed blank.
+        // decoding="async" hands the decode off the main thread.
+        <img
+          src={p.src}
+          alt={p.caption || ''}
+          loading="lazy"
+          decoding="async"
+          width={Math.round(1000 * ar)}
+          height={1000}
+        />
       )}
-      {p.tag && <span className="figure-tag">{p.tag}</span>}
+      {p.tag && !hideTag && <span className="figure-tag">{p.tag}</span>}
     </button>
   );
 }
