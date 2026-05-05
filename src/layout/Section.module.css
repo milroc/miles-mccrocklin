@@ -1,0 +1,7 @@
+.section {
+  margin-top: 28px;
+}
+
+/* 1-pager tightens vertical rhythm — every section gets pulled closer
+   so the page fits on letter paper. */
+:global(.page.mode-1pager) .section { margin-top: 4px; }

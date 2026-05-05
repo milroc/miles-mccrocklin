@@ -1,0 +1,134 @@
+/* Carousel: breaks out of the article's horizontal padding to span the full
+   page width, then horizontally scrolls. Cards keep a fixed row height with
+   widths driven by their natural aspect ratio. The middle card is centered
+   on mount (via JS); edges remain partially clipped to invite scrolling.
+
+   Wrapper exists solely to host the hover-only chevron hints. The negative
+   horizontal margin lives on the wrapper so the carousel inside can stay
+   margin-free for the pseudo positioning math. */
+.wrap {
+  position: relative;
+  margin: 14px calc(var(--page-pad-x) * -1) 6px;
+}
+/* The mask fade is registered as a custom <length> property so it can be
+   transitioned smoothly. Without @property, browsers can't interpolate
+   gradient stops and the mask snaps between widths. The variable widens
+   on wrap-hover, which retracts the leftmost / rightmost photos and gives
+   the chevrons a clean cream-paper backdrop instead of a busy photo edge. */
+@property --mask-fade {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 32px;
+}
+.wrap { --mask-fade: 32px; }
+.wrap:hover { --mask-fade: 88px; }
+
+.carousel {
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--mask-fade),
+    #000 calc(100% - var(--mask-fade)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--mask-fade),
+    #000 calc(100% - var(--mask-fade)),
+    transparent 100%
+  );
+  transition: --mask-fade 320ms ease;
+}
+.carousel::-webkit-scrollbar { display: none; }
+
+/* Hover-only chevron hints. Ink-on-paper SVGs that fade in when the cursor
+   enters the carousel, signaling that the strip scrolls horizontally.
+   Each chevron sits over the masked edge zone — as the mask widens on
+   hover, the photo behind retracts and the chevron lands on cream paper,
+   so it reads cleanly without a backdrop pill. Stroke is heavy enough to
+   carry across the cream/photo boundary while the mask is mid-animation. */
+.wrap::before,
+.wrap::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0;
+  /* Soft cream halo behind the glyph for the moments the mask hasn't yet
+     fully retracted the photo. Opaque enough to lift the chevron off any
+     dark photo content; small enough that it reads as a wash, not a pill. */
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><polyline points='15 18 9 12 15 6'/></svg>") center / 22px 22px no-repeat,
+    radial-gradient(closest-side, rgba(253, 253, 251, 0.85), rgba(253, 253, 251, 0));
+  transition: opacity 220ms ease, transform 220ms ease;
+  z-index: 2;
+}
+.wrap::before { left: 8px; }
+.wrap::after {
+  right: 8px;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 18 15 12 9 6'/></svg>") center / 22px 22px no-repeat,
+    radial-gradient(closest-side, rgba(253, 253, 251, 0.85), rgba(253, 253, 251, 0));
+}
+.wrap:hover::before,
+.wrap:hover::after {
+  opacity: 0.95;
+}
+/* Tiny inward nudge as they appear — the chevron "leans toward" the
+   direction it scrolls, reinforcing the affordance. */
+.wrap:hover::before { transform: translate(2px, -50%); }
+.wrap:hover::after  { transform: translate(-2px, -50%); }
+@media (hover: none) {
+  .wrap::before,
+  .wrap::after { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wrap::before,
+  .wrap::after { transition: none; }
+  .wrap:hover { --mask-fade: 32px; }
+  .carousel { transition: none; }
+}
+
+.track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  padding: 0 var(--page-pad-x);
+  width: max-content;
+}
+.track :global(.figure-card) {
+  flex: 0 0 auto;
+  height: 280px;
+  width: calc(280px * var(--ar, 1));
+  scroll-snap-align: center;
+  /* Crisp + borderless: no rounding, no border on the inline carousel cards.
+     The strip and stack layouts keep the default figure-card chrome. */
+  border-radius: 0;
+  border: none;
+  background: transparent;
+}
+.track :global(.figure-card):hover {
+  border: none;
+}
+.track :global(.figure-card) img,
+.track :global(.figure-card) video { border-radius: 0; }
+@media (max-width: 720px) {
+  .track :global(.figure-card) {
+    height: 220px;
+    width: calc(220px * var(--ar, 1));
+  }
+}
+
+/* Hide carousels in text-only / 1-pager modes. */
+:global(.page.text-only) .wrap { display: none !important; }

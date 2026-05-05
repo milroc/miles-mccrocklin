@@ -1,0 +1,274 @@
+/* ---------- Lightbox: native scroll-snap carousel ----------
+   One model for both viewports. The .track is a horizontally scrolling
+   flex container with `scroll-snap-type: x mandatory` — the browser
+   handles swipes, momentum, flick velocity, and rubber-band edges
+   natively. No transform/translate math, no synthetic touch handlers.
+
+   Mobile (default): each slide is 100vw × 100dvh, edge-to-edge.
+   Desktop (≥721px): slide shrinks and `padding-inline` on the track lets
+     adjacent slides peek at the edges, preserving the desktop "filmic" feel.
+
+   Chrome (close, counter, caption) auto-hides after open or last
+   interaction; tap the photo to bring it back. */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,8,12,0.94);
+  z-index: 100;
+  animation: fade-in 180ms ease;
+  display: flex;
+  flex-direction: column;
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.track {
+  flex: 1;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  /* Active slide pulls into focus while peeks (desktop) sit dimmer at the
+     edges. Mobile shows no peek so the mask is a no-op there. */
+  -webkit-mask-image: linear-gradient(
+    to right, transparent 0, #000 4%, #000 96%, transparent 100%);
+          mask-image: linear-gradient(
+    to right, transparent 0, #000 4%, #000 96%, transparent 100%);
+}
+.track::-webkit-scrollbar { display: none; }
+
+.slide {
+  flex: 0 0 100vw;
+  height: 100dvh;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+.slide img,
+.slide video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  /* Allow native pinch-zoom on the active photo without enabling pan
+     (which would fight scroll-snap). */
+  touch-action: pinch-zoom;
+}
+/* Peek slides on either side act as the prev/next hit area — click them
+   to navigate to that slide. */
+.slide[aria-hidden="true"] {
+  cursor: pointer;
+}
+
+/* ---------- Top bar: close (left, thumb-zone) + counter (right) -------- */
+.topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+           12px max(16px, env(safe-area-inset-left));
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0));
+  pointer-events: none; /* gradient strip itself is non-interactive */
+  transition: opacity 220ms ease;
+}
+.topbar > * { pointer-events: auto; }
+
+.close {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.50);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.close:hover,
+.close:focus-visible {
+  background: rgba(255,255,255,0.14);
+  border-color: #fff;
+  outline: none;
+}
+
+.counter {
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: rgba(0,0,0,0.50);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+  padding: 6px 12px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Caption: pinned to bottom, safe-area aware ------------------ */
+.caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  padding: 16px max(16px, env(safe-area-inset-right))
+           max(16px, env(safe-area-inset-bottom))
+           max(16px, env(safe-area-inset-left));
+  background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0));
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  text-align: center;
+  font-family: var(--serif);
+  color: #ddd;
+  font-size: var(--fs-bullet);
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+.captionText {
+  max-width: min(640px, 90vw);
+}
+.captionTag {
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.1em;
+  color: #999;
+  text-transform: uppercase;
+}
+
+/* ---------- Prev/next nav buttons --------------------------------------
+   Vertically centered on each side. Backdrop-blurred pill matching the
+   close button + counter in the topbar. Disabled (low-opacity) when at
+   the first or last slide so the affordance stays consistent without
+   "did I just click into nothing?" confusion.
+
+   The track owns swipe and click-to-toggle-chrome. The nav buttons sit
+   above the track (z-index: 4) and stop propagation on click so tapping
+   them never toggles chrome. */
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.50);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 160ms ease, border-color 160ms ease, opacity 220ms ease;
+  /* Optical centering for the chevron glyph. */
+  padding-bottom: 2px;
+}
+.prev { left: max(12px, env(safe-area-inset-left)); }
+.next { right: max(12px, env(safe-area-inset-right)); }
+
+/* Light up the matching arrow when its peek slide is hovered. Connects the
+   peek-as-hit-area affordance to the explicit button — the user sees which
+   navigation a click on the peek will trigger. Adjacent-sibling combinator
+   inside :has() pinpoints the immediate prev/next peek (the only ones on
+   screen given the 72vw active slide + 14vw track padding). */
+.nav:hover:not(:disabled),
+.nav:focus-visible:not(:disabled),
+.lightbox:has(.slide[aria-hidden="true"]:hover + .slide[aria-hidden="false"]) .prev:not(:disabled),
+.lightbox:has(.slide[aria-hidden="false"] + .slide[aria-hidden="true"]:hover) .next:not(:disabled) {
+  background: rgba(255,255,255,0.14);
+  border-color: #fff;
+  outline: none;
+}
+.nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Larger hit target on desktop, slightly bigger glyph too. */
+@media (min-width: 721px) {
+  .nav {
+    width: 52px;
+    height: 52px;
+    font-size: 30px;
+  }
+  .prev { left: max(20px, env(safe-area-inset-left)); }
+  .next { right: max(20px, env(safe-area-inset-right)); }
+}
+
+/* ---------- Auto-hide chrome -------------------------------------------
+   `.chromeHidden` fades the top bar + nav while the photo stays. The
+   caption stays pinned so the description doesn't disappear on idle.
+   Tap the photo (handled in JS) to toggle back to `.chromeVisible`. */
+.lightbox.chromeHidden .topbar,
+.lightbox.chromeHidden .nav {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Desktop: peek mode ------------------------------------------
+   Slide shrinks to leave 14vw of "stage" on each edge. The track's
+   padding-inline pushes the snap area inward so that when a slide is
+   centered, its neighbors peek at the screen edges. The mask gradient
+   softens those peek edges without scaling or opacity hacks.
+
+   Padding-inline tracks the slide-width cap. At narrow desktop widths
+   (≤ ~1667px) the slide is 72vw, so 14vw padding leaves the slide
+   naturally centered. Past the cap, slide is locked at 1200px while
+   14vw keeps growing — without compensation, the first slide ends up
+   off-center to the left because scrollLeft can't go negative. The
+   max() flips padding to "(viewport − slide) / 2" once that's larger
+   than 14vw, keeping the slide centered on big monitors. */
+@media (min-width: 721px) {
+  .slide {
+    flex-basis: min(72vw, 1200px);
+  }
+  .track {
+    padding-inline: max(14vw, calc((100vw - 1200px) / 2));
+    scroll-padding-inline: max(14vw, calc((100vw - 1200px) / 2));
+  }
+  /* Photo on the active slide gets a subtle drop shadow; peeks don't, so
+     the active read is unmistakable. */
+  .slide img,
+  .slide video {
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+  }
+}
+
+/* Reduced-motion users: no smooth-scroll on programmatic nav. */
+@media (prefers-reduced-motion: reduce) {
+  .track { scroll-behavior: auto; }
+  .lightbox { animation: none; }
+}
+
+/* In text-only / 1-pager modes the lightbox can never be opened, but the
+   defensive hide rule keeps the overlay out even if the state were
+   mismatched. */
+:global(.page.text-only) .lightbox { display: none !important; }

@@ -1,0 +1,33 @@
+/* Section labels: deliberately smaller than body. They function as
+   eyebrow labels, not display headings. Heavy weight + wide tracking +
+   caps does the work; size restraint creates the hierarchy. */
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.sectionHead h2 {
+  font-size: var(--fs-eyebrow);
+  font-weight: 800;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+  position: relative;
+  top: -2px;
+}
+
+/* 1-pager tightens the head row + drops the eyebrow size to match the
+   shrunken body type. */
+:global(.page.mode-1pager) .sectionHead { margin-bottom: 3px; gap: 10px; }
+:global(.page.mode-1pager) .sectionHead h2 {
+  font-size: 8.5pt;
+  letter-spacing: 0.28em;
+}

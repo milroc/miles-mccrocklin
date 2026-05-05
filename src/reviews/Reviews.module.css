@@ -1,0 +1,362 @@
+/* ---------- Collapsible AI experiments / Reviews block ----------
+   The same `<details>` chrome handles both AI experiments and the
+   Reviews-toggle wrapper. Reviews adds the laurel-gold star + Bélo
+   accents on top. */
+.aiProjects {
+  margin: 6px 0 4px;
+}
+.aiProjects > summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 8px;
+  border: 1px dashed var(--rule);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  transition: border-color 120ms ease, color 120ms ease;
+}
+.aiProjects > summary::-webkit-details-marker { display: none; }
+.aiProjects > summary::before {
+  content: "▸";
+  font-size: var(--fs-overlay);
+  color: var(--muted);
+  margin-right: 2px;
+  transition: transform 160ms ease;
+  display: inline-block;
+}
+.aiProjects[open] > summary::before { transform: rotate(90deg); }
+.aiProjects > summary:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.summaryLabel {
+  font-weight: 500;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+}
+.summaryHint {
+  color: var(--muted);
+  font-size: var(--fs-eyebrow-sm);
+  letter-spacing: 0.06em;
+}
+/* Bélo as a leading source mark in the rating cluster. Inherits
+   currentColor (ink) so it tones with the surrounding eyebrow text — the
+   brand mark in this position is wayfinding, the bigger red Bélo CTA
+   below carries the brand statement.
+
+   Sized at 1.25em on the eyebrow text scale and pushed up via a small
+   negative translateY so its visual centerline aligns with the cap height
+   of "GUEST REVIEWS" rather than sitting at the baseline. */
+.summaryBelo {
+  width: 1.25em;
+  height: 1.25em;
+  color: currentColor;
+  flex-shrink: 0;
+  transform: translateY(0.18em);
+}
+.aiProjects[open] .summaryHint { display: none; }
+.aiProjects > ul:global(.bullets) { margin-top: 8px; }
+
+/* In print, always show experiments expanded so the PDF carries the detail. */
+@media print {
+  .aiProjects > summary { display: none; }
+  .aiProjects > ul:global(.bullets) { display: block !important; }
+  .aiProjects[open] > ul:global(.bullets) { display: block !important; }
+}
+
+/* In text-only mode, hide the toggle summary, force the bullet list visible,
+   and tighten the wrapper spacing. */
+:global(.page.text-only) .aiProjects > summary { display: none !important; }
+:global(.page.text-only) .aiProjects > ul:global(.bullets) { display: block !important; }
+:global(.page.text-only) .aiProjects { margin: 4px 0 0; }
+:global(.page.mode-1pager) .aiProjects > summary { display: none !important; }
+:global(.page.mode-1pager) .aiProjects > ul:global(.bullets) { display: block !important; }
+
+/* ---------- Reviews — Airbnb-styled, collapsed by default ---------------
+   Rendered inside the Real Estate sabbatical track. Lives inside the
+   resume's design system — same ink/muted/rule tokens, same Georgia
+   serif body type, same accent. The only "guest" treatment retained is
+   the laurel-gold star (the "Top-5% Superhost" signal) and the highlight
+   tint on host_highlights phrases. */
+.reviewsToggle .star {
+  color: var(--laurel-gold);
+  font-size: var(--fs-entry-sub);
+  margin-right: 2px;
+}
+/* The dashed pill lives on the <details> itself, not on the summary.
+   When collapsed, the pill hugs the summary's intrinsic width
+   (fit-content). When [open], the pill grows to the full container
+   width, animated by a CSS width transition with `interpolate-size`
+   so the keyword morph (fit-content → 100%) actually animates. In
+   parallel, the JS WAAPI height animation slides the reviews list
+   down inside it. The chrome literally morphs into the list. */
+.reviewsToggle {
+  width: fit-content;
+  max-width: 100%;
+  border: 1px dashed var(--rule);
+  border-radius: 2px;
+  transition:
+    width 240ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 120ms ease;
+  interpolate-size: allow-keywords;
+}
+.reviewsToggle:hover { border-color: var(--ink); }
+.reviewsToggle[open] { width: 100%; }
+/* Strip the inline-pill border off the summary — the outer details
+   pill carries it now. Hover on the outer container handles the
+   border-color shift; summary just inherits color transitions. */
+.reviewsToggle > summary,
+.reviewsToggle > summary:hover { border: 0; }
+/* When open, summary stretches across the (now full-width) pill and
+   acts as the header row of the unified container. */
+.reviewsToggle[open] > summary {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+/* Animation wrapper. JS uses WAAPI to animate height + opacity on
+   open/close; we just need overflow clipped so content doesn't spill
+   while the wrapper height shrinks below its natural content height. */
+.reviewsAnim { overflow: hidden; }
+/* Reviews list is borderless — the outer details pill is the border. */
+.reviewsToggle .reviews {
+  margin: 0;
+  border: 0;
+}
+/* Outro bar at the foot of the expanded reviews list. Mirrors the
+   summary chrome but bigger: large Bélo + rating echo on the left,
+   "click to collapse" affordance on the right. */
+.outro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--rule);
+}
+.outroLeft {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.outroRating {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.outroStar {
+  color: var(--laurel-gold);
+  font-size: var(--fs-entry-sub);
+  line-height: 1;
+}
+/* "See all N reviews" — Airbnb Bélo CTA. The Bélo is the brand mark;
+   showing it un-tinted (Airbnb red #FF5A5F) is the explicit "this is from
+   Airbnb" signal. tooltip + aria-label carry the full text. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: #FF5A5F;
+  text-decoration: none;
+  transition: transform 160ms ease, color 160ms ease;
+}
+.link:hover,
+.link:focus-visible {
+  /* Slight darken on hover, no full color shift — brand marks stay close
+     to spec on hover. */
+  color: #E94B50;
+  transform: scale(1.06);
+  outline: none;
+}
+.link .belo {
+  width: 36px;
+  height: 36px;
+  display: block;
+}
+/* Collapse affordance — mirrors the "click to expand" hint in the
+   summary so the open/close vocabulary stays consistent. */
+.collapseBtn {
+  background: transparent;
+  border: 0;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow-sm);
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  transition: color 120ms ease;
+}
+.collapseBtn:hover,
+.collapseBtn:focus-visible {
+  color: var(--ink);
+  outline: none;
+}
+
+.reviews {
+  margin: 8px 0 4px;
+  padding: 14px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: var(--paper);
+  font-family: var(--serif);
+  color: var(--ink);
+}
+.reviews.compact {
+  padding: 12px 14px;
+}
+
+/* Review cards — stacked vertically with thin dividers, denser version. */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  margin: 0;
+}
+.card {
+  padding: 12px 0;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.card:first-child { border-top: 0; padding-top: 0; }
+.card:last-child { padding-bottom: 2px; }
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* Meta row (rating · date) sits flush right on the head row. */
+.cardHead .metaRow {
+  margin-left: auto;
+  flex-shrink: 0;
+  text-align: right;
+}
+.avatar {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: var(--fs-entry-sub);
+  font-weight: 600;
+  color: var(--paper);
+  background: var(--muted);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.reviewer { display: flex; flex-direction: column; min-width: 0; }
+.name {
+  font-size: var(--fs-bullet);
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+.location {
+  font-size: var(--fs-eyebrow);
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-eyebrow);
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+.stars {
+  color: var(--laurel-gold);
+  letter-spacing: 1px;
+  font-size: var(--fs-micro);
+}
+.text {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: var(--fs-bullet);
+  line-height: 1.55;
+  color: var(--ink);
+  font-style: normal;
+}
+.highlight {
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-weight: 600;
+  padding: 1px 4px;
+  margin: 0 -2px;
+  border-radius: 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.translate {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-family: var(--serif);
+  font-size: var(--fs-era);
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.translate:hover { color: var(--muted); }
+.translateIcon {
+  display: inline-flex;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 2px;
+  background: var(--accent-soft);
+  font-size: var(--fs-tag);
+  font-weight: 500;
+  letter-spacing: 0;
+  justify-content: center;
+  text-decoration: none;
+}
+.translateIcon sub {
+  font-size: var(--fs-overlay);
+  margin-left: 1px;
+  bottom: -0.1em;
+}
+
+/* Hide the entire reviews block in text-only / 1-pager modes. */
+:global(.page.text-only) .reviewsToggle { display: none !important; }

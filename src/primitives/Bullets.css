@@ -1,0 +1,57 @@
+/* Hanging-indent bullets with a hairline accent-colored ring marker.
+   Sized to align to the cap-height of the first text line, not its
+   baseline, so the marker looks deliberate next to long-word starts.
+
+   `.bullets` stays a global class because Reviews.module.css references
+   it via `.aiProjects > ul:global(.bullets)` to suppress the marker
+   margin inside the AI experiments toggle. Side-effect imported by
+   Bullets.tsx. */
+ul.bullets {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+ul.bullets li {
+  position: relative;
+  padding-left: 18px;
+  margin: 4px 0;
+  font-size: var(--fs-bullet);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+ul.bullets li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 1px solid var(--ink-soft);
+  background: transparent;
+  box-sizing: border-box;
+}
+
+/* Knuth-Plass wrapper inside <li>: a block child so we can measure the
+   actual column width via getBoundingClientRect and re-run KP layout when
+   the page shrinks below its design width. .kp-wrap is global (emitted
+   by KPText.tsx as a string class). */
+ul.bullets li > .kp-wrap { display: block; }
+
+/* 1-pager tightening. */
+.page.mode-1pager ul.bullets { margin: 2px 0 0; }
+.page.mode-1pager ul.bullets li {
+  margin: 0;
+  padding-left: 14px;
+  font-size: 9pt;
+  line-height: 1.25;
+}
+.page.mode-1pager ul.bullets li::before {
+  left: 3px;
+  top: 0.5em;
+  width: 4px;
+  height: 4px;
+}
+
+/* Text-only: ink up the bullet color for stronger document register. */
+.page.text-only ul.bullets li { color: var(--ink); }

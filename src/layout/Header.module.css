@@ -1,0 +1,186 @@
+/* container-type makes the header's inline size queryable so the contact
+   stack below can collapse to a single column the moment the inline contact
+   rows would otherwise wrap into orphan-dot territory. */
+.header {
+  text-align: center;
+  margin-bottom: 36px;
+  container-type: inline-size;
+  container-name: header;
+}
+
+.name {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: var(--fs-display);
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  margin: 0;
+  color: var(--ink);
+}
+.last {
+  font-weight: 900;
+  /* 900-weight Georgia at 48px wants tracking at zero (or slightly negative).
+     Without this override, .last inherits the +0.02em from .name, which is
+     tuned for the 300-weight first half — bold display type at the same
+     tracking reads slightly too loose between dense pairs (oc, cl, kl). */
+  letter-spacing: 0;
+}
+.nameSup {
+  font-size: 0.55em;
+  vertical-align: 0.6em;
+  margin-left: -0.15em;
+  margin-right: 0.07em;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 0;
+}
+
+.contactStack {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: var(--fs-tag);
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  gap: 2px;
+}
+.row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.mono {
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  color: var(--muted);
+  margin-top: 2px;
+  /* Reset the +0.02em proportional tracking inherited from .contactStack.
+     Mono already has fixed advance widths — extra tracking opens characters
+     that should sit on the grid. Especially visible in milroc / @Milr0c. */
+  letter-spacing: 0;
+}
+/* Brand-mark icons sit inline with the handle text. */
+.mono a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.handleIcon {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+  /* Pretext rendering pushes the icon's optical baseline up a hair on
+     mono fonts; this nudge lines its centerline up with the x-height. */
+  transform: translateY(-0.05em);
+  transition: color 160ms ease;
+}
+.contactStack a {
+  border-bottom: 1px solid transparent;
+  transition: border-color 120ms ease, color 120ms ease, opacity 120ms ease;
+}
+.contactStack a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+/* On hover, each social icon swaps to its native brand color while the
+   handle text stays in --accent. Keeps system consistency for type, lets
+   the icon "light up" with its own identity. X and Threads stay on the
+   accent (their brands are already monochrome). */
+.contactStack a[href*="github.com"]:hover .handleIcon    { color: #6e40c9; }
+.contactStack a[href*="linkedin.com"]:hover .handleIcon  { color: #0a66c2; }
+.contactStack a[href*="instagram.com"]:hover .handleIcon { color: #e1306c; }
+.sep {
+  color: var(--rule);
+}
+
+/* Handle-origin delight: hovering either social handle (github, twitter)
+   underlines "Mil" and "roc" in BOTH the handle and the name above it,
+   so the user can see where the milroc handle came from. */
+.syl {
+  text-decoration: none;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  transition: text-decoration-color 200ms ease;
+}
+.header:has(.handleLink:hover) .sylMil,
+.header:has(.handleLink:hover) .sylRoc {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+}
+.handleLink:hover .syl {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+}
+/* When any link in the contact row is hovered, dim siblings so the
+   active target reads as the foreground. */
+.row:has(a:hover) a:not(:hover) {
+  opacity: 0.45;
+}
+
+/* Below 520px header inline-size, stack each row's items on their own
+   line and hide the separators — at that point a wrapping flex-row would
+   leave orphan "·" dots stranded at the end of wrapped lines. */
+@container header (max-width: 520px) {
+  .row {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sep { display: none; }
+
+  /* Mono handle row condenses to a horizontal icon strip on mobile —
+     saves ~4 lines of vertical space and gives each link a 44px touch
+     target. Handle text is visually hidden but preserved for screen
+     readers so the link still announces a label. */
+  :global(.page.mode-interactive) .mono {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+  }
+  :global(.page.mode-interactive) .mono a {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px;
+    justify-content: center;
+    gap: 0;
+    border-bottom: 0;
+  }
+  :global(.page.mode-interactive) .mono .handleText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  :global(.page.mode-interactive) .mono .handleIcon {
+    width: 22px;
+    height: 22px;
+    transform: none;
+  }
+
+  /* 1-pager mobile: keep the URL row as a tight wrap-flow line, not a
+     stack of 44px-tall blocks. Re-enable the · separators since we're
+     back to inline-row layout. */
+  :global(.page.mode-1pager) .mono {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 8px;
+  }
+  :global(.page.mode-1pager) .mono .sep { display: inline; }
+}
+
+/* 1-pager type tightening (mirrors globals.css mode-1pager block). */
+:global(.page.mode-1pager) .header { margin-bottom: 6px; }
+:global(.page.mode-1pager) .name { font-size: 20pt; letter-spacing: 0.015em; }
+
+/* Small viewport name shrink. */
+@media (max-width: 560px) {
+  .name { font-size: var(--fs-display-sm); }
+}

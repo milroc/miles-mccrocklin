@@ -1,0 +1,192 @@
+/* App shell: skip-link, toolbar, app container, page article, print/mobile
+   chrome. These classes stay global because (a) `mode-${mode}` and
+   `text-only` are string-composed at runtime, and (b) other modules
+   reference `:global(.page.text-only) ...`, which only resolves when
+   `.page` is an unhashed class. Side-effect imported by App.tsx. */
+
+/* Skip link — visually hidden until focused, lets keyboard users jump
+   past the toolbar straight to the resume content. Sits on the dark
+   canvas, so it inverts the canvas palette: cream pill on dark canvas. */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 10px 14px;
+  background: var(--canvas-fg-strong);
+  color: var(--canvas);
+  font-family: var(--mono);
+  font-size: var(--fs-entry-sub);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  z-index: 200;
+  transform: translateY(-200%);
+  transition: transform 160ms ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* App container. Below 600px viewport, drop horizontal padding entirely
+   so .page sits edge-to-edge — at that point the white box is the entire
+   view. Above 600px, restore the design's 20px gutter so the paper
+   "floats" on the dark canvas mat. */
+.app {
+  min-height: 100vh;
+  padding: clamp(16px, 4vw, 40px) 0 clamp(40px, 8vw, 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+.app > * { min-width: 0; max-width: 100%; }
+/* <main> is the flex child that holds the .page article. Constrain its
+   width here so the flex centering on .app operates on the right
+   element. */
+#resume-content {
+  width: min(var(--page-width), 100%);
+  display: flex;
+  justify-content: center;
+}
+
+/* Toolbar — sits ON the canvas (above the paper). All its color tokens
+   come from the canvas-fg family so the chrome reads correctly on the
+   dark mat. Single-row toolbar at all sizes. The label `auto`-margins to
+   the left so the buttons hug the right; on narrow viewports the label
+   is hidden (it duplicates the H1 right below the toolbar) so the four
+   mode buttons fit on one line down to ~340px wide. */
+.toolbar {
+  width: var(--page-width);
+  max-width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: var(--fs-tag);
+  color: var(--canvas-fg-muted);
+  padding: 0 8px;
+}
+.toolbar .label {
+  /* Mono already has uniform advance widths — 0.12em on top of mono made
+     the wordmark feel like spaced-out signage. 0.04em keeps the editorial
+     register without breaking the letterforms apart. */
+  letter-spacing: 0.04em;
+  margin-right: auto;
+  /* Lift the label off the muted-on-canvas register: at 11px / wide
+     letter-spacing, muted clears AA but reads weak. canvas-fg gives ~8.5:1
+     and matches the unhovered button labels visually. */
+  color: var(--canvas-fg);
+}
+.toolbar button {
+  font-family: var(--mono);
+  font-size: var(--fs-tag);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--canvas-rule);
+  color: var(--canvas-fg);
+  /* min-height of 44px clears Apple HIG / Material touch-target threshold;
+     keeps the same visual weight via padding tuning. */
+  min-height: 44px;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 120ms ease;
+}
+.toolbar button:hover {
+  border-color: var(--canvas-fg-strong);
+  color: var(--canvas-fg-strong);
+}
+.toolbar button.active {
+  border-color: var(--canvas-fg-strong);
+  color: var(--canvas);
+  background: var(--canvas-fg-strong);
+}
+
+@media (min-width: 600px) {
+  .app { padding-left: 20px; padding-right: 20px; }
+  .toolbar { padding: 0; }
+}
+@media (max-width: 520px) {
+  .toolbar .label { display: none; }
+  .toolbar { gap: 6px; }
+  .toolbar button { padding: 6px 10px; letter-spacing: 0.04em; }
+
+  /* Text-only mode keeps the wordmark visible on mobile — text-only is
+     the "document" register, where the toolbar reads more like a
+     masthead than chrome. */
+  .app.mode-text .toolbar { flex-wrap: wrap; row-gap: 8px; }
+  .app.mode-text .toolbar .label {
+    display: block;
+    flex: 0 0 100%;
+    text-align: center;
+    margin-right: 0;
+  }
+}
+
+/* The .page article — the cream paper that floats on the canvas mat.
+   `min(design-width, 100%)` keeps the paper at its design width when
+   there's room and shrinks it to the container otherwise. Avoid `100vw` —
+   that includes the scrollbar gutter on macOS and overflows by ~15px. */
+.page {
+  width: min(var(--page-width), 100%);
+  background: var(--paper);
+  color: var(--ink);
+  padding: var(--page-pad-y) var(--page-pad-x);
+  /* Inset top-edge highlight (paper sheet catching overhead light)
+     layered over the directional drop shadow. The 1px white inset reads
+     as a paper edge with thickness, not just a flat surface. */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    var(--shadow);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  position: relative;
+  min-width: 0;
+  /* Children that visually "break out" (carousels with negative margins)
+     shouldn't be allowed to expand the page itself. */
+  overflow-x: clip;
+}
+
+/* 1-pager mode — tighter padding, letter-paper width, smaller type.
+   Drives both the on-screen 1-Page preview AND the printed PDF. */
+.page.mode-1pager {
+  box-shadow: none;
+  /* Letter at 96dpi = 816px. */
+  width: min(816px, 100%);
+  padding: 0.3in 0.4in;
+  margin: 0 auto;
+  font-size: 9.5pt;
+  line-height: 1.35;
+}
+
+/* body.printing — toggled by a useEffect in App for the duration between
+   `beforeprint` and `afterprint`. Pins the on-screen layout to the
+   canonical 816px print width so the DOM the browser is about to
+   snapshot already matches the print viewport. */
+body.printing #resume-content,
+body.printing .page.mode-1pager {
+  width: 816px;
+  max-width: none;
+}
+body.printing .app { padding-left: 0; padding-right: 0; }
+body.printing .toolbar { display: none; }
+
+/* Print-time shell hides. Page geometry/font rules for the printed PDF
+   live in `.page.mode-1pager` (above) — they apply because the
+   beforeprint listener switches to 1-pager mode before snapshot. */
+@media print {
+  .app { padding: 0; }
+  .toolbar, .skip-link { display: none !important; }
+  .page { width: 100%; max-width: 100%; margin: 0; }
+}
+
+/* Mobile: page reaches both viewport edges; drop the floating-paper
+   shadow since there's nothing for it to float over. */
+@media (max-width: 560px) {
+  .page { box-shadow: none; }
+}

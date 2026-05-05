@@ -1,0 +1,10 @@
+/* Inline `<code>` highlight for d3.js / d3.unconf() in community group
+   names. Just enough mono shift to read as a project token without
+   stamping in a code-block register. */
+.code {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: var(--fs-bullet);
+  letter-spacing: 0;
+  text-transform: none;
+}

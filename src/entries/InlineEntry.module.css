@@ -1,0 +1,34 @@
+/* One-line entry for old roles. Company + role read inline (separated by
+   a midline dot) when there's room. Below the container threshold, the
+   role drops to its own line as a complete unit and the separator
+   disappears — we never want to wrap a role mid-phrase or leave a stray
+   "·" at the start of a line.
+
+   `.entry-head` and `.entry-head .l` are global document primitives
+   (still owned by globals.css), referenced through :global so this
+   module's hash doesn't fight them. */
+.entryInline { margin-bottom: 6px; }
+.entryInline:last-child { margin-bottom: 4px; }
+.entryInline :global(.entry-head .l) {
+  font-size: var(--fs-entry-sub);
+  letter-spacing: 0.1em;
+  min-width: 0;
+  container-type: inline-size;
+  container-name: inline-l;
+}
+.role {
+  font-weight: 400;
+  font-size: var(--fs-tag);
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+.role::before {
+  content: "·";
+  margin: 0 0.45em;
+  color: var(--muted);
+  font-weight: 400;
+}
+@container inline-l (max-width: 380px) {
+  .role { display: block; }
+  .role::before { display: none; }
+}

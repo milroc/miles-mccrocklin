@@ -1,0 +1,1176 @@
+{
+  "contact_information": {
+    "name": "Miles Kendrick McCrocklin",
+    "address": "San Francisco, CA",
+    "website": "http://miles.mccrockl.in",
+    "email": "miles@mccrockl.in",
+    "phone": "+1 (561) 20M-ILES",
+    "linkedin": "https://www.linkedin.com/in/miles-mccrocklin-7b635127",
+    "github": "https://github.com/milroc",
+    "twitter": "https://twitter.com/Milr0c",
+    "instagram": "https://instagram.com/milroc",
+    "threads": "https://threads.com/@milroc"
+  },
+  "summary": "10 years at Meta (engineer + EM): Professional Mode for Facebook Creators, founding engineer on Forecast, Tech Lead on misinformation. Now building AI products for the work automation can't do alone: people working together.",
+  "summary_media": {
+    "layout": "carousel",
+    "items": [
+      {
+        "id": "personal-portrait",
+        "type": "image",
+        "src": "media/summary/portrait.jpg",
+        "caption": "Multitudes. Snap by Cat Grundy Beck (@catgundrybeck) https://www.catgundrybeck.com/",
+        "aspect": 1,
+        "priority": 1
+      },
+      {
+        "id": "meta-badge",
+        "type": "video",
+        "src": "media/summary/badge_post.mp4",
+        "poster": "media/summary/badge_post-poster.jpg",
+        "caption": "Badge post, leaving Meta after 10 years.",
+        "tag": "Menlo Park · 2024",
+        "aspect": 1.7778,
+        "priority": 3
+      },
+      {
+        "id": "meta-3pfc-panel",
+        "type": "image",
+        "src": "media/summary/3PFC_LATAM_2019.jpg",
+        "caption": "LATAM fact-checking partner roundtable. Meeting & supporting the users working on top of the product I built.",
+        "tag": "3PFC LATAM · 2019",
+        "aspect": 1.5,
+        "priority": 2
+      },
+      {
+        "id": "meta-3pfc-team",
+        "type": "image",
+        "src": "media/summary/3PFC_LATAM_2019_TEAM.JPG",
+        "caption": "Fact-checking partner summit. Myself & some of my team members.",
+        "tag": "3PFC LATAM Team · 2019",
+        "aspect": 1.9231,
+        "priority": 4
+      },
+      {
+        "id": "travel-egypt",
+        "type": "image",
+        "src": "media/summary/egypt.jpg",
+        "caption": "Wondering on the value of humanities innovation & drive for communication in the Valley of Kings.",
+        "aspect": 1.5002,
+        "priority": 5,
+        "tag": "Luxor, Egypt"
+      },
+      {
+        "id": "travel-antarctica",
+        "type": "image",
+        "src": "media/summary/antarctica.jpg",
+        "caption": "Submarine Expedition.",
+        "aspect": 1.3333,
+        "priority": 6,
+        "tag": "Antarctic Peninsula"
+      },
+      {
+        "id": "travel-peru",
+        "type": "image",
+        "src": "media/summary/peru.jpg",
+        "caption": "Elated to learn how knots drove governance and communication in the Tawantinsuyu Empire.",
+        "aspect": 1,
+        "priority": 7,
+        "tag": "Machu Picchu, Peru"
+      },
+      {
+        "id": "travel-bolivia",
+        "type": "image",
+        "src": "media/summary/bolivia.jpg",
+        "caption": "",
+        "aspect": 0.6667,
+        "priority": 11,
+        "tag": "Salar de Uyuni, Bolivia"
+      },
+      {
+        "id": "travel-madagascar",
+        "type": "image",
+        "src": "media/summary/lemurs_madagascar.jpg",
+        "caption": "Lemurs saying hello.",
+        "aspect": 0.75,
+        "priority": 10,
+        "tag": "Kirindy Reserve, Madagascar"
+      },
+      {
+        "id": "travel-redwoods",
+        "type": "image",
+        "src": "media/summary/redwoods.jpg",
+        "caption": "Nature's skyscrapers.",
+        "aspect": 0.6665,
+        "tag": "Redwood National Park, California",
+        "priority": 8
+      },
+      {
+        "id": "travel-self-reflection",
+        "type": "image",
+        "src": "media/summary/self_reflection.jpg",
+        "caption": "Self reflection.",
+        "aspect": 0.6665,
+        "tag": "Salar de Uyuni, Bolivia",
+        "priority": 9
+      }
+    ]
+  },
+  "experience": [
+    {
+      "company": "Sabbatical",
+      "role": "Builder · Operator · Artist",
+      "location": "Global",
+      "start_date": "May 2024",
+      "end_date": "Present",
+      "summary": "Technologist first, artist and explorer second. After a decade at Meta, I left in 2024 to live the second one for a while. Came back to the first in 2026.",
+      "tracks": [
+        {
+          "period": "Mar 2026 – Present",
+          "focus": "Building",
+          "summary": "-1 to 0 exploration of how AI changes the way humans collaborate. Two experiments stood out:",
+          "summary_1pager": "Builder: -1 to 0 exploration of AI to help humans collaborate. /human and diction.coach stood out and are in early alpha from several experiments.",
+          "metrics": {
+            "commits": 150,
+            "lines_added": 131093,
+            "lines_removed": 38395,
+            "private_repos": 6,
+            "methodology": "Sum of additions/deletions per commit via GitHub API; excludes lockfiles, generated assets, and bulk migrations."
+          },
+          "toolchains": [
+            "Claude Code",
+            "paperclip",
+            "Gas Town",
+            "gstack",
+            "Conductor"
+          ],
+          "projects": [
+            {
+              "name": "/human",
+              "repo": "milroc/slash-human",
+              "description": {
+                "text": "Friends-only alpha. Front desk for an AI-powered gig marketplace. Scopes and prices human knowledge work, identifying the jagged edges of frontier models to find what is and isn't verifiable."
+              },
+              "visibility": "all"
+            },
+            {
+              "name": "diction.coach",
+              "repo": "milroc/agentic-feedback-test",
+              "url": "https://diction.coach/",
+              "description": {
+                "text": "Early access. Coaching for your AI conversations. Drop in a chat from Claude, ChatGPT, Gemini, Cursor, or Perplexity and get turn-by-turn guidance on working with agents."
+              },
+              "stack": [
+                "Next.js",
+                "TypeScript",
+                "Supabase",
+                "Anthropic Claude API",
+                "Conductor worktrees"
+              ],
+              "metrics": {
+                "commits": 100,
+                "lines_added": 85823,
+                "lines_removed": 26773
+              },
+              "visibility": "all"
+            },
+            {
+              "name": "todo.ai",
+              "repo": "milroc/todo.ai",
+              "description": "3-toolchain bake-off. Built the same todo app in Claude Code, gstack, and Gas Town to surface failure modes across the latest agentic tools and experimental frameworks.",
+              "stack": [
+                "React 19",
+                "Next.js 16",
+                "Tailwind CSS 4",
+                "Framer Motion",
+                "PartyKit",
+                "Relay + GraphQL",
+                "Supabase"
+              ],
+              "metrics": {
+                "commits": 40,
+                "lines_added": 35818,
+                "lines_removed": 4722
+              },
+              "visibility": "archived"
+            },
+            {
+              "name": "gtgstack",
+              "repo": "milroc/gtgstack",
+              "description": "Orchestration bridge mapping gstack skills onto Gas Town's Mayor / Polecat / Beads model: strategy → plan → decompose → build → discover → fix loop.",
+              "metrics": {
+                "commits": 5,
+                "lines_added": 3542,
+                "lines_removed": 112
+              },
+              "visibility": "archived"
+            },
+            {
+              "name": "data-spark-joy",
+              "repo": "milroc/folder-organization",
+              "description": "Reorganizes 20TB of personal data across clouds, NAS, and SSDs. Layered visualizations of every storage tier, plus YAML-based rules and agentic judgment to drive the cleanup automatically.",
+              "metrics": {
+                "commits": 2,
+                "lines_added": 3287,
+                "lines_removed": 485
+              },
+              "visibility": "archived"
+            },
+            {
+              "name": "currency-scraper",
+              "repo": "milroc/currency-scraper",
+              "description": "Web image scraper for all denominations of currency in circulation across the world.",
+              "metrics": {
+                "commits": 2,
+                "lines_added": 2508,
+                "lines_removed": 6303
+              },
+              "visibility": "archived"
+            }
+          ],
+          "visibility": "all"
+        },
+        {
+          "period": "Jul 2022 – Present",
+          "focus": "Real Estate Investor & Operator",
+          "tagline": "My wife and I built every layer ourselves: no agency, no property manager.",
+          "summary_1pager": "Real Estate Investor & Operator: my wife and I built every layer ourselves, no agency or property manager. Top-5% Airbnb Superhost in San Francisco (4.97, 70+ reviews); long-term rental property manager. I've been the janitor when I've had to.",
+          "achievements": [
+            {
+              "text": "Top-5% guest favorite Airbnb Superhost in San Francisco with a 4.97 rating and over 70 reviews."
+            },
+            {
+              "text": "Long-term rental property manager: direct operations, tenant relations, and financial planning."
+            },
+            {
+              "text": "I've been the janitor when I've had to."
+            }
+          ],
+          "toolchains": [
+            "Avail",
+            "Guesty",
+            "Pricelabs",
+            "Quickbooks"
+          ],
+          "reviews": {
+            "listing": "Sunnyside Cinema: King bed + 2 twin, 2 desks, yard",
+            "listing_url": "https://www.airbnb.com/rooms/1575184",
+            "host": "Miles (& Ani)",
+            "overall_rating": 4.97,
+            "total_reviews": "70+",
+            "best_host_reviews": [
+              {
+                "reviewer": "Carolyn",
+                "location": "Tigard, Oregon",
+                "rating": 5,
+                "date": "July 2025",
+                "stay_type": "Stayed with kids",
+                "review": "…The host was amazingly kind and communicative. They wrote a card and left extra treats on the table for our daughter for her birthday… Would definitely stay here again.",
+                "host_highlights": [
+                  "wrote a card and left extra treats on the table for our daughter for her birthday"
+                ]
+              },
+              {
+                "reviewer": "현구",
+                "location": "2 months on Airbnb",
+                "rating": 5,
+                "date": "February 2026",
+                "review": "너무깨끗하고 위치도 좋았어요 호스트도 매우 친절하세요",
+                "translation": "Very clean and the location was great. The host is also very kind.",
+                "host_highlights": [
+                  "호스트도 매우 친절하세요",
+                  "The host is also very kind."
+                ]
+              },
+              {
+                "reviewer": "Theo",
+                "location": "New Orleans, Louisiana",
+                "rating": 5,
+                "date": "February 2026",
+                "stay_type": "Stayed a few nights",
+                "review": "Miles and Ani have an incredible space that makes it all worth it… Miles and Ani are incredibly responsive for any questions or updates you have. Thank you Miles and Ani for a great space and stay.",
+                "host_highlights": [
+                  "Miles and Ani are incredibly responsive for any questions or updates you have"
+                ]
+              },
+              {
+                "reviewer": "Hesli",
+                "location": "Airbnb member 1 year",
+                "rating": 5,
+                "date": "July 2025",
+                "stay_type": "Stayed with kids",
+                "review": "Miles was extremely communicative, instructions were clear, and they went out of their way to make it not only comfortable for us, but for our kids as well. Miles provided us with a binder of all things to do and eat around the area…",
+                "host_highlights": [
+                  "extremely communicative",
+                  "went out of their way to make it not only comfortable for us, but for our kids as well",
+                  "binder of all things to do and eat around the area"
+                ]
+              },
+              {
+                "reviewer": "Amberly",
+                "location": "San Diego, California",
+                "rating": 5,
+                "date": "April 2025",
+                "stay_type": "Stayed with kids",
+                "review": "I had a wonderful stay at Sunnyside Cinema this past weekend. The space looked exactly as pictured. Miles’ communication was stellar and I’m sure had something come up he would have prioritized it - but everything went smoothly due to his detailed instructions! Public transit was close by and parking was never an issue. Getting to the airport was quick and easy from this location! Miles was flexible with a change in my dates leading up to my stay and I appreciated his accommodating a change in my plans. Would recommend a stay at Sunnyside Cinema!",
+                "host_highlights": [
+                  "Miles’ communication was stellar and I’m sure had something come up he would have prioritized it - but everything went smoothly due to his detailed instructions!"
+                ]
+              },
+              {
+                "reviewer": "David",
+                "location": "Whittier, California",
+                "rating": 5,
+                "date": "3 days ago",
+                "stay_type": "Stayed a few nights",
+                "review": "Our friends and I enjoyed this stay so much! Felt right at home and everything was as described! Lots of space and perfect for groups of 2-4 ppl. We loved the back patio as well and was an added bonus. Miles and Ani were amazing and I highly recommend this spot for any travelers looking to see the city!!",
+                "host_highlights": [
+                  "Miles and Ani were amazing and I highly recommend this spot for any travelers looking to see the city"
+                ]
+              },
+              {
+                "reviewer": "Laura",
+                "location": "4 years on Airbnb",
+                "rating": 5,
+                "date": "2 weeks ago",
+                "stay_type": "Stayed a few nights",
+                "review": "Charming space and very proactive and responsive hosts.",
+                "host_highlights": [
+                  "Charming space and very proactive and responsive hosts"
+                ]
+              },
+              {
+                "reviewer": "Jason",
+                "location": "San Francisco, California",
+                "rating": 5,
+                "date": "3 weeks ago",
+                "stay_type": "Stayed a few nights",
+                "review": "Amazing place to stay in a central part of San Francisco! Miles is a fantastic host and place was clean.",
+                "host_highlights": [
+                  "fantastic host",
+                  "clean property"
+                ]
+              },
+              {
+                "reviewer": "Morgan",
+                "location": "Asheville, North Carolina",
+                "rating": 5,
+                "date": "October 2025",
+                "stay_type": "Stayed with kids",
+                "review": "My family and I stayed here for my 'baby moon' and had a wonderful time. Miles and Ani were super responsive.",
+                "host_highlights": [
+                  "super responsive",
+                  "great for families",
+                  "wonderful experience"
+                ]
+              },
+              {
+                "reviewer": "Jesse",
+                "location": "San Antonio, Texas",
+                "rating": 5,
+                "date": "March 2026",
+                "stay_type": "Stayed a few nights",
+                "review": "Stay was exceptional and convenient. The host was thoughtful and available for us during our stay. Hope we can stay here again when we are back in SF.",
+                "host_highlights": [
+                  "thoughtful",
+                  "available throughout stay",
+                  "would return"
+                ]
+              },
+              {
+                "reviewer": "Chris",
+                "location": "Atlanta, Georgia",
+                "rating": 5,
+                "date": "October 2025",
+                "stay_type": "Stayed a few nights",
+                "review": "The location was perfect for us. Miles and his wife are fantastic hosts. Easy entrance through the garage.",
+                "host_highlights": [
+                  "fantastic hosts",
+                  "smooth check-in experience"
+                ]
+              },
+              {
+                "reviewer": "Rachel",
+                "location": "Houston, Texas",
+                "rating": 5,
+                "date": "July 2025",
+                "stay_type": "Stayed with kids",
+                "review": "Comfortable accommodations and easy to get around town. Very accommodating hosts that communicate well.",
+                "host_highlights": [
+                  "very accommodating",
+                  "communicate well"
+                ]
+              },
+              {
+                "reviewer": "Quan",
+                "location": "Airbnb member 4 months",
+                "rating": 5,
+                "date": "3 weeks ago",
+                "stay_type": "Stayed a few nights",
+                "review": "Super responsive host! The design was very well thought out, super clean and pleasant.",
+                "host_highlights": [
+                  "super responsive",
+                  "well-designed space",
+                  "clean and pleasant"
+                ]
+              }
+            ],
+            "recurring_host_praise_themes": [
+              "Highly responsive / communicative",
+              "Thoughtful and caring toward guests",
+              "Goes above and beyond (local guides, snacks, etc.)",
+              "Accurate listing description",
+              "Welcoming and warm"
+            ]
+          },
+          "visibility": "all"
+        },
+        {
+          "period": "May 2024 – Present",
+          "focus": "Travel & Wildlife Photography",
+          "summary_1pager": "Travel & Wildlife Photography: 22 countries, 7 continents, 54,000 shutter clicks across wildlife, landscape, and street photography.",
+          "achievements": [
+            {
+              "text": "22 countries on all 7 continents, and countless friends along the way."
+            },
+            {
+              "text": "Thousands of stories worth telling. >50k shutter clicks across wildlife, landscape, and street photography. "
+            }
+          ],
+          "media": {
+            "layout": "carousel",
+            "items": [
+              {
+                "id": "travel-09",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-09.jpeg",
+                "caption": "Emperor penguins reuniting after a long journey.",
+                "aspect": 1.5006,
+                "priority": 1,
+                "tag": "Antarctica"
+              },
+              {
+                "id": "travel-02",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-02.jpeg",
+                "caption": "Speechless at Team Labs Borderless.",
+                "aspect": 1.5006,
+                "priority": 15,
+                "tag": "Tokyo, Japan"
+              },
+              {
+                "id": "travel-11",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-11.jpeg",
+                "caption": "Motherland.",
+                "aspect": 0.6664,
+                "priority": 2,
+                "tag": "Yerevan, Armenia"
+              },
+              {
+                "id": "travel-04",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-04.jpeg",
+                "caption": "A rainy somber moment after a failed hunt.",
+                "aspect": 1.7778,
+                "priority": 11,
+                "tag": "Nairobi National Park, Kenya"
+              },
+              {
+                "id": "travel-06",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-06.jpeg",
+                "caption": "Baby iceberg seeking guidance from mamma iceberg.",
+                "aspect": 0.6664,
+                "priority": 4,
+                "tag": "Antarctica"
+              },
+              {
+                "id": "travel-15",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-15.jpeg",
+                "caption": "Lone penguin trek in the world's largest desert.",
+                "aspect": 1.5006,
+                "priority": 5,
+                "tag": "Antarctica"
+              },
+              {
+                "id": "travel-05",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-05.jpeg",
+                "caption": "A journey.",
+                "aspect": 1.5006,
+                "tag": "Lake Nakuru, Kenya",
+                "priority": 8
+              },
+              {
+                "id": "travel-07",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-07.jpeg",
+                "caption": "A plea. Jane Goodall Sanctuary.",
+                "aspect": 1.5006,
+                "tag": "Ngamba Island, Uganda",
+                "priority": 13
+              },
+              {
+                "id": "travel-08",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-08.jpeg",
+                "caption": "",
+                "aspect": 1.7778,
+                "priority": 7,
+                "tag": "Machu Picchu, Peru"
+              },
+              {
+                "id": "travel-10",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-10.jpeg",
+                "caption": "Mother koala sheltering her baby during a downpour.",
+                "aspect": 1.5006,
+                "tag": "Sydney, Australia",
+                "priority": 12
+              },
+              {
+                "id": "travel-12",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-12.jpeg",
+                "caption": "Parthenon.",
+                "aspect": 1.5006,
+                "tag": "Athens, Greece",
+                "priority": 14
+              },
+              {
+                "id": "travel-13",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-13.jpeg",
+                "caption": "Pyramids in the world's largest desert.",
+                "aspect": 1.5006,
+                "tag": "Antarctica",
+                "priority": 10
+              },
+              {
+                "id": "travel-14",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-14.jpeg",
+                "caption": "",
+                "aspect": 1.5006,
+                "tag": "Cajon del Maipo, Chile",
+                "priority": 16
+              },
+              {
+                "id": "travel-16",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-16.jpeg",
+                "caption": "Caving for Christmas.",
+                "aspect": 1.7777,
+                "tag": "Mammoth Caves National Park, Kentucky",
+                "priority": 17
+              },
+              {
+                "id": "travel-17",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-17.jpeg",
+                "caption": "World's largest hummingbird.",
+                "aspect": 1.5003,
+                "tag": "Santiago, Chile",
+                "priority": 18
+              },
+              {
+                "id": "travel-18",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-18.jpeg",
+                "caption": "A tourist's key to the temple.",
+                "aspect": 1.7716,
+                "tag": "Abu Simbel, Egypt",
+                "priority": 19
+              },
+              {
+                "id": "travel-19",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-19.jpeg",
+                "caption": "Neon nights.",
+                "aspect": 1.7777,
+                "tag": "Tokyo, Japan",
+                "priority": 20
+              },
+              {
+                "id": "travel-20",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-20.jpeg",
+                "caption": "The creation of sakura.",
+                "aspect": 1.7777,
+                "tag": "Kyoto, Japan",
+                "priority": 21
+              },
+              {
+                "id": "travel-21",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-21.jpeg",
+                "caption": "Lobos del rio.",
+                "aspect": 1.5003,
+                "tag": "Amazon Rainforest, Peru",
+                "priority": 22
+              },
+              {
+                "id": "travel-22",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-22.jpeg",
+                "caption": "Silverback stare.",
+                "aspect": 1.5003,
+                "tag": "Volcanoes National Park, Rwanda",
+                "priority": 9
+              },
+              {
+                "id": "travel-23",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-23.jpeg",
+                "caption": "Curious child.",
+                "aspect": 1.5003,
+                "tag": "Volcanoes National Park, Rwanda",
+                "priority": 23
+              },
+              {
+                "id": "travel-24",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-24.jpeg",
+                "caption": "Splash!",
+                "aspect": 0.7998,
+                "tag": "Sydney, Australia",
+                "priority": 6
+              },
+              {
+                "id": "travel-25",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-25.jpeg",
+                "caption": "Darwin's finch.",
+                "aspect": 1.5003,
+                "tag": "Galapagos Islands, Ecuador",
+                "priority": 24
+              },
+              {
+                "id": "travel-26",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-26.jpeg",
+                "caption": "Recursive reptiles.",
+                "aspect": 1.5003,
+                "tag": "Galapagos Islands, Ecuador",
+                "priority": 25
+              },
+              {
+                "id": "travel-27",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-27.jpeg",
+                "caption": "100% sunrise.",
+                "aspect": 1.5003,
+                "tag": "Salar de Uyuni, Bolivia",
+                "priority": 3
+              },
+              {
+                "id": "travel-28",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-28.jpeg",
+                "caption": "Shadows in the sky.",
+                "aspect": 1.5003,
+                "tag": "Dubai, UAE",
+                "priority": 26
+              }
+            ]
+          },
+          "visibility": "all"
+        }
+      ],
+      "visibility": "all"
+    },
+    {
+      "company": "Meta (formerly Facebook)",
+      "role": "Engineer & Engineering Manager",
+      "location": "Menlo Park, CA",
+      "start_date": "Sep 2014",
+      "end_date": "May 2024",
+      "summary": "Led technical efforts in nascent product areas and scaled systems to billions of users.",
+      "eras": [
+        {
+          "period": "Jan 2022 – May 2024",
+          "focus": "Bulletin & Facebook Creators",
+          "role": "Engineering Manager",
+          "achievements": [
+            {
+              "text": "Shipped Professional Mode for Facebook Creators as EM of a team of 10. Owned composer, settings, and onboarding surfaces. Onboarded εM creators in the first 3 months. Unlocked α% of the org's top-line annual goal, β× target.",
+              "visibility": "all"
+            },
+            {
+              "text": "Led 10 ICs on the Bulletin Publishing team through a scale-up and eventual de-prioritization with two reorgs. Found a new team for every UI engineer who needed one, then rebuilt mine around the back-end work that became Professional Mode.",
+              "visibility": "all"
+            }
+          ],
+          "media": {
+            "layout": "strip",
+            "items": [
+              {
+                "id": "ui-pro-mode-hero",
+                "type": "image",
+                "src": "media/meta-bulletin-promode/pro-mode-hero.jpeg",
+                "caption": "Facebook Professional Mode",
+                "tag": "Pro Mode · 2023",
+                "aspect": 1.7778
+              },
+              {
+                "id": "ui-bulletin",
+                "type": "image",
+                "src": "media/meta-bulletin-promode/bulletin.jpeg",
+                "caption": "Bulletin: independent-creator newsletter platform.",
+                "tag": "Bulletin · 2021",
+                "aspect": 1.5
+              }
+            ]
+          },
+          "visibility": "all"
+        },
+        {
+          "period": "Feb 2020 – Dec 2021",
+          "focus": "Forecast: Social Prediction Markets",
+          "role": "0 -> 1 Eng",
+          "achievements": [
+            {
+              "text": "UI tech lead on Forecast, Meta's 0→1 social prediction market. Built the buy/sell market page, scoring, leaderboards, and community feed from scratch. Shipped forecastapp.net, the public election-prediction surface for the 2020 US election.",
+              "visibility": "all"
+            },
+            {
+              "text": "Set up the team's experimentation framework. After the launch announcements, the team had to pivot from rapid idea exploration to triaging inbound interest and figuring out which ideas actually drove growth and retention.",
+              "visibility": "all"
+            }
+          ],
+          "media": {
+            "layout": "strip",
+            "items": [
+              {
+                "id": "ui-forecast-web",
+                "type": "image",
+                "src": "media/meta-forecast/forecast-web.png",
+                "caption": "Forecast: public web experience built for the 2020 election predictions.",
+                "tag": "forecastapp.net",
+                "aspect": 0.689
+              },
+              {
+                "id": "ui-forecast-flow",
+                "type": "image",
+                "src": "media/meta-forecast/forecast-trading-flow.jpg",
+                "caption": "Forecast: prediction market page for the social prediction markets.",
+                "tag": "Forecast Trading",
+                "aspect": 0.4605
+              },
+              {
+                "id": "ui-forecast-ui",
+                "type": "image",
+                "src": "media/meta-forecast/forecast-ui.png",
+                "caption": "Forecast's social feed of predictions",
+                "tag": "Forecast's social feed of predictions",
+                "aspect": 0.4618
+              },
+              {
+                "id": "ui-forecast-movement",
+                "type": "video",
+                "src": "media/meta-forecast/forecast-trading-movement.mp4",
+                "poster": "media/meta-forecast/forecast-trading-movement-poster.jpg",
+                "caption": "Forecast: trading volume example analysis",
+                "tag": "Forecast Motion",
+                "aspect": 1.7846
+              }
+            ]
+          },
+          "visibility": "all"
+        },
+        {
+          "period": "Jan 2018 – Feb 2020",
+          "focus": "Fighting Misinformation",
+          "role": "Fact Checking Tech Lead",
+          "achievements": [
+            {
+              "text": "Tech lead and first engineer (team grew to 8) on the product Facebooks external fact-checking partners used to rate viral content on Facebook and Instagram. Launched with 9 partners (AP, PolitiFact); scaled to 80 organizations, hundreds of journalists, and 60 languages.",
+              "visibility": "all"
+            },
+            {
+              "text": "Architected the misinformation detection system from web links only (~γ% of posts) up to 100% of content across Facebook (posts, photos, video). Shipped Instagram support a quarter later, then Ads. The platform powered every misinformation policy launch after that, and it's still in production today outside the US.",
+              "visibility": "not_1pager"
+            },
+            {
+              "text": "Integrated with Meta’s content-deduplication so one journalist’s rating fanned out to ζ near-identical pieces per viral original across Facebook, Instagram, and Ads.",
+              "visibility": "not_1pager"
+            },
+            {
+              "text": "Shipped warning labels and friction surfaces on Facebook and Instagram with UXR, design, and policy, cutting the share rate of fact-checked content by δ%. By the time I left, the work had grown into a dedicated Misinformation UI engineering team.",
+              "visibility": "all"
+            },
+            {
+              "text": "Architected misinformation detection from web links (~γ% of posts) to 100% of content across Facebook, Instagram, and Ads; one journalist’s rating fanned out to ζ near-identical pieces via content-deduplication.",
+              "visibility": "1pager_only"
+            }
+          ],
+          "media": {
+            "layout": "strip",
+            "items": [
+              {
+                "id": "ui-fact-check-2",
+                "type": "image",
+                "src": "media/meta-misinformation/fact-check-ui-1.jpeg",
+                "caption": "Fact-checked content on Facebook & Instagram.",
+                "tag": "Fact-checked content on Facebook & Instagram.",
+                "aspect": 1.0925
+              },
+              {
+                "id": "meta-misinformation-video",
+                "type": "embed",
+                "src": "https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook%2Fvideos%2F2169674999973363%2F&show_text=0&width=560",
+                "caption": "Facebook on fighting misinformation.",
+                "tag": "Facebook · Misinformation",
+                "aspect": 1.7778
+              }
+            ]
+          },
+          "visibility": "all"
+        },
+        {
+          "period": "Sep 2014 – Dec 2017",
+          "focus": "NLP Internal Tools & Products",
+          "achievements": [
+            {
+              "text": "Rebuilt Grapevine, an internal privacy-preserving NLP analytics tool over Facebook and Instagram content, into Audience Insights for creative advertising agencies. Offered free to grow the size of the ad pie.",
+              "visibility": "all"
+            },
+            {
+              "text": "Main UI engineer on Grapevine (rebuilt the UI) and StormChaser, NLP analytics tools used by η Facebook employees: Sales driving revenue, Communications running real-time election reporting alongside Fox News and other newsrooms, and Safety Check monitoring crises around the world.",
+              "visibility": "not_1pager"
+            },
+            {
+              "text": "Shipped a data layer and UI for a CNF/DNF that let users assemble topic anthologies and process them in real time across every post on Facebook and Instagram. RegEx wasn't explainable for our users, and it couldn't keep up at real-time data scale.",
+              "visibility": "not_1pager"
+            }
+          ],
+          "visibility": "all"
+        }
+      ],
+      "visibility": "all"
+    },
+    {
+      "company": "Bluenose Analytics, Inc.",
+      "role": "Senior Software Engineer",
+      "location": "San Francisco, CA",
+      "start_date": "Jul 2013",
+      "end_date": "Aug 2014",
+      "summary": "Bridged design, data science, and engineering as the 4th hire on the Customer Success App.",
+      "achievements": [
+        {
+          "text": "4th hire. Jumped in and improved page loads by 300% after building the REST API and web services for the app.",
+          "visibility": "all"
+        },
+        {
+          "text": "Onboarded 10 full-time hires into the R&D team as a primary interviewer for both design and engineering.",
+          "visibility": "all"
+        },
+        {
+          "text": "Set design standards in code and built the core component library.",
+          "visibility": "not_1pager"
+        },
+        {
+          "text": "Built exploratory data visualizations, then repurposed them as reusable components across the product."
+        },
+        {
+          "text": "Designed and implemented the core account list and account pages for the app."
+        },
+        {
+          "text": "Worked with sales and customer success to prioritize features for shipping and guide early customers through onboarding."
+        }
+      ],
+      "media": {
+        "layout": "grid",
+        "items": [
+          {
+            "id": "ui-bluenose",
+            "type": "image",
+            "src": "media/bluenose/bluenose-ui.gif",
+            "caption": "Bluenose Analytics: Customer Success Accounts Page",
+            "tag": "Bluenose · 2013–14",
+            "aspect": 1.8205
+          },
+          {
+            "id": "ui-bluenose-usage",
+            "type": "image",
+            "src": "media/bluenose/bluenose-usage-visualization.png",
+            "caption": "Bluenose Analytics: Customer usage visualization, learn what features lead to successful customers.",
+            "tag": "Bluenose · Usage",
+            "aspect": 1.8205
+          }
+        ]
+      },
+      "visibility": "all"
+    },
+    {
+      "company": "Cisco Systems, Inc.",
+      "role": "Software Engineer I",
+      "location": "San Bruno, CA",
+      "start_date": "Jul 2011",
+      "end_date": "Jul 2013",
+      "achievements": [
+        {
+          "text": "Created front-end visualizations and tools for development, product management, and support teams."
+        },
+        {
+          "text": "Designed a horizontally scalable back end for Web Security Appliance telemetry collection."
+        }
+      ],
+      "inline": true,
+      "visibility": "all"
+    },
+    {
+      "company": "Agnyze",
+      "role": "Co-Founder",
+      "location": "Atlanta, GA",
+      "start_date": "Jan 2011",
+      "end_date": "Jul 2011",
+      "achievements": [
+        "Co-founded early-stage venture in the Atlanta tech ecosystem."
+      ],
+      "inline": true,
+      "visibility": "archived"
+    },
+    {
+      "company": "Northrop Grumman Corporation",
+      "shortened_title": "Northrop Grumman",
+      "role": "Computer Engineer Intern",
+      "location": "Annapolis, MD",
+      "start_date": "May 2009",
+      "end_date": "Aug 2009",
+      "achievements": [
+        {
+          "text": "Built a managerial tool by designing the schema of a MySQL database and creating a web front end."
+        }
+      ],
+      "inline": true,
+      "visibility": "all"
+    }
+  ],
+  "education": [
+    {
+      "institution": "Georgia Institute of Technology",
+      "degree": "B.S. Computer Science, with Honors",
+      "degree_short": "B.S. Computer Science, with Honors (incl. UCL study abroad)",
+      "location": "Atlanta, GA",
+      "start_date": "Aug 2007",
+      "end_date": "May 2011",
+      "details": [
+        {
+          "text": "Graduate-level coursework: Advanced Algorithms, Machine Learning, and Computer Vision"
+        },
+        {
+          "text": "Northrop Grumman College of Computing Scholarship"
+        },
+        {
+          "text": "Cross-disciplinary courses: Psychology, Philosophy (metaphysics & ethics), & Entrepreneurship"
+        }
+      ],
+      "visibility": "all"
+    },
+    {
+      "institution": "University College London (UCL)",
+      "degree": "BSc, Computer Science (Study Abroad)",
+      "location": "London, UK",
+      "start_date": "Sep 2009",
+      "end_date": "Jun 2010"
+    }
+  ],
+  "skills": {
+    "domains": [
+      {
+        "text": "AI-native engineering & agentic workflows",
+        "visibility": "all"
+      },
+      {
+        "text": "Integrity & trust systems at consumer scale",
+        "visibility": "all"
+      },
+      {
+        "text": "0→1 product engineering",
+        "visibility": "all"
+      },
+      {
+        "text": "Engineering leadership through reorgs, sunsets, and founding teams",
+        "visibility": "all"
+      },
+      {
+        "text": "AI + HCI"
+      },
+      {
+        "text": "Data Products"
+      }
+    ],
+    "stack": [
+      {
+        "text": "Claude Code",
+        "visibility": "all"
+      },
+      {
+        "text": "TypeScript",
+        "visibility": "all"
+      },
+      {
+        "text": "Python",
+        "visibility": "all"
+      },
+      {
+        "text": "React",
+        "visibility": "all"
+      },
+      {
+        "text": "GraphQL",
+        "visibility": "all"
+      },
+      {
+        "text": "Relay",
+        "visibility": "all"
+      },
+      "React Native",
+      "d3.js",
+      {
+        "text": "Languages (c. 2014): JavaScript, Python, Groovy, C, Lisp, Smalltalk",
+        "visibility": "archived"
+      },
+      {
+        "text": "Libraries & Frameworks (c. 2014): d3.js, crossfilter.js, cubism.js, ggplot2, Grails, Angular.js, Pylons",
+        "visibility": "archived"
+      },
+      {
+        "text": "Technologies (c. 2014): HTML, CSS3/LESS, MongoDB, FreeBSD, OS X",
+        "visibility": "archived"
+      },
+      {
+        "text": "Tools (c. 2014): git, Perforce, Bower, Grunt.js, Gulp.js, JIRA",
+        "visibility": "archived"
+      }
+    ]
+  },
+  "community_organization": [
+    {
+      "group": "SF Data Mining",
+      "role": "Co-Organizer",
+      "start_date": "Feb 2012",
+      "end_date": "Mar 2015",
+      "details": {
+        "text": "Co-organized SF Data Mining. Grew from 100 to 10,000+ members, the Bay Area's largest ML and data community at the time. Hosted talks on ML methods, distributed processing, and interactive visualization."
+      },
+      "media": {
+        "layout": "strip",
+        "items": [
+          {
+            "id": "community-sfdm-talk",
+            "type": "image",
+            "src": "media/sf-data-mining/sf-data-mining-talk.jpg",
+            "caption": "SF Data Mining: A normal talk to the community.",
+            "tag": "SF Data Mining · Talk",
+            "aspect": 1.5048
+          },
+          {
+            "id": "community-sfdm-1",
+            "type": "image",
+            "src": "media/sf-data-mining/sf-data-mining-1.jpg",
+            "caption": "SF Data Mining: A small crowd filling the Trulia office.",
+            "tag": "SF Data Mining",
+            "aspect": 1.5048
+          }
+        ]
+      }
+    },
+    {
+      "group": "d3.unconf() & Bay Area d3 user group",
+      "role": "Co-Organizer",
+      "start_date": "Jul 2012",
+      "end_date": "Jan 2015",
+      "details": "Co-organized the d3 community and specialized conferences for visualization professionals. Affiliated with the @visfest GitHub organization. Published d3.js gists and bl.ocks examples used as community references (e.g., crossfilter tutorials, d3.dispatch + reusable components, ember.js + d3.js bar+sum series).",
+      "media": {
+        "layout": "strip",
+        "items": [
+          {
+            "id": "community-d3-1",
+            "type": "image",
+            "src": "media/d3-unconf/d3-unconf.jpg",
+            "caption": "d3.unconf(): visualization community gathering.",
+            "tag": "d3.unconf()",
+            "aspect": 1.3333
+          },
+          {
+            "id": "community-d3-2",
+            "type": "image",
+            "src": "media/d3-unconf/d3-unconf-2.jpg",
+            "caption": "d3.unconf(): the d3.js community in person, collaborating.",
+            "tag": "d3.unconf()",
+            "aspect": 1.5048
+          }
+        ]
+      }
+    },
+    {
+      "group": "Speaker",
+      "role": "",
+      "start_date": "",
+      "end_date": "",
+      "details": "Talks on Data vis, code & HCI at HTML5 Dev Conf, Forward 3 Web Summit, The Graphical Web, & more.",
+      "media": {
+        "layout": "strip",
+        "items": [
+          {
+            "id": "community-presenter-forward3",
+            "type": "embed",
+            "src": "https://www.youtube.com/embed/KRm4CVxx9pw",
+            "caption": "Interaction Design for Data Visualization. Forward Web Summit.",
+            "tag": "Forward Web Summit",
+            "aspect": 1.7778
+          },
+          {
+            "id": "community-presenter-bayd3",
+            "type": "embed",
+            "src": "https://www.youtube.com/embed/Hd2rye9a9kk",
+            "caption": "Reusable Visualizations at bayd3 (Bay Area d3), May 2013.",
+            "tag": "bayd3 · 2013",
+            "aspect": 1.7778
+          }
+        ]
+      }
+    }
+  ],
+  "redactions": [
+    {
+      "id": "epsilon",
+      "glyph": "ε",
+      "context": "Creators onboarded to Pro Mode in the first 3 months."
+    },
+    {
+      "id": "alpha",
+      "glyph": "α",
+      "context": "Pro Mode's share of the org's annual creator-onboarding goal. Internal planning artifact."
+    },
+    {
+      "id": "beta",
+      "glyph": "β",
+      "context": "How far Pro Mode's 3-month onboarding overshot the team's stated target."
+    },
+    {
+      "id": "gamma",
+      "glyph": "γ",
+      "context": "Share of Facebook posts with links."
+    },
+    {
+      "id": "zeta",
+      "glyph": "ζ",
+      "context": "Per-rating fan-out count via Meta's content-deduplication system."
+    },
+    {
+      "id": "delta",
+      "glyph": "δ",
+      "context": "Share-rate reduction on fact-checked content after the warning labels and friction surfaces shipped."
+    },
+    {
+      "id": "eta",
+      "glyph": "η",
+      "context": "Internal-tool user base across Sales, Communications, and Safety Check at Facebook."
+    }
+  ]
+}

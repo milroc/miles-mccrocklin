@@ -1,0 +1,60 @@
+/* RedactionNotes — endnote-style footnote section for the Greek-letter
+   redactions used in the resume's running prose. Italic Georgia for the
+   glyphs (matches the inline anchor styling), muted ink-soft for the
+   descriptions (sets them as marginalia, not main copy). The :target
+   pulse highlights the destination footnote when a reader clicks
+   through from one of the inline anchors above. */
+
+.preamble {
+  font-style: italic;
+  color: var(--muted);
+  margin: 0 0 14px;
+  font-size: var(--fs-eyebrow);
+  line-height: 1.55;
+  max-width: 560px;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  margin: 0;
+}
+
+.glyph {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  font-size: var(--fs-tag);
+  line-height: 1.5;
+  margin: 0;
+  /* Account for the fixed toolbar at the top so a click through to
+     #note-alpha doesn't scroll the heading underneath the toolbar. */
+  scroll-margin-top: 88px;
+  transition: background 240ms ease;
+}
+
+.context {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: var(--fs-eyebrow);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Pulse the targeted footnote so the reader sees where they landed.
+   Keyframe holds the highlight for ~0.8s then fades over ~1.6s. */
+.glyph:target {
+  animation: redaction-target-pulse 2400ms ease-out;
+}
+
+@keyframes redaction-target-pulse {
+  0% { background: rgba(58, 107, 74, 0.32); }
+  35% { background: rgba(58, 107, 74, 0.32); }
+  100% { background: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glyph { transition: none; }
+  .glyph:target { animation: none; background: rgba(58, 107, 74, 0.20); }
+}
