@@ -22,7 +22,9 @@ if (!result.success) {
 }
 
 cpSync('./media', './dist/media', { recursive: true });
+cpSync('./favicon-32.png', './dist/favicon-32.png');
 writeFileSync('./dist/CNAME', 'miles.mccrockl.in');
+writeFileSync('./dist/.nojekyll', '');
 
 for (const out of result.outputs) {
   console.log('  ' + out.path.replace(process.cwd() + '/', ''));

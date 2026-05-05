@@ -1,0 +1,66 @@
+Copyright (c) 2026 Miles McCrocklin
+
+This repository contains two kinds of work, governed by two different
+licenses. Where a file is not explicitly called out below, the rule of
+thumb is: source code is MIT, content is reserved.
+
+================================================================================
+SOURCE CODE — MIT License
+================================================================================
+
+The following are licensed under the MIT License:
+
+  - All TypeScript, JavaScript, TSX, JSX, CSS, and HTML source files
+  - Build, dev, and tooling scripts (build.ts, dev.ts, scripts/**)
+  - Configuration files (package.json, tsconfig.json, bun.lock,
+    .github/**, .gitignore, CNAME)
+  - Vendored helpers under vendor/** that are original to this repo
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+================================================================================
+CONTENT — All Rights Reserved
+================================================================================
+
+The following are NOT covered by the MIT License above. All rights
+are reserved by Miles McCrocklin. You may not copy, redistribute,
+modify, publish, or use these works in whole or in part, in any medium,
+without prior written permission.
+
+  - All photographs, images, videos, and other media in media/**,
+    including (without limitation) personal portraits, travel and
+    wildlife photography, and screenshots of work product.
+  - Site icons and brand assets at the repository root: favicon.svg,
+    favicon-32.png, apple-touch-icon.svg, apple-touch-icon.png.
+  - Resume content and prose in data/resume.json — including summaries,
+    bullets, taglines, captions, project descriptions, achievements,
+    reviews, and any other authored text — and any other JSON or text
+    files containing authored prose.
+  - Long-form documentation authored for this project: README.md,
+    DESIGN.md, CLAUDE.md, and similar.
+
+Third-party works (e.g., guest reviews quoted in data/resume.json,
+embedded YouTube/Facebook videos, photos credited to other
+photographers) remain the property of their respective owners and are
+included here under fair use or with permission. Nothing in this
+license grants any rights to those works.
+
+To request permission for any use beyond what's allowed above, contact
+miles@mccrockl.in.

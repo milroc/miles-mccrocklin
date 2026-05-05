@@ -21,14 +21,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - run: bun install --frozen-lockfile
       - run: bun run build
       - name: Smoke check build output
         run: |
           test -f dist/index.html || (echo "missing dist/index.html"; exit 1)
           test -f dist/CNAME || (echo "missing CNAME"; exit 1)
-          test -d dist/photos || (echo "missing photos/"; exit 1)
-          test -d dist/uis || (echo "missing uis/"; exit 1)
+          test -f dist/.nojekyll || (echo "missing .nojekyll"; exit 1)
+          test -f dist/favicon-32.png || (echo "missing favicon-32.png"; exit 1)
+          test -d dist/media || (echo "missing media/"; exit 1)
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
