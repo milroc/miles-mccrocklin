@@ -31,11 +31,12 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  /* Mobile swipe: enable iOS momentum scrolling, lock the gesture to
-     horizontal pans (so a vertical scroll on the page doesn't get eaten),
-     and stop the swipe from chaining into the parent page bounce. */
+  /* Mobile swipe: enable iOS momentum scrolling, allow both axes so the
+     browser routes by dominant direction (horizontal pans scroll the
+     carousel, vertical pans scroll the page), and stop horizontal swipes
+     from chaining into the parent page bounce. */
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
+  touch-action: pan-x pan-y;
   overscroll-behavior-x: contain;
   -webkit-mask-image: linear-gradient(
     to right,

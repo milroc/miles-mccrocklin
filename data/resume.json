@@ -11,17 +11,24 @@
     "instagram": "https://instagram.com/milroc",
     "threads": "https://threads.com/@milroc"
   },
-  "summary": "10 years at Meta (engineer + EM): Professional Mode for Facebook Creators, founding engineer on Forecast, Tech Lead on misinformation. Now building AI products for the work automation can't do alone: people working together.",
+  "summary": "Built products & teams at Meta for 10 years across misinformation, prediction markets, and creator tools. Now exploring AI-native collaboration: what models can’t do yet, and where the human still has to sit in the loop.",
   "summary_media": {
     "layout": "carousel",
     "items": [
+      {
+        "id": "meta-3pfc-panel",
+        "type": "image",
+        "src": "media/summary/3PFC_LATAM_2019.jpg",
+        "caption": "LATAM fact-checking partner roundtable. Meeting & supporting the users working on top of the product I built.",
+        "tag": "Buenos Aires, Argentina · 2019",
+        "aspect": 1.5
+      },
       {
         "id": "personal-portrait",
         "type": "image",
         "src": "media/summary/portrait.jpg",
         "caption": "Multitudes. Snap by Cat Grundy Beck (@catgundrybeck) https://www.catgundrybeck.com/",
-        "aspect": 1,
-        "priority": 1
+        "aspect": 1
       },
       {
         "id": "meta-badge",
@@ -30,26 +37,15 @@
         "poster": "media/summary/badge_post-poster.jpg",
         "caption": "Badge post, leaving Meta after 10 years.",
         "tag": "Menlo Park · 2024",
-        "aspect": 1.7778,
-        "priority": 3
-      },
-      {
-        "id": "meta-3pfc-panel",
-        "type": "image",
-        "src": "media/summary/3PFC_LATAM_2019.jpg",
-        "caption": "LATAM fact-checking partner roundtable. Meeting & supporting the users working on top of the product I built.",
-        "tag": "3PFC LATAM · 2019",
-        "aspect": 1.5,
-        "priority": 2
+        "aspect": 1.7778
       },
       {
         "id": "meta-3pfc-team",
         "type": "image",
         "src": "media/summary/3PFC_LATAM_2019_TEAM.JPG",
         "caption": "Fact-checking partner summit. Myself & some of my team members.",
-        "tag": "3PFC LATAM Team · 2019",
-        "aspect": 1.9231,
-        "priority": 4
+        "tag": "Buenos Aires, Argentina · 2019",
+        "aspect": 1.9231
       },
       {
         "id": "travel-egypt",
@@ -57,7 +53,6 @@
         "src": "media/summary/egypt.jpg",
         "caption": "Wondering on the value of humanities innovation & drive for communication in the Valley of Kings.",
         "aspect": 1.5002,
-        "priority": 5,
         "tag": "Luxor, Egypt"
       },
       {
@@ -66,7 +61,6 @@
         "src": "media/summary/antarctica.jpg",
         "caption": "Submarine Expedition.",
         "aspect": 1.3333,
-        "priority": 6,
         "tag": "Antarctic Peninsula"
       },
       {
@@ -75,16 +69,22 @@
         "src": "media/summary/peru.jpg",
         "caption": "Elated to learn how knots drove governance and communication in the Tawantinsuyu Empire.",
         "aspect": 1,
-        "priority": 7,
         "tag": "Machu Picchu, Peru"
       },
       {
-        "id": "travel-bolivia",
+        "id": "travel-redwoods",
         "type": "image",
-        "src": "media/summary/bolivia.jpg",
-        "caption": "",
-        "aspect": 0.6667,
-        "priority": 11,
+        "src": "media/summary/redwoods.jpg",
+        "caption": "Nature's skyscrapers.",
+        "aspect": 0.6665,
+        "tag": "Redwood National Park, California"
+      },
+      {
+        "id": "travel-self-reflection",
+        "type": "image",
+        "src": "media/summary/self_reflection.jpg",
+        "caption": "Self reflection.",
+        "aspect": 0.6665,
         "tag": "Salar de Uyuni, Bolivia"
       },
       {
@@ -93,26 +93,15 @@
         "src": "media/summary/lemurs_madagascar.jpg",
         "caption": "Lemurs saying hello.",
         "aspect": 0.75,
-        "priority": 10,
         "tag": "Kirindy Reserve, Madagascar"
       },
       {
-        "id": "travel-redwoods",
+        "id": "travel-bolivia",
         "type": "image",
-        "src": "media/summary/redwoods.jpg",
-        "caption": "Nature's skyscrapers.",
-        "aspect": 0.6665,
-        "tag": "Redwood National Park, California",
-        "priority": 8
-      },
-      {
-        "id": "travel-self-reflection",
-        "type": "image",
-        "src": "media/summary/self_reflection.jpg",
-        "caption": "Self reflection.",
-        "aspect": 0.6665,
-        "tag": "Salar de Uyuni, Bolivia",
-        "priority": 9
+        "src": "media/summary/bolivia.jpg",
+        "caption": "",
+        "aspect": 0.6667,
+        "tag": "Salar de Uyuni, Bolivia"
       }
     ]
   },
@@ -149,7 +138,7 @@
               "name": "/human",
               "repo": "milroc/slash-human",
               "description": {
-                "text": "Friends-only alpha. Front desk for an AI-powered gig marketplace. Scopes and prices human knowledge work, identifying the jagged edges of frontier models to find what is and isn't verifiable."
+                "text": "AI can do most of the work, but not the last bit. /human finds a real person to finish it, and tells you what to pay."
               },
               "visibility": "all"
             },
@@ -158,7 +147,7 @@
               "repo": "milroc/agentic-feedback-test",
               "url": "https://diction.coach/",
               "description": {
-                "text": "Early access. Coaching for your AI conversations. Drop in a chat from Claude, ChatGPT, Gemini, Cursor, or Perplexity and get turn-by-turn guidance on working with agents."
+                "text": "Most people don't get the most out of AI. diction.coach reads your chat and shows you how to ask better next time."
               },
               "stack": [
                 "Next.js",
@@ -434,47 +423,35 @@
               "text": "22 countries on all 7 continents, and countless friends along the way."
             },
             {
-              "text": "Thousands of stories worth telling. >50k shutter clicks across wildlife, landscape, and street photography. "
+              "text": "Thousands of stories worth telling. >50k shutter clicks across wildlife, landscape, and street photography."
             }
           ],
           "media": {
             "layout": "carousel",
             "items": [
               {
-                "id": "travel-09",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-09.jpeg",
-                "caption": "Emperor penguins reuniting after a long journey.",
-                "aspect": 1.5006,
-                "priority": 1,
-                "tag": "Antarctica"
-              },
-              {
-                "id": "travel-02",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-02.jpeg",
-                "caption": "Speechless at Team Labs Borderless.",
-                "aspect": 1.5006,
-                "priority": 15,
-                "tag": "Tokyo, Japan"
-              },
-              {
                 "id": "travel-11",
                 "type": "image",
                 "src": "media/sabbatical-travel/travel-11.jpeg",
                 "caption": "Motherland.",
                 "aspect": 0.6664,
-                "priority": 2,
                 "tag": "Yerevan, Armenia"
               },
               {
-                "id": "travel-04",
+                "id": "travel-09",
                 "type": "image",
-                "src": "media/sabbatical-travel/travel-04.jpeg",
-                "caption": "A rainy somber moment after a failed hunt.",
-                "aspect": 1.7778,
-                "priority": 11,
-                "tag": "Nairobi National Park, Kenya"
+                "src": "media/sabbatical-travel/travel-09.jpeg",
+                "caption": "Emperor penguins reuniting after a long journey.",
+                "aspect": 1.5006,
+                "tag": "Antarctica"
+              },
+              {
+                "id": "travel-27",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-27.jpeg",
+                "caption": "100% sunrise.",
+                "aspect": 1.5003,
+                "tag": "Salar de Uyuni, Bolivia"
               },
               {
                 "id": "travel-06",
@@ -482,7 +459,6 @@
                 "src": "media/sabbatical-travel/travel-06.jpeg",
                 "caption": "Baby iceberg seeking guidance from mamma iceberg.",
                 "aspect": 0.6664,
-                "priority": 4,
                 "tag": "Antarctica"
               },
               {
@@ -491,143 +467,7 @@
                 "src": "media/sabbatical-travel/travel-15.jpeg",
                 "caption": "Lone penguin trek in the world's largest desert.",
                 "aspect": 1.5006,
-                "priority": 5,
                 "tag": "Antarctica"
-              },
-              {
-                "id": "travel-05",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-05.jpeg",
-                "caption": "A journey.",
-                "aspect": 1.5006,
-                "tag": "Lake Nakuru, Kenya",
-                "priority": 8
-              },
-              {
-                "id": "travel-07",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-07.jpeg",
-                "caption": "A plea. Jane Goodall Sanctuary.",
-                "aspect": 1.5006,
-                "tag": "Ngamba Island, Uganda",
-                "priority": 13
-              },
-              {
-                "id": "travel-08",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-08.jpeg",
-                "caption": "",
-                "aspect": 1.7778,
-                "priority": 7,
-                "tag": "Machu Picchu, Peru"
-              },
-              {
-                "id": "travel-10",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-10.jpeg",
-                "caption": "Mother koala sheltering her baby during a downpour.",
-                "aspect": 1.5006,
-                "tag": "Sydney, Australia",
-                "priority": 12
-              },
-              {
-                "id": "travel-12",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-12.jpeg",
-                "caption": "Parthenon.",
-                "aspect": 1.5006,
-                "tag": "Athens, Greece",
-                "priority": 14
-              },
-              {
-                "id": "travel-13",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-13.jpeg",
-                "caption": "Pyramids in the world's largest desert.",
-                "aspect": 1.5006,
-                "tag": "Antarctica",
-                "priority": 10
-              },
-              {
-                "id": "travel-14",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-14.jpeg",
-                "caption": "",
-                "aspect": 1.5006,
-                "tag": "Cajon del Maipo, Chile",
-                "priority": 16
-              },
-              {
-                "id": "travel-16",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-16.jpeg",
-                "caption": "Caving for Christmas.",
-                "aspect": 1.7777,
-                "tag": "Mammoth Caves National Park, Kentucky",
-                "priority": 17
-              },
-              {
-                "id": "travel-17",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-17.jpeg",
-                "caption": "World's largest hummingbird.",
-                "aspect": 1.5003,
-                "tag": "Santiago, Chile",
-                "priority": 18
-              },
-              {
-                "id": "travel-18",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-18.jpeg",
-                "caption": "A tourist's key to the temple.",
-                "aspect": 1.7716,
-                "tag": "Abu Simbel, Egypt",
-                "priority": 19
-              },
-              {
-                "id": "travel-19",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-19.jpeg",
-                "caption": "Neon nights.",
-                "aspect": 1.7777,
-                "tag": "Tokyo, Japan",
-                "priority": 20
-              },
-              {
-                "id": "travel-20",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-20.jpeg",
-                "caption": "The creation of sakura.",
-                "aspect": 1.7777,
-                "tag": "Kyoto, Japan",
-                "priority": 21
-              },
-              {
-                "id": "travel-21",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-21.jpeg",
-                "caption": "Lobos del rio.",
-                "aspect": 1.5003,
-                "tag": "Amazon Rainforest, Peru",
-                "priority": 22
-              },
-              {
-                "id": "travel-22",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-22.jpeg",
-                "caption": "Silverback stare.",
-                "aspect": 1.5003,
-                "tag": "Volcanoes National Park, Rwanda",
-                "priority": 9
-              },
-              {
-                "id": "travel-23",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-23.jpeg",
-                "caption": "Curious child.",
-                "aspect": 1.5003,
-                "tag": "Volcanoes National Park, Rwanda",
-                "priority": 23
               },
               {
                 "id": "travel-24",
@@ -635,8 +475,143 @@
                 "src": "media/sabbatical-travel/travel-24.jpeg",
                 "caption": "Splash!",
                 "aspect": 0.7998,
-                "tag": "Sydney, Australia",
-                "priority": 6
+                "tag": "Sydney, Australia"
+              },
+              {
+                "id": "travel-08",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-08.jpeg",
+                "caption": "",
+                "aspect": 1.7778,
+                "tag": "Machu Picchu, Peru"
+              },
+              {
+                "id": "travel-05",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-05.jpeg",
+                "caption": "A journey.",
+                "aspect": 1.5006,
+                "tag": "Lake Nakuru, Kenya"
+              },
+              {
+                "id": "travel-22",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-22.jpeg",
+                "caption": "Silverback stare.",
+                "aspect": 1.5003,
+                "tag": "Volcanoes National Park, Rwanda"
+              },
+              {
+                "id": "travel-13",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-13.jpeg",
+                "caption": "Pyramids in the world's largest desert.",
+                "aspect": 1.5006,
+                "tag": "Antarctica"
+              },
+              {
+                "id": "travel-04",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-04.jpeg",
+                "caption": "A rainy somber moment after a failed hunt.",
+                "aspect": 1.7778,
+                "tag": "Nairobi National Park, Kenya"
+              },
+              {
+                "id": "travel-10",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-10.jpeg",
+                "caption": "Mother koala sheltering her baby during a downpour.",
+                "aspect": 1.5006,
+                "tag": "Sydney, Australia"
+              },
+              {
+                "id": "travel-07",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-07.jpeg",
+                "caption": "A plea. Jane Goodall Sanctuary.",
+                "aspect": 1.5006,
+                "tag": "Ngamba Island, Uganda"
+              },
+              {
+                "id": "travel-12",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-12.jpeg",
+                "caption": "Parthenon.",
+                "aspect": 1.5006,
+                "tag": "Athens, Greece"
+              },
+              {
+                "id": "travel-02",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-02.jpeg",
+                "caption": "Speechless at Team Labs Borderless.",
+                "aspect": 1.5006,
+                "tag": "Tokyo, Japan"
+              },
+              {
+                "id": "travel-14",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-14.jpeg",
+                "caption": "",
+                "aspect": 1.5006,
+                "tag": "Cajon del Maipo, Chile"
+              },
+              {
+                "id": "travel-16",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-16.jpeg",
+                "caption": "Caving for Christmas.",
+                "aspect": 1.7777,
+                "tag": "Mammoth Caves National Park, Kentucky"
+              },
+              {
+                "id": "travel-17",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-17.jpeg",
+                "caption": "World's largest hummingbird.",
+                "aspect": 1.5003,
+                "tag": "Santiago, Chile"
+              },
+              {
+                "id": "travel-18",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-18.jpeg",
+                "caption": "A tourist's key to the temple.",
+                "aspect": 1.7716,
+                "tag": "Abu Simbel, Egypt"
+              },
+              {
+                "id": "travel-19",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-19.jpeg",
+                "caption": "Neon nights.",
+                "aspect": 1.7777,
+                "tag": "Tokyo, Japan"
+              },
+              {
+                "id": "travel-20",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-20.jpeg",
+                "caption": "The creation of sakura.",
+                "aspect": 1.7777,
+                "tag": "Kyoto, Japan"
+              },
+              {
+                "id": "travel-21",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-21.jpeg",
+                "caption": "Lobos del rio.",
+                "aspect": 1.5003,
+                "tag": "Amazon Rainforest, Peru"
+              },
+              {
+                "id": "travel-23",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-23.jpeg",
+                "caption": "Curious child.",
+                "aspect": 1.5003,
+                "tag": "Volcanoes National Park, Rwanda"
               },
               {
                 "id": "travel-25",
@@ -644,26 +619,7 @@
                 "src": "media/sabbatical-travel/travel-25.jpeg",
                 "caption": "Darwin's finch.",
                 "aspect": 1.5003,
-                "tag": "Galapagos Islands, Ecuador",
-                "priority": 24
-              },
-              {
-                "id": "travel-26",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-26.jpeg",
-                "caption": "Recursive reptiles.",
-                "aspect": 1.5003,
-                "tag": "Galapagos Islands, Ecuador",
-                "priority": 25
-              },
-              {
-                "id": "travel-27",
-                "type": "image",
-                "src": "media/sabbatical-travel/travel-27.jpeg",
-                "caption": "100% sunrise.",
-                "aspect": 1.5003,
-                "tag": "Salar de Uyuni, Bolivia",
-                "priority": 3
+                "tag": "Galapagos Islands, Ecuador"
               },
               {
                 "id": "travel-28",
@@ -671,8 +627,15 @@
                 "src": "media/sabbatical-travel/travel-28.jpeg",
                 "caption": "Shadows in the sky.",
                 "aspect": 1.5003,
-                "tag": "Dubai, UAE",
-                "priority": 26
+                "tag": "Dubai, UAE"
+              },
+              {
+                "id": "travel-26",
+                "type": "image",
+                "src": "media/sabbatical-travel/travel-26.jpeg",
+                "caption": "Recursive reptiles.",
+                "aspect": 1.5003,
+                "tag": "Galapagos Islands, Ecuador"
               }
             ]
           },
@@ -687,7 +650,7 @@
       "location": "Menlo Park, CA",
       "start_date": "Sep 2014",
       "end_date": "May 2024",
-      "summary": "Led technical efforts in nascent product areas and scaled systems to billions of users.",
+      "summary": "Led technical efforts on early-stage products and scaled systems to billions of users.",
       "eras": [
         {
           "period": "Jan 2022 – May 2024",
@@ -788,7 +751,7 @@
           "role": "Fact Checking Tech Lead",
           "achievements": [
             {
-              "text": "Tech lead and first engineer (team grew to 8) on the product Facebooks external fact-checking partners used to rate viral content on Facebook and Instagram. Launched with 9 partners (AP, PolitiFact); scaled to 80 organizations, hundreds of journalists, and 60 languages.",
+              "text": "Tech lead and first engineer (team grew to 8) on the product Facebook's external fact-checking partners used to rate viral content on Facebook and Instagram. Launched with 9 partners (AP, PolitiFact); scaled to 80 organizations, hundreds of journalists, and 60 languages.",
               "visibility": "all"
             },
             {
