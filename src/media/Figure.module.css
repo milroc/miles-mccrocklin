@@ -75,6 +75,47 @@
 
 .strip :global(.figure-tag) { display: none; }
 
+/* ---------- Uniform 16:9 frame (mobile only) ----------------------------
+   Opt-in via MediaGroup.frame === 'uniform-16-9'. Forces every card into
+   a single horizontal scroll-snap row of identically-sized 16:9 boxes
+   with a black backdrop. Portrait items pillarbox via object-fit:contain;
+   landscape items fill. The black padding doubles as the visible border
+   the design calls for — same look as a film letterbox. */
+.uniformFrame {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+  width: 100%;
+  margin: 12px 0 6px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.uniformFrame::-webkit-scrollbar { display: none; }
+.uniformFrame :global(.figure-card) {
+  flex: 0 0 auto;
+  width: 78vw;
+  max-width: none;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  background: #000;
+  border: 1px solid #111;
+  border-radius: 0;
+  padding: 0;
+}
+.uniformFrame :global(.figure-card) img,
+.uniformFrame :global(.figure-card) video {
+  object-fit: contain;
+  background: #000;
+}
+.uniformFrame :global(.figure-tag) { display: none; }
+
 /* ---------- Phone gallery (portrait-aspect screenshots, mobile only) ----
    Mobile-only treatment for portrait mobile-app screenshots in strip
    layouts. Triggered by the JSX in Figure (mobile viewport branches into

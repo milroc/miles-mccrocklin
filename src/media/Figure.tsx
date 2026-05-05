@@ -43,6 +43,19 @@ export function Figure({ media }: FigureProps) {
     return <FigureCarousel matches={items} />;
   }
 
+  // Uniform 16:9 frame (mobile only): bypass the portrait-vs-landscape
+  // split and render everything in one strip with a black-padded 16:9
+  // box per card. Portrait items get pillarboxed; landscape items fit
+  // edge-to-edge. Used for media groups where mixed aspects should
+  // still read as one row (e.g. Forecast: phone screenshots + 16:9 gif).
+  if (layout === 'strip' && isMobile && media.frame === 'uniform-16-9') {
+    return (
+      <div className={`${s.figure} ${s.strip} ${s.uniformFrame} ${nClass(items.length)}`}>
+        {renderItems(items, items)}
+      </div>
+    );
+  }
+
   // Phone-row split (mobile only): when a strip layout has portrait-aspect
   // items (mobile screenshots, < 1:1), pull them into their own horizontal
   // scroll-snap row with phone-bezel framing, and let landscape items

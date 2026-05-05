@@ -38,6 +38,12 @@ export interface MediaGroup {
   // `align` and `size` apply when layout is 'stack' (marginalia float).
   align?: 'left' | 'right';
   size?: 'sm' | 'md' | 'lg';
+  // Mobile-only: force every item into a uniform 16:9 frame with a black
+  // background. Portraits get pillarboxed via object-fit: contain so the
+  // visible black acts as a unifying border. Lets a strip with mixed
+  // aspects (e.g. phone screenshots + a 16:9 video) render as a coherent
+  // row instead of splitting into a phone-bezel gallery + a video tile.
+  frame?: 'uniform-16-9';
   items: MediaItem[];
 }
 

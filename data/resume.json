@@ -742,6 +742,7 @@
           ],
           "media": {
             "layout": "strip",
+            "frame": "uniform-16-9",
             "items": [
               {
                 "id": "ui-forecast-web",
