@@ -1,0 +1,180 @@
+/* Inline figure (marginalia photos). The parent gets `entry-with-figure`
+   or `era-with-figure` so we can anchor the figure to the right with a
+   float, letting the entry text wrap around it. Print mode hides figures. */
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 2px 0 8px 16px;
+}
+.right {
+  float: right;
+  clear: right;
+}
+.left {
+  float: left;
+  clear: left;
+  margin: 2px 16px 8px 0;
+}
+.sm { width: 132px; }
+.md { width: 168px; }
+.lg { width: 220px; }
+
+/* When a slot has multiple photos, stack them vertically and slim them. */
+.n2 :global(.figure-card) { aspect-ratio: 4 / 3; }
+
+/* ---------- Justified strip ---------------------------------------------
+   Each tile keeps its true aspect ratio. Tiles share a target row height;
+   widths flex proportionally to aspect ratio so each row fills the
+   container. Items wrap once a row gets too packed. */
+.strip {
+  --row-h: 150px;
+  float: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 100%;
+  margin: 12px 0 4px;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+/* Each tile keeps its natural aspect-ratio. flex-basis is proportional to
+   aspect, so items in a row settle at a common height when grown — that's
+   the justified-gallery property. max-height caps singletons / sparse rows
+   so a wide UI doesn't stretch into a giant banner. */
+.strip :global(.figure-card) {
+  flex: var(--ar, 1) 1 calc(var(--ar, 1) * var(--row-h));
+  min-width: 0;
+  max-width: calc(var(--ar, 1) * var(--row-h) * 1.6);
+  aspect-ratio: var(--ar, 1);
+  height: auto;
+}
+.strip.n1 { --row-h: 220px; }
+.strip.n2 { --row-h: 200px; }
+.strip.n3 { --row-h: 190px; }
+.strip.n4 { --row-h: 175px; }
+.strip.n5,
+.strip.n6 { --row-h: 160px; }
+
+/* Embed strips (e.g. YouTube talks): force a 2-up grid so wide 16:9 cards
+   fit side by side instead of wrapping. The flex-basis math used for
+   photos at ~1.5 aspect overflows the page once you go to 16:9, so for
+   embeds we use grid sizing and let aspect-ratio drive the height. */
+.strip.embeds {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.strip.embeds :global(.figure-card) {
+  flex: none;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+
+.strip :global(.figure-tag) { display: none; }
+
+/* ---------- Phone gallery (portrait-aspect screenshots, mobile only) ----
+   Mobile-only treatment for portrait mobile-app screenshots in strip
+   layouts. Triggered by the JSX in Figure (mobile viewport branches into
+   this row + a separate landscape strip). Desktop falls through to the
+   original justified strip.
+
+   Horizontal scroll-snap track of phone-bezel-framed tiles. Each tile is
+   ~62vw wide so 1 sits centered in the viewport with ~14vw peek of the
+   neighbors on each side — a clear "swipe me" affordance via native
+   scroll-snap. Phone bezel: dark inset + rounded corners that nest
+   correctly against the screenshot (inner radius = outer - padding). */
+.phones {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  margin: 12px 0 6px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 14vw;
+  padding: 4px 14vw 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(
+    to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+          mask-image: linear-gradient(
+    to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+.phones::-webkit-scrollbar { display: none; }
+
+.phones :global(.figure-card) {
+  flex: 0 0 auto;
+  width: 62vw;
+  height: auto;
+  aspect-ratio: var(--ar, 9 / 19.5);
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  /* Phone bezel treatment. */
+  border-radius: 22px;
+  padding: 4px;
+  background: #0e0e0e;
+  border: 1px solid #2a2a2a;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 8px 24px -8px rgba(0, 0, 0, 0.35);
+}
+.phones :global(.figure-card) img,
+.phones :global(.figure-card) video {
+  border-radius: 18px; /* nested: bezel-radius (22) - padding (4) */
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.phones :global(.figure-tag) { display: none; }
+
+/* ---------- Figure grid (deliberate equal-column layout) ----------------
+   Used by Figure(layout="grid"). Wide images (e.g. dashboard screenshots
+   at ~1.8 aspect) read better as full-width columns than packed into the
+   justified strip's tight row. Two equal columns; cards keep their
+   natural aspect via aspect-ratio. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+  margin: 12px 0 4px;
+  float: none;
+}
+.grid :global(.figure-card) {
+  flex: none;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--ar, 4 / 3);
+}
+.grid :global(.figure-tag) { display: none; }
+@media (max-width: 560px) {
+  /* Stack to single column on narrow viewports — at full mobile width
+     two side-by-side dashboards become illegible. */
+  .grid { grid-template-columns: 1fr; }
+}
+
+/* Embed strips collapse to a single column on narrow viewports so each
+   video gets full width. */
+@media (max-width: 560px) {
+  .strip.embeds { grid-template-columns: 1fr; }
+}
+
+/* Hide figures in text-only / 1-pager modes. */
+:global(.page.text-only) .figure,
+:global(.page.text-only) .strip,
+:global(.page.text-only) .grid,
+:global(.page.text-only) .phones { display: none !important; }
+
+/* On narrow screens, drop figures inline above the text. */
+@media (max-width: 560px) {
+  .figure {
+    float: none !important;
+    display: block;
+    width: 100% !important;
+    margin: 8px 0 12px;
+  }
+}

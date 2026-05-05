@@ -1,0 +1,50 @@
+/* Lightning strikes — cursor delight in the dark mat.
+
+   The cursor in the dark mat acts as a charged surface. Brief jagged
+   typographic bolts arc from the cursor to fixed anchors on the resume
+   page, like the resume is a Faraday cage absorbing the discharge. Each
+   bolt spells a fragment of the user's bio (names, roles, teams,
+   products, tools) along its zigzag path, flashes briefly, and fades.
+
+   Driven by lightning.ts. Container is fixed-positioned and full-
+   viewport; per-character spans are absolutely positioned via inline
+   transform updates. pointer-events: none so it never intercepts clicks.
+   Inserted as the first child of body so it paints behind .app — the
+   resume paper covers it via its solid --paper background.
+
+   The text-shadow gives bolts a subtle accent-colored glow that reads as
+   electrical aura at peak brightness; opacity fades carry it away. */
+.lightning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--canvas-fg-strong);
+  z-index: 0;
+  letter-spacing: 0;
+}
+.lightning span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: pre;
+  display: inline-block;
+  text-shadow:
+    0 0 4px var(--accent),
+    0 0 10px rgba(58, 107, 74, 0.55);
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lightning { display: none; }
+}
+/* Hide on print and in 1-pager preview — delight belongs on screen, not
+   on a printed PDF or a serious "is this resume going to fit?" view. */
+@media print {
+  .lightning { display: none !important; }
+}

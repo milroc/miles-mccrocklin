@@ -1,0 +1,300 @@
+/* Edit-mode UI styles. Scoped to a CSS module so production never
+   includes them (the EditProvider isn't mounted in prod, none of these
+   classes are referenced, the bundler tree-shakes the file). */
+
+/* ---------- Toolbar ----------------------------------------------------- */
+.toolbar {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 10px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.35);
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+@media print {
+  .toolbar { display: none !important; }
+}
+.badge {
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--accent);
+  color: var(--paper);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: var(--fs-overlay);
+}
+.button {
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 120ms ease;
+}
+.button:hover { border-color: var(--ink); }
+.button:disabled { opacity: 0.4; cursor: not-allowed; }
+.button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+.button.primary:hover { background: #2e553a; border-color: #2e553a; }
+.dirty {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---------- Editable text ---------------------------------------------- */
+/* Subtle dashed outline only when edit mode is active and the user is
+   hovering or focusing a field, so the page mostly looks like itself. */
+.editable {
+  outline: none;
+  border-radius: 2px;
+  transition: background 120ms ease, box-shadow 120ms ease;
+}
+.editable:hover {
+  background: rgba(58, 107, 74, 0.06);
+  box-shadow: 0 0 0 2px rgba(58, 107, 74, 0.18);
+}
+.editable:focus {
+  background: rgba(58, 107, 74, 0.10);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+/* ---------- Add button -------------------------------------------------
+   Rendered by `AddButton` at the end of editable arrays (bullet lists,
+   skill lists, AI-project lists). Reads as a low-key code-comment-ish
+   affordance so it doesn't compete with the resume content visually. */
+.addButton {
+  display: inline-block;
+  margin: 4px 0 0 18px;
+  padding: 1px 6px;
+  background: transparent;
+  border: 1px dashed var(--rule);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: var(--fs-overlay);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 120ms ease;
+  user-select: none;
+}
+.addButton:hover {
+  border-style: solid;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(58, 107, 74, 0.05);
+}
+
+/* ---------- Visibility chip --------------------------------------------
+   Four mutually-exclusive visibility buttons (ALL · !1P · 1P · ARCH)
+   followed by a real delete X. Visibility buttons push a `visibility`
+   change record (see edit/VisibilityChip.tsx); the X pushes a `delete`
+   record that drops the item from data/resume.json on the next agent
+   pass. Sized to read as inline metadata next to the bullet text. */
+.chip {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: 8px;
+  vertical-align: middle;
+  font-family: var(--mono);
+  font-size: var(--fs-overlay);
+  user-select: none;
+}
+.chip button {
+  height: 18px;
+  padding: 0 6px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 2px;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: 0.04em;
+  transition: all 100ms ease;
+}
+.chip button:hover { border-color: var(--ink); color: var(--ink); }
+.chip button.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+  font-weight: 700;
+}
+/* Delete X — visually distinct from the visibility row so it doesn't
+   read as a fifth visibility level. Slight gap, red accent on hover. */
+.chip .delete {
+  margin-left: 6px;
+  width: 20px;
+  padding: 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+.chip .delete:hover {
+  background: #c2412c;
+  border-color: #c2412c;
+  color: var(--paper);
+}
+
+/* ---------- Note bubble ------------------------------------------------ */
+/* High-level feedback rendered as a multi-line block comment at the
+   top of the article. Open/close glyphs are static decoration; the
+   body is a contentEditable div with white-space: pre-wrap so newlines
+   from Enter render as line breaks. Targets the root JSON pointer as
+   a holistic instruction to the agent. */
+.blockNote {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 8px;
+  margin: 16px 0 22px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--accent);
+  background: rgba(58, 107, 74, 0.04);
+  border-radius: 0 3px 3px 0;
+  font-family: var(--mono);
+  /* Match the bullet body register so longer feedback notes / pasted
+     instructions are still readable. The previous fs-eyebrow (10.5px)
+     was sized for chrome chips, not for prose the user actually types. */
+  font-size: var(--fs-bullet);
+  letter-spacing: 0;
+  color: var(--ink);
+  line-height: 1.55;
+}
+.blockNoteOpen,
+.blockNoteClose {
+  color: var(--accent);
+  user-select: none;
+  font-weight: 700;
+  align-self: stretch;
+  display: flex;
+}
+.blockNoteOpen { align-items: flex-start; }
+.blockNoteClose { align-items: flex-end; }
+.blockNoteContent {
+  outline: none;
+  min-height: 1.55em;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border-radius: 2px;
+  padding: 1px 6px;
+  color: var(--ink);
+  transition: background 120ms ease, box-shadow 120ms ease;
+}
+.blockNoteContent:hover {
+  background: rgba(58, 107, 74, 0.07);
+}
+.blockNoteContent:focus {
+  background: rgba(58, 107, 74, 0.12);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.blockNoteContent:empty::before {
+  content: attr(data-placeholder);
+  color: var(--muted);
+  font-style: italic;
+  pointer-events: none;
+}
+
+/* Inline LLM-feedback note rendered as a code comment beside each
+   editable item: `// <input>`. Slashes are static decoration, input is
+   contentEditable. Empty state shows a muted italic placeholder via
+   `:empty::before { content: attr(data-placeholder) }`. */
+.noteRoot {
+  display: inline;
+  margin-left: 8px;
+  vertical-align: baseline;
+  font-family: var(--mono);
+  /* Match the surrounding bullet text so the user can actually read
+     what they typed. fs-overlay (9px) was too small for prose. */
+  font-size: var(--fs-bullet);
+  letter-spacing: 0;
+  line-height: inherit;
+}
+.noteSlashes {
+  color: var(--muted);
+  opacity: 0.55;
+  user-select: none;
+}
+.noteInput {
+  display: inline;
+  outline: none;
+  color: var(--muted);
+  font-style: italic;
+  opacity: 0.6;
+  border-radius: 2px;
+  padding: 0 2px;
+  transition: opacity 120ms ease, color 120ms ease, background 120ms ease;
+  /* Allow normal text wrapping if a note is long. */
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.noteInput:hover {
+  opacity: 1;
+  background: rgba(58, 107, 74, 0.05);
+}
+.noteInput:focus {
+  opacity: 1;
+  color: var(--ink);
+  font-style: normal;
+  background: rgba(58, 107, 74, 0.10);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.noteInput:empty::before {
+  content: attr(data-placeholder);
+  color: var(--muted);
+  font-style: italic;
+  pointer-events: none;
+}
+/* When the note has content, drop the placeholder treatment — accent
+   color, normal style, full opacity. */
+.noteInputFilled {
+  color: var(--accent);
+  font-style: normal;
+  opacity: 0.95;
+}
+.noteInputFilled:focus {
+  color: var(--accent);
+}
+
+/* ---------- Archive treatment ------------------------------------------ */
+/* Items that would normally be hidden (priority 4 or omit:true) render
+   in edit mode with reduced presence so they're visible-but-clearly-off.
+   Uses `::after` (not `::before`) because some archived elements — like
+   `<li>` inside `ul.bullets` — already have a `::before` pseudo for
+   their bullet ring. One element only gets one of each pseudo, so we
+   stay out of `::before`'s way. */
+.archived {
+  opacity: 0.45;
+  position: relative;
+}
+.archived::after {
+  content: "ARCHIVED";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1px 6px;
+  font-family: var(--mono);
+  font-size: var(--fs-overlay);
+  letter-spacing: 0.12em;
+  background: var(--rule);
+  color: var(--muted);
+  border-radius: 2px;
+  pointer-events: none;
+}

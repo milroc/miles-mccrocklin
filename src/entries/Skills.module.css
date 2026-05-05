@@ -1,0 +1,33 @@
+.skillsGrid {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: baseline;
+  gap: 4px 18px;
+  font-size: var(--fs-bullet);
+}
+.skillsGrid dt {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: var(--fs-tag);
+  color: var(--ink);
+}
+.skillsGrid dd {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* 1-pager tightening. */
+:global(.page.mode-1pager) .skillsGrid { gap: 2px 12px; }
+:global(.page.mode-1pager) .skillsGrid dt,
+:global(.page.mode-1pager) .skillsGrid dd { font-size: 9pt; line-height: 1.3; }
+
+/* Mobile: drop to single column with a small stagger between groups. */
+@media (max-width: 560px) {
+  .skillsGrid {
+    grid-template-columns: 1fr;
+    gap: 2px 0;
+  }
+  .skillsGrid dt { margin-top: 8px; }
+}

@@ -1,0 +1,349 @@
+/* Miles McCrocklin — Resume website (global theme + document primitives)
+   Component-specific styles live in components/*.module.css. This file owns
+   tokens, the page shell, mode/print variants, and the cross-cutting document
+   classes (section, entry, era, bullets, figure-card primitive, kp-wrap).
+   Visual basis: PDF resume format (LaTeX-style "Awesome-CV"/Deedy lineage).
+   Type pairing:
+     - Georgia (system serif, GT nod) — display, body, italics, dates, summaries.
+       Anchors the document with editorial weight; rare and recognizable on the web.
+     - JetBrains Mono — metric numerals, repo paths, eyebrow labels, UI chrome.
+   See DESIGN.md for the full system.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ---- Color: canvas (the dark mat the paper floats on) ----
+     Deep warm near-black with a hint of green undertone — coordinates with
+     the forest accent, makes the cream paper pop. Anything that renders
+     directly on canvas (toolbar, skip-link) uses the canvas-fg token family
+     instead of --ink/--muted, which are paper-context. */
+  --canvas: #1c1f1a;
+  --canvas-fg-strong: #ece9e2;                   /* the prior cream — primary text on canvas */
+  --canvas-fg:        #b8b5ad;                   /* secondary text on canvas */
+  --canvas-fg-muted:  #7a7770;                   /* muted text on canvas */
+  --canvas-rule:      rgba(236, 233, 226, 0.20); /* subtle borders on canvas */
+
+  /* ---- Color: paper (the resume itself) ---- */
+  --paper: #fdfdfb;
+  --ink: #111111;
+  --ink-soft: #2a2a2a;
+  --muted: #6b6b6b;
+  --rule: #d9d6cf;
+  --rule-strong: #1a1a1a;
+
+  /* ---- Color: accent ----
+     Deep forest green — the one piece of color personality on the page.
+     Used sparingly: link hover underline, metric numerals, top-skill
+     emphasis, focus outline. */
+  --accent: #3a6b4a;
+  --accent-soft: rgba(58, 107, 74, 0.10);
+
+  /* Laurel gold — used for the "Top-5% Superhost" star + rating signal in
+     the Airbnb reviews block. Picked to read as an editorial accent (gold
+     leaf, certificate seal) rather than as a brand quote. */
+  --laurel-gold: #C7A958;
+
+  /* ---- Type scale (screen) ---------------------------------------------
+     Editorial type rewards half-pixel tuning at small sizes; this is a
+     register naming, not a strict modular ratio. 1-pager / print uses pt
+     units — see .page.mode-1pager. */
+  --fs-display:    48px;   /* name (display) */
+  --fs-display-sm: 32px;   /* name (mobile) */
+  --fs-body:       13.5px; /* page baseline, entry-summary, lead body */
+  --fs-entry:      13px;   /* entry-head .l (primary), era-tagline */
+  --fs-bullet:     12.5px; /* bullets, era-summary, entry-sub .r */
+  --fs-entry-sub:  12px;   /* entry-sub .l, entry-head .r (date), inline-l */
+  --fs-era:        11.5px; /* era-head, ab-translate */
+  --fs-tag:        11px;   /* contact-stack inline, era-head period */
+  --fs-eyebrow:    10.5px; /* section labels, mono toolbar, metrics chrome */
+  --fs-micro:      10px;   /* chip, audit, ab-stars */
+  --fs-eyebrow-sm: 9.5px;  /* metric key, ai-summary-hint */
+  --fs-overlay:    9px;    /* figure-tag overlay, ab-translate sub */
+
+  /* ---- Photography treatment -------------------------------------------
+     Editorial-marginalia register. Photos rest desaturated with a touch
+     of contrast lift; on intent (hover/focus) snap to full color with a
+     slight scale. */
+  --photo-filter-rest:  grayscale(0.18) contrast(1.02);
+  --photo-filter-hover: grayscale(0) contrast(1.04);
+  --photo-filter-trans: filter 240ms ease, transform 320ms ease;
+
+  /* Three-stop directional shadow: contact line where paper meets mat,
+     near drop biased downward (overhead-front light), far ambient halo. */
+  --shadow:
+    0 1px 0 rgba(0,0,0,0.40),
+    0 12px 24px -6px rgba(0,0,0,0.45),
+    0 40px 80px -12px rgba(0,0,0,0.55);
+  --page-width: 850px;
+  /* Page padding scales down with the viewport so the .page edges meet the
+     viewport edges before the bullet column gets squeezed. */
+  --page-pad-y: clamp(28px, 4.5vw, 56px);
+  --page-pad-x: clamp(16px, 5vw, 72px);
+  --serif: Georgia, "Times New Roman", Times, serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  /* Canvas + subtle SVG fractal-noise overlay (~600 bytes inline). The
+     noise reads as felt / portfolio-mat texture rather than flat paint. */
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+    var(--canvas);
+  font-family: var(--serif);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+html, body { overflow-x: hidden; }
+
+a { color: inherit; text-decoration: none; }
+
+/* Project-wide keyboard focus indicator. The cream paper + dark canvas mat
+   has near-zero default-outline contrast in places, so the UA outline is
+   too easy to lose. The lightbox close/nav buttons keep their bespoke
+   :focus-visible styling. */
+:where(a, button, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* App shell (.app, .toolbar, .page, .skip-link, body.printing,
+   page-shell @media print) lives in components/app/App.css.
+   Lightning lives in lightning.css (sibling to lightning.ts). */
+
+/* Section primitive (.section) lives in layout/Section.module.css.
+   SectionHead primitive (.section-head, h2, .rule) lives in
+   layout/SectionHead.module.css. */
+
+/* ---------- Entry (job / school / etc) — document primitive ---------- */
+.entry { margin-bottom: 18px; }
+.entry:last-child { margin-bottom: 4px; }
+
+.entry-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 2px;
+}
+.entry-head .l {
+  font-weight: 900;
+  font-size: var(--fs-entry);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+/* Date typography — serif italic at the muted color so dates recede into
+   the body register instead of stamping themselves as a separate system.
+   The matching `.period` rule for the .era-head sub-block lives in
+   entries/Era.module.css; keep the two in sync visually. */
+.entry-head .r {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: var(--fs-entry-sub);
+}
+.entry-sub {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.entry-sub .l {
+  font-weight: 400;
+  font-size: var(--fs-entry-sub);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.entry-sub .r {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: var(--fs-bullet);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.entry-summary {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  margin: 6px 0 8px;
+}
+
+/* Bullet primitive (.bullets, .bullets li, ::before) lives in
+   primitives/Bullets.css. KP-line default lives in primitives/KPText.css.
+   Era / Track chrome (.era, .era-head, .focus, .period, .era-tagline,
+   .era-summary) lives in entries/Era.module.css.
+   Inline-entry styles live in entries/InlineEntry.module.css. */
+
+/* ---------- Figure card primitive (the actual photo/video/embed tile) ---
+   Shared by Figure, FigureCarousel, and SummaryGallery layouts. The
+   layout-variant containers (figure-strip, figure-grid, figure-phones,
+   figure-carousel-track) each tweak sizing/borders on top of this base. */
+.figure-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+.figure-card img,
+.figure-card video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: var(--photo-filter-rest);
+  transition: var(--photo-filter-trans);
+  /* Save-as deterrents. Not a security boundary — screenshots and devtools
+     still work — but enough to stop the casual right-click → Save Image and
+     the click-and-drag-to-desktop gesture. `pointer-events: none` makes the
+     right-click bubble up to the parent <button>, which has no image
+     context, so the browser shows no "Save Image As" entry at all. */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+.figure-card iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #000;
+}
+.figure-card.embed { cursor: default; }
+.figure-card.embed:hover { transform: none; box-shadow: none; }
+.figure-card:hover {
+  z-index: 2;
+  border-color: var(--ink);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.16);
+}
+.figure-card:hover img,
+.figure-card:hover video { filter: var(--photo-filter-hover); transform: scale(1.03); }
+
+.figure-tag {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  font-family: var(--mono);
+  font-size: var(--fs-overlay);
+  letter-spacing: 0.06em;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  text-align: left;
+  pointer-events: none;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+/* Component-scoped text-only / 1-pager hides live in each component's
+   stylesheet. The rule below is the only document-primitive cross-cut
+   that stays in globals — `.entry-summary.lead` (top-of-resume lede) is
+   exempt because it's the document's hook. */
+.page.mode-1pager .entry-summary:not(.lead) {
+  display: none !important;
+}
+
+/* ---------- Reduced motion: pause autoplay videos & animations ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .figure-card video {
+    animation-play-state: paused !important;
+  }
+  .figure-card video,
+  .figure-card img {
+    transition: none !important;
+  }
+}
+
+/* ---------- 1-pager layout (entry primitive only) ----------
+   Section / SectionHead / Era / Bullets all carry their own
+   :global(.page.mode-1pager) overrides in their module CSS. The block
+   below covers what's still owned by globals — the entry document
+   primitive. The `.page.mode-1pager` shell override lives in
+   components/app/App.css. */
+.page.mode-1pager .entry { margin-bottom: 5px; }
+.page.mode-1pager .entry-head { margin-bottom: 0; }
+.page.mode-1pager .entry-head .l { font-size: 10.5pt; letter-spacing: 0.14em; }
+.page.mode-1pager .entry-head .r { font-size: 9pt; }
+.page.mode-1pager .entry-sub { margin-bottom: 2px; }
+.page.mode-1pager .entry-sub .l,
+.page.mode-1pager .entry-sub .r { font-size: 9pt; }
+.page.mode-1pager .entry-summary {
+  margin: 2px 0 3px;
+  font-size: 9.5pt;
+  line-height: 1.35;
+}
+
+/* body.printing shell rules + page-shell @media print live in
+   components/app/App.css. */
+
+/* ---------- Print page geometry ---------- */
+@page {
+  size: letter;
+  /* Zero margin starves the browser's auto header/footer. */
+  margin: 0;
+}
+@media print {
+  html, body { background: white; }
+  /* `.entry` page-break stays here (entry primitive is global). The
+     matching `.era` page-break lives in entries/Era.module.css. */
+  .entry { page-break-inside: avoid; break-inside: avoid; }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* ---------- Mobile ----------
+   Page-padding & app-padding are fluid (clamp) above, so we don't need a
+   width-keyed override here. */
+@media (max-width: 560px) {
+  .figure-card {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    display: block;
+  }
+  /* Demote entry metadata (dates, locations) below the primary
+     company/title pair: flatten entry-head + entry-sub so all four cells
+     become direct flex children of .entry, then reorder so dates and
+     locations sit under company and role. */
+  .entry { display: flex; flex-direction: column; }
+  .entry-head, .entry-sub {
+    display: contents;
+  }
+  .entry-head .l { order: -4; }
+  .entry-sub  .l { order: -3; margin-bottom: 2px; }
+  .entry-head .r { order: -2; text-align: left; }
+  .entry-sub  .r { order: -1; text-align: left; margin-bottom: 6px; }
+  /* .era-head mobile collapse lives in entries/Era.module.css. */
+}

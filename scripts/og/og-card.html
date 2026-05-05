@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>OG / D4 — Full-bleed hero with gradient + type</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+<style>
+  html, body { margin: 0; padding: 0; background: #1c1f1a; }
+  body { font-family: Georgia, "Times New Roman", Times, serif; -webkit-font-smoothing: antialiased; }
+  .og {
+    width: 1200px; height: 630px; position: relative; overflow: hidden;
+    background: #1c1f1a;
+    color: #fdfdfb;
+  }
+  .hero {
+    position: absolute; inset: 0;
+    background-image: url('/media/summary/portrait.jpg');
+    background-size: 820px auto;
+    background-repeat: no-repeat;
+    background-position: right 46%;
+    background-color: #1c1f1a;
+    filter: grayscale(0.22) contrast(1.05);
+  }
+  .veil {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, transparent 70%, rgba(28,31,26,0.55) 88%, #1c1f1a 100%),
+      radial-gradient(ellipse 72% 115% at 88% 42%, transparent 25%, rgba(28,31,26,0.60) 45%, rgba(28,31,26,0.95) 60%, #1c1f1a 80%);
+  }
+  .content {
+    position: relative; z-index: 2;
+    height: 100%;
+    padding: 56px 56px;
+    box-sizing: border-box;
+    display: flex; flex-direction: column; justify-content: center;
+    max-width: 720px;
+  }
+  .name { line-height: 0.94; margin: 0; }
+  .name .first {
+    display: block; font-weight: 400;
+    font-size: 124px; color: #fdfdfb; letter-spacing: -0.015em;
+  }
+  .name .last {
+    display: block; font-weight: 400; font-size: 124px;
+    color: #fdfdfb; letter-spacing: -0.015em; margin-top: -4px;
+  }
+  .mc-sup {
+    font-size: 0.55em;
+    vertical-align: 0.6em;
+    margin-left: -0.15em;
+    margin-right: 0.07em;
+  }
+  .accent-rule {
+    margin-top: 30px;
+    width: 280px;
+    height: 2px;
+    background: linear-gradient(90deg, #3a6b4a 0%, rgba(58, 107, 74, 0.55) 55%, rgba(58, 107, 74, 0.0) 100%);
+  }
+  .roles {
+    margin-top: 26px;
+    font-style: italic; font-size: 30px; line-height: 1.35;
+    color: #fdfdfb; max-width: 660px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+  }
+  .tagline {
+    margin-top: 10px;
+    font-style: italic; font-size: 25px; line-height: 1.4;
+    color: #d6d3cc; max-width: 660px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+  }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="hero"></div>
+  <div class="veil"></div>
+  <div class="content">
+    <div class="name">
+      <span class="first">Miles</span>
+      <span class="last">M<span class="mc-sup">c</span>Crocklin</span>
+    </div>
+    <div class="accent-rule"></div>
+    <div class="roles">Builder <span style="color:#d6d3cc">(ex-FB)</span>, Photographer, Explorer.</div>
+    <div class="tagline">Designing for humans in an agentic world.</div>
+  </div>
+</div>
+<script>
+  const img = new Image();
+  img.src = '/media/summary/portrait.jpg';
+  Promise.all([document.fonts.ready, new Promise((r)=>{ img.onload=r; img.onerror=r; })])
+    .then(() => document.documentElement.setAttribute('data-fonts','ready'));
+</script>
+</body>
+</html>
