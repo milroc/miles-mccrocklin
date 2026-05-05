@@ -14,9 +14,13 @@ import { serve } from "bun";
 import index from "./index.html";
 
 const PORT = Number(process.env.PORT ?? 4317);
+// Default to localhost. Set HOST=0.0.0.0 to expose on the LAN for mobile
+// testing (then visit http://<your-mac-ip>:<port> from the phone).
+const HOST = process.env.HOST ?? "127.0.0.1";
 
 const server = serve({
   port: PORT,
+  hostname: HOST,
   routes: {
     "/": index,
   },
