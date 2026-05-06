@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LinkedIn Cover — Final (Era Bands)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;800&display=swap');
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1584px; height: 396px;
+    background: #1c1f1a;
+    overflow: hidden;
+    position: relative;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .stage { position: absolute; inset: 0; background: #060704; }
+  .tile { position: absolute; overflow: hidden; background: #060704; }
+  .tile img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(0.18) contrast(1.02);
+    display: block;
+  }
+  .scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 380px 380px at 12% 100%, rgba(28,31,26,0.65), rgba(28,31,26,0) 70%),
+      linear-gradient(90deg, rgba(28,31,26,0) 38%, rgba(28,31,26,0.50) 62%, rgba(28,31,26,0.82) 82%, rgba(28,31,26,0.92) 100%);
+  }
+  .caption {
+    position: absolute;
+    right: 60px; top: 60px; bottom: 60px;
+    display: flex; flex-direction: column; justify-content: center;
+    text-align: right; max-width: 540px;
+    color: #ece9e2;
+    z-index: 2;
+  }
+  .lede {
+    font: italic 400 34px Georgia, "Times New Roman", serif;
+    line-height: 1.22;
+    color: #fdfdfb;
+    text-shadow:
+      0 1px 2px rgba(0,0,0,0.95),
+      0 2px 8px rgba(0,0,0,0.95),
+      0 0 20px rgba(0,0,0,0.75),
+      0 0 40px rgba(0,0,0,0.55);
+  }
+  .eyebrow {
+    font: 800 13px "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: #fdfdfb;
+    text-shadow:
+      0 1px 2px rgba(0,0,0,0.95),
+      0 2px 6px rgba(0,0,0,0.90),
+      0 0 14px rgba(0,0,0,0.70);
+    margin-top: 18px;
+  }
+</style>
+</head>
+<body>
+  <div class="stage" id="stage"></div>
+  <div class="scrim"></div>
+  <div class="caption">
+    <div class="lede">Building for humans<br>in an agentic world.</div>
+    <div class="eyebrow">Builder (ex-FB) · Explorer · Photographer</div>
+  </div>
+
+<script>
+const FRAME_W = 1584;
+const FRAME_H = 396;
+const SIZE_WEIGHTS = { S: 0.7, M: 1.0, L: 1.5, XL: 2.2 };
+
+// Locked-in config from the user's builder session.
+const CONFIG = {
+  layout: 'eras',
+  eraOrder: ['Meta', 'Sabbatical', 'Community', 'Bluenose'],
+  photos: [
+    { src: '../../media/sabbatical-travel/travel-09.jpeg', name: 'penguins',     size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-13.jpeg', name: 'pyramids',     size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-06.jpeg', name: 'icebergs',     size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-23.jpeg', name: 'gorilla',      size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-04.jpeg', name: 'lions',        size: 'L',  era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-10.jpeg', name: 'koala',        size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-26.jpeg', name: 'iguanas',      size: 'L',  era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-07.jpeg', name: 'chimp',        size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-27.jpeg', name: 'salar sunrise',size: 'L',  era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-20.jpeg', name: 'sakura',       size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-28.jpeg', name: 'dubai',        size: 'M',  era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-11.jpeg', name: 'armenia',      size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/sabbatical-travel/travel-24.jpeg', name: 'splash',       size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/summary/antarctica.jpg',           name: 'submarine',    size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/summary/redwoods.jpg',             name: 'redwoods',     size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/summary/self_reflection.jpg',      name: 'self',         size: 'XL', era: 'Sabbatical' },
+    { src: '../../media/meta-forecast/forecast-us-canada.jpeg',     name: 'forecast launch',    size: 'M', era: 'Meta' },
+    { src: '../../media/meta-misinformation/fact-check-labels.jpg', name: 'fact check labels',  size: 'M', era: 'Meta' },
+    { src: '../../media/summary/3PFC_LATAM_2019.jpg',               name: '3pfc latam',         size: 'M', era: 'Meta' },
+  ],
+};
+
+async function loadAspects(photos) {
+  return Promise.all(photos.map(p => new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve({ ...p, aspect: img.naturalWidth / img.naturalHeight });
+    img.onerror = () => resolve({ ...p, aspect: 1.5 });
+    img.src = p.src;
+  })));
+}
+
+// Era bands: group photos by era, place each band as a single full-width
+// row at equal band height. Within a band, photos are justified by their
+// aspect-times-size-weight so larger-weighted photos take more space.
+function layoutEras(photos) {
+  const eras = {};
+  for (const p of photos) {
+    if (!eras[p.era]) eras[p.era] = [];
+    eras[p.era].push(p);
+  }
+  const ordered = CONFIG.eraOrder.filter(e => eras[e]);
+  const bandH = FRAME_H / ordered.length;
+  return ordered.map((era, idx) => {
+    const items = eras[era].map(p => ({
+      src: p.src,
+      aspect: p.aspect * SIZE_WEIGHTS[p.size],
+    }));
+    const sumA = items.reduce((s, i) => s + i.aspect, 0);
+    let x = 0;
+    const tiles = items.map(it => {
+      const w = (it.aspect / sumA) * FRAME_W;
+      const tile = { src: it.src, x, y: idx * bandH, w, h: bandH };
+      x += w;
+      return tile;
+    });
+    return { tiles };
+  });
+}
+
+(async () => {
+  const photos = await loadAspects(CONFIG.photos);
+  const bands = layoutEras(photos);
+  const stage = document.getElementById('stage');
+  for (const band of bands) {
+    for (const t of band.tiles) {
+      const div = document.createElement('div');
+      div.className = 'tile';
+      div.style.left = t.x + 'px';
+      div.style.top = t.y + 'px';
+      div.style.width = t.w + 'px';
+      div.style.height = t.h + 'px';
+      const img = document.createElement('img');
+      img.src = t.src; img.draggable = false;
+      div.appendChild(img);
+      stage.appendChild(div);
+    }
+  }
+  document.body.dataset.ready = '1';
+})();
+</script>
+</body>
+</html>
