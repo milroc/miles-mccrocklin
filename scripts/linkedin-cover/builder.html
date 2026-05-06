@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Variant D Builder — Photo Layout Designer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;800&display=swap');
+  :root {
+    --canvas: #1c1f1a;
+    --canvas-fg: #b8b5ad;
+    --canvas-fg-strong: #ece9e2;
+    --canvas-fg-muted: #7a7770;
+    --rule: rgba(236,233,226,0.20);
+    --accent: #3a6b4a;
+  }
+  html, body { margin: 0; padding: 0; background: var(--canvas); color: var(--canvas-fg-strong); font-family: Georgia, "Times New Roman", serif; }
+  body { padding: 32px 40px 64px; }
+
+  .header { max-width: 1400px; margin: 0 auto 28px; }
+  .eyebrow {
+    font: 800 11px "JetBrains Mono"; letter-spacing: 0.36em;
+    text-transform: uppercase; color: var(--canvas-fg-muted);
+    margin-bottom: 14px;
+  }
+  .title { font: 400 28px Georgia; margin: 0 0 10px; }
+  .subtitle { font: italic 400 15px Georgia; color: var(--canvas-fg); max-width: 900px; margin: 0; }
+
+  /* Live preview frame at native 1584x396, scaled down to fit viewport. */
+  .frame-wrap {
+    position: relative;
+    margin: 0 auto 28px;
+    max-width: 1400px;
+  }
+  .frame {
+    width: 1584px; height: 396px;
+    position: relative; overflow: hidden;
+    background: #060704;
+    transform-origin: top left;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  }
+  .frame .stage { position: absolute; inset: 0; }
+  .frame .tile {
+    position: absolute; overflow: hidden; background: #060704;
+  }
+  .frame .tile img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(0.18) contrast(1.02);
+  }
+  .frame .tile.hero img { filter: grayscale(0.10) contrast(1.04); }
+  .frame .scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 380px 380px at 12% 100%, rgba(28,31,26,0.65), rgba(28,31,26,0) 70%),
+      linear-gradient(90deg, rgba(28,31,26,0) 50%, rgba(28,31,26,0.55) 78%, rgba(28,31,26,0.78) 100%);
+  }
+  .frame .lede-block {
+    position: absolute; right: 60px; top: 60px; bottom: 60px;
+    display: flex; flex-direction: column; justify-content: center;
+    text-align: right; max-width: 540px;
+    z-index: 2;
+  }
+  .frame .lede-block .lede {
+    font: italic 400 32px Georgia; line-height: 1.22; color: #ece9e2;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.85), 0 0 22px rgba(0,0,0,0.55);
+  }
+  .frame .lede-block .eb {
+    font: 800 13px "JetBrains Mono"; letter-spacing: 0.36em;
+    text-transform: uppercase; color: #ece9e2;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.85);
+    margin-top: 16px;
+  }
+  .frame .lede-block .rule {
+    width: 64px; height: 1.5px; background: var(--accent);
+    margin: 18px 0 0 auto;
+  }
+  .frame .ghost-circle {
+    position: absolute; width: 155px; height: 155px;
+    left: 30px; bottom: -30px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,181,173,0.95), rgba(184,181,173,0.55) 70%, rgba(184,181,173,0.25) 100%);
+    border: 4px solid var(--canvas);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    z-index: 3;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--canvas);
+    font: 800 11px "JetBrains Mono"; letter-spacing: 0.2em;
+    pointer-events: none;
+  }
+  .frame .ghost-circle::after { content: "PROFILE"; opacity: 0.7; }
+  /* Era reorder chips — visible only when layout=eras. */
+  .era-order {
+    display: none;
+    align-items: center; gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--rule);
+    flex-wrap: wrap;
+  }
+  body.layout-eras .era-order { display: flex; }
+  .era-order .label {
+    font: 800 10px "JetBrains Mono"; letter-spacing: 0.36em;
+    text-transform: uppercase; color: var(--canvas-fg-muted);
+  }
+  .era-chip {
+    display: flex; align-items: stretch;
+    border: 1px solid var(--rule);
+    background: #060704;
+  }
+  .era-chip .name {
+    padding: 6px 12px;
+    font: 800 11px "JetBrains Mono"; letter-spacing: 0.36em;
+    text-transform: uppercase; color: var(--canvas-fg-strong);
+    border-right: 1px solid var(--rule);
+  }
+  .era-chip .pos {
+    padding: 6px 8px;
+    font: 800 11px "JetBrains Mono"; letter-spacing: 0.18em;
+    color: var(--canvas-fg-muted);
+    border-right: 1px solid var(--rule);
+  }
+  .era-chip button {
+    background: transparent; border: none; color: var(--canvas-fg);
+    cursor: pointer; padding: 0 8px;
+    font: 800 14px "JetBrains Mono";
+    border-right: 1px solid var(--rule);
+  }
+  .era-chip button:last-child { border-right: none; }
+  .era-chip button:hover { color: var(--canvas-fg-strong); background: rgba(255,255,255,0.04); }
+  .era-chip button:disabled { color: rgba(184,181,173,0.3); cursor: not-allowed; }
+
+  /* Controls panel. */
+  .controls {
+    max-width: 1400px; margin: 0 auto;
+    border: 1px solid var(--rule);
+    background: #0f110d;
+  }
+  .controls h3 {
+    font: 800 11px "JetBrains Mono"; letter-spacing: 0.36em;
+    text-transform: uppercase; color: var(--canvas-fg);
+    margin: 0; padding: 14px 20px;
+    border-bottom: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .controls .pad { padding: 18px 20px; }
+
+  /* Layout structure picker. */
+  .layouts {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  }
+  .layout-card {
+    border: 1px solid var(--rule);
+    background: #060704;
+    padding: 14px 16px;
+    cursor: pointer;
+  }
+  .layout-card:hover { border-color: var(--canvas-fg); }
+  .layout-card.active { border-color: var(--accent); border-width: 2px; padding: 13px 15px; }
+  .layout-card .lname {
+    font: 800 11px "JetBrains Mono"; letter-spacing: 0.36em;
+    text-transform: uppercase; color: var(--canvas-fg-strong);
+    margin-bottom: 6px;
+  }
+  .layout-card .ldesc {
+    font: italic 400 12px Georgia; color: var(--canvas-fg);
+    line-height: 1.4;
+  }
+  .layout-card .lthumb {
+    margin-top: 8px;
+    height: 30px; background: #0f110d;
+    border: 1px solid var(--rule);
+    position: relative; overflow: hidden;
+  }
+  .layout-card .lthumb i {
+    position: absolute; background: var(--canvas-fg);
+    opacity: 0.7;
+  }
+
+  /* Photo picker grid. */
+  .photo-controls {
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--rule);
+    flex-wrap: wrap;
+  }
+  .photo-controls .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn {
+    background: transparent; border: 1px solid var(--rule); color: var(--canvas-fg-muted);
+    padding: 4px 10px; cursor: pointer;
+    font: 800 9.5px "JetBrains Mono"; letter-spacing: 0.36em;
+    text-transform: uppercase;
+  }
+  .filter-btn.active { color: var(--canvas-fg-strong); border-color: var(--canvas-fg); }
+  .photo-controls .actions { margin-left: auto; display: flex; gap: 8px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    padding: 14px;
+    max-height: 460px;
+    overflow-y: auto;
+  }
+  .thumb {
+    position: relative;
+    aspect-ratio: 4 / 1;
+    background: #060704;
+    border: 1px solid transparent;
+    cursor: pointer;
+    overflow: hidden;
+    user-select: none;
+  }
+  .thumb img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.6);
+    opacity: 0.55;
+  }
+  .thumb.included img { filter: grayscale(0.18) contrast(1.02); opacity: 1; }
+  .thumb .name {
+    position: absolute; left: 6px; bottom: 4px; right: 6px;
+    font: 800 9.5px "JetBrains Mono"; letter-spacing: 0.18em;
+    color: #ece9e2; text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+    text-transform: uppercase;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .thumb .order {
+    position: absolute; left: 6px; top: 6px;
+    font: 800 11px "JetBrains Mono";
+    color: #ece9e2;
+    background: var(--accent);
+    width: 22px; height: 22px;
+    display: none; align-items: center; justify-content: center;
+    border-radius: 50%;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  }
+  .thumb.included .order { display: flex; }
+  .thumb .size-toggle {
+    position: absolute; right: 6px; top: 6px;
+    display: none; gap: 2px;
+  }
+  .thumb.included .size-toggle { display: flex; }
+  .thumb .size-toggle button {
+    background: rgba(28,31,26,0.85); border: 1px solid rgba(236,233,226,0.4);
+    color: #ece9e2;
+    font: 800 8.5px "JetBrains Mono";
+    width: 22px; height: 22px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .thumb .size-toggle button.active {
+    background: var(--accent); border-color: var(--accent);
+  }
+  .thumb:hover { border-color: var(--canvas-fg); }
+  .thumb.included { border-color: var(--accent); cursor: grab; }
+  .thumb.included:active { cursor: grabbing; }
+  .thumb.dragging { opacity: 0.35; }
+  /* Drop indicators — a thick green bar on the side the dragged photo
+     will land. */
+  .thumb.drop-before { box-shadow: inset 4px 0 0 var(--accent); }
+  .thumb.drop-after  { box-shadow: inset -4px 0 0 var(--accent); }
+
+  button.btn {
+    background: transparent; border: 1px solid var(--rule); color: var(--canvas-fg);
+    padding: 8px 14px; cursor: pointer;
+    font: 800 10px "JetBrains Mono"; letter-spacing: 0.36em;
+    text-transform: uppercase;
+  }
+  button.btn:hover { color: var(--canvas-fg-strong); border-color: var(--canvas-fg); }
+  button.btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.btn.primary:hover { background: #4a8060; border-color: #4a8060; }
+
+  .help { font: italic 400 13px Georgia; color: var(--canvas-fg); margin: 0 0 12px; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="eyebrow">Variant D Builder · Layout designer</div>
+    <h1 class="title">Pick a layout, choose photos, set sizes</h1>
+    <p class="subtitle">Top: live preview at native 1584&times;396. Pick one of four layout structures (mirrors the strip / carousel / hero+tiles / era-band patterns from your site). Click photos below to include or exclude. Click the order number to bump them earlier in the sequence. Click S/M/L/XL to weight a photo's size.</p>
+  </div>
+
+  <div class="frame-wrap">
+    <div class="frame" id="frame">
+      <div class="stage" id="stage"></div>
+      <div class="scrim" id="scrim"></div>
+      <div class="lede-block">
+        <div class="lede">Building for humans<br>in an agentic world.</div>
+        <div class="eb">Builder (ex-FB) · Explorer · Photographer</div>
+      </div>
+      <div class="ghost-circle"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <h3>
+      Layout structure
+      <span style="font-style: italic; font-family: Georgia; font-size: 13px; letter-spacing: 0; text-transform: none; color: var(--canvas-fg);">
+        click to switch
+      </span>
+    </h3>
+    <div class="pad">
+      <div class="layouts" id="layouts">
+        <div class="layout-card" data-layout="strip">
+          <div class="lname">Editorial Strip</div>
+          <div class="ldesc">Single horizontal strip of 3–5 large photos at full height. Mirrors the &ldquo;strip&rdquo; layout in your Bulletin / Forecast eras.</div>
+          <div class="lthumb">
+            <i style="left:0;top:0;width:25%;height:100%;"></i>
+            <i style="left:25%;top:0;width:25%;height:100%;background:#888;"></i>
+            <i style="left:50%;top:0;width:25%;height:100%;"></i>
+            <i style="left:75%;top:0;width:25%;height:100%;background:#888;"></i>
+          </div>
+        </div>
+        <div class="layout-card active" data-layout="justified">
+          <div class="lname">Justified Gallery</div>
+          <div class="ldesc">3–4 rows of justified photos at varying heights. Flickr / Lightroom register. Dense museum-wall feel.</div>
+          <div class="lthumb">
+            <i style="left:0;top:0;width:18%;height:50%;"></i>
+            <i style="left:18%;top:0;width:30%;height:50%;background:#888;"></i>
+            <i style="left:48%;top:0;width:22%;height:50%;"></i>
+            <i style="left:70%;top:0;width:30%;height:50%;background:#888;"></i>
+            <i style="left:0;top:50%;width:25%;height:50%;background:#888;"></i>
+            <i style="left:25%;top:50%;width:18%;height:50%;"></i>
+            <i style="left:43%;top:50%;width:32%;height:50%;background:#888;"></i>
+            <i style="left:75%;top:50%;width:25%;height:50%;"></i>
+          </div>
+        </div>
+        <div class="layout-card" data-layout="hero">
+          <div class="lname">Hero + Marginalia</div>
+          <div class="ldesc">One large hero photo on the left, justified-gallery grid on the right. Mirrors your summary carousel + tile pattern.</div>
+          <div class="lthumb">
+            <i style="left:0;top:0;width:32%;height:100%;background:#aaa;"></i>
+            <i style="left:32%;top:0;width:24%;height:50%;"></i>
+            <i style="left:56%;top:0;width:20%;height:50%;background:#888;"></i>
+            <i style="left:76%;top:0;width:24%;height:50%;"></i>
+            <i style="left:32%;top:50%;width:30%;height:50%;background:#888;"></i>
+            <i style="left:62%;top:50%;width:22%;height:50%;"></i>
+            <i style="left:84%;top:50%;width:16%;height:50%;background:#888;"></i>
+          </div>
+        </div>
+        <div class="layout-card" data-layout="eras">
+          <div class="lname">Era Bands</div>
+          <div class="ldesc">Photos grouped into bands by era (Meta, Sabbatical, Community), each labeled with a small mono eyebrow. Mirrors your era-organized resume.</div>
+          <div class="lthumb">
+            <i style="left:0;top:0;width:18%;height:33%;"></i>
+            <i style="left:18%;top:0;width:30%;height:33%;background:#888;"></i>
+            <i style="left:48%;top:0;width:22%;height:33%;"></i>
+            <i style="left:70%;top:0;width:30%;height:33%;background:#888;"></i>
+            <i style="left:0;top:33%;width:25%;height:33%;background:#888;"></i>
+            <i style="left:25%;top:33%;width:18%;height:33%;"></i>
+            <i style="left:43%;top:33%;width:32%;height:33%;background:#888;"></i>
+            <i style="left:75%;top:33%;width:25%;height:33%;"></i>
+            <i style="left:0;top:66%;width:30%;height:34%;"></i>
+            <i style="left:30%;top:66%;width:22%;height:34%;background:#888;"></i>
+            <i style="left:52%;top:66%;width:24%;height:34%;"></i>
+            <i style="left:76%;top:66%;width:24%;height:34%;background:#888;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls" style="margin-top: 24px;">
+    <h3>
+      Photos
+      <span style="font: 400 13px Georgia; font-style: italic; letter-spacing: 0; text-transform: none; color: var(--canvas-fg);">
+        click to include / exclude. Numbers show order, S/M/L/XL set size.
+      </span>
+    </h3>
+    <div class="era-order" id="eraOrder">
+      <span class="label">Era band order (top to bottom)</span>
+    </div>
+    <div class="photo-controls">
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="travel">Travel</button>
+        <button class="filter-btn" data-filter="summary">Summary</button>
+        <button class="filter-btn" data-filter="meta">Meta UIs</button>
+        <button class="filter-btn" data-filter="bluenose">Bluenose</button>
+        <button class="filter-btn" data-filter="community">Community</button>
+      </div>
+      <div class="actions">
+        <button class="btn" id="select-all">Include all</button>
+        <button class="btn" id="select-none">Clear</button>
+        <button class="btn" id="copy-config">Copy config</button>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+<script>
+// All available media in the repo, with category metadata.
+const PHOTOS = [
+  // Travel + sabbatical photography
+  { src: '../../media/sabbatical-travel/travel-09.jpeg', name: 'penguins',     cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-15.jpeg', name: 'penguin trek', cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-13.jpeg', name: 'pyramids',     cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-06.jpeg', name: 'icebergs',     cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-22.jpeg', name: 'silverback',   cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-23.jpeg', name: 'gorilla',      cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-04.jpeg', name: 'lions',        cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-05.jpeg', name: 'flamingos',    cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-10.jpeg', name: 'koala',        cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-25.jpeg', name: 'finch',        cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-26.jpeg', name: 'iguanas',      cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-07.jpeg', name: 'chimp',        cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-21.jpeg', name: 'river otters', cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-27.jpeg', name: 'salar sunrise',cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-08.jpeg', name: 'machu picchu', cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-12.jpeg', name: 'parthenon',    cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-18.jpeg', name: 'abu simbel',   cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-19.jpeg', name: 'tokyo neon',   cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-20.jpeg', name: 'sakura',       cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-28.jpeg', name: 'dubai',        cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-11.jpeg', name: 'armenia',      cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-14.jpeg', name: 'maipo',        cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-16.jpeg', name: 'mammoth caves',cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-17.jpeg', name: 'hummingbird',  cat: 'travel', era: 'Sabbatical' },
+  { src: '../../media/sabbatical-travel/travel-24.jpeg', name: 'splash',       cat: 'travel', era: 'Sabbatical' },
+
+  // Summary carousel
+  { src: '../../media/summary/portrait.jpg',             name: 'portrait',     cat: 'summary', era: 'Sabbatical' },
+  { src: '../../media/summary/antarctica.jpg',           name: 'submarine',    cat: 'summary', era: 'Sabbatical' },
+  { src: '../../media/summary/peru.jpg',                 name: 'machu summary',cat: 'summary', era: 'Sabbatical' },
+  { src: '../../media/summary/redwoods.jpg',             name: 'redwoods',     cat: 'summary', era: 'Sabbatical' },
+  { src: '../../media/summary/bolivia.jpg',              name: 'salar',        cat: 'summary', era: 'Sabbatical' },
+  { src: '../../media/summary/lemurs_madagascar.jpg',    name: 'lemurs',       cat: 'summary', era: 'Sabbatical' },
+  { src: '../../media/summary/egypt.jpg',                name: 'valley kings', cat: 'summary', era: 'Sabbatical' },
+  { src: '../../media/summary/self_reflection.jpg',      name: 'self',         cat: 'summary', era: 'Sabbatical' },
+  { src: '../../media/summary/3PFC_LATAM_2019.jpg',      name: '3pfc latam',   cat: 'summary', era: 'Meta' },
+  { src: '../../media/summary/3PFC_LATAM_2019_TEAM.JPG', name: '3pfc team',    cat: 'summary', era: 'Meta' },
+
+  // Meta UIs
+  { src: '../../media/meta-bulletin-promode/pro-mode-hero.jpeg', name: 'pro mode', cat: 'meta',     era: 'Meta' },
+  { src: '../../media/meta-bulletin-promode/bulletin.jpeg',     name: 'bulletin',  cat: 'meta',     era: 'Meta' },
+  { src: '../../media/meta-forecast/forecast-web.png',          name: 'forecast web', cat: 'meta',  era: 'Meta' },
+  { src: '../../media/meta-forecast/forecast-trading-flow.jpg', name: 'forecast flow', cat: 'meta', era: 'Meta' },
+  { src: '../../media/meta-forecast/forecast-ui.png',           name: 'forecast ui',  cat: 'meta',  era: 'Meta' },
+  { src: '../../media/meta-forecast/forecast-us-canada.jpeg',   name: 'forecast launch', cat: 'meta', era: 'Meta' },
+  { src: '../../media/meta-forecast/Election_Forecasts.jpg',    name: 'election forecasts', cat: 'meta', era: 'Meta' },
+  { src: '../../media/meta-misinformation/fact-check-ui-1.jpeg',name: 'fact check',cat: 'meta',     era: 'Meta' },
+  { src: '../../media/meta-misinformation/fact-check-labels.jpg',name: 'fact check labels', cat: 'meta', era: 'Meta' },
+
+  // Bluenose UIs
+  { src: '../../media/bluenose/bluenose-ui.gif',                name: 'bluenose ui',     cat: 'bluenose', era: 'Bluenose' },
+  { src: '../../media/bluenose/bluenose-usage-visualization.png',name: 'bluenose usage', cat: 'bluenose', era: 'Bluenose' },
+
+  // Community
+  { src: '../../media/sf-data-mining/sf-data-mining-talk.jpg',  name: 'sfdm talk', cat: 'community', era: 'Community' },
+  { src: '../../media/sf-data-mining/sf-data-mining-1.jpg',     name: 'sfdm crowd',cat: 'community', era: 'Community' },
+  { src: '../../media/d3-unconf/d3-unconf.jpg',                 name: 'd3 unconf', cat: 'community', era: 'Community' },
+  { src: '../../media/d3-unconf/d3-unconf-2.jpg',               name: 'd3 unconf 2',cat: 'community', era: 'Community' },
+];
+
+// Per-photo state: { included, order, size, aspect, src, ...meta }
+const SIZE_WEIGHTS = { S: 0.7, M: 1.0, L: 1.5, XL: 2.2 };
+
+// Default config — the curated layout the user landed on. Loaded as the
+// initial state so the page renders into the favorite arrangement on
+// first paint. Edit the `DEFAULT_CONFIG` block to change it.
+const DEFAULT_CONFIG = {
+  layout: 'eras',
+  photos: [
+    { src: '../../media/sabbatical-travel/travel-09.jpeg', size: 'XL' },
+    { src: '../../media/sabbatical-travel/travel-13.jpeg', size: 'XL' },
+    { src: '../../media/sabbatical-travel/travel-06.jpeg', size: 'XL' },
+    { src: '../../media/sabbatical-travel/travel-23.jpeg', size: 'XL' },
+    { src: '../../media/sabbatical-travel/travel-04.jpeg', size: 'L'  },
+    { src: '../../media/sabbatical-travel/travel-10.jpeg', size: 'XL' },
+    { src: '../../media/sabbatical-travel/travel-26.jpeg', size: 'L'  },
+    { src: '../../media/sabbatical-travel/travel-07.jpeg', size: 'XL' },
+    { src: '../../media/sabbatical-travel/travel-27.jpeg', size: 'L'  },
+    { src: '../../media/sabbatical-travel/travel-20.jpeg', size: 'XL' },
+    { src: '../../media/sabbatical-travel/travel-28.jpeg', size: 'M'  },
+    { src: '../../media/sabbatical-travel/travel-11.jpeg', size: 'XL' },
+    { src: '../../media/sabbatical-travel/travel-24.jpeg', size: 'XL' },
+    { src: '../../media/summary/antarctica.jpg',           size: 'XL' },
+    { src: '../../media/summary/redwoods.jpg',             size: 'XL' },
+    { src: '../../media/summary/self_reflection.jpg',      size: 'XL' },
+    { src: '../../media/meta-forecast/forecast-us-canada.jpeg',     size: 'M' },
+    { src: '../../media/meta-misinformation/fact-check-labels.jpg', size: 'M' },
+    { src: '../../media/summary/3PFC_LATAM_2019.jpg',               size: 'M' },
+  ],
+};
+
+// Build state.photos by walking PHOTOS and applying DEFAULT_CONFIG.
+// Photos in the config are included with the configured order + size;
+// photos not in the config start excluded.
+const configIndex = new Map(DEFAULT_CONFIG.photos.map((c, i) => [c.src, { order: i, size: c.size }]));
+
+const state = {
+  layout: DEFAULT_CONFIG.layout,
+  filter: 'all',
+  // Era order top-to-bottom for the Era Bands layout. User-controllable
+  // via the chip row above the photo grid.
+  eraOrder: ['Meta', 'Sabbatical', 'Community', 'Bluenose'],
+  photos: PHOTOS.map((p, i) => {
+    const cfg = configIndex.get(p.src);
+    return {
+      ...p,
+      included: cfg !== undefined,
+      order: cfg ? cfg.order : 1000 + i, // un-included photos sit at the end
+      size: cfg ? cfg.size : 'M',
+      aspect: null,
+    };
+  }),
+};
+
+const grid = document.getElementById('grid');
+const stage = document.getElementById('stage');
+const frame = document.getElementById('frame');
+
+function included() {
+  return state.photos
+    .filter(p => p.included && p.aspect != null)
+    .sort((a, b) => a.order - b.order);
+}
+
+function nextOrder() {
+  return state.photos.reduce((m, p) => p.included ? Math.max(m, p.order + 1) : m, 0);
+}
+
+// Reorder helpers — splice the dragged photo into the target position
+// and reassign sequential orders to all included photos.
+function reorderInclude(srcA, srcB, after) {
+  const list = state.photos
+    .filter(p => p.included)
+    .sort((a, b) => a.order - b.order);
+  const a = list.find(p => p.src === srcA);
+  const b = list.find(p => p.src === srcB);
+  if (!a || !b || a === b) return;
+  const without = list.filter(p => p !== a);
+  let idxB = without.indexOf(b);
+  if (after) idxB += 1;
+  without.splice(idxB, 0, a);
+  without.forEach((p, i) => { p.order = i; });
+}
+
+let draggedSrc = null;
+
+function buildGrid() {
+  grid.innerHTML = '';
+  // Sort by order (included first since they have lower numbers; excluded
+  // photos use 1000+ so they trail). Filter button narrows the visible set.
+  const filtered = state.photos
+    .filter(p => state.filter === 'all' || p.cat === state.filter)
+    .sort((a, b) => a.order - b.order);
+  for (const p of filtered) {
+    const div = document.createElement('div');
+    div.className = 'thumb' + (p.included ? ' included' : '');
+    div.innerHTML = `
+      <img src="${p.src}" alt="" draggable="false">
+      <span class="order">${p.included ? (1 + included().findIndex(x => x.src === p.src)) : ''}</span>
+      <span class="size-toggle">
+        ${['S','M','L','XL'].map(sz =>
+          `<button data-sz="${sz}" class="${p.size === sz ? 'active' : ''}">${sz}</button>`
+        ).join('')}
+      </span>
+      <span class="name">${p.name}</span>
+    `;
+    div.addEventListener('click', (e) => {
+      // Don't trigger include-toggle when clicking size buttons.
+      if (e.target.closest('.size-toggle')) return;
+      p.included = !p.included;
+      if (p.included) p.order = nextOrder();
+      buildGrid();
+      buildEraOrder();
+      render();
+    });
+    div.querySelectorAll('.size-toggle button').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        p.size = btn.dataset.sz;
+        buildGrid();
+        render();
+      });
+    });
+    // Right-click bumps to top of order. Useful for promoting a hero.
+    div.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      if (!p.included) return;
+      const minOrder = Math.min(...state.photos.filter(x => x.included).map(x => x.order));
+      p.order = minOrder - 1;
+      buildGrid();
+      render();
+    });
+
+    // Drag-drop reordering — only included photos can be dragged or
+    // dropped on. Drop position is decided by which half of the target
+    // the cursor is in (left half = before, right half = after).
+    if (p.included) {
+      div.draggable = true;
+      div.dataset.src = p.src;
+      div.addEventListener('dragstart', (e) => {
+        draggedSrc = p.src;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', p.src);
+        // Defer so the browser captures the unmodified element as the
+        // drag image before we dim it.
+        setTimeout(() => div.classList.add('dragging'), 0);
+      });
+      div.addEventListener('dragend', () => {
+        div.classList.remove('dragging');
+        grid.querySelectorAll('.drop-before, .drop-after')
+          .forEach(el => el.classList.remove('drop-before', 'drop-after'));
+        draggedSrc = null;
+      });
+      div.addEventListener('dragover', (e) => {
+        if (!draggedSrc || draggedSrc === p.src) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        const rect = div.getBoundingClientRect();
+        const after = (e.clientX - rect.left) > rect.width / 2;
+        grid.querySelectorAll('.drop-before, .drop-after')
+          .forEach(el => el.classList.remove('drop-before', 'drop-after'));
+        div.classList.add(after ? 'drop-after' : 'drop-before');
+      });
+      div.addEventListener('dragleave', () => {
+        div.classList.remove('drop-before', 'drop-after');
+      });
+      div.addEventListener('drop', (e) => {
+        if (!draggedSrc || draggedSrc === p.src) return;
+        e.preventDefault();
+        const rect = div.getBoundingClientRect();
+        const after = (e.clientX - rect.left) > rect.width / 2;
+        reorderInclude(draggedSrc, p.src, after);
+        draggedSrc = null;
+        buildGrid();
+        buildEraOrder();
+        render();
+      });
+    }
+
+    grid.appendChild(div);
+  }
+}
+
+// ---- Layout algorithms ------------------------------------------------------
+
+const FRAME_W = 1584;
+const FRAME_H = 396;
+
+function layoutStrip(photos) {
+  // Single row, full height. Justify aspects to fill width.
+  // Apply size weights as horizontal width multipliers.
+  const items = photos.map(p => ({ src: p.src, aspect: p.aspect * SIZE_WEIGHTS[p.size], rawAspect: p.aspect }));
+  const sumA = items.reduce((s, i) => s + i.aspect, 0);
+  // Each item's width = (aspect / sumA) * FRAME_W. Height = FRAME_H.
+  let x = 0;
+  return [{
+    tiles: items.map(it => {
+      const w = (it.aspect / sumA) * FRAME_W;
+      const tile = { src: it.src, x, y: 0, w, h: FRAME_H };
+      x += w;
+      return tile;
+    })
+  }];
+}
+
+function layoutJustified(photos, rows = 4) {
+  // Walk-and-justify into N rows. Sizes weights act as a per-photo aspect
+  // multiplier (so XL photos get more horizontal real estate).
+  const items = photos.map(p => ({ src: p.src, aspect: p.aspect * SIZE_WEIGHTS[p.size] }));
+  const tentativeH = FRAME_H / rows;
+  const out = [];
+  let curr = [];
+  let widthAtH = 0;
+  for (const it of items) {
+    const w = it.aspect * tentativeH;
+    curr.push({ ...it, w });
+    widthAtH += w;
+    if (widthAtH >= FRAME_W && out.length < rows) {
+      out.push({ items: curr, naturalWidth: widthAtH });
+      curr = []; widthAtH = 0;
+    }
+  }
+  if (curr.length && out.length < rows) out.push({ items: curr, naturalWidth: widthAtH });
+
+  let totalH = 0;
+  for (const r of out) {
+    r.height = tentativeH * (FRAME_W / r.naturalWidth);
+    totalH += r.height;
+  }
+  // Fit total height to FRAME_H by uniform vertical scale.
+  const vScale = FRAME_H / totalH;
+  for (const r of out) r.height *= vScale;
+
+  // Position tiles in each row.
+  let y = 0;
+  return out.map(r => {
+    let x = 0;
+    const tiles = r.items.map(it => {
+      const w = it.aspect * r.height;
+      const tile = { src: it.src, x, y, w, h: r.height };
+      x += w;
+      return tile;
+    });
+    // Final horizontal justify (rounding cleanup).
+    const sumW = tiles.reduce((s, t) => s + t.w, 0);
+    const k = FRAME_W / sumW;
+    for (const t of tiles) { t.x *= k; t.w *= k; }
+    y += r.height;
+    return { tiles };
+  });
+}
+
+function layoutHero(photos) {
+  // First photo = hero on the left at full height. Remaining photos go
+  // into a justified gallery in the right ~70% of the canvas.
+  if (photos.length === 0) return [];
+  const heroW = FRAME_W * 0.32;
+  const hero = photos[0];
+  const rest = photos.slice(1);
+  const heroTile = { src: hero.src, x: 0, y: 0, w: heroW, h: FRAME_H, isHero: true };
+  if (rest.length === 0) return [{ tiles: [heroTile] }];
+
+  // Justify the rest into 2 rows in width FRAME_W - heroW
+  const rightW = FRAME_W - heroW;
+  const items = rest.map(p => ({ src: p.src, aspect: p.aspect * SIZE_WEIGHTS[p.size] }));
+  const rows = 2;
+  const tentativeH = FRAME_H / rows;
+  const out = [];
+  let curr = [];
+  let widthAtH = 0;
+  for (const it of items) {
+    const w = it.aspect * tentativeH;
+    curr.push({ ...it, w });
+    widthAtH += w;
+    if (widthAtH >= rightW && out.length < rows) {
+      out.push({ items: curr, naturalWidth: widthAtH });
+      curr = []; widthAtH = 0;
+    }
+  }
+  if (curr.length && out.length < rows) out.push({ items: curr, naturalWidth: widthAtH });
+
+  let totalH = 0;
+  for (const r of out) {
+    r.height = tentativeH * (rightW / r.naturalWidth);
+    totalH += r.height;
+  }
+  const vScale = FRAME_H / totalH;
+  for (const r of out) r.height *= vScale;
+
+  const tiles = [heroTile];
+  let y = 0;
+  for (const r of out) {
+    let x = heroW;
+    const rowTiles = r.items.map(it => {
+      const w = it.aspect * r.height;
+      const tile = { src: it.src, x, y, w, h: r.height };
+      x += w;
+      return tile;
+    });
+    const sumW = rowTiles.reduce((s, t) => s + t.w, 0);
+    const k = rightW / sumW;
+    for (const t of rowTiles) { t.x = heroW + (t.x - heroW) * k; t.w *= k; }
+    y += r.height;
+    tiles.push(...rowTiles);
+  }
+  return [{ tiles }];
+}
+
+function layoutEras(photos) {
+  // Group by era, drive band order from state.eraOrder, then justify-pack
+  // each band's photos as a single full-width row.
+  const eras = {};
+  for (const p of photos) {
+    if (!eras[p.era]) eras[p.era] = [];
+    eras[p.era].push(p);
+  }
+  const ordered = state.eraOrder.filter(e => eras[e]);
+  if (ordered.length === 0) return [];
+
+  const bandH = FRAME_H / ordered.length;
+  const bands = ordered.map((era, idx) => {
+    // Each band's photos retain user-set size weights via aspect mult.
+    const items = eras[era].map(p => ({ src: p.src, aspect: p.aspect * SIZE_WEIGHTS[p.size] }));
+    const sumA = items.reduce((s, i) => s + i.aspect, 0);
+    let x = 0;
+    const tiles = items.map(it => {
+      const w = (it.aspect / sumA) * FRAME_W;
+      const tile = { src: it.src, x, y: idx * bandH, w, h: bandH };
+      x += w;
+      return tile;
+    });
+    return { tiles };
+  });
+  return bands;
+}
+
+function render() {
+  stage.innerHTML = '';
+
+  const photos = included();
+  if (photos.length === 0) return;
+
+  let bands;
+  switch (state.layout) {
+    case 'strip':     bands = layoutStrip(photos);     break;
+    case 'justified': bands = layoutJustified(photos); break;
+    case 'hero':      bands = layoutHero(photos);      break;
+    case 'eras':      bands = layoutEras(photos);      break;
+    default:          bands = layoutJustified(photos);
+  }
+
+  for (const band of bands) {
+    for (const t of band.tiles) {
+      const div = document.createElement('div');
+      div.className = 'tile' + (t.isHero ? ' hero' : '');
+      div.style.left = t.x + 'px';
+      div.style.top = t.y + 'px';
+      div.style.width = t.w + 'px';
+      div.style.height = t.h + 'px';
+      const img = document.createElement('img');
+      img.src = t.src; img.draggable = false;
+      div.appendChild(img);
+      stage.appendChild(div);
+    }
+  }
+}
+
+// Render era reorder chips for the Era Bands layout.
+function buildEraOrder() {
+  const container = document.getElementById('eraOrder');
+  // Clear existing chips, keep the label.
+  container.querySelectorAll('.era-chip').forEach(el => el.remove());
+  // Only show eras that have at least one included photo.
+  const present = new Set();
+  for (const p of state.photos) {
+    if (p.included) present.add(p.era);
+  }
+  const visible = state.eraOrder.filter(e => present.has(e));
+  visible.forEach((era, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'era-chip';
+    chip.innerHTML = `
+      <span class="name">${era}</span>
+      <span class="pos">${i + 1}/${visible.length}</span>
+      <button data-dir="up" ${i === 0 ? 'disabled' : ''} title="Move up">↑</button>
+      <button data-dir="down" ${i === visible.length - 1 ? 'disabled' : ''} title="Move down">↓</button>
+    `;
+    chip.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = state.eraOrder.indexOf(era);
+        if (idx < 0) return;
+        const dir = btn.dataset.dir === 'up' ? -1 : 1;
+        // Find the next visible era in the requested direction so we
+        // skip over eras that aren't currently in the band stack.
+        let target = idx + dir;
+        while (target >= 0 && target < state.eraOrder.length && !present.has(state.eraOrder[target])) {
+          target += dir;
+        }
+        if (target < 0 || target >= state.eraOrder.length) return;
+        const moved = state.eraOrder.splice(idx, 1)[0];
+        state.eraOrder.splice(target, 0, moved);
+        buildEraOrder();
+        render();
+      });
+    });
+    container.appendChild(chip);
+  });
+}
+
+// ---- Wire-up ----------------------------------------------------------------
+
+document.querySelectorAll('.layout-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.layout-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    state.layout = card.dataset.layout;
+    document.body.classList.toggle('layout-eras', state.layout === 'eras');
+    buildEraOrder();
+    render();
+  });
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.filter = btn.dataset.filter;
+    buildGrid();
+  });
+});
+
+document.getElementById('select-all').addEventListener('click', () => {
+  state.photos.forEach((p, i) => { p.included = true; p.order = i; });
+  buildGrid(); buildEraOrder(); render();
+});
+document.getElementById('select-none').addEventListener('click', () => {
+  state.photos.forEach(p => { p.included = false; });
+  buildGrid(); buildEraOrder(); render();
+});
+document.getElementById('copy-config').addEventListener('click', () => {
+  const config = {
+    layout: state.layout,
+    photos: included().map(p => ({ src: p.src, name: p.name, size: p.size }))
+  };
+  navigator.clipboard.writeText(JSON.stringify(config, null, 2)).then(() => {
+    const btn = document.getElementById('copy-config');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy config', 1500);
+  });
+});
+
+// Scale-to-fit for the preview frame.
+function fit() {
+  const wrap = document.querySelector('.frame-wrap');
+  const wrapW = wrap.clientWidth;
+  if (wrapW < 1584) {
+    const k = wrapW / 1584;
+    frame.style.transform = `scale(${k})`;
+    wrap.style.height = (396 * k) + 'px';
+  } else {
+    frame.style.transform = '';
+    wrap.style.height = '';
+  }
+}
+window.addEventListener('resize', fit);
+fit();
+
+// Sync the active layout card + body class with DEFAULT_CONFIG.layout
+// so the user lands directly in the curated arrangement on first paint.
+document.querySelectorAll('.layout-card').forEach(c => c.classList.remove('active'));
+const activeCard = document.querySelector(`.layout-card[data-layout="${state.layout}"]`);
+if (activeCard) activeCard.classList.add('active');
+document.body.classList.toggle('layout-eras', state.layout === 'eras');
+
+// Load aspects for all photos, then render.
+async function loadAll() {
+  await Promise.all(state.photos.map(p => new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => { p.aspect = img.naturalWidth / img.naturalHeight; resolve(); };
+    img.onerror = () => { p.aspect = 1.5; resolve(); };
+    img.src = p.src;
+  })));
+  buildGrid();
+  buildEraOrder();
+  render();
+}
+loadAll();
+</script>
+</body>
+</html>

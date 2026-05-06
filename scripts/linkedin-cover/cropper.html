@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Penguin Cropper — Variant B Live Adjust</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;800&display=swap');
+  :root {
+    --canvas: #1c1f1a;
+    --canvas-fg: #b8b5ad;
+    --canvas-fg-strong: #ece9e2;
+    --canvas-fg-muted: #7a7770;
+    --rule: rgba(236,233,226,0.20);
+    --accent: #3a6b4a;
+  }
+  html, body { margin: 0; padding: 0; background: var(--canvas); color: var(--canvas-fg-strong); font-family: Georgia, "Times New Roman", serif; }
+  body { padding: 32px 40px 64px; }
+
+  .header {
+    max-width: 1400px; margin: 0 auto 32px;
+  }
+  .eyebrow {
+    font: 800 11px "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.36em; text-transform: uppercase; color: var(--canvas-fg-muted);
+    margin-bottom: 14px;
+  }
+  .title { font: 400 28px Georgia; margin: 0 0 10px; }
+  .subtitle { font: italic 400 15px Georgia; color: var(--canvas-fg); max-width: 800px; margin: 0; }
+
+  .frame-wrap {
+    position: relative;
+    margin: 0 auto 28px;
+    max-width: 1400px;
+  }
+  .frame {
+    width: 1584px; height: 396px;
+    position: relative; overflow: hidden;
+    background: #000;
+    transform-origin: top left;
+    cursor: grab;
+    user-select: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  }
+  .frame.dragging { cursor: grabbing; }
+  .frame img.photo {
+    position: absolute;
+    pointer-events: none;
+    filter: grayscale(0.18) contrast(1.02);
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .vignette {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 380px 380px at 12% 100%, rgba(28,31,26,0.65), rgba(28,31,26,0) 70%),
+      linear-gradient(90deg, rgba(28,31,26,0) 65%, rgba(28,31,26,0.45) 92%, rgba(28,31,26,0.55) 100%);
+  }
+  /* Right-anchored caption: tagline on top, role line underneath. */
+  .caption-overlay {
+    position: absolute; right: 60px; top: 60px; bottom: 60px;
+    display: flex; flex-direction: column; justify-content: center;
+    text-align: right; max-width: 540px;
+    pointer-events: none;
+  }
+  .caption-overlay .lede {
+    font: italic 400 30px Georgia; line-height: 1.24; color: #ece9e2;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.85), 0 0 22px rgba(0,0,0,0.55);
+  }
+  .caption-overlay .eb {
+    font: 800 13px "JetBrains Mono"; letter-spacing: 0.36em; text-transform: uppercase;
+    color: #ece9e2; text-shadow: 0 1px 8px rgba(0,0,0,0.85);
+    margin-top: 16px;
+  }
+  .caption-overlay .rule {
+    width: 64px; height: 1.5px; background: var(--accent);
+    margin: 18px 0 0 auto;
+  }
+  .ghost-circle {
+    position: absolute;
+    width: 155px; height: 155px;
+    left: 30px;
+    bottom: -30px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,181,173,0.95), rgba(184,181,173,0.55) 70%, rgba(184,181,173,0.25) 100%);
+    border: 4px solid var(--canvas);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--canvas);
+    font: 800 11px "JetBrains Mono"; letter-spacing: 0.2em;
+  }
+  .ghost-circle::after {
+    content: "PROFILE"; opacity: 0.7;
+  }
+
+  .picker {
+    max-width: 1400px; margin: 0 auto 28px;
+    border: 1px solid var(--rule);
+    background: #0f110d;
+  }
+  .picker h3 {
+    font: 800 11px "JetBrains Mono"; letter-spacing: 0.36em; text-transform: uppercase;
+    color: var(--canvas-fg); margin: 0; padding: 14px 20px;
+    border-bottom: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .picker .filters {
+    display: flex; gap: 8px;
+  }
+  .filter-btn {
+    background: transparent; border: 1px solid var(--rule); color: var(--canvas-fg-muted);
+    padding: 4px 10px; cursor: pointer;
+    font: 800 9.5px "JetBrains Mono"; letter-spacing: 0.36em; text-transform: uppercase;
+  }
+  .filter-btn.active { color: var(--canvas-fg-strong); border-color: var(--canvas-fg); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+    padding: 14px;
+    max-height: 360px; overflow-y: auto;
+  }
+  .thumb {
+    position: relative;
+    aspect-ratio: 4 / 1;
+    background: #060704;
+    border: 1px solid transparent;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .thumb img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: grayscale(0.18) contrast(1.02);
+  }
+  .thumb .name {
+    position: absolute; left: 4px; bottom: 2px;
+    font: 800 8.5px "JetBrains Mono"; letter-spacing: 0.2em; color: #ece9e2;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+    pointer-events: none;
+  }
+  .thumb:hover { border-color: var(--canvas-fg); }
+  .thumb.active { border-color: var(--accent); border-width: 2px; }
+
+  .controls {
+    max-width: 1400px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    padding: 24px;
+    border: 1px solid var(--rule);
+    background: #0f110d;
+  }
+  .controls h3 {
+    font: 800 11px "JetBrains Mono"; letter-spacing: 0.36em; text-transform: uppercase;
+    color: var(--canvas-fg); margin: 0 0 16px;
+  }
+  .row { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; font: 400 14px "JetBrains Mono"; color: var(--canvas-fg); }
+  .row label { width: 90px; color: var(--canvas-fg-muted); text-transform: uppercase; letter-spacing: 0.2em; font-size: 11px; }
+  .row input[type=range] { flex: 1; }
+  .row input[type=text] {
+    flex: 1;
+    background: #060704; color: var(--canvas-fg-strong);
+    border: 1px solid var(--rule); padding: 8px 10px;
+    font: 400 13px Georgia;
+  }
+  .row .value { width: 110px; text-align: right; color: var(--canvas-fg-strong); }
+  .toggle-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  button {
+    background: transparent; border: 1px solid var(--rule); color: var(--canvas-fg);
+    padding: 10px 18px; cursor: pointer;
+    font: 800 11px "JetBrains Mono"; letter-spacing: 0.36em; text-transform: uppercase;
+  }
+  button:hover { color: var(--canvas-fg-strong); border-color: var(--canvas-fg); }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.primary:hover { background: #4a8060; border-color: #4a8060; }
+  .css-out {
+    grid-column: 1 / -1;
+    margin-top: 16px;
+    padding: 16px;
+    background: #060704;
+    border: 1px solid var(--rule);
+    font: 400 13px "JetBrains Mono"; color: var(--canvas-fg-strong);
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .help { font: italic 400 13px Georgia; color: var(--canvas-fg); margin: 0 0 12px; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="eyebrow">Variant B Cropper · Photo + Caption</div>
+    <h1 class="title">Pick a photo, dial in the crop, edit the caption</h1>
+    <p class="subtitle">Click a thumbnail below to swap the photo (resets position). Drag and scroll-wheel to pan/zoom in the frame. Sliders for fine control. Edit caption text directly. When it lands, hit Copy CSS and paste back.</p>
+  </div>
+
+  <div class="picker">
+    <h3>
+      Photos
+      <span class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="travel">Travel</button>
+        <button class="filter-btn" data-filter="summary">Summary</button>
+        <button class="filter-btn" data-filter="meta">Meta era</button>
+        <button class="filter-btn" data-filter="community">Community</button>
+      </span>
+    </h3>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="frame-wrap">
+    <div class="frame" id="frame">
+      <img id="photo" class="photo" src="../../media/sabbatical-travel/travel-09.jpeg" draggable="false">
+      <div class="vignette" id="vignette"></div>
+      <div class="caption-overlay" id="caption">
+        <div class="lede" id="capLede">Building for humans<br>in an agentic world.</div>
+        <div class="eb" id="capEyebrow">Builder (ex-FB) · Explorer · Photographer</div>
+        <div class="rule"></div>
+      </div>
+      <div class="ghost-circle" id="ghost"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div>
+      <h3>Crop</h3>
+      <p class="help">Drag with mouse to pan, scroll wheel over frame to zoom. Or use sliders.</p>
+      <div class="row">
+        <label>Width</label>
+        <input id="width" type="range" min="800" max="3500" step="10" value="1860">
+        <span class="value" id="widthVal">1860px</span>
+      </div>
+      <div class="row">
+        <label>Left</label>
+        <input id="left" type="range" min="-2000" max="200" step="2" value="-180">
+        <span class="value" id="leftVal">-180px</span>
+      </div>
+      <div class="row">
+        <label>Top</label>
+        <input id="top" type="range" min="-2000" max="200" step="2" value="-130">
+        <span class="value" id="topVal">-130px</span>
+      </div>
+      <div class="toggle-row">
+        <button id="reset">Reset crop</button>
+        <button id="copy" class="primary">Copy CSS</button>
+      </div>
+    </div>
+
+    <div>
+      <h3>Caption</h3>
+      <p class="help">Eyebrow is the small uppercase line. Lede is the italic line below. Use &lt;br&gt; for a line break in the lede.</p>
+      <div class="row">
+        <label>Eyebrow</label>
+        <input id="capEyebrowInput" type="text" value="Builder (ex-FB) · Explorer · Photographer">
+      </div>
+      <div class="row">
+        <label>Lede</label>
+        <input id="capLedeInput" type="text" value="Building for humans<br>in an agentic world.">
+      </div>
+      <div class="toggle-row">
+        <button id="toggleVignette">Vignette: on</button>
+        <button id="toggleCaption">Caption: on</button>
+        <button id="toggleGhost">Profile circle: on</button>
+        <button id="toggleScale">Scale to fit: on</button>
+      </div>
+    </div>
+
+    <div class="css-out" id="cssOut"></div>
+  </div>
+
+<script>
+const PHOTOS = [
+  // Travel + sabbatical photography
+  { src: '../../media/sabbatical-travel/travel-09.jpeg', name: 'penguins',     cat: 'travel',    cap: { eb: 'Builder (ex-FB) · Photographer · Explorer', ld: 'Building for humans in an agentic world.' } },
+  { src: '../../media/sabbatical-travel/travel-15.jpeg', name: 'penguin trek', cat: 'travel',    cap: { eb: 'Antarctica · 2024',                   ld: 'Lone trek in the world&rsquo;s largest desert.' } },
+  { src: '../../media/sabbatical-travel/travel-13.jpeg', name: 'pyramids',     cat: 'travel',    cap: { eb: 'Antarctica · 2024',                   ld: 'Pyramids in the world&rsquo;s largest desert.' } },
+  { src: '../../media/sabbatical-travel/travel-06.jpeg', name: 'icebergs',     cat: 'travel',    cap: { eb: 'Antarctica · 2024',                   ld: 'Mamma iceberg, baby iceberg.' } },
+  { src: '../../media/sabbatical-travel/travel-22.jpeg', name: 'silverback',   cat: 'travel',    cap: { eb: 'Volcanoes · Rwanda · 2025',           ld: 'Silverback stare.' } },
+  { src: '../../media/sabbatical-travel/travel-23.jpeg', name: 'gorilla',      cat: 'travel',    cap: { eb: 'Volcanoes · Rwanda · 2025',           ld: 'Curious child.' } },
+  { src: '../../media/sabbatical-travel/travel-04.jpeg', name: 'lions',        cat: 'travel',    cap: { eb: 'Nairobi · 2025',                       ld: 'A rainy moment after a failed hunt.' } },
+  { src: '../../media/sabbatical-travel/travel-05.jpeg', name: 'flamingos',    cat: 'travel',    cap: { eb: 'Lake Nakuru · Kenya',                  ld: 'A journey.' } },
+  { src: '../../media/sabbatical-travel/travel-10.jpeg', name: 'koala',        cat: 'travel',    cap: { eb: 'Sydney · 2025',                        ld: 'Sheltering her baby in the rain.' } },
+  { src: '../../media/sabbatical-travel/travel-25.jpeg', name: 'finch',        cat: 'travel',    cap: { eb: 'Galápagos · 2025',                     ld: 'Darwin&rsquo;s finch.' } },
+  { src: '../../media/sabbatical-travel/travel-26.jpeg', name: 'iguanas',      cat: 'travel',    cap: { eb: 'Galápagos · 2025',                     ld: 'Recursive reptiles.' } },
+  { src: '../../media/sabbatical-travel/travel-07.jpeg', name: 'chimp',        cat: 'travel',    cap: { eb: 'Ngamba Island · Uganda',               ld: 'A plea. Jane Goodall Sanctuary.' } },
+  { src: '../../media/sabbatical-travel/travel-21.jpeg', name: 'river otters', cat: 'travel',    cap: { eb: 'Amazon · Peru',                        ld: 'Lobos del rio.' } },
+  { src: '../../media/sabbatical-travel/travel-27.jpeg', name: 'salar sunrise',cat: 'travel',    cap: { eb: 'Salar de Uyuni · Bolivia',             ld: '100% sunrise.' } },
+  { src: '../../media/sabbatical-travel/travel-08.jpeg', name: 'machu picchu', cat: 'travel',    cap: { eb: 'Machu Picchu · Peru',                  ld: 'Built before the Spaniards arrived.' } },
+  { src: '../../media/sabbatical-travel/travel-12.jpeg', name: 'parthenon',    cat: 'travel',    cap: { eb: 'Athens · Greece',                      ld: 'Parthenon.' } },
+  { src: '../../media/sabbatical-travel/travel-18.jpeg', name: 'abu simbel',   cat: 'travel',    cap: { eb: 'Abu Simbel · Egypt',                   ld: 'A tourist&rsquo;s key to the temple.' } },
+  { src: '../../media/sabbatical-travel/travel-19.jpeg', name: 'tokyo neon',   cat: 'travel',    cap: { eb: 'Tokyo · Japan',                        ld: 'Neon nights.' } },
+  { src: '../../media/sabbatical-travel/travel-20.jpeg', name: 'sakura',       cat: 'travel',    cap: { eb: 'Kyoto · Japan',                        ld: 'The creation of sakura.' } },
+  { src: '../../media/sabbatical-travel/travel-28.jpeg', name: 'dubai',        cat: 'travel',    cap: { eb: 'Dubai · UAE',                          ld: 'Shadows in the sky.' } },
+  { src: '../../media/sabbatical-travel/travel-11.jpeg', name: 'armenia',      cat: 'travel',    cap: { eb: 'Yerevan · Armenia',                    ld: 'Motherland.' } },
+  { src: '../../media/sabbatical-travel/travel-14.jpeg', name: 'maipo',        cat: 'travel',    cap: { eb: 'Cajon del Maipo · Chile',              ld: '' } },
+  { src: '../../media/sabbatical-travel/travel-16.jpeg', name: 'mammoth caves',cat: 'travel',    cap: { eb: 'Mammoth Caves · Kentucky',             ld: 'Caving for Christmas.' } },
+  { src: '../../media/sabbatical-travel/travel-17.jpeg', name: 'hummingbird',  cat: 'travel',    cap: { eb: 'Santiago · Chile',                     ld: 'World&rsquo;s largest hummingbird.' } },
+  { src: '../../media/sabbatical-travel/travel-24.jpeg', name: 'splash',       cat: 'travel',    cap: { eb: 'Sydney · Australia',                   ld: 'Splash!' } },
+
+  // Summary carousel
+  { src: '../../media/summary/portrait.jpg',             name: 'portrait',     cat: 'summary',   cap: { eb: 'San Francisco · 2026',                 ld: 'Multitudes.' } },
+  { src: '../../media/summary/antarctica.jpg',           name: 'submarine',    cat: 'summary',   cap: { eb: 'Antarctic Peninsula',                  ld: 'Submarine expedition.' } },
+  { src: '../../media/summary/peru.jpg',                 name: 'machu',        cat: 'summary',   cap: { eb: 'Machu Picchu · Peru',                  ld: 'Knots that ran an empire.' } },
+  { src: '../../media/summary/redwoods.jpg',             name: 'redwoods',     cat: 'summary',   cap: { eb: 'Redwood NP · California',               ld: 'Nature&rsquo;s skyscrapers.' } },
+  { src: '../../media/summary/bolivia.jpg',              name: 'salar',        cat: 'summary',   cap: { eb: 'Salar de Uyuni · Bolivia',             ld: '' } },
+  { src: '../../media/summary/lemurs_madagascar.jpg',    name: 'lemurs',       cat: 'summary',   cap: { eb: 'Kirindy · Madagascar',                 ld: 'Lemurs saying hello.' } },
+  { src: '../../media/summary/egypt.jpg',                name: 'valley kings', cat: 'summary',   cap: { eb: 'Luxor · Egypt',                        ld: 'Communication in the Valley of Kings.' } },
+  { src: '../../media/summary/self_reflection.jpg',      name: 'self',         cat: 'summary',   cap: { eb: 'Salar de Uyuni · Bolivia',             ld: 'Self reflection.' } },
+
+  // Meta era
+  { src: '../../media/summary/3PFC_LATAM_2019.jpg',      name: '3pfc latam',   cat: 'meta',      cap: { eb: '3PFC · LATAM · 2019',                  ld: 'Meeting the journalists who used the platform we built.' } },
+  { src: '../../media/summary/3PFC_LATAM_2019_TEAM.JPG', name: '3pfc team',    cat: 'meta',      cap: { eb: '3PFC · LATAM · 2019',                  ld: 'The team behind the work.' } },
+  { src: '../../media/meta-bulletin-promode/pro-mode-hero.jpeg', name: 'pro mode', cat: 'meta',  cap: { eb: 'Facebook Creators · 2023',             ld: 'Professional Mode for Facebook.' } },
+  { src: '../../media/meta-bulletin-promode/bulletin.jpeg',     name: 'bulletin',  cat: 'meta',  cap: { eb: 'Bulletin · 2021',                       ld: 'Independent-creator newsletters.' } },
+  { src: '../../media/meta-forecast/forecast-web.png',          name: 'forecast',  cat: 'meta',  cap: { eb: 'forecastapp.net · 2020',                ld: '0 → 1 social prediction markets.' } },
+  { src: '../../media/meta-forecast/forecast-us-canada.jpeg',   name: 'forecast launch', cat: 'meta', cap: { eb: 'Forecast · NPE · 2020',                 ld: 'US + Canada launch.' } },
+  { src: '../../media/meta-forecast/Election_Forecasts.jpg',    name: 'election forecasts', cat: 'meta', cap: { eb: 'forecastapp.net · 2020',                ld: 'Election prediction surface.' } },
+  { src: '../../media/meta-misinformation/fact-check-ui-1.jpeg',name: 'fact check',cat: 'meta',  cap: { eb: 'Fact Checking · 2018&ndash;2020',       ld: 'Still running today.' } },
+  { src: '../../media/meta-misinformation/fact-check-labels.jpg',name: 'fact check labels',cat: 'meta', cap: { eb: 'Fact Checking · 2018&ndash;2020',  ld: 'Warning labels in production.' } },
+
+  // Community
+  { src: '../../media/sf-data-mining/sf-data-mining-talk.jpg',  name: 'sfdm talk', cat: 'community', cap: { eb: 'SF Data Mining · 2014',              ld: 'Bay Area&rsquo;s biggest ML community at the time.' } },
+  { src: '../../media/d3-unconf/d3-unconf.jpg',                 name: 'd3 unconf', cat: 'community', cap: { eb: 'd3.unconf() · 2014',                  ld: 'The d3.js community in person.' } },
+];
+
+const grid = document.getElementById('grid');
+const frame = document.getElementById('frame');
+const photo = document.getElementById('photo');
+const vignette = document.getElementById('vignette');
+const caption = document.getElementById('caption');
+const ghost = document.getElementById('ghost');
+const widthSl = document.getElementById('width');
+const leftSl = document.getElementById('left');
+const topSl = document.getElementById('top');
+const widthVal = document.getElementById('widthVal');
+const leftVal = document.getElementById('leftVal');
+const topVal = document.getElementById('topVal');
+const cssOut = document.getElementById('cssOut');
+const capEb = document.getElementById('capEyebrow');
+const capLd = document.getElementById('capLede');
+const capEbInput = document.getElementById('capEyebrowInput');
+const capLdInput = document.getElementById('capLedeInput');
+
+function buildGrid(filter) {
+  grid.innerHTML = '';
+  PHOTOS.forEach((p, i) => {
+    if (filter !== 'all' && p.cat !== filter) return;
+    const div = document.createElement('div');
+    div.className = 'thumb' + (p.src === photo.src.replace(location.origin, '').replace(/^.*\.\.\/\.\.\//, '../../') ? ' active' : '');
+    div.dataset.idx = i;
+    div.innerHTML = `<img src="${p.src}" alt=""><span class="name">${p.name}</span>`;
+    div.addEventListener('click', () => selectPhoto(p));
+    grid.appendChild(div);
+  });
+}
+
+let currentPhoto = PHOTOS[0]; // default to penguins
+const DEFAULTS = { width: 1860, left: -180, top: -130 };
+let state = { ...DEFAULTS, src: currentPhoto.src };
+
+// Canonical brand caption from media/og.png — applied to every photo
+// so the LinkedIn cover voice is consistent regardless of which image
+// is showing. The per-photo `cap` data on PHOTOS is kept as a fallback
+// for future use; not currently rendered.
+const BRAND_EYEBROW = 'Builder (ex-FB) · Explorer · Photographer';
+const BRAND_LEDE    = 'Building for humans<br>in an agentic world.';
+
+function selectPhoto(p) {
+  currentPhoto = p;
+  state.src = p.src;
+  // Reset crop so the new photo starts fresh; user pans from there.
+  state.width = DEFAULTS.width;
+  state.left = DEFAULTS.left;
+  state.top = DEFAULTS.top;
+  photo.src = p.src;
+  // Caption stays on the canonical brand line; user can override below.
+  capEbInput.value = BRAND_EYEBROW;
+  capLdInput.value = BRAND_LEDE;
+  capEb.innerHTML = BRAND_EYEBROW;
+  capLd.innerHTML = BRAND_LEDE;
+  apply();
+  // re-render grid to update active state
+  const filter = document.querySelector('.filter-btn.active').dataset.filter;
+  buildGrid(filter);
+}
+
+function apply() {
+  photo.style.width = state.width + 'px';
+  photo.style.left = state.left + 'px';
+  photo.style.top = state.top + 'px';
+  widthSl.value = state.width;
+  leftSl.value = state.left;
+  topSl.value = state.top;
+  widthVal.textContent = state.width + 'px';
+  leftVal.textContent = state.left + 'px';
+  topVal.textContent = state.top + 'px';
+  cssOut.textContent =
+    '/* Photo: ' + state.src + ' */\n' +
+    '.photo {\n' +
+    '  position: absolute;\n' +
+    '  left: ' + state.left + 'px; top: ' + state.top + 'px;\n' +
+    '  width: ' + state.width + 'px; height: auto;\n' +
+    '  filter: grayscale(0.18) contrast(1.02);\n' +
+    '}\n\n' +
+    '/* Caption */\n' +
+    '.eyebrow: ' + capEbInput.value + '\n' +
+    '.lede:    ' + capLdInput.value;
+}
+apply();
+
+widthSl.addEventListener('input', () => { state.width = +widthSl.value; apply(); });
+leftSl.addEventListener('input', () => { state.left = +leftSl.value; apply(); });
+topSl.addEventListener('input', () => { state.top = +topSl.value; apply(); });
+
+capEbInput.addEventListener('input', () => { capEb.innerHTML = capEbInput.value; apply(); });
+capLdInput.addEventListener('input', () => { capLd.innerHTML = capLdInput.value; apply(); });
+
+document.getElementById('reset').addEventListener('click', () => {
+  state = { ...DEFAULTS, src: state.src };
+  apply();
+});
+document.getElementById('copy').addEventListener('click', () => {
+  navigator.clipboard.writeText(cssOut.textContent).then(() => {
+    const btn = document.getElementById('copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy CSS', 1500);
+  });
+});
+
+// Filters
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    buildGrid(btn.dataset.filter);
+  });
+});
+
+// Drag-to-pan
+let dragging = false;
+let startMX = 0, startMY = 0;
+let startLeft = 0, startTop = 0;
+function frameScale() {
+  const rect = frame.getBoundingClientRect();
+  return rect.width / 1584;
+}
+frame.addEventListener('mousedown', (e) => {
+  dragging = true;
+  startMX = e.clientX; startMY = e.clientY;
+  startLeft = state.left; startTop = state.top;
+  frame.classList.add('dragging');
+});
+window.addEventListener('mousemove', (e) => {
+  if (!dragging) return;
+  const k = frameScale() || 1;
+  const dx = (e.clientX - startMX) / k;
+  const dy = (e.clientY - startMY) / k;
+  state.left = Math.round(startLeft + dx);
+  state.top = Math.round(startTop + dy);
+  apply();
+});
+window.addEventListener('mouseup', () => { dragging = false; frame.classList.remove('dragging'); });
+
+// Wheel-to-zoom
+frame.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const k = frameScale() || 1;
+  const rect = frame.getBoundingClientRect();
+  const cx = (e.clientX - rect.left) / k;
+  const cy = (e.clientY - rect.top) / k;
+  const px = (cx - state.left) / state.width;
+  const factor = Math.exp(-e.deltaY * 0.001);
+  const newW = Math.max(800, Math.min(4000, state.width * factor));
+  // intrinsic ratio is per-photo — compute from rendered DOM
+  const intrinsicH = photo.naturalHeight && photo.naturalWidth
+    ? photo.naturalHeight / photo.naturalWidth
+    : 0.6664; // fallback
+  const oldH = state.width * intrinsicH;
+  const newH = newW * intrinsicH;
+  const py = (cy - state.top) / oldH;
+  state.left = Math.round(cx - px * newW);
+  state.top = Math.round(cy - py * newH);
+  state.width = Math.round(newW);
+  apply();
+}, { passive: false });
+
+// Toggles
+const toggleEl = (btn, target) => {
+  let isOn = true;
+  btn.addEventListener('click', () => {
+    isOn = !isOn;
+    target.style.display = isOn ? '' : 'none';
+    btn.textContent = btn.textContent.replace(/(on|off)$/, isOn ? 'on' : 'off');
+  });
+};
+toggleEl(document.getElementById('toggleVignette'), vignette);
+toggleEl(document.getElementById('toggleCaption'), caption);
+toggleEl(document.getElementById('toggleGhost'), ghost);
+
+// Scale to fit
+let scaleToFit = true;
+function fit() {
+  const wrap = document.querySelector('.frame-wrap');
+  if (!scaleToFit) {
+    frame.style.transform = '';
+    wrap.style.height = '';
+    return;
+  }
+  const wrapW = wrap.clientWidth;
+  if (wrapW < 1584) {
+    const k = wrapW / 1584;
+    frame.style.transform = `scale(${k})`;
+    wrap.style.height = (396 * k) + 'px';
+  } else {
+    frame.style.transform = '';
+    wrap.style.height = '';
+  }
+}
+window.addEventListener('resize', fit);
+fit();
+document.getElementById('toggleScale').addEventListener('click', () => {
+  scaleToFit = !scaleToFit;
+  document.getElementById('toggleScale').textContent = 'Scale to fit: ' + (scaleToFit ? 'on' : 'off');
+  fit();
+});
+
+buildGrid('all');
+</script>
+</body>
+</html>
