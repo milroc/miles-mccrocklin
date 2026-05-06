@@ -2,7 +2,7 @@
   "contact_information": {
     "name": "Miles Kendrick McCrocklin",
     "address": "San Francisco, CA",
-    "website": "http://miles.mccrockl.in",
+    "website": "https://miles.mccrockl.in",
     "email": "miles@mccrockl.in",
     "phone": "+1 (561) 20M-ILES",
     "linkedin": "https://www.linkedin.com/in/miles-mccrocklin-7b635127",
@@ -108,11 +108,11 @@
   "experience": [
     {
       "company": "Sabbatical",
-      "role": "Builder · Operator · Artist",
+      "role": "Builder · Artist · Explorer",
       "location": "Global",
       "start_date": "May 2024",
       "end_date": "Present",
-      "summary": "Technologist first, artist and explorer second. After a decade at Meta, I left in 2024 to live the second one for a while. Came back to the first in 2026.",
+      "summary": "Built products at Meta for a decade. Stepped away in 2024 to explore & make art. Back to building in 2026.",
       "tracks": [
         {
           "period": "Mar 2026 – Present",
