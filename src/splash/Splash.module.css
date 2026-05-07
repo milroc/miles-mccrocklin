@@ -554,12 +554,13 @@
     margin-bottom: 32px;
   }
   /* Single-column stack on mobile. Reset the desktop row spans so each
-     tile takes its natural row position in source order. */
+     tile takes its natural row position in source order. Tiles fill
+     the full viewport width minus the .root side padding. */
   .tiles {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
     gap: 28px;
-    max-width: 380px;
+    max-width: none;
     align-items: stretch;
     flex: 0 0 auto;
     min-height: 0;
