@@ -53,6 +53,13 @@ without prior written permission.
     bullets, taglines, captions, project descriptions, achievements,
     reviews, and any other authored text — and any other JSON or text
     files containing authored prose.
+  - Personal narrative data files that encode my own life and travel
+    history, including data/timeline.json (where I've lived and
+    visited, with dates), data/journey.json (the derived waypoint /
+    arc representation of that timeline), and data/photo-atlas.json
+    (the curated mapping of my photographs to countries, albums, and
+    layouts). These are facts about me — the selection, ordering,
+    captioning, and presentation are authored work, not raw data.
   - Long-form documentation authored for this project: README.md,
     DESIGN.md, CLAUDE.md, and similar.
 
@@ -61,6 +68,10 @@ embedded YouTube/Facebook videos, photos credited to other
 photographers) remain the property of their respective owners and are
 included here under fair use or with permission. Nothing in this
 license grants any rights to those works.
+
+The file data/world-countries-110m.json is derived from Natural Earth
+1:110m country boundaries (https://www.naturalearthdata.com/), which
+is in the public domain. It is not covered by the reservation above.
 
 To request permission for any use beyond what's allowed above, contact
 miles@mccrockl.in.

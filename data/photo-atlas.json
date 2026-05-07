@@ -1,0 +1,1367 @@
+[
+  {
+    "country": "Antarctica",
+    "country_slug": "antarctica",
+    "render_kind": "flat",
+    "lat": -78,
+    "lng": 0,
+    "grid": {
+      "rows": 2,
+      "cols": 2
+    },
+    "image": "media/portfolio/antarctica.jpg",
+    "albums": [
+      {
+        "title": "Antarctica - Penguins",
+        "url": "https://milesmccrocklin.myportfolio.com/antarctica-penguins",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/f106ff50-e501-4b6c-bd40-c25da26837b6_rwc_182x0x1820x1365x1920.jpg?h=a2375baf1ebaa28cc7f14e4b7197cf62"
+      },
+      {
+        "title": "Antarctica - Glaciers",
+        "url": "https://milesmccrocklin.myportfolio.com/antarctica-glaciers",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/e69beda4-0838-4631-86e8-2abd038362f5_carw_4x3x5120.jpg?h=858cfd87602e37bc69c1d0b2f6e2238f"
+      },
+      {
+        "title": "Antarctica - Otherwildlife",
+        "url": "https://milesmccrocklin.myportfolio.com/antarctica-otherwildlife-1",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/d9add4cd-c043-4d9a-9ba8-0d558e27ee63_carw_4x3x5120.jpg?h=1c5e5da0b1fb14dbd1fd8a6bca6f092c"
+      },
+      {
+        "title": "Antarctica - Everything else",
+        "url": "https://milesmccrocklin.myportfolio.com/antarctica-everything-else-1",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/9433cd7e-8f1c-4062-bf7c-36f7cde29f9a_carw_4x3x5120.jpg?h=2c8427776c3a17f3972e59b0dd149d95"
+      }
+    ]
+  },
+  {
+    "country": "Argentina",
+    "country_slug": "argentina",
+    "render_kind": "polygon",
+    "image": "media/portfolio/argentina.jpg",
+    "primary_album": {
+      "title": "Buenos Aires",
+      "url": "https://milesmccrocklin.myportfolio.com/buenos-aires",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/6a539eea-a8cd-4525-aaa1-c866bbee8c02_carw_4x3x5120.jpg?h=de7e9e5e73bd30260e264b8bc4c93487"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Armenia",
+    "country_slug": "armenia",
+    "render_kind": "polygon",
+    "image": "media/portfolio/armenia.jpg",
+    "primary_album": {
+      "title": "Armenia",
+      "url": "https://milesmccrocklin.myportfolio.com/armenia",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/d8c5bf90-bab2-40ab-94a6-920bb97b5f31_carw_4x3x5120.jpg?h=29f221e6aa46cdefbc51174afe076729"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Australia",
+    "country_slug": "australia",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 3,
+      "cols": 3
+    },
+    "image": "media/portfolio/australia.jpg",
+    "albums": [
+      {
+        "title": "Sydney",
+        "url": "https://milesmccrocklin.myportfolio.com/sydney",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/0b3d8d46-8aea-4f83-8ee5-45472ecbfe73_carw_4x3x5120.jpg?h=2402a654be99b5605ae3b704c9dc909b"
+      },
+      {
+        "title": "Toranga Zoo",
+        "url": "https://milesmccrocklin.myportfolio.com/toranga-zoo",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/3733507c-999b-4fd8-a86b-8091a4754b24_carw_4x3x5120.jpg?h=af47010ab04ae48e9a6445e305fde9b7"
+      },
+      {
+        "title": "Blue Mountains",
+        "url": "https://milesmccrocklin.myportfolio.com/blue-mountains",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/780b9190-f2b1-4b13-a420-d5408c4495dd_carw_4x3x5120.jpg?h=4aba9757f37605a05aa26e6bbc162448"
+      },
+      {
+        "title": "Australian Road Trip - Brisbane to Sydney",
+        "url": "https://milesmccrocklin.myportfolio.com/australian-road-trip-brisbane-to-sydney",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/742c86d9-bb86-417b-a999-6d197a126011_carw_4x3x5120.jpg?h=f9c4cdd20f22d36071ac0fae45d4f9d2"
+      },
+      {
+        "title": "Brisbane",
+        "url": "https://milesmccrocklin.myportfolio.com/brisbane",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/a38db924-4651-4a12-84c4-85fe51296e0b_carw_4x3x5120.jpg?h=f0023d450f310960e59c94094c57584f"
+      },
+      {
+        "title": "Chillagoe",
+        "url": "https://milesmccrocklin.myportfolio.com/chillagoe",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/e337ae24-3595-426e-8f8f-6aeda8173c58_carw_4x3x5120.jpg?h=71822cc6ee1e8094780d94f24df620b7"
+      },
+      {
+        "title": "Port Douglass",
+        "url": "https://milesmccrocklin.myportfolio.com/port-douglass",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/4bf014aa-65a7-4c3f-833f-1a045bc9e390_carw_4x3x5120.jpg?h=c969e5d54ed173cc0e1a36f76638475c"
+      },
+      {
+        "title": "Daintree",
+        "url": "https://milesmccrocklin.myportfolio.com/daintree",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/1e5a6b81-cf8f-4fbd-90a1-64ab5ddd1489_carw_4x3x5120.jpg?h=602af8079a60ac5e3589af6dd304f618"
+      },
+      {
+        "title": "Melbourne",
+        "url": "https://milesmccrocklin.myportfolio.com/melbourne",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/dff07ef8-596b-49f2-b0e1-62bd971dd1e4_carw_4x3x5120.jpg?h=897da56cc31bcf30871a933747e15bae"
+      }
+    ],
+    "cell_overrides": {
+      "4": {
+        "title": "Splash!, Sydney, Australia",
+        "path": "media/sabbatical-travel/travel-24.jpeg"
+      }
+    }
+  },
+  {
+    "country": "Austria",
+    "country_slug": "austria",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 1,
+      "cols": 3
+    },
+    "image": "media/portfolio/austria.jpg",
+    "local_images": [
+      {
+        "title": "Vienna — Hundertwasserhaus",
+        "path": "media/europe-2010/austria-vienna-hundertwasserhaus.jpg"
+      },
+      {
+        "title": "Vienna — math.space stairs at the Museumsquartier",
+        "path": "media/europe-2010/austria-vienna-math-space.jpg"
+      },
+      {
+        "title": "Vienna — Stephansplatz + Haas Haus",
+        "path": "media/europe-2010/austria-vienna-stephansplatz.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Belgium",
+    "country_slug": "belgium",
+    "render_kind": "polygon",
+    "image": "media/portfolio/belgium.jpg",
+    "primary_album": {
+      "title": "Belgium",
+      "url": "https://milesmccrocklin.myportfolio.com/belgium",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/1057a646-913d-48d9-9dc2-df3c3bec8c73_carw_4x3x5120.jpg?h=71a37630f30e229afc440b063d5f9c81"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Belize",
+    "country_slug": "belize",
+    "render_kind": "polygon",
+    "image": "media/portfolio/belize.jpg",
+    "primary_album": {
+      "title": "Quay Caulker",
+      "url": "https://milesmccrocklin.myportfolio.com/quay-caulker",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/580532be-24a0-4869-9a1f-f2278e8a3739_carw_4x3x5120.jpg?h=81bb9ffbc7a3eac3c854566410a2cc34"
+    },
+    "secondary_albums": [],
+    "notes": "Album title is \"Quay Caulker\" (sic); refers to Caye Caulker, Belize."
+  },
+  {
+    "country": "Bolivia",
+    "country_slug": "bolivia",
+    "render_kind": "polygon",
+    "image": "media/portfolio/bolivia.jpg",
+    "primary_album": {
+      "title": "Salar de Uyuni",
+      "url": "https://milesmccrocklin.myportfolio.com/salar-de-uyuni",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/80824139-6d61-4980-b220-6caa1ed77f4a_carw_4x3x5120.jpg?h=24c4f16195ff594dc6f23a4a77248423"
+    },
+    "secondary_albums": [
+      {
+        "title": "La Paz",
+        "url": "https://milesmccrocklin.myportfolio.com/la-paz"
+      },
+      {
+        "title": "Lago Colorado, Bolivia",
+        "url": "https://milesmccrocklin.myportfolio.com/lago-colorado-bolivia"
+      },
+      {
+        "title": "Bolivian Desert",
+        "url": "https://milesmccrocklin.myportfolio.com/bolivian-desert"
+      }
+    ]
+  },
+  {
+    "country": "Brazil",
+    "country_slug": "brazil",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 3,
+      "cols": 4
+    },
+    "image": "media/portfolio/brazil.jpg",
+    "local_images": [
+      {
+        "title": "Sugarloaf — Botafogo Bay from Corcovado",
+        "path": "media/brazil-2025/rio-sugarloaf-from-corcovado.jpg"
+      },
+      {
+        "title": "Iguaçu Falls with rainbow",
+        "path": "media/brazil-2025/iguazu-falls-rainbow.jpg"
+      },
+      {
+        "title": "Christ the Redeemer — face",
+        "path": "media/brazil-2025/rio-christ-face.jpg"
+      },
+      {
+        "title": "Royal Portuguese Reading Room",
+        "path": "media/brazil-2025/rio-royal-portuguese-library.jpg"
+      },
+      {
+        "title": "Catedral Metropolitana — Rio",
+        "path": "media/brazil-2025/rio-catedral-metropolitana.jpg"
+      },
+      {
+        "title": "Toco toucan",
+        "path": "media/brazil-2025/iguazu-toucan.jpg"
+      },
+      {
+        "title": "South American coati",
+        "path": "media/brazil-2025/iguazu-coati.jpg"
+      },
+      {
+        "title": "Ipanema / Leblon between Lagoa and Atlantic",
+        "path": "media/brazil-2025/rio-ipanema-leblon.jpg"
+      },
+      {
+        "title": "Christ the Redeemer — outstretched hand",
+        "path": "media/brazil-2025/rio-christ-hand.jpg"
+      },
+      {
+        "title": "Christ the Redeemer — face profile",
+        "path": "media/brazil-2025/rio-christ-face-profile.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Canada",
+    "country_slug": "canada",
+    "render_kind": "polygon",
+    "image": "media/portfolio/canada.jpg",
+    "primary_album": {
+      "title": "Niagra Falls",
+      "url": "https://milesmccrocklin.myportfolio.com/niagra-falls",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/b904104f-b6f3-4019-b73a-bc0a3ee37956_carw_4x3x5120.jpg?h=6242622bb2d714e386b39c561ff84927"
+    },
+    "secondary_albums": [],
+    "notes": "Niagara Falls span US/Canada border; assigned to Canada per user."
+  },
+  {
+    "country": "Chile",
+    "country_slug": "chile",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 3,
+      "cols": 3
+    },
+    "image": "media/portfolio/chile.jpg",
+    "albums": [
+      {
+        "title": "Cajon de Maipo",
+        "url": "https://milesmccrocklin.myportfolio.com/cajon-de-maipo",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/b92c6343-5747-4b04-8e1c-994c45352e87_carw_4x3x5120.jpg?h=cf6939bbc39830a9e5391b9da9cee37e"
+      },
+      {
+        "title": "Valle de la Luna y San Pedro de Atacama",
+        "url": "https://milesmccrocklin.myportfolio.com/valle-de-la-luna-y-san-pedro-de-atacama",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/20476228-de31-429e-8fa5-845f4937593a_carw_4x3x5120.jpg?h=a9b86f1fbf4d93132d28ea092f3bba5e"
+      },
+      {
+        "title": "El Tatio",
+        "url": "https://milesmccrocklin.myportfolio.com/el-tatio",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/6f50066b-4017-4bbd-8a4b-2d2cb57eef3c_carw_4x3x5120.jpg?h=3c8850477b02dc5a69465f71796e0e9e"
+      },
+      {
+        "title": "Santiago Bird Watching",
+        "url": "https://milesmccrocklin.myportfolio.com/santiago-bird-watching",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/1ea6ba2a-f591-4ef7-92c1-d4f6c73c3fc0_carw_4x3x5120.jpg?h=504605378f2ea766aa907caec7723d52"
+      },
+      {
+        "title": "2025 New Years Eve",
+        "url": "https://milesmccrocklin.myportfolio.com/2025-new-years-eve",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/ee1668a5-4821-424b-9b02-77944d7388d6_carw_4x3x5120.jpg?h=79250c1993ae5fb73cfe6ec6ae53fe73"
+      },
+      {
+        "title": "Valparaíso & Viña del Mar",
+        "url": "https://milesmccrocklin.myportfolio.com/valparaiso-vina-del-mar",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/f95f1633-df40-4ff6-a0b3-18161bfef2eb_carw_4x3x5120.jpg?h=37e6d60a9e9d3c899cfff8754bcbc939"
+      },
+      {
+        "title": "Santiago",
+        "url": "https://milesmccrocklin.myportfolio.com/santiago",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/63240d38-7f84-4aa7-aa04-904cb3a52df1_carw_4x3x5120.jpg?h=65a83b8a2932e92e1a3d48ce89b53733"
+      }
+    ]
+  },
+  {
+    "country": "Colombia",
+    "country_slug": "colombia",
+    "render_kind": "polygon",
+    "image": "media/portfolio/colombia.jpg",
+    "primary_album": {
+      "title": "Salento",
+      "url": "https://milesmccrocklin.myportfolio.com/salento",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/96ca1ada-08e0-4e68-992b-7bb5f06042aa_carw_4x3x5120.jpg?h=0124a41602ea8a01275738f6afa95c90"
+    },
+    "secondary_albums": [
+      {
+        "title": "Cartagena",
+        "url": "https://milesmccrocklin.myportfolio.com/cartagena"
+      },
+      {
+        "title": "Medellín",
+        "url": "https://milesmccrocklin.myportfolio.com/medellin"
+      },
+      {
+        "title": "Bogotá & Giradot",
+        "url": "https://milesmccrocklin.myportfolio.com/bogota-giradot"
+      }
+    ]
+  },
+  {
+    "country": "Croatia",
+    "country_slug": "croatia",
+    "render_kind": "polygon",
+    "image": "media/portfolio/croatia.jpg",
+    "local_image": {
+      "title": "Plitvice Lakes — turquoise cascades + boardwalk",
+      "path": "media/europe-2010/croatia-plitvice-lakes.jpg"
+    }
+  },
+  {
+    "country": "Czechia",
+    "country_slug": "czechia",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 2,
+      "cols": 3
+    },
+    "image": "media/portfolio/czechia.jpg",
+    "local_images": [
+      {
+        "title": "Prague — Astronomical Clock",
+        "path": "media/europe-2010/czechia-prague-astronomical-clock.jpg"
+      },
+      {
+        "title": "Prague — Astronomical Clock dial",
+        "path": "media/europe-2010/czechia-prague-astronomical-clock-dial.jpg"
+      },
+      {
+        "title": "Prague — Týn Church",
+        "path": "media/europe-2010/czechia-prague-tyn-church.jpg"
+      },
+      {
+        "title": "Prague — Dancing House (Gehry)",
+        "path": "media/europe-2010/czechia-prague-dancing-house.jpg"
+      },
+      {
+        "title": "Prague — Žižkov Tower with Černý babies",
+        "path": "media/europe-2010/czechia-prague-zizkov-tower-babies.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Denmark",
+    "country_slug": "denmark",
+    "render_kind": "polygon",
+    "image": "media/portfolio/denmark.jpg",
+    "primary_album": {
+      "title": "Copenhagen",
+      "url": "https://milesmccrocklin.myportfolio.com/copenhagen",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/5edcf065-e86a-453a-924e-a4156d3dad00_carw_4x3x5120.jpg?h=03bd4634e47c0cf5eed03b14015cfbb7"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Ecuador",
+    "country_slug": "ecuador",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 2,
+      "cols": 1
+    },
+    "image": "media/portfolio/ecuador.jpg",
+    "local_images": [
+      {
+        "title": "Darwin's finch, Galapagos Islands, Ecuador",
+        "path": "media/sabbatical-travel/travel-25.jpeg"
+      },
+      {
+        "title": "Recursive reptiles, Galapagos Islands, Ecuador",
+        "path": "media/sabbatical-travel/travel-26.jpeg"
+      }
+    ]
+  },
+  {
+    "country": "Egypt",
+    "country_slug": "egypt",
+    "render_kind": "polygon",
+    "image": "media/portfolio/egypt.jpg",
+    "primary_album": {
+      "title": "Luxor",
+      "url": "https://milesmccrocklin.myportfolio.com/luxor",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/5f983808-b54d-4af3-8221-09f1b84dd067_carw_4x3x5120.jpg?h=546f1d5fbef6426cd1cdc0577b30a9fc"
+    },
+    "secondary_albums": [
+      {
+        "title": "Cairo",
+        "url": "https://milesmccrocklin.myportfolio.com/cairo-1"
+      },
+      {
+        "title": "Aswan",
+        "url": "https://milesmccrocklin.myportfolio.com/aswan-1"
+      }
+    ]
+  },
+  {
+    "country": "El Salvador",
+    "country_slug": "el-salvador",
+    "render_kind": "polygon",
+    "image": "media/portfolio/el-salvador.jpg",
+    "local_image": {
+      "title": "Iglesia El Rosario — rainbow stained glass",
+      "path": "media/el-salvador-2025/iglesia-el-rosario.jpg"
+    }
+  },
+  {
+    "country": "France",
+    "country_slug": "france",
+    "render_kind": "polygon",
+    "image": "media/portfolio/france.jpg",
+    "primary_album": {
+      "title": "Paris",
+      "url": "https://milesmccrocklin.myportfolio.com/paris",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/d532481b-d706-42ed-a99e-24b815b370eb_carw_4x3x5120.jpg?h=db254c4f3b566e66b096041289c3b96a"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Germany",
+    "country_slug": "germany",
+    "render_kind": "polygon",
+    "image": "media/portfolio/germany.jpg",
+    "primary_album": {
+      "title": "Munich",
+      "url": "https://milesmccrocklin.myportfolio.com/munich",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/2c8b8c75-0b3b-4785-b7e3-8e3de82ddac1_carw_4x3x5120.jpg?h=1964bbcb855b2d0ebad30e36064e8cd9"
+    },
+    "secondary_albums": [
+      {
+        "title": "Frankfurt",
+        "url": "https://milesmccrocklin.myportfolio.com/frankfurt"
+      }
+    ]
+  },
+  {
+    "country": "Gibraltar",
+    "country_slug": "gibraltar",
+    "render_kind": "bubble",
+    "lat": 36.1408,
+    "lng": -5.3536,
+    "image": "media/portfolio/gibraltar.jpg",
+    "local_image": {
+      "title": "BA plane on the runway, Rock of Gibraltar behind",
+      "path": "media/gibraltar-2009/gibraltar-rock-runway-ba-plane.jpg"
+    },
+    "notes": "British Overseas Territory; not in NE 110m. Render as bubble at lat/lng."
+  },
+  {
+    "country": "Greece",
+    "country_slug": "greece",
+    "render_kind": "polygon",
+    "image": "media/portfolio/greece.jpg",
+    "primary_album": {
+      "title": "Greece - Athens, Spetses, Zakynthos",
+      "url": "https://milesmccrocklin.myportfolio.com/greece-athens-spetses-zakynthos",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/5fbc7be2-b581-42b9-8716-d96573d3fb4a_carw_4x3x5120.jpg?h=d63eee586ee95d91b1097d8cff626d9d"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Guatemala",
+    "country_slug": "guatemala",
+    "render_kind": "polygon",
+    "image": "media/portfolio/guatemala.jpg",
+    "primary_album": {
+      "title": "Tikal",
+      "url": "https://milesmccrocklin.myportfolio.com/tikal",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/f621f4e7-c289-49ee-a0bf-def13886c481_carw_4x3x5120.jpg?h=da375738771145fdad03436c05cb3dd3"
+    },
+    "secondary_albums": [
+      {
+        "title": "Chichicastenango & San Andrés Xecul",
+        "url": "https://milesmccrocklin.myportfolio.com/chichicastenango-san-andres-xecul-2"
+      },
+      {
+        "title": "Lake Atitlán",
+        "url": "https://milesmccrocklin.myportfolio.com/lake-atitlan"
+      },
+      {
+        "title": "Antigua",
+        "url": "https://milesmccrocklin.myportfolio.com/antigua"
+      }
+    ]
+  },
+  {
+    "country": "India",
+    "country_slug": "india",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 4,
+      "cols": 4
+    },
+    "image": "media/portfolio/india.jpg",
+    "albums": [
+      {
+        "title": "Taj Mahal",
+        "url": "https://milesmccrocklin.myportfolio.com/taj-mahal-1",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/8985dd02-a7ee-4368-a662-337599fb1171_carw_4x3x5120.jpg?h=867e6330d435cae388a6e7e3da9910c2"
+      },
+      {
+        "title": "India Work Trip",
+        "url": "https://milesmccrocklin.myportfolio.com/jaipur-hyderabad-taj-mahal",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/f8979a39-d611-4ed1-8c34-94b87df1cc07_carw_4x3x5120.jpg?h=176ad013b6f00db98af4f75a18062f99"
+      },
+      {
+        "title": "Srinagar, Kashmir",
+        "url": "https://milesmccrocklin.myportfolio.com/srinagar-kashmir",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/5d624721-16dc-4df0-92b6-32a88f8f3192_carw_4x3x5120.jpg?h=3cc90551cb3da92381fef7ce76bc66c7"
+      },
+      {
+        "title": "Dharamshala",
+        "url": "https://milesmccrocklin.myportfolio.com/dharamshala-1",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/d8a3f175-a310-401e-9894-ee6aefad99e6_carw_4x3x5120.jpg?h=a4c93e401a068a2faf2e8b91b79523a0"
+      },
+      {
+        "title": "Bir & Keori",
+        "url": "https://milesmccrocklin.myportfolio.com/bir-keori",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/7efa0c5e-a4de-414f-a5c9-0db3555adcd7_carw_4x3x5120.jpg?h=c84cd276f35e738e08c353e072cd67d8"
+      },
+      {
+        "title": "Palpung Sherabling Monastery",
+        "url": "https://milesmccrocklin.myportfolio.com/palpung-sherabling-monastery-1",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/f1ce9001-2480-4438-9db6-86e79407b145_carw_4x3x5120.jpg?h=3e2971f009b94244df38dfb8267c3568"
+      },
+      {
+        "title": "Wagah Border",
+        "url": "https://milesmccrocklin.myportfolio.com/wagah-border",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/d9e1ffaa-c21d-4e02-807b-d019df71e3b1_carw_4x3x5120.jpg?h=2cb2b659dd8bf5f00f28f5a1975385c7"
+      },
+      {
+        "title": "Amritsar",
+        "url": "https://milesmccrocklin.myportfolio.com/amritsar",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/2d473c9c-5429-4a76-80fc-d96d5ced8243_carw_4x3x5120.jpg?h=b09e6bc781ee2d0e433ed6a61d03ac4a"
+      },
+      {
+        "title": "Bullet Baba Temple",
+        "url": "https://milesmccrocklin.myportfolio.com/bullet-baba-temple",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/b5ddb536-f723-4ee9-804e-83f7b0f22dff_carw_4x3x5120.jpg?h=e0350c1b8df79c88acf1c377ff2b8408"
+      },
+      {
+        "title": "Jodhpur",
+        "url": "https://milesmccrocklin.myportfolio.com/jodhpur",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/feabc7bd-c112-4c08-bb3d-a3ad20b35b24_carw_4x3x5120.jpg?h=395e2a57594a0f3b5b9f4690e9e5a2aa"
+      },
+      {
+        "title": "Rajasthan Bus & Desert",
+        "url": "https://milesmccrocklin.myportfolio.com/rajasthan-bus-desert",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/2641fa50-6c09-4eb7-986d-a26cf98b6dff_carw_4x3x5120.jpg?h=f521d38e36e33129640dd91b4d952290"
+      },
+      {
+        "title": "Jaipur",
+        "url": "https://milesmccrocklin.myportfolio.com/jaipur",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/9562ffcf-0855-4afd-88aa-331b28d8fa65_carw_4x3x5120.jpg?h=6111d8fb90bd796915abb78fcef0f883"
+      },
+      {
+        "title": "Red Temple",
+        "url": "https://milesmccrocklin.myportfolio.com/red-temple",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/9b7e7e46-8684-45d9-8459-18c68851cf82_carw_4x3x5120.jpg?h=3dfcb96132ef47cba19eabac49743b96"
+      },
+      {
+        "title": "Agra Fort",
+        "url": "https://milesmccrocklin.myportfolio.com/agra-fort",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/7ca58a69-d7a3-4628-8eee-bb99c684b3a0_carw_4x3x5120.jpg?h=4a287d65e31431ad7218987ea6b924c4"
+      },
+      {
+        "title": "Delhi",
+        "url": "https://milesmccrocklin.myportfolio.com/delhi",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/638fb69b-d014-4a4d-8cee-a547cabc35f7_carw_4x3x5120.jpg?h=b24ab575ef6b316c855a9b7311e7d14d"
+      }
+    ]
+  },
+  {
+    "country": "Ireland",
+    "country_slug": "ireland",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 1,
+      "cols": 2
+    },
+    "image": "media/portfolio/ireland.jpg",
+    "local_images": [
+      {
+        "title": "Cliffs of Moher — sun flare",
+        "path": "media/ireland-2009/ireland-cliffs-of-moher-sunflare.jpg"
+      },
+      {
+        "title": "Cliffs of Moher — O'Brien's Tower",
+        "path": "media/ireland-2009/ireland-cliffs-of-moher-obriens-tower.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Italy",
+    "country_slug": "italy",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 1,
+      "cols": 2
+    },
+    "image": "media/portfolio/italy.jpg",
+    "local_images": [
+      {
+        "title": "Naples — Spanish Quarter",
+        "path": "media/alps-2025/italy-naples.jpg"
+      },
+      {
+        "title": "Venice — canal at sunset",
+        "path": "media/alps-2025/italy-venice-canal.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Japan",
+    "country_slug": "japan",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 2,
+      "cols": 2
+    },
+    "image": "media/portfolio/japan.jpg",
+    "albums": [
+      {
+        "title": "Japan",
+        "url": "https://milesmccrocklin.myportfolio.com/japan",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/99f7c00d-5e9d-43f1-b9d4-16a3a71fae71_carw_4x3x5120.jpg?h=c5cb53dbb939cac392200991596c0477"
+      },
+      {
+        "title": "Japan - Sakura Festival",
+        "url": "https://milesmccrocklin.myportfolio.com/japan-sakura-festival",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/de7684bb-e776-46f1-804a-945f797e93b0_carw_4x3x5120.jpg?h=6de81986347a8c9e6d74677f0187f77f"
+      },
+      {
+        "title": "Japan - Team Labs Planets",
+        "url": "https://milesmccrocklin.myportfolio.com/japan-team-labs-planets",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/8642a4aa-5b73-4865-b3d0-43cd23e3ce8c_carw_4x3x5120.jpg?h=576e185ad1bdf73d39b4bea347585596"
+      }
+    ]
+  },
+  {
+    "country": "Kenya",
+    "country_slug": "kenya",
+    "render_kind": "polygon",
+    "image": "media/portfolio/kenya.jpg",
+    "primary_album": {
+      "title": "Masai Mara",
+      "url": "https://milesmccrocklin.myportfolio.com/masai-mara",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/a4ca12bf-d0a7-4313-a82a-db4339231ab8_carw_4x3x5120.jpg?h=edc16c05397e5cab0bac0856395563ea"
+    },
+    "secondary_albums": [
+      {
+        "title": "GRAPHIC! - Lion Hunt in Masai Mara",
+        "url": "https://milesmccrocklin.myportfolio.com/graphic-lion-hunt-in-masai-mara"
+      },
+      {
+        "title": "Lake Nakuru",
+        "url": "https://milesmccrocklin.myportfolio.com/lake-nakuru"
+      },
+      {
+        "title": "Nairobi National Park",
+        "url": "https://milesmccrocklin.myportfolio.com/nairobi-national-park"
+      }
+    ]
+  },
+  {
+    "country": "Liechtenstein",
+    "country_slug": "liechtenstein",
+    "render_kind": "bubble",
+    "lat": 47.166,
+    "lng": 9.555,
+    "image": "media/portfolio/liechtenstein.jpg",
+    "local_image": {
+      "title": "Vaduz — castle reflected in glass",
+      "path": "media/alps-2025/liechtenstein-vaduz.jpg"
+    },
+    "notes": "Microstate; not in NE 110m. Render as bubble at lat/lng."
+  },
+  {
+    "country": "Madagascar",
+    "country_slug": "madagascar",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 3,
+      "cols": 2
+    },
+    "image": "media/portfolio/madagascar.jpg",
+    "albums": [
+      {
+        "title": "Zazamalala Wildlife Centre",
+        "url": "https://milesmccrocklin.myportfolio.com/zazamalala-wildlife-centre",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/fb11fadd-060f-4c63-9d13-69beef09ae35_carw_4x3x5120.jpg?h=768364ebd2a3e0beb44a49fa09ec1c00"
+      },
+      {
+        "title": "Avenue of the Baobabs",
+        "url": "https://milesmccrocklin.myportfolio.com/avenue-of-the-baobabs",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/e4424010-931b-4d8c-9cff-3f8b9c3571b1_carw_4x3x5120.jpg?h=42add4374edc5bdb35198527d2237daa"
+      },
+      {
+        "title": "Tsingy of Bemaraha National Park",
+        "url": "https://milesmccrocklin.myportfolio.com/tsingy-of-bemaraha-national-park",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/c2060a24-6445-41a4-9ef6-283a6b2df6cb_carw_4x3x5120.jpg?h=02ea300b5aa437847f78e951b8c62c11"
+      },
+      {
+        "title": "Kirindy Reserve",
+        "url": "https://milesmccrocklin.myportfolio.com/kirindy-reserve",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/e483c891-daa1-4031-9a20-445af592edb8_carw_4x3x5120.jpg?h=e28c9c34183af05172204794facd0d5e"
+      },
+      {
+        "title": "Andasibe Analamazaotra National Park",
+        "url": "https://milesmccrocklin.myportfolio.com/andasibe-analamazaotra-national-park",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/5de09b18-7ae8-47d0-a510-5f1904d22188_carw_4x3x5120.jpg?h=ee4a1f6e7c8752ea8236dda631d53f3e"
+      }
+    ]
+  },
+  {
+    "country": "Malaysia",
+    "country_slug": "malaysia",
+    "render_kind": "polygon",
+    "image": "media/portfolio/malaysia.jpg",
+    "primary_album": {
+      "title": "Kuala Lampur",
+      "url": "https://milesmccrocklin.myportfolio.com/kuala-lampur",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/f83619e5-5bd7-486c-8abc-78cbdeeb96a2_carw_4x3x5120.jpg?h=a23592897413c7cd4e71abdd50c2d714"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Mexico",
+    "country_slug": "mexico",
+    "render_kind": "polygon",
+    "image": "media/portfolio/mexico.jpg",
+    "primary_album": {
+      "title": "Teotihuacan & Mexcio City",
+      "url": "https://milesmccrocklin.myportfolio.com/teotihuacan-mexcio-city",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/cb0b6a1d-9b18-43cc-85b7-73847e3cd262_carw_4x3x5120.jpg?h=16b460110254ef99c238e1b3d37a1c13"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Morocco",
+    "country_slug": "morocco",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 3,
+      "cols": 4
+    },
+    "image": "media/portfolio/morocco.jpg",
+    "local_images": [
+      {
+        "title": "Marrakech — Jemaa el-Fna at night",
+        "path": "media/morocco-2010/morocco-marrakech-jemaa-el-fna.jpg"
+      },
+      {
+        "title": "Sahara — sunset over the dunes",
+        "path": "media/morocco-2010/morocco-sahara-sunset.jpg"
+      },
+      {
+        "title": "Sahara — camel caravan",
+        "path": "media/morocco-2010/morocco-sahara-camel-caravan.jpg"
+      },
+      {
+        "title": "Medina alley — djellaba walker",
+        "path": "media/morocco-2010/morocco-medina-alley.jpg"
+      },
+      {
+        "title": "\"Internet Lilane\" cafe",
+        "path": "media/morocco-2010/morocco-internet-cafe.jpg"
+      },
+      {
+        "title": "Marrakech — tannery",
+        "path": "media/morocco-2010/morocco-marrakech-tannery.jpg"
+      },
+      {
+        "title": "Marrakech — Menara Gardens pool jump",
+        "path": "media/morocco-2010/morocco-marrakech-menara-gardens.jpg"
+      },
+      {
+        "title": "Marrakech — souk sweets stall",
+        "path": "media/morocco-2010/morocco-marrakech-souk-sweets.jpg"
+      },
+      {
+        "title": "Marrakech — drying leather hide",
+        "path": "media/morocco-2010/morocco-marrakech-leather-hide.jpg"
+      },
+      {
+        "title": "Marrakech — Madrasa Ben Youssef",
+        "path": "media/morocco-2010/morocco-marrakech-madrasa-ben-youssef.jpg"
+      },
+      {
+        "title": "High Atlas Mountains",
+        "path": "media/morocco-2010/morocco-atlas-mountains.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Netherlands",
+    "country_slug": "netherlands",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 2,
+      "cols": 2
+    },
+    "image": "media/portfolio/netherlands.jpg",
+    "local_images": [
+      {
+        "title": "Amsterdam — stepped-gable house",
+        "path": "media/europe-2010/netherlands-amsterdam-gable-house.jpg"
+      },
+      {
+        "title": "Amsterdam — canal with tour boats",
+        "path": "media/europe-2010/netherlands-amsterdam-canal-boats.jpg"
+      },
+      {
+        "title": "Amsterdam — red Canta microcar",
+        "path": "media/europe-2010/netherlands-amsterdam-canta-car.jpg"
+      },
+      {
+        "title": "Amsterdam — canal houseboat garden",
+        "path": "media/europe-2010/netherlands-amsterdam-canal-houseboat.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Norway",
+    "country_slug": "norway",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 3,
+      "cols": 2
+    },
+    "image": "media/portfolio/norway.jpg",
+    "albums": [
+      {
+        "title": "Tromsø",
+        "url": "https://milesmccrocklin.myportfolio.com/tromso",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/6b1fa7dc-13a0-4325-a70f-5cf53ff50aa6_carw_4x3x5120.jpg?h=b9afd2b5652fdb10a2692e0056756259"
+      },
+      {
+        "title": "Polar Park",
+        "url": "https://milesmccrocklin.myportfolio.com/polar-park",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/f543cf71-7266-4cec-85b8-6d6c848b8b7c_carw_4x3x5120.jpg?h=72ae3f11f72d394ecdbde98a845def6a"
+      },
+      {
+        "title": "Bergen",
+        "url": "https://milesmccrocklin.myportfolio.com/bergen",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/68221ca3-a959-45d5-8695-dd49670da081_carw_4x3x5120.jpg?h=ba605014d9a41f26f0f52e96c51a5694"
+      },
+      {
+        "title": "Aurlandsfjord - Flåm",
+        "url": "https://milesmccrocklin.myportfolio.com/aurlandsfjord-flam",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/0b6d5484-3af1-4b45-8de0-a0afedab5da6_carw_4x3x5120.jpg?h=e0ebb683f7fc0d45575428332592c89a"
+      },
+      {
+        "title": "Oslo",
+        "url": "https://milesmccrocklin.myportfolio.com/oslo",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/d8fd63ff-d606-4110-a2ae-da4b8a25b869_carw_4x3x5120.jpg?h=42c5eaeaea40b6d35bc567ab96a204ed"
+      }
+    ]
+  },
+  {
+    "country": "Panama",
+    "country_slug": "panama",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 2,
+      "cols": 3
+    },
+    "image": "media/portfolio/panama.jpg",
+    "local_images": [
+      {
+        "title": "Panama City — skyline + F&F Tower",
+        "path": "media/panama-2025/panama-city-skyline.jpg"
+      },
+      {
+        "title": "Panama Canal — Baltic Spirit in the locks",
+        "path": "media/panama-2025/panama-canal-baltic-spirit.jpg"
+      },
+      {
+        "title": "Three-toed sloth in the rainforest",
+        "path": "media/panama-2025/panama-three-toed-sloth.jpg"
+      },
+      {
+        "title": "Biomuseo — Frank Gehry roof",
+        "path": "media/panama-2025/panama-biomuseo.jpg"
+      },
+      {
+        "title": "Panama Canal — tanker with tugboat",
+        "path": "media/panama-2025/panama-canal-tanker.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Paraguay",
+    "country_slug": "paraguay",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 2,
+      "cols": 2
+    },
+    "image": "media/portfolio/paraguay.jpg",
+    "local_images": [
+      {
+        "title": "River canoe through wetlands",
+        "path": "media/paraguay-2025/paraguay-river-canoe.jpg"
+      },
+      {
+        "title": "Red-and-green macaw",
+        "path": "media/paraguay-2025/paraguay-scarlet-macaw.jpg"
+      },
+      {
+        "title": "Wetland cumulus reflection",
+        "path": "media/paraguay-2025/paraguay-wetland-cloud.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Peru",
+    "country_slug": "peru",
+    "render_kind": "polygon",
+    "image": "media/portfolio/peru.jpg",
+    "primary_album": {
+      "title": "Machu Picchu",
+      "url": "https://milesmccrocklin.myportfolio.com/machu-picchu-1",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/932a3c52-98f5-4245-8155-a3c11ebd7c98_carw_4x3x5120.jpg?h=8ad9b155ae038f06b671e4446aa56b78"
+    },
+    "secondary_albums": [
+      {
+        "title": "Lake Titicaca",
+        "url": "https://milesmccrocklin.myportfolio.com/lake-titicaca"
+      },
+      {
+        "title": "Tambopata",
+        "url": "https://milesmccrocklin.myportfolio.com/tambopata"
+      },
+      {
+        "title": "Peru - Cusco",
+        "url": "https://milesmccrocklin.myportfolio.com/peru-cusco"
+      },
+      {
+        "title": "Peru - Sacred Valley",
+        "url": "https://milesmccrocklin.myportfolio.com/peru-sacred-valley"
+      },
+      {
+        "title": "Peru - Lima",
+        "url": "https://milesmccrocklin.myportfolio.com/peru-lima"
+      }
+    ]
+  },
+  {
+    "country": "Portugal",
+    "country_slug": "portugal",
+    "render_kind": "polygon",
+    "image": "media/portfolio/portugal.jpg",
+    "primary_album": {
+      "title": "Porto",
+      "url": "https://milesmccrocklin.myportfolio.com/porto",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/3a296383-fec7-4539-8f10-d287fc38966f_carw_4x3x5120.jpg?h=7b06df850acdfb53f100de5bf81539a8"
+    },
+    "secondary_albums": [
+      {
+        "title": "Lisbon",
+        "url": "https://milesmccrocklin.myportfolio.com/lisbon-1"
+      },
+      {
+        "title": "Pena Palace & Castelo de São Jorge",
+        "url": "https://milesmccrocklin.myportfolio.com/pena-palace-castelo-de-sao-jorge"
+      }
+    ]
+  },
+  {
+    "country": "Rwanda",
+    "country_slug": "rwanda",
+    "render_kind": "polygon",
+    "image": "media/portfolio/rwanda.jpg",
+    "primary_album": {
+      "title": "Gorilla Trek - Rwanda",
+      "url": "https://milesmccrocklin.myportfolio.com/gorilla-trek-rwanda",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/c0df6be6-412f-45a8-9852-4bd7ece64d83_carw_4x3x5120.jpg?h=fdf4fd3e26178e87842c54d4be2cd2b3"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "San Marino",
+    "country_slug": "san-marino",
+    "render_kind": "bubble",
+    "lat": 43.9424,
+    "lng": 12.4578,
+    "image": "media/portfolio/san-marino.jpg",
+    "local_image": {
+      "title": "Three Towers — Mount Titano",
+      "path": "media/alps-2025/san-marino-three-towers.jpg"
+    },
+    "notes": "Microstate; not in NE 110m. Render as bubble at lat/lng."
+  },
+  {
+    "country": "South Africa",
+    "country_slug": "south-africa",
+    "render_kind": "polygon",
+    "image": "media/portfolio/south-africa.jpg",
+    "primary_album": {
+      "title": "Sabi Sands - Big Cats",
+      "url": "https://milesmccrocklin.myportfolio.com/sabi-sands-big-cats",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/0e8c8746-4b4c-4a25-9a8e-e436292113ed_carw_4x3x5120.jpg?h=1ac737d8933f483068552d2622300546"
+    },
+    "secondary_albums": [
+      {
+        "title": "Cape Town",
+        "url": "https://milesmccrocklin.myportfolio.com/cape-town-2"
+      },
+      {
+        "title": "Kirstenbosch National Botanical Garden",
+        "url": "https://milesmccrocklin.myportfolio.com/kirstenbosch-national-botanical-garden"
+      },
+      {
+        "title": "Cape of Good Hope",
+        "url": "https://milesmccrocklin.myportfolio.com/cape-of-good-hope"
+      },
+      {
+        "title": "Boulders Beach",
+        "url": "https://milesmccrocklin.myportfolio.com/boulders-beach-1"
+      },
+      {
+        "title": "Sabi Sands",
+        "url": "https://milesmccrocklin.myportfolio.com/sabi-sands"
+      }
+    ]
+  },
+  {
+    "country": "Spain",
+    "country_slug": "spain",
+    "render_kind": "polygon",
+    "image": "media/portfolio/spain.jpg",
+    "primary_album": {
+      "title": "Barcelona",
+      "url": "https://milesmccrocklin.myportfolio.com/barcelona",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/720cc20a-3269-491e-a865-a4135ccde806_carw_4x3x5120.jpg?h=176c9e872eeedb9ea65eac31467a308d"
+    },
+    "secondary_albums": [
+      {
+        "title": "Sevilla",
+        "url": "https://milesmccrocklin.myportfolio.com/sevilla"
+      },
+      {
+        "title": "Dali Museum",
+        "url": "https://milesmccrocklin.myportfolio.com/dali-museum"
+      }
+    ]
+  },
+  {
+    "country": "Sweden",
+    "country_slug": "sweden",
+    "render_kind": "polygon",
+    "image": "media/portfolio/sweden.jpg",
+    "primary_album": {
+      "title": "Stockholm",
+      "url": "https://milesmccrocklin.myportfolio.com/stockholm",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/5d4b1c2e-61b7-495c-856e-4f60ff7a7ecd_carw_4x3x5120.jpg?h=db3675d771ad82919a6a65531854f3cd"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Switzerland",
+    "country_slug": "switzerland",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 2,
+      "cols": 2
+    },
+    "image": "media/portfolio/switzerland.jpg",
+    "local_images": [
+      {
+        "title": "Lucerne — Hofkirche St. Leodegar",
+        "path": "media/alps-2025/switzerland-lucerne-hofkirche.jpg"
+      },
+      {
+        "title": "Zurich — old town alley",
+        "path": "media/alps-2025/switzerland-zurich-old-town.jpg"
+      },
+      {
+        "title": "Lake Lucerne — sailboat under the Alps",
+        "path": "media/alps-2025/switzerland-lake-lucerne.jpg"
+      },
+      {
+        "title": "Lucerne — Hofkirche from across the lake",
+        "path": "media/alps-2025/switzerland-lucerne-hofkirche-wide.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Thailand",
+    "country_slug": "thailand",
+    "render_kind": "polygon",
+    "image": "media/portfolio/thailand.jpg",
+    "primary_album": {
+      "title": "Thailand",
+      "url": "https://milesmccrocklin.myportfolio.com/thailand-1",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/23ec03e8-b53b-446d-b49c-39843e778bea_carw_4x3x5120.jpg?h=ff81ad9c306784d313fa4da6d989b716"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Turkey",
+    "country_slug": "turkey",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 1,
+      "cols": 2
+    },
+    "image": "media/portfolio/turkey.jpg",
+    "local_images": [
+      {
+        "title": "Cappadocia — fairy chimneys",
+        "path": "media/turkey-2010/turkey-cappadocia-fairy-chimneys.jpg"
+      },
+      {
+        "title": "Cappadocia — hot-air balloon at dawn",
+        "path": "media/turkey-2010/turkey-cappadocia-balloon.jpg"
+      }
+    ]
+  },
+  {
+    "country": "Uganda",
+    "country_slug": "uganda",
+    "render_kind": "polygon",
+    "image": "media/portfolio/uganda.jpg",
+    "primary_album": {
+      "title": "Lake Victoria Chimpanzee Sanctuary",
+      "url": "https://milesmccrocklin.myportfolio.com/lake-victoria-chimpanzee-sanctuary",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/e7806f97-a17b-4c22-a225-27d3764d6142_carw_4x3x5120.jpg?h=d867654d1ef65c7505c0f5ddf01be10f"
+    },
+    "secondary_albums": [
+      {
+        "title": "Lake Victoria",
+        "url": "https://milesmccrocklin.myportfolio.com/lake-victoria-1"
+      },
+      {
+        "title": "Kampala & Entebbe",
+        "url": "https://milesmccrocklin.myportfolio.com/kampala-entebbe"
+      },
+      {
+        "title": "Kazinga Channel",
+        "url": "https://milesmccrocklin.myportfolio.com/kazinga-channel"
+      },
+      {
+        "title": "Kalinzu Forest",
+        "url": "https://milesmccrocklin.myportfolio.com/kalinzu-forest"
+      },
+      {
+        "title": "Queen Elizabeth National Park",
+        "url": "https://milesmccrocklin.myportfolio.com/queen-elizabeth-national-park-1"
+      }
+    ]
+  },
+  {
+    "country": "United Arab Emirates",
+    "country_slug": "united-arab-emirates",
+    "render_kind": "polygon",
+    "image": "media/portfolio/united-arab-emirates.jpg",
+    "primary_album": {
+      "title": "Dubai",
+      "url": "https://milesmccrocklin.myportfolio.com/dubai",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/3225e572-7a0d-4edf-a5fb-8ae7f3fe09cf_carw_4x3x5120.jpg?h=3cd6ef1e8d495d5d00f511e8126e9c30"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "United Kingdom",
+    "country_slug": "united-kingdom",
+    "render_kind": "polygon",
+    "image": "media/portfolio/united-kingdom.jpg",
+    "primary_album": {
+      "title": "London Layover",
+      "url": "https://milesmccrocklin.myportfolio.com/london-layover-1",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/6dd8891a-c9bb-47b4-83aa-a4adcce4ee12_carw_4x3x5120.jpg?h=fecc4681bdedc0c70ce82dced26fcd9c"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "United States of America",
+    "country_slug": "united-states-of-america",
+    "render_kind": "polygon_grid",
+    "grid": {
+      "rows": 5,
+      "cols": 5
+    },
+    "image": "media/portfolio/united-states-of-america.jpg",
+    "albums": [
+      {
+        "title": "Grand Canyon",
+        "url": "https://milesmccrocklin.myportfolio.com/grand-canyon",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/f9d7e609-221f-4eaa-9ea9-62e75d5ba393_carw_4x3x5120.jpg?h=897379be57da92ff0c52697599863bc5"
+      },
+      {
+        "title": "New Orleans",
+        "url": "https://milesmccrocklin.myportfolio.com/new-orleans-1",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/1e66af1d-1f91-4f71-9180-dcea94f01b2d_carw_4x3x5120.jpg?h=f1305b0c5a167b85ce4c70feece9fee5"
+      },
+      {
+        "title": "Meowwolf - Denver",
+        "url": "https://milesmccrocklin.myportfolio.com/meowwolf-denver",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/08e7bbce-85d4-4361-942b-ef257e408f9d_carw_4x3x5120.jpg?h=4c56331d3dfeffa7b71ff35ff8f13f6b"
+      },
+      {
+        "title": "Rocky Mountain National Park",
+        "url": "https://milesmccrocklin.myportfolio.com/rocky-mountain-national-park",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/d03cede7-e649-48bf-a9af-df4aa4cbe566_carw_4x3x5120.jpg?h=7b01d4e6fbf67602e570a5c5c0b418a1"
+      },
+      {
+        "title": "Everglades",
+        "url": "https://milesmccrocklin.myportfolio.com/everglades",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/b5a80d5e-2977-4ced-84d4-52f98dddce6b_carw_4x3x5120.jpg?h=cbc9878e7b8dee9764ee7f9cee192dfa"
+      },
+      {
+        "title": "Death Valley",
+        "url": "https://milesmccrocklin.myportfolio.com/death-valley",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/f99e16a6-98f6-44a8-b35c-f0a9e5ce000d_carw_4x3x5120.jpg?h=934059b33f06e81bc46c6e26b354e46f"
+      },
+      {
+        "title": "Honolulu",
+        "url": "https://milesmccrocklin.myportfolio.com/honolulu",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/733309aa-7700-4e73-9bf9-ab84f38811c2_carw_4x3x5120.jpg?h=763ec07e19b631f0aa770bdd400a71e1"
+      },
+      {
+        "title": "O'ahu",
+        "url": "https://milesmccrocklin.myportfolio.com/oahu",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/322efe0b-d757-4f17-8b8a-b5f92fbb2ef8_carw_4x3x5120.jpg?h=10e8a96176da6f5a36f447b9b6baf265"
+      },
+      {
+        "title": "Lassen National Park",
+        "url": "https://milesmccrocklin.myportfolio.com/lassen-national-park",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/0f4bf3fc-e22a-461a-89e6-34ba351377f9_carw_4x3x5120.jpg?h=d3f20171d700aac3cf27ccb8bf1c2496"
+      },
+      {
+        "title": "San Francisco",
+        "url": "https://milesmccrocklin.myportfolio.com/san-francisco",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/b2d05408-e769-43e5-82ed-005ff8d11709_carw_4x3x5120.jpg?h=5e075e79749948aeed1eaf969311ceba"
+      },
+      {
+        "title": "San Francisco (older)",
+        "url": "https://milesmccrocklin.myportfolio.com/san-francisco-1",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/8e4938e5-007d-49cc-904f-00c2c18bdcea_carw_4x3x5120.jpg?h=6a3bf9efc18c1c08ef405218b7e2a70a"
+      },
+      {
+        "title": "Cleveland",
+        "url": "https://milesmccrocklin.myportfolio.com/cleveland",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/8a4a6f44-ad36-4f7c-a9f0-2c0cde37502b_carw_4x3x5120.jpg?h=80b5c9f43a0164165e93375f5f8f4f11"
+      },
+      {
+        "title": "Chicago",
+        "url": "https://milesmccrocklin.myportfolio.com/chicago",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/d593d6e7-8bb7-4000-adde-5e15b92accbd_carw_4x3x5120.jpg?h=682761511537e9b4ccdeec322ac76ee3"
+      },
+      {
+        "title": "Sapphire, North Carolina",
+        "url": "https://milesmccrocklin.myportfolio.com/sapphire-north-carolina",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/3a767aaf-6280-46ce-a654-fc91c363c12b_carw_4x3x5120.jpg?h=fd0c481c4fa42ba575714b5fc1462436"
+      },
+      {
+        "title": "Florida Keys",
+        "url": "https://milesmccrocklin.myportfolio.com/florida-keys",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/322126ca-4296-4ac0-a4bb-4f32134a4835_carw_4x3x5120.jpg?h=8048f8e18989476b77376f37468a0ad9"
+      },
+      {
+        "title": "New Orleans (older)",
+        "url": "https://milesmccrocklin.myportfolio.com/new-orleans-2",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/138c1a68-c8d6-4d57-9192-e8b55188fcfb_carw_4x3x5120.jpg?h=d063c32f79ded0c1696dc520a7290913"
+      },
+      {
+        "title": "Red Rocks Ampitheater",
+        "url": "https://milesmccrocklin.myportfolio.com/red-rocks-ampitheater",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/457b0aba-2462-425c-86a8-65130bb141cb_carw_4x3x5120.jpg?h=492b7ea6b0d07f259d9b7cf741fe8b68"
+      },
+      {
+        "title": "San Diego",
+        "url": "https://milesmccrocklin.myportfolio.com/san-diego",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/ffebcf42-0f5a-4f26-ab94-d1468b8ae574_carw_4x3x5120.jpg?h=d4d4c210a306e1d47179b99d101cf3a7"
+      },
+      {
+        "title": "Minneapolis",
+        "url": "https://milesmccrocklin.myportfolio.com/minneapolis-1",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/e4eb1daf-ee61-4feb-9ae0-c9a660baef37_carw_4x3x5120.jpg?h=3208caadcb403f21b1c358c156017729"
+      },
+      {
+        "title": "Portland",
+        "url": "https://milesmccrocklin.myportfolio.com/portland",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/6c02baac-e90f-4ec1-9023-113caab9ddc3_carw_4x3x5120.jpg?h=7f138cf2f572e8a9ac91ff4d5b00f6d7"
+      },
+      {
+        "title": "Napa Valley",
+        "url": "https://milesmccrocklin.myportfolio.com/napa-valley",
+        "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/a82d5e86-ed2b-44d9-a40b-8406549fba64_carw_4x3x5120.jpg?h=bfc53d34beff1720eddeaf70d420ca07"
+      }
+    ]
+  },
+  {
+    "country": "Uruguay",
+    "country_slug": "uruguay",
+    "render_kind": "polygon",
+    "image": "media/portfolio/uruguay.jpg",
+    "primary_album": {
+      "title": "Uruguay",
+      "url": "https://milesmccrocklin.myportfolio.com/uruguay",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/462cbd0b-96b8-4036-9d1f-3a7b9f4cbf19_carw_4x3x5120.jpg?h=23ac7538a10ad0e6a6826ddff16ee253"
+    },
+    "secondary_albums": []
+  },
+  {
+    "country": "Singapore",
+    "country_slug": "singapore",
+    "render_kind": "bubble",
+    "lat": 1.3521,
+    "lng": 103.8198,
+    "image": "media/portfolio/singapore.jpg",
+    "primary_album": {
+      "title": "Singapore",
+      "url": "https://milesmccrocklin.myportfolio.com/singapore",
+      "source_image_url": "https://cdn.myportfolio.com/ddea9101-e936-46e9-bff8-e4951c901c9f/3d03f344-39b3-4a0a-958a-896047e03c15_carw_4x3x5120.jpg?h=0f5629b7adfde5cfc25bccb4244e5aa1"
+    },
+    "secondary_albums": [],
+    "notes": "Microstate; not in NE 110m. Render as bubble at lat/lng."
+  },
+  {
+    "country": "Vatican",
+    "country_slug": "vatican",
+    "render_kind": "bubble",
+    "lat": 41.9029,
+    "lng": 12.4534,
+    "image": "media/portfolio/vatican.jpg",
+    "local_image": {
+      "title": "Gallery of Maps — Vatican Museums",
+      "path": "media/alps-2025/vatican-gallery-of-maps.jpg"
+    },
+    "notes": "Microstate; not in NE 110m. Render as bubble at lat/lng."
+  }
+]

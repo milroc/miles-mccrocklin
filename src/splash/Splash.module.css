@@ -1,0 +1,600 @@
+/* Splash component styles — CSS Module. All class names are hashed by
+   the bundler. Page-level globals (:root, html/body, @keyframes) live
+   in splash-globals.css. */
+
+/* ============================================================
+   Composition root — strictly viewport-sized so the whole splash
+   fits on one screen. The tiles grid flex-grows to fill the
+   remaining space after wordmark + CTA + padding.
+   ============================================================ */
+.root {
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px clamp(20px, 4vw, 72px);
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ============================================================
+   Wordmark — same style register as the resume's Header.name
+   (Georgia, 300 weight, 0.02em tracking, 900-weight last name with
+   sup'd "c" and inert syllable spans for "mil" and "roc"). Cream
+   instead of ink to read on the dark canvas mat.
+   ============================================================ */
+.wordmark {
+  font-family: var(--splash-serif);
+  font-weight: 300;
+  font-size: var(--splash-fs-display);
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  color: var(--splash-canvas-fg-strong);
+  text-align: center;
+  margin: 0 0 32px;
+  flex-shrink: 0;
+}
+.last {
+  font-weight: 900;
+  /* 900-weight Georgia at display size wants tracking at zero —
+     bold display type at +0.02em reads slightly too loose between
+     dense pairs (oc, cl, kl). Same override as the resume header. */
+  letter-spacing: 0;
+}
+.nameSup {
+  font-size: 0.55em;
+  vertical-align: 0.6em;
+  margin-left: -0.15em;
+  margin-right: 0.07em;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 0;
+}
+/* Syllable spans match the resume's resting state. The hover-driven
+   underline animation on the resume is tied to handle links in the
+   contact row; on splash there are no handle links, so these stay
+   inert (intentionally). Future Phase 2 may reactivate them. */
+.syl {
+  text-decoration: none;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+}
+
+/* ============================================================
+   Two-column layout — Builder dominates the left, Artist + Explorer
+   stack on the right at half-height each.
+       | Builder | Artist   |
+       | Builder | Explorer |
+   Builder spans both rows so it's twice as tall and 1.5× as wide as
+   the right-side tiles. The grid drives every tile's size; per-tile
+   aspect-ratio constraints removed so the visual element fills its
+   cell minus the label area underneath.
+   ============================================================ */
+.tiles {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  /* Tiny desktop gutter — a 4px hairline of canvas between tiles, just
+     enough to separate the entries without breaking the one-composition
+     feel. Mobile (stacked) reintroduces a larger gap below. */
+  gap: 4px;
+  width: 100%;
+  max-width: 1320px;
+  /* Flex-grow to fill remaining vertical space after wordmark + CTA;
+     min-height: 0 lets the grid shrink below intrinsic content height,
+     which it needs to do inside a flex column with a viewport cap. */
+  flex: 1;
+  min-height: 0;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  transition: opacity 200ms ease;
+}
+.tile:focus-visible {
+  outline: 2px solid var(--splash-accent);
+  outline-offset: 6px;
+}
+.tileVisual {
+  width: 100%;
+  background: #2a2e27;
+  /* Hairline rule frames each tile as a discrete card. The grid's 4px
+     gap keeps adjacent borders from doubling up into a 2px seam. Sharp
+     corners, no radius. */
+  border: 1px solid var(--splash-canvas-rule);
+  position: relative;
+  overflow: hidden;
+  /* Labels now overlay the tile content (see .tileLabelOverlay), so
+     the visual fills the entire grid cell — no separate label band
+     beneath. */
+  flex: 1;
+  height: 100%;
+}
+
+/* Grid placement. Builder takes the entire left column. */
+.tile[data-id="builder"] {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+.tile[data-id="photographer"] {
+  grid-column: 2;
+  grid-row: 1;
+}
+.tile[data-id="explorer"] {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Tile-label overlay — glassmorphism card centered over the tile
+   content. Frosted backdrop blur, milky translucent surface, thin
+   white edge highlight, soft floating shadow underneath. Reads as a
+   pane of frosted glass laid across the tile's busy imagery so the
+   role label is legible without burying the work behind it.
+
+   Sharp 6px corners (not pill-shaped) keep the editorial register the
+   rest of the splash uses — same low-radius vocabulary as
+   --splash-tile-radius (2px) and the resume's document edges. */
+.tileLabelOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 36px;
+  border-radius: 2px;
+
+  /* The frost: heavy backdrop blur + slight saturation boost gives
+     the glass its signature soft, slightly-warmed-by-the-content look. */
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+
+  /* Smoked-glass surface — darker than typical glassmorphism so the
+     cream text holds equally against bright UI screenshots (Builder
+     tile) and dark photography/globe (Photographer/Explorer tiles).
+     The vertical white gradient still gives the "light from above"
+     meniscus, but the underlying tint is heavier to guarantee
+     contrast across the whole splash. */
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0.06) 100%
+    ),
+    rgba(20, 22, 18, 0.55);
+
+  /* Thin glass edge — slightly brighter on top to read as catching
+     ambient light. */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  box-shadow:
+    /* Floating drop shadow — the card hovers above the tile content. */
+    0 10px 36px rgba(0, 0, 0, 0.35),
+    /* Top-edge highlight — fakes the meniscus of the glass surface. */
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    /* Bottom-edge subtle dark line — defines the lower lip. */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+
+  pointer-events: none;
+  z-index: 2;
+
+  /* Hover expansion — the glass scales, breathes more padding, and
+     the frost intensifies. Used by all three tiles for a unified
+     motion register. */
+  transition:
+    transform 360ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    padding 360ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    backdrop-filter 360ms ease,
+    -webkit-backdrop-filter 360ms ease,
+    background 360ms ease,
+    box-shadow 360ms ease,
+    border-color 360ms ease;
+}
+
+/* Glass expand-on-hover — same animation across builder/photographer/
+   explorer so the splash reads with one consistent motion language.
+   Scale is restrained (1.06) so it reads as a breath, not a leap. */
+.tile:hover .tileLabelOverlay,
+.tile:focus-visible .tileLabelOverlay {
+  transform: translate(-50%, -50%) scale(1.06);
+  padding: 22px 44px;
+  backdrop-filter: blur(28px) saturate(1.55);
+  -webkit-backdrop-filter: blur(28px) saturate(1.55);
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.08) 100%
+    ),
+    rgba(20, 22, 18, 0.48);
+  border-color: rgba(255, 255, 255, 0.26);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tileLabelOverlay {
+    transition: none;
+  }
+}
+
+.tileLabel {
+  position: relative;
+  z-index: 1;
+  font-family: var(--splash-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--splash-canvas-fg-strong);
+  margin: 0;
+  /* Layered glow + tight halo so the label reads against any
+     underlying imagery (bright UI mocks on Builder, dark penguins on
+     Photographer, dark globe on Explorer). The 1-px tight ring
+     guarantees crisp edges even when blur fails (older browsers,
+     Firefox without backdrop-filter enabled). */
+  text-shadow:
+    0 1px 14px rgba(0, 0, 0, 0.85),
+    0 0 4px rgba(0, 0, 0, 0.7),
+    0 0 1px rgba(0, 0, 0, 0.9);
+}
+.tile[data-id="builder"] .tileLabel {
+  font-size: 16px;
+  letter-spacing: 0.4em;
+}
+.tileSublabel {
+  position: relative;
+  z-index: 1;
+  font-family: var(--splash-serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--splash-canvas-fg);
+  margin: 6px 0 0;
+  text-shadow:
+    0 1px 12px rgba(0, 0, 0, 0.85),
+    0 0 3px rgba(0, 0, 0, 0.7);
+}
+.tile[data-id="builder"] .tileSublabel {
+  font-size: 14px;
+}
+
+/* Per-tile call-to-action — italic Georgia line that's hidden at rest
+   and unfolds inside the glass when the tile is hovered/focused. Same
+   editorial italic register as .tileSublabel; smaller and accent-tinted
+   so it reads as a follow-through, not a duplicate of the sublabel. */
+.tileCta {
+  position: relative;
+  z-index: 1;
+  font-family: var(--splash-serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--splash-canvas-fg-strong);
+  letter-spacing: 0.02em;
+  margin: 0;
+  /* Collapsed state: zero height, zero opacity, pulled tight against
+     the sublabel so the unfold doesn't snap once it begins. */
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    max-height 360ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    opacity 240ms ease,
+    margin-top 360ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.tile:hover .tileCta,
+.tile:focus-visible .tileCta {
+  max-height: 24px;
+  opacity: 1;
+  margin-top: 8px;
+}
+.tile[data-id="builder"] .tileCta {
+  font-size: 13px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tileCta {
+    transition: opacity 120ms linear;
+  }
+  .tile:hover .tileCta,
+  .tile:focus-visible .tileCta {
+    max-height: none;
+  }
+}
+
+/* ============================================================
+   Builder content uses the generalized <Masonry> component (see
+   src/media/Masonry.tsx + Masonry.module.css for structure). The
+   only Builder-specific styling left here is the hover lift —
+   passed into Masonry via its `imageClassName` prop so it composes
+   on top of the masonry's structural rules.
+   ============================================================ */
+.builderImage {
+  /* Snap to the blurred state on hover — the chips animate in over
+     the dimmed backdrop, but the blur itself is instant so cream
+     chips have legible contrast from frame zero. */
+  transition: filter 0ms;
+}
+.tile[data-id="builder"]:hover .builderImage,
+.tile[data-id="builder"]:focus-visible .builderImage {
+  filter: blur(8px) brightness(0.55);
+}
+
+/* Code-chip overlay (CodeChips.tsx) — fades in tiny code snippets when
+   the Builder tile is hovered. The chip component reads these CSS
+   variables; this rule owns the trigger so the cross-component coupling
+   is one CSS variable, not a hashed class name. */
+.tile[data-id="builder"] {
+  --chip-opacity: 0;
+  --chip-ty: 8px;
+  --chip-scale: 0.96;
+  /* Terminal panel is always docked at the bottom. At rest the
+     `› /ship` prompt + status footer render (~58px); on hover the
+     panel grows upward to reveal the Claude Code welcome frame above. */
+  --terminal-h: 58px;
+}
+.tile[data-id="builder"]:hover,
+.tile[data-id="builder"]:focus-visible {
+  --chip-opacity: 1;
+  --chip-ty: 0px;
+  --chip-scale: 1;
+  --terminal-h: 240px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tile[data-id="builder"]:hover,
+  .tile[data-id="builder"]:focus-visible {
+    --chip-ty: 0px;
+    --chip-scale: 1;
+    --terminal-h: 240px;
+  }
+}
+
+/* ============================================================
+   Photographer tile uses the generalized <Masonry> component (see
+   src/media/Masonry.tsx). The grid + sizing comes from there; only
+   the photo-filter language (grayscale at rest, full color on hover)
+   stays here, layered on via Masonry's `imageClassName` prop.
+   ============================================================ */
+.photo {
+  border-radius: 1px;
+  filter: grayscale(0.18) contrast(1.02);
+  /* Instant blur+darken on hover — same vocabulary as the Builder
+     masonry. The glass card + CTA become the focal point against a
+     soft-focus dark wash. */
+  transition: filter 0ms;
+}
+.tile[data-id="photographer"]:hover .photo,
+.tile[data-id="photographer"]:focus-visible .photo {
+  filter: blur(8px) brightness(0.55);
+}
+
+/* ============================================================
+   Explorer / globe
+   ============================================================ */
+.explorerContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+.globeMount {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Once the live globe mounts, its WebGL canvas would otherwise
+     swallow clicks (even with enablePointerInteraction:false on the
+     react-globe.gl side), which prevented the parent <a href=
+     "/explorer/"> from navigating. The tile is just a link target —
+     nothing inside this mount needs to receive pointer events. */
+  pointer-events: none;
+  /* Instant blur+darken on hover — same vocabulary as Builder/Photographer.
+     Filter on the mount applies to both the SSR static globe and the
+     post-hydration WebGL canvas. */
+  transition: filter 0ms;
+}
+.tile[data-id="explorer"]:hover .globeMount,
+.tile[data-id="explorer"]:focus-visible .globeMount {
+  filter: blur(8px) brightness(0.55);
+}
+.globeStatic {
+  /* Fit the smaller of the two parent dimensions so the circle stays
+     round even when the mount is non-square (the parent .globeMount
+     fills the whole tile, which is rarely 1:1). */
+  height: 100%;
+  aspect-ratio: 1;
+  max-width: 100%;
+  border: 1px solid var(--splash-canvas-fg-muted);
+  border-radius: 50%;
+  position: relative;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.05), transparent 60%),
+    repeating-linear-gradient(90deg, transparent 0, transparent 14%, rgba(184, 181, 173, 0.18) 14%, rgba(184, 181, 173, 0.18) 14.5%),
+    repeating-linear-gradient(0deg, transparent 0, transparent 14%, rgba(184, 181, 173, 0.14) 14%, rgba(184, 181, 173, 0.14) 14.5%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .globeStatic {
+    animation: splash-globe-spin 24s linear infinite;
+  }
+}
+
+/* ============================================================
+   Socials — icons-only row above the CTA. Same set the resume's
+   Header renders, stripped to glyphs for the splash's tighter
+   editorial register. Cream icons on the dark canvas; hover lifts
+   to canvas-fg-strong with a forest-green accent underline.
+   ============================================================ */
+.socials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 24px;
+  flex-shrink: 0;
+}
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--splash-canvas-fg);
+  text-decoration: none;
+  border-radius: 2px;
+  transition:
+    color 180ms ease,
+    transform 220ms ease,
+    background-color 180ms ease;
+}
+.socialLink:hover {
+  color: var(--splash-canvas-fg-strong);
+  transform: translateY(-1px);
+}
+.socialLink:focus-visible {
+  outline: 2px solid var(--splash-accent);
+  outline-offset: 4px;
+}
+.socialIcon {
+  width: 17px;
+  height: 17px;
+}
+
+/* ============================================================
+   CTA — italic Georgia in forest green
+   ============================================================ */
+.cta {
+  font-family: var(--splash-serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--splash-accent);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid transparent;
+  margin-top: 14px;
+  flex-shrink: 0;
+  transition: border-color 160ms ease;
+}
+.cta:hover {
+  border-bottom-color: var(--splash-accent);
+}
+
+/* ============================================================
+   Reveal state — wordmark + tiles + CTA hidden until lightning ends.
+   - SSR adds .revealing to the root by default.
+   - prefers-reduced-motion media query overrides the hide.
+   - effects.tsx removes .revealing after the third strike completes.
+   - The noscript fallback (inlined inside <Splash> with hashed names)
+     overrides the hide when JS is disabled.
+   ============================================================ */
+.revealing .wordmark,
+.revealing .tile,
+.revealing .socials,
+.revealing .cta {
+  opacity: 0;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .revealing .wordmark,
+  .revealing .tile,
+  .revealing .socials,
+  .revealing .cta {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* ============================================================
+   Print: useful single line, splash chrome hidden
+   ============================================================ */
+@media print {
+  .wordmark, .tiles {
+    display: none !important;
+  }
+  .root::before {
+    content: 'View resume at miles.mccrockl.in/resume/';
+    display: block;
+    text-align: center;
+    color: black;
+    font-family: Georgia, serif;
+    font-size: 14pt;
+    margin-top: 4in;
+  }
+}
+
+/* ============================================================
+   Mobile (<720px): stack vertically
+   ============================================================ */
+@media (max-width: 720px) {
+  /* Mobile drops the strict viewport cap — let the stack scroll if it
+     needs to. The desktop "fits-on-screen" rule is for landscape
+     viewing; on a phone, scrolling is the natural interaction. */
+  .root {
+    height: auto;
+    min-height: 100vh;
+    max-height: none;
+    overflow: visible;
+    padding: 48px 20px;
+  }
+  .wordmark {
+    font-size: var(--splash-fs-display-sm);
+    letter-spacing: 0.02em;
+    margin-bottom: 32px;
+  }
+  /* Single-column stack on mobile. Reset the desktop row spans so each
+     tile takes its natural row position in source order. */
+  .tiles {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 28px;
+    max-width: 380px;
+    align-items: stretch;
+    flex: 0 0 auto;
+    min-height: 0;
+  }
+  .tile[data-id="builder"],
+  .tile[data-id="photographer"],
+  .tile[data-id="explorer"] {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  /* Builder is masonry — let it grow to fit its content. Photographer
+     + Explorer keep a fixed aspect so the mobile stack stays tidy. */
+  .tile[data-id="builder"] .tileVisual {
+    aspect-ratio: auto;
+    min-height: 360px;
+  }
+  .tile[data-id="photographer"] .tileVisual,
+  .tile[data-id="explorer"] .tileVisual {
+    aspect-ratio: 16 / 10;
+  }
+  .tile[data-id="builder"] .tileLabel {
+    font-size: 13px;
+    letter-spacing: 0.32em;
+  }
+  .tile[data-id="builder"] .tileSublabel {
+    font-size: 12px;
+  }
+
+  /* Mobile has no hover — show every tile's CTA arrow by default so
+     the affordance is always legible. The desktop expand-on-hover
+     animation never fires here; this is the resting state. */
+  .tileCta {
+    max-height: none;
+    opacity: 1;
+    margin-top: 8px;
+  }
+
+}

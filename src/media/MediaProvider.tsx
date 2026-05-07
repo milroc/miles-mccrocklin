@@ -14,7 +14,7 @@ import {
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from 'react';
-import { MediaCtx, prefersReducedMotion } from '../utils/media';
+import { MediaCtx, prefersReducedMotion, mediaSrc } from '../utils/media';
 import type { MediaItem } from '../types';
 import s from './MediaProvider.module.css';
 
@@ -444,15 +444,15 @@ export function MediaProvider({ children }: MediaProviderProps) {
               >
                 {p.type === 'video' ? (
                   <video
-                    src={p.src}
-                    poster={p.poster}
+                    src={mediaSrc(p.src)}
+                    poster={mediaSrc(p.poster)}
                     autoPlay={renderedIdx === openIdx && !prefersReducedMotion()}
                     loop={!prefersReducedMotion()}
                     playsInline
                     muted
                   />
                 ) : (
-                  <img src={p.src} alt={p.caption || ''} draggable={false} />
+                  <img src={mediaSrc(p.src)} alt={p.caption || ''} draggable={false} />
                 )}
               </div>
             ))}

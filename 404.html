@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page not found · Miles McCrocklin</title>
+  <meta name="description" content="The page you were looking for isn't here. Head back to miles.mccrockl.in." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+
+  <!-- Open Graph / social previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://miles.mccrockl.in/404.html" />
+  <meta property="og:title" content="Page not found · Miles McCrocklin" />
+  <meta property="og:description" content="The page you were looking for isn't here. Head back to miles.mccrockl.in." />
+  <meta property="og:image" content="https://miles.mccrockl.in/media/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Miles McCrocklin — Builder, Photographer, Explorer." />
+  <meta property="og:site_name" content="miles.mccrockl.in" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Milr0c" />
+  <meta name="twitter:creator" content="@Milr0c" />
+  <meta name="twitter:title" content="Page not found · Miles McCrocklin" />
+  <meta name="twitter:description" content="The page you were looking for isn't here. Head back to miles.mccrockl.in." />
+  <meta name="twitter:image" content="https://miles.mccrockl.in/media/og.png" />
+  <meta name="twitter:image:alt" content="Miles McCrocklin — Builder, Photographer, Explorer." />
+
+  <style>
+    :root {
+      --canvas: #1c1f1a;
+      --canvas-fg-strong: #ece9e2;
+      --canvas-fg: #b8b5ad;
+      --accent: #3a6b4a;
+      --serif: Georgia, 'Times New Roman', Times, serif;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--canvas);
+      color: var(--canvas-fg-strong);
+      font-family: var(--serif);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    main {
+      padding: 24px;
+      max-width: 480px;
+    }
+    h1 {
+      font-size: 56px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin: 0 0 16px;
+      line-height: 1;
+    }
+    p {
+      font-style: italic;
+      color: var(--canvas-fg);
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0 0 32px;
+    }
+    a {
+      font-style: italic;
+      font-size: 14px;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 160ms ease;
+    }
+    a:hover { border-bottom-color: var(--accent); }
+  </style>
+  <script>
+    // Smart redirect: any non-canonical URL slug → /long-form/.
+    // Comparison is case-insensitive and trailing-slash-insensitive
+    // so /Resume, /RESUME/, /About, /Work, etc. all funnel correctly.
+    // For any other 404, fall through to the static "page not found"
+    // UI below.
+    (function () {
+      var slug = location.pathname.replace(/\/+$/, '').toLowerCase();
+      var aliases = ['/resume', '/dossier', '/about', '/work'];
+      if (aliases.indexOf(slug) !== -1) {
+        location.replace('/long-form/' + location.search + location.hash);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <main>
+    <h1>404</h1>
+    <p>The page you're looking for doesn't exist.<br/>Maybe it never did.</p>
+    <a href="/">← back to splash</a>
+  </main>
+</body>
+</html>
