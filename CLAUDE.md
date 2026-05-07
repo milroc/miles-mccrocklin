@@ -9,6 +9,41 @@ Do not deviate without explicit user approval.
 In QA / design-review mode, flag any code that doesn't match `DESIGN.md`,
 including the "Known Drift" section (D1–D6) — those are the open gaps.
 
+### CSS Modules
+
+All component-scoped styles live in `*.module.css` files and are
+imported as `import s from './Foo.module.css'`. Class names are hashed
+by the bundler and applied via `className={s.foo}` (or
+`` `${s.foo} ${s.bar}` `` for compound classes). The `.module.css`
+suffix is what triggers Bun's CSS Modules transform.
+
+Rules:
+
+- **Default to CSS Modules.** Any new component CSS must live in a
+  sibling `*.module.css` file. Don't add new selectors to
+  `src/styles/globals.css` unless they're genuinely page-level (body,
+  `:root` tokens, `@page` print rules).
+- **Page-level globals are the only exception** — `:root` token
+  definitions, `html`/`body` styling, `@keyframes` referenced from a
+  module via `animation:`, and `@page`. Keep these in a global file
+  next to the module (e.g. `splash-globals.css` next to
+  `Splash.module.css`).
+- **camelCase class names.** `.tileVisual`, not `.tile-visual` —
+  CSS Modules expose them as JS object keys, and kebab-case requires
+  bracket access (`s['tile-visual']`).
+- **No string literals for hashed classes in TS.** Don't write
+  `'splash-tile'` anywhere. If `effects.tsx` needs to query a
+  component class, it imports the same module and uses
+  `` `.${s.tile}` ``.
+- **`data-*` attributes for cross-component hooks.** When a non-React
+  consumer (lightning, an external script) needs to find an element
+  inside a component, expose a `data-*` attribute (`data-splash-skip`),
+  not a class. Class names are hashed; data attributes aren't.
+- **`<noscript>` fallbacks** that need to reference hashed names must
+  be rendered from inside the React component, with the class names
+  templated in via `dangerouslySetInnerHTML` so SSR'd HTML carries the
+  correct hashes.
+
 ### Custom typography pipeline
 
 The `.bullets` block runs through a Knuth-Plass line breaker

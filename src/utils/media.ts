@@ -13,3 +13,19 @@ export const prefersReducedMotion = (): boolean =>
   typeof window !== 'undefined' &&
   !!window.matchMedia &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Resolve a media src from data/resume.json against the site root.
+//
+// resume.json was authored when / WAS the long-form page, so paths
+// look like "media/foo/bar.jpg" (no leading slash). After the splash
+// redesign the long-form lives at /long-form/, where a browser would
+// resolve the same relative path to /long-form/media/... and 404.
+// Absolutize at the render boundary so the data file stays untouched.
+//
+// Pass-through for already-absolute paths (http(s)://, //, /, data:,
+// blob:, embed iframes pointing at YouTube/FB, etc).
+export function mediaSrc(src: string | undefined): string | undefined {
+  if (!src) return src;
+  if (/^([a-z][a-z0-9+.-]*:|\/\/|\/|#)/i.test(src)) return src;
+  return '/' + src;
+}

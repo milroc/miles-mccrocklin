@@ -1,0 +1,33 @@
+/* Masonry — justified-rows image grid that fills its container in both
+   width and height. Layout positions are computed in JS by
+   computeJustifiedLayout (see ./justified-layout.ts) and applied as
+   inline styles on each image. Per CLAUDE.md's CSS Modules rule:
+   structural styles live here, only the per-image left/top/width/height
+   (which depend on container measurements resolved at runtime) is
+   inline. */
+
+.root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.image {
+  display: block;
+  position: absolute;
+  /* The justified-rows algorithm places each tile width-justified per
+     row at the image's native aspect, then applies a final uniform
+     vertical scale so the stack fills `containerH` exactly (capped
+     at the layout's MAX_STRETCH/MIN_STRETCH budget — see
+     justified-layout.ts). That scale introduces a sub-perceptual
+     vertical aspect drift (typically <10%); `object-fit: fill`
+     stretches the image to match the cell exactly so the stretch is
+     uniform across the image rather than producing a visible
+     letterbox.
+     `cover` would have cropped instead — losing content. `contain`
+     would have left visible letterbox bands. `fill` is the right
+     match for this algorithm's "perfect fill" guarantee. */
+  object-fit: fill;
+  object-position: center;
+}

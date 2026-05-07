@@ -1,0 +1,915 @@
+{
+  "$comment": "Generated from data/timeline.json by scripts/timeline/build-journey.py. One waypoint per timeline entry, ordered chronologically by start month/year. Arcs draw between consecutive stops. Coordinates are country centroids (bbox of largest polygon) from world-countries-110m.json, with manual overrides for geographically sprawling countries.",
+  "waypoints": [
+    {
+      "label": "United States of America",
+      "lat": 39.5,
+      "lng": -98.35,
+      "startMonth": "Sep",
+      "startYear": 1988,
+      "endMonth": "Dec",
+      "endYear": 2026,
+      "kind": "visited"
+    },
+    {
+      "label": "United States of America",
+      "lat": 39.5,
+      "lng": -98.35,
+      "startMonth": "Sep",
+      "startYear": 1988,
+      "endMonth": "Sep",
+      "endYear": 2009,
+      "kind": "lived"
+    },
+    {
+      "label": "Bahamas",
+      "lat": 24.4601,
+      "lng": -77.9716,
+      "startMonth": "Jun",
+      "startYear": 2001,
+      "endMonth": "Jun",
+      "endYear": 2001,
+      "kind": "visited"
+    },
+    {
+      "label": "Mexico",
+      "lat": 23.6298,
+      "lng": -101.9699,
+      "startMonth": "Jun",
+      "startYear": 2001,
+      "endMonth": "Jun",
+      "endYear": 2001,
+      "kind": "visited"
+    },
+    {
+      "label": "Canada",
+      "lat": 56.13,
+      "lng": -106.35,
+      "startMonth": "Jul",
+      "startYear": 2002,
+      "endMonth": "Jul",
+      "endYear": 2002,
+      "kind": "visited"
+    },
+    {
+      "label": "Gibraltar",
+      "lat": 36.1408,
+      "lng": -5.3536,
+      "startMonth": "Jun",
+      "startYear": 2009,
+      "endMonth": "Jun",
+      "endYear": 2009,
+      "kind": "visited"
+    },
+    {
+      "label": "Scotland",
+      "lat": 54.0,
+      "lng": -2.0,
+      "startMonth": "Aug",
+      "startYear": 2009,
+      "endMonth": "Aug",
+      "endYear": 2009,
+      "kind": "visited"
+    },
+    {
+      "label": "United Kingdom",
+      "lat": 54.0,
+      "lng": -2.0,
+      "startMonth": "Sep",
+      "startYear": 2009,
+      "endMonth": "Aug",
+      "endYear": 2010,
+      "kind": "lived"
+    },
+    {
+      "label": "United Kingdom",
+      "lat": 54.0,
+      "lng": -2.0,
+      "startMonth": "Sep",
+      "startYear": 2009,
+      "endMonth": "Aug",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "England",
+      "lat": 54.0,
+      "lng": -2.0,
+      "startMonth": "Sep",
+      "startYear": 2009,
+      "endMonth": "Jun",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Italy",
+      "lat": 42.5121,
+      "lng": 12.6151,
+      "startMonth": "Nov",
+      "startYear": 2009,
+      "endMonth": "Nov",
+      "endYear": 2009,
+      "kind": "visited"
+    },
+    {
+      "label": "Vatican",
+      "lat": 41.9029,
+      "lng": 12.4534,
+      "startMonth": "Nov",
+      "startYear": 2009,
+      "endMonth": "Nov",
+      "endYear": 2009,
+      "kind": "visited"
+    },
+    {
+      "label": "Ireland",
+      "lat": 53.4005,
+      "lng": -8.005,
+      "startMonth": "Dec",
+      "startYear": 2009,
+      "endMonth": "Jan",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Northern Ireland",
+      "lat": 54.0,
+      "lng": -2.0,
+      "startMonth": "Dec",
+      "startYear": 2009,
+      "endMonth": "Dec",
+      "endYear": 2009,
+      "kind": "visited"
+    },
+    {
+      "label": "Germany",
+      "lat": 51.1428,
+      "lng": 10.5028,
+      "startMonth": "Jan",
+      "startYear": 2010,
+      "endMonth": "Jan",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Spain",
+      "lat": 39.8476,
+      "lng": -3.1767,
+      "startMonth": "May",
+      "startYear": 2010,
+      "endMonth": "Jun",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Wales",
+      "lat": 54.0,
+      "lng": -2.0,
+      "startMonth": "May",
+      "startYear": 2010,
+      "endMonth": "May",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Morocco",
+      "lat": 28.5904,
+      "lng": -9.0725,
+      "startMonth": "Jun",
+      "startYear": 2010,
+      "endMonth": "Jun",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Turkey",
+      "lat": 38.9309,
+      "lng": 35.4824,
+      "startMonth": "Jun",
+      "startYear": 2010,
+      "endMonth": "Jun",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Greece",
+      "lat": 39.1185,
+      "lng": 23.3771,
+      "startMonth": "Jun",
+      "startYear": 2010,
+      "endMonth": "Jun",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Croatia",
+      "lat": 44.4919,
+      "lng": 16.5237,
+      "startMonth": "Jul",
+      "startYear": 2010,
+      "endMonth": "Jul",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Italy",
+      "lat": 42.5121,
+      "lng": 12.6151,
+      "startMonth": "Jul",
+      "startYear": 2010,
+      "endMonth": "Jul",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Austria",
+      "lat": 47.7354,
+      "lng": 13.2298,
+      "startMonth": "Jul",
+      "startYear": 2010,
+      "endMonth": "Jul",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Czechia",
+      "lat": 49.8363,
+      "lng": 15.5466,
+      "startMonth": "Jul",
+      "startYear": 2010,
+      "endMonth": "Jul",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "Netherlands",
+      "lat": 52.1571,
+      "lng": 5.2035,
+      "startMonth": "Jul",
+      "startYear": 2010,
+      "endMonth": "Jul",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "France",
+      "lat": 46.6,
+      "lng": 2.5,
+      "startMonth": "Jul",
+      "startYear": 2010,
+      "endMonth": "Jul",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "United States of America",
+      "lat": 39.5,
+      "lng": -98.35,
+      "startMonth": "Aug",
+      "startYear": 2010,
+      "endMonth": "Dec",
+      "endYear": 2026,
+      "kind": "lived"
+    },
+    {
+      "label": "Belgium",
+      "lat": 50.5023,
+      "lng": 4.3351,
+      "startMonth": "Aug",
+      "startYear": 2010,
+      "endMonth": "Aug",
+      "endYear": 2010,
+      "kind": "visited"
+    },
+    {
+      "label": "United Kingdom",
+      "lat": 54.0,
+      "lng": -2.0,
+      "startMonth": "Sep",
+      "startYear": 2013,
+      "endMonth": "Sep",
+      "endYear": 2013,
+      "kind": "visited"
+    },
+    {
+      "label": "Portugal",
+      "lat": 39.5594,
+      "lng": -7.9578,
+      "startMonth": "Sep",
+      "startYear": 2013,
+      "endMonth": "Sep",
+      "endYear": 2013,
+      "kind": "visited"
+    },
+    {
+      "label": "Spain",
+      "lat": 39.8476,
+      "lng": -3.1767,
+      "startMonth": "Sep",
+      "startYear": 2013,
+      "endMonth": "Sep",
+      "endYear": 2013,
+      "kind": "visited"
+    },
+    {
+      "label": "Denmark",
+      "lat": 56.2804,
+      "lng": 9.5011,
+      "startMonth": "Sep",
+      "startYear": 2014,
+      "endMonth": "Sep",
+      "endYear": 2014,
+      "kind": "visited"
+    },
+    {
+      "label": "Norway",
+      "lat": 64.6322,
+      "lng": 18.1427,
+      "startMonth": "Sep",
+      "startYear": 2014,
+      "endMonth": "Sep",
+      "endYear": 2014,
+      "kind": "visited"
+    },
+    {
+      "label": "Germany",
+      "lat": 51.1428,
+      "lng": 10.5028,
+      "startMonth": "Sep",
+      "startYear": 2014,
+      "endMonth": "Sep",
+      "endYear": 2014,
+      "kind": "visited"
+    },
+    {
+      "label": "Sweden",
+      "lat": 62.234,
+      "lng": 17.4654,
+      "startMonth": "Sep",
+      "startYear": 2014,
+      "endMonth": "Sep",
+      "endYear": 2014,
+      "kind": "visited"
+    },
+    {
+      "label": "Belize",
+      "lat": 17.1935,
+      "lng": -88.668,
+      "startMonth": "Apr",
+      "startYear": 2015,
+      "endMonth": "Apr",
+      "endYear": 2015,
+      "kind": "visited"
+    },
+    {
+      "label": "Guatemala",
+      "lat": 15.7773,
+      "lng": -90.2271,
+      "startMonth": "Apr",
+      "startYear": 2015,
+      "endMonth": "Apr",
+      "endYear": 2015,
+      "kind": "visited"
+    },
+    {
+      "label": "India",
+      "lat": 22.0,
+      "lng": 79.0,
+      "startMonth": "Jan",
+      "startYear": 2016,
+      "endMonth": "Jan",
+      "endYear": 2016,
+      "kind": "visited"
+    },
+    {
+      "label": "Colombia",
+      "lat": 4.0696,
+      "lng": -72.9336,
+      "startMonth": "Jul",
+      "startYear": 2016,
+      "endMonth": "Jul",
+      "endYear": 2016,
+      "kind": "visited"
+    },
+    {
+      "label": "Germany",
+      "lat": 51.1428,
+      "lng": 10.5028,
+      "startMonth": "Oct",
+      "startYear": 2016,
+      "endMonth": "Oct",
+      "endYear": 2016,
+      "kind": "visited"
+    },
+    {
+      "label": "United Kingdom",
+      "lat": 54.0,
+      "lng": -2.0,
+      "startMonth": "Oct",
+      "startYear": 2016,
+      "endMonth": "Oct",
+      "endYear": 2016,
+      "kind": "visited"
+    },
+    {
+      "label": "Mexico",
+      "lat": 23.6298,
+      "lng": -101.9699,
+      "startMonth": "Apr",
+      "startYear": 2018,
+      "endMonth": "Apr",
+      "endYear": 2018,
+      "kind": "visited"
+    },
+    {
+      "label": "Canada",
+      "lat": 56.13,
+      "lng": -106.35,
+      "startMonth": "Jul",
+      "startYear": 2018,
+      "endMonth": "Jul",
+      "endYear": 2018,
+      "kind": "visited"
+    },
+    {
+      "label": "Colombia",
+      "lat": 4.0696,
+      "lng": -72.9336,
+      "startMonth": "Nov",
+      "startYear": 2018,
+      "endMonth": "Nov",
+      "endYear": 2018,
+      "kind": "visited"
+    },
+    {
+      "label": "India",
+      "lat": 22.0,
+      "lng": 79.0,
+      "startMonth": "Jan",
+      "startYear": 2019,
+      "endMonth": "Jan",
+      "endYear": 2019,
+      "kind": "visited"
+    },
+    {
+      "label": "India",
+      "lat": 22.0,
+      "lng": 79.0,
+      "startMonth": "Feb",
+      "startYear": 2019,
+      "endMonth": "Feb",
+      "endYear": 2019,
+      "kind": "visited"
+    },
+    {
+      "label": "Singapore",
+      "lat": 1.3521,
+      "lng": 103.8198,
+      "startMonth": "Feb",
+      "startYear": 2019,
+      "endMonth": "Feb",
+      "endYear": 2019,
+      "kind": "visited"
+    },
+    {
+      "label": "Germany",
+      "lat": 51.1428,
+      "lng": 10.5028,
+      "startMonth": "Jun",
+      "startYear": 2019,
+      "endMonth": "Jun",
+      "endYear": 2019,
+      "kind": "visited"
+    },
+    {
+      "label": "South Africa",
+      "lat": -28.4552,
+      "lng": 24.5875,
+      "startMonth": "Jun",
+      "startYear": 2019,
+      "endMonth": "Jun",
+      "endYear": 2019,
+      "kind": "visited"
+    },
+    {
+      "label": "Argentina",
+      "lat": -37.0911,
+      "lng": -63.5219,
+      "startMonth": "Aug",
+      "startYear": 2019,
+      "endMonth": "Aug",
+      "endYear": 2019,
+      "kind": "visited"
+    },
+    {
+      "label": "Malaysia",
+      "lat": 3.8506,
+      "lng": 114.4226,
+      "startMonth": "Oct",
+      "startYear": 2022,
+      "endMonth": "Oct",
+      "endYear": 2022,
+      "kind": "visited"
+    },
+    {
+      "label": "Thailand",
+      "lat": 13.0546,
+      "lng": 101.4825,
+      "startMonth": "Oct",
+      "startYear": 2022,
+      "endMonth": "Oct",
+      "endYear": 2022,
+      "kind": "visited"
+    },
+    {
+      "label": "Singapore",
+      "lat": 1.3521,
+      "lng": 103.8198,
+      "startMonth": "Oct",
+      "startYear": 2022,
+      "endMonth": "Oct",
+      "endYear": 2022,
+      "kind": "visited"
+    },
+    {
+      "label": "United States of America",
+      "lat": 39.5,
+      "lng": -98.35,
+      "startMonth": "Jan",
+      "startYear": 2024,
+      "endMonth": "Mar",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "United States of America",
+      "lat": 39.5,
+      "lng": -98.35,
+      "startMonth": "Mar",
+      "startYear": 2024,
+      "endMonth": "May",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Japan",
+      "lat": 36.2041,
+      "lng": 135.6614,
+      "startMonth": "Mar",
+      "startYear": 2024,
+      "endMonth": "Apr",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "United Arab Emirates",
+      "lat": 24.2762,
+      "lng": 53.9882,
+      "startMonth": "May",
+      "startYear": 2024,
+      "endMonth": "May",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Armenia",
+      "lat": 39.9947,
+      "lng": 45.0442,
+      "startMonth": "May",
+      "startYear": 2024,
+      "endMonth": "May",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Egypt",
+      "lat": 26.7928,
+      "lng": 30.7831,
+      "startMonth": "Jun",
+      "startYear": 2024,
+      "endMonth": "Jun",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Greece",
+      "lat": 39.1185,
+      "lng": 23.3771,
+      "startMonth": "Jun",
+      "startYear": 2024,
+      "endMonth": "Jun",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Madagascar",
+      "lat": -18.821,
+      "lng": 46.8654,
+      "startMonth": "Jul",
+      "startYear": 2024,
+      "endMonth": "Aug",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Rwanda",
+      "lat": -2.0263,
+      "lng": 29.9205,
+      "startMonth": "Jul",
+      "startYear": 2024,
+      "endMonth": "Jul",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Uganda",
+      "lat": 1.4033,
+      "lng": 32.3077,
+      "startMonth": "Jul",
+      "startYear": 2024,
+      "endMonth": "Jul",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "United States of America",
+      "lat": 39.5,
+      "lng": -98.35,
+      "startMonth": "Aug",
+      "startYear": 2024,
+      "endMonth": "Sep",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Kenya",
+      "lat": 0.4146,
+      "lng": 37.8743,
+      "startMonth": "Aug",
+      "startYear": 2024,
+      "endMonth": "Aug",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "United Kingdom",
+      "lat": 54.0,
+      "lng": -2.0,
+      "startMonth": "Aug",
+      "startYear": 2024,
+      "endMonth": "Aug",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Peru",
+      "lat": -9.2026,
+      "lng": -75.038,
+      "startMonth": "Sep",
+      "startYear": 2024,
+      "endMonth": "Sep",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Australia",
+      "lat": -25.27,
+      "lng": 133.78,
+      "startMonth": "Oct",
+      "startYear": 2024,
+      "endMonth": "Nov",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "United States of America",
+      "lat": 39.5,
+      "lng": -98.35,
+      "startMonth": "Oct",
+      "startYear": 2024,
+      "endMonth": "Oct",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Belgium",
+      "lat": 50.5023,
+      "lng": 4.3351,
+      "startMonth": "Oct",
+      "startYear": 2024,
+      "endMonth": "Oct",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "United Kingdom",
+      "lat": 54.0,
+      "lng": -2.0,
+      "startMonth": "Oct",
+      "startYear": 2024,
+      "endMonth": "Oct",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "France",
+      "lat": 46.6,
+      "lng": 2.5,
+      "startMonth": "Oct",
+      "startYear": 2024,
+      "endMonth": "Oct",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Mexico",
+      "lat": 23.6298,
+      "lng": -101.9699,
+      "startMonth": "Oct",
+      "startYear": 2024,
+      "endMonth": "Oct",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Antarctica",
+      "lat": -76.6353,
+      "lng": 0.0,
+      "startMonth": "Nov",
+      "startYear": 2024,
+      "endMonth": "Dec",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Argentina",
+      "lat": -37.0911,
+      "lng": -63.5219,
+      "startMonth": "Nov",
+      "startYear": 2024,
+      "endMonth": "Nov",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Chile",
+      "lat": -35.7182,
+      "lng": -71.3148,
+      "startMonth": "Dec",
+      "startYear": 2024,
+      "endMonth": "Jan",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Uruguay",
+      "lat": -32.5312,
+      "lng": -55.8183,
+      "startMonth": "Dec",
+      "startYear": 2024,
+      "endMonth": "Dec",
+      "endYear": 2024,
+      "kind": "visited"
+    },
+    {
+      "label": "Ecuador",
+      "lat": -1.7891,
+      "lng": -78.1007,
+      "startMonth": "Jan",
+      "startYear": 2025,
+      "endMonth": "Feb",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Bolivia",
+      "lat": -16.3175,
+      "lng": -63.5444,
+      "startMonth": "Jan",
+      "startYear": 2025,
+      "endMonth": "Jan",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Brazil",
+      "lat": -10.0,
+      "lng": -52.0,
+      "startMonth": "Feb",
+      "startYear": 2025,
+      "endMonth": "Mar",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Panama",
+      "lat": 8.4161,
+      "lng": -80.1042,
+      "startMonth": "Feb",
+      "startYear": 2025,
+      "endMonth": "Feb",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Brazil",
+      "lat": -10.0,
+      "lng": -52.0,
+      "startMonth": "Mar",
+      "startYear": 2025,
+      "endMonth": "Mar",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Argentina",
+      "lat": -37.0911,
+      "lng": -63.5219,
+      "startMonth": "Mar",
+      "startYear": 2025,
+      "endMonth": "Mar",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "El Salvador",
+      "lat": 13.7866,
+      "lng": -88.9095,
+      "startMonth": "Mar",
+      "startYear": 2025,
+      "endMonth": "Mar",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "United States of America",
+      "lat": 39.5,
+      "lng": -98.35,
+      "startMonth": "Mar",
+      "startYear": 2025,
+      "endMonth": "Mar",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Paraguay",
+      "lat": -23.4456,
+      "lng": -58.489,
+      "startMonth": "Mar",
+      "startYear": 2025,
+      "endMonth": "Mar",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Italy",
+      "lat": 42.5121,
+      "lng": 12.6151,
+      "startMonth": "May",
+      "startYear": 2025,
+      "endMonth": "Jun",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Switzerland",
+      "lat": 46.8039,
+      "lng": 8.2327,
+      "startMonth": "May",
+      "startYear": 2025,
+      "endMonth": "May",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Liechtenstein",
+      "lat": 47.166,
+      "lng": 9.555,
+      "startMonth": "May",
+      "startYear": 2025,
+      "endMonth": "May",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "San Marino",
+      "lat": 43.9424,
+      "lng": 12.4578,
+      "startMonth": "May",
+      "startYear": 2025,
+      "endMonth": "May",
+      "endYear": 2025,
+      "kind": "visited"
+    },
+    {
+      "label": "Vatican",
+      "lat": 41.9029,
+      "lng": 12.4534,
+      "startMonth": "Jun",
+      "startYear": 2025,
+      "endMonth": "Jun",
+      "endYear": 2025,
+      "kind": "visited"
+    }
+  ]
+}

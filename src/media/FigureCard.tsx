@@ -9,7 +9,7 @@
 // All visual styling lives on the global `.figure-card` primitive in
 // globals.css; layout containers add their own modifier rules on top.
 import { useContext, type CSSProperties, type ReactNode } from 'react';
-import { MediaCtx, prefersReducedMotion } from '../utils/media';
+import { MediaCtx, prefersReducedMotion, mediaSrc } from '../utils/media';
 import type { MediaItem } from '../types';
 
 interface FigureCardProps {
@@ -33,7 +33,7 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
         onContextMenu={(e) => e.preventDefault()}
       >
         <iframe
-          src={p.src}
+          src={mediaSrc(p.src)}
           title={p.caption || 'Embedded UI'}
           loading="lazy"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
@@ -58,8 +58,8 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
     >
       {p.type === 'video' ? (
         <video
-          src={p.src}
-          poster={p.poster}
+          src={mediaSrc(p.src)}
+          poster={mediaSrc(p.poster)}
           muted
           loop={!reduceMotion}
           autoPlay={!reduceMotion}
@@ -74,7 +74,7 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
         // IntersectionObserver never fired and the image stayed blank.
         // decoding="async" hands the decode off the main thread.
         <img
-          src={p.src}
+          src={mediaSrc(p.src)}
           alt={p.caption || ''}
           loading="lazy"
           decoding="async"

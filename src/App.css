@@ -97,6 +97,24 @@
   border-radius: 2px;
   transition: all 120ms ease;
 }
+/* Back-to-splash link. Same mono / canvas-fg register as the buttons but
+   borderless to read as navigation rather than a mode toggle. Sits to the
+   left of the wordmark; on mobile the wordmark hides but back stays. */
+.toolbar .back-link {
+  font-family: var(--mono);
+  font-size: var(--fs-tag);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--canvas-fg-muted);
+  text-decoration: none;
+  padding: 6px 8px 6px 0;
+  transition: color 120ms ease;
+}
+.toolbar .back-link:hover,
+.toolbar .back-link:focus-visible {
+  color: var(--canvas-fg-strong);
+  outline: none;
+}
 .toolbar button:hover {
   border-color: var(--canvas-fg-strong);
   color: var(--canvas-fg-strong);

@@ -1,0 +1,1640 @@
+[
+  {
+    "country": "Vatican",
+    "startMonth": "Jun",
+    "startYear": 2025,
+    "endMonth": "Jun",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "e Vatican",
+      "date": "Jun, 2025",
+      "y": 381
+    }
+  },
+  {
+    "country": "Italy",
+    "startMonth": "May",
+    "startYear": 2025,
+    "endMonth": "Jun",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Italy",
+      "date": "May - Jun, 2025",
+      "y": 529
+    }
+  },
+  {
+    "country": "Switzerland",
+    "startMonth": "May",
+    "startYear": 2025,
+    "endMonth": "May",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "+ Switzerland",
+      "date": "May, 2025",
+      "y": 677
+    }
+  },
+  {
+    "country": "Liechtenstein",
+    "startMonth": "May",
+    "startYear": 2025,
+    "endMonth": "May",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Liechtenstein",
+      "date": "May, 2025",
+      "y": 826
+    }
+  },
+  {
+    "country": "San Marino",
+    "startMonth": "May",
+    "startYear": 2025,
+    "endMonth": "May",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• San Marino",
+      "date": "May, 2025",
+      "y": 974
+    }
+  },
+  {
+    "country": "Brazil",
+    "startMonth": "Mar",
+    "startYear": 2025,
+    "endMonth": "Mar",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      37
+    ],
+    "raw": {
+      "country": "Brazil",
+      "date": "Mar, 2025",
+      "y": 1125
+    }
+  },
+  {
+    "country": "Argentina",
+    "startMonth": "Mar",
+    "startYear": 2025,
+    "endMonth": "Mar",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Argentina",
+      "date": "Mar, 2025",
+      "y": 1270
+    }
+  },
+  {
+    "country": "El Salvador",
+    "startMonth": "Mar",
+    "startYear": 2025,
+    "endMonth": "Mar",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• El Salvador",
+      "date": "Mar, 2025",
+      "y": 1419
+    }
+  },
+  {
+    "country": "United States of America",
+    "startMonth": "Mar",
+    "startYear": 2025,
+    "endMonth": "Mar",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "United States of America",
+      "date": "Mar, 2025",
+      "y": 1567
+    }
+  },
+  {
+    "country": "Paraguay",
+    "startMonth": "Mar",
+    "startYear": 2025,
+    "endMonth": "Mar",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Paraguay",
+      "date": "Mar, 2025",
+      "y": 1720
+    }
+  },
+  {
+    "country": "Brazil",
+    "startMonth": "Feb",
+    "startYear": 2025,
+    "endMonth": "Mar",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Brazil",
+      "date": "Feb - Mar, 2025",
+      "y": 1866
+    }
+  },
+  {
+    "country": "Panama",
+    "startMonth": "Feb",
+    "startYear": 2025,
+    "endMonth": "Feb",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      162,
+      37
+    ],
+    "raw": {
+      "country": "#× Panama",
+      "date": "Feb, 2025",
+      "y": 2012
+    }
+  },
+  {
+    "country": "Ecuador",
+    "startMonth": "Jan",
+    "startYear": 2025,
+    "endMonth": "Feb",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Ecuador",
+      "date": "Jan - Feb, 2025",
+      "y": 2163
+    }
+  },
+  {
+    "country": "Bolivia",
+    "startMonth": "Jan",
+    "startYear": 2025,
+    "endMonth": "Jan",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "— Bolivia",
+      "date": "Jan, 2025",
+      "y": 2310
+    }
+  },
+  {
+    "country": "Chile",
+    "startMonth": "Dec",
+    "startYear": 2024,
+    "endMonth": "Jan",
+    "endYear": 2025,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "* Chile",
+      "date": "Dec, 2024 - Jan, 2025",
+      "y": 2573
+    }
+  },
+  {
+    "country": "Uruguay",
+    "startMonth": "Dec",
+    "startYear": 2024,
+    "endMonth": "Dec",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      162,
+      37
+    ],
+    "raw": {
+      "country": "= Uruguay",
+      "date": "Dec, 2024",
+      "y": 2720
+    }
+  },
+  {
+    "country": "Antarctica",
+    "startMonth": "Nov",
+    "startYear": 2024,
+    "endMonth": "Dec",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Antarctica",
+      "date": "Nov - Dec, 2024",
+      "y": 2867
+    }
+  },
+  {
+    "country": "Argentina",
+    "startMonth": "Nov",
+    "startYear": 2024,
+    "endMonth": "Nov",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      37
+    ],
+    "raw": {
+      "country": "• Argentina",
+      "date": "Nov, 2024",
+      "y": 3015
+    }
+  },
+  {
+    "country": "Australia",
+    "startMonth": "Oct",
+    "startYear": 2024,
+    "endMonth": "Nov",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Australia",
+      "date": "Oct - Nov, 2024",
+      "y": 3166
+    }
+  },
+  {
+    "country": "United States of America",
+    "startMonth": "Oct",
+    "startYear": 2024,
+    "endMonth": "Oct",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "United States of America",
+      "date": "Oct, 2024",
+      "y": 3315
+    }
+  },
+  {
+    "country": "Belgium",
+    "startMonth": "Oct",
+    "startYear": 2024,
+    "endMonth": "Oct",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Belgium",
+      "date": "Oct, 2024",
+      "y": 3466
+    }
+  },
+  {
+    "country": "United Kingdom",
+    "startMonth": "Oct",
+    "startYear": 2024,
+    "endMonth": "Oct",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "EK United Kingdom",
+      "date": "Oct, 2024",
+      "y": 3614
+    }
+  },
+  {
+    "country": "France",
+    "startMonth": "Oct",
+    "startYear": 2024,
+    "endMonth": "Oct",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "France",
+      "date": "Oct, 2024",
+      "y": 3762
+    }
+  },
+  {
+    "country": "Mexico",
+    "startMonth": "Oct",
+    "startYear": 2024,
+    "endMonth": "Oct",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      37
+    ],
+    "raw": {
+      "country": "Mexico",
+      "date": "Oct, 2024",
+      "y": 3908
+    }
+  },
+  {
+    "country": "Peru",
+    "startMonth": "Sep",
+    "startYear": 2024,
+    "endMonth": "Sep",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "I Peru",
+      "date": "Sep, 2024",
+      "y": 4056
+    }
+  },
+  {
+    "country": "United States of America",
+    "startMonth": "Aug",
+    "startYear": 2024,
+    "endMonth": "Sep",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "United States of America",
+      "date": "Aug - Sep, 2024",
+      "y": 4202
+    }
+  },
+  {
+    "country": "Kenya",
+    "startMonth": "Aug",
+    "startYear": 2024,
+    "endMonth": "Aug",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Kenya",
+      "date": "Aug, 2024",
+      "y": 4354
+    }
+  },
+  {
+    "country": "United Kingdom",
+    "startMonth": "Aug",
+    "startYear": 2024,
+    "endMonth": "Aug",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "EK United Kingdom",
+      "date": "Aug, 2024",
+      "y": 4498
+    }
+  },
+  {
+    "country": "Madagascar",
+    "startMonth": "Jul",
+    "startYear": 2024,
+    "endMonth": "Aug",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Madagascar",
+      "date": "Jul - Aug, 2024",
+      "y": 4647
+    }
+  },
+  {
+    "country": "Rwanda",
+    "startMonth": "Jul",
+    "startYear": 2024,
+    "endMonth": "Jul",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "— Rwanda",
+      "date": "Jul, 2024",
+      "y": 4800
+    }
+  },
+  {
+    "country": "Uganda",
+    "startMonth": "Jul",
+    "startYear": 2024,
+    "endMonth": "Jul",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "* Uganda",
+      "date": "Jul, 2024",
+      "y": 4951
+    }
+  },
+  {
+    "country": "Egypt",
+    "startMonth": "Jun",
+    "startYear": 2024,
+    "endMonth": "Jun",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "= Egypt",
+      "date": "Jun, 2024",
+      "y": 5106
+    }
+  },
+  {
+    "country": "Greece",
+    "startMonth": "Jun",
+    "startYear": 2024,
+    "endMonth": "Jun",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• L Greece",
+      "date": "Jun, 2024",
+      "y": 5248
+    }
+  },
+  {
+    "country": "United Arab Emirates",
+    "startMonth": "May",
+    "startYear": 2024,
+    "endMonth": "May",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "United Arab Emirates",
+      "date": "May, 2024",
+      "y": 5403
+    }
+  },
+  {
+    "country": "Armenia",
+    "startMonth": "May",
+    "startYear": 2024,
+    "endMonth": "May",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Armenia",
+      "date": "May, 2024",
+      "y": 5551
+    }
+  },
+  {
+    "country": "United States of America",
+    "startMonth": "Mar",
+    "startYear": 2024,
+    "endMonth": "May",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "United States of America",
+      "date": "Mar - May, 2024",
+      "y": 5697
+    }
+  },
+  {
+    "country": "Japan",
+    "startMonth": "Mar",
+    "startYear": 2024,
+    "endMonth": "Apr",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Japan",
+      "date": "Mar - Apr, 2024",
+      "y": 5844
+    }
+  },
+  {
+    "country": "United States of America",
+    "startMonth": "Jan",
+    "startYear": 2024,
+    "endMonth": "Mar",
+    "endYear": 2024,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "United States of America",
+      "date": "Jan - Mar, 2024",
+      "y": 5993
+    }
+  },
+  {
+    "country": "Malaysia",
+    "startMonth": "Oct",
+    "startYear": 2022,
+    "endMonth": "Oct",
+    "endYear": 2022,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Malaysia",
+      "date": "Oct, 2022",
+      "y": 6249
+    }
+  },
+  {
+    "country": "Thailand",
+    "startMonth": "Oct",
+    "startYear": 2022,
+    "endMonth": "Oct",
+    "endYear": 2022,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "= Thailand",
+      "date": "Oct, 2022",
+      "y": 6397
+    }
+  },
+  {
+    "country": "Singapore",
+    "startMonth": "Oct",
+    "startYear": 2022,
+    "endMonth": "Oct",
+    "endYear": 2022,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Singapore",
+      "date": "Oct, 2022",
+      "y": 6541
+    }
+  },
+  {
+    "country": "Argentina",
+    "startMonth": "Aug",
+    "startYear": 2019,
+    "endMonth": "Aug",
+    "endYear": 2019,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Argentina",
+      "date": "Aug, 2019",
+      "y": 6801
+    }
+  },
+  {
+    "country": "Germany",
+    "startMonth": "Jun",
+    "startYear": 2019,
+    "endMonth": "Jun",
+    "endYear": 2019,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "- Germany",
+      "date": "Jun, 2019",
+      "y": 6945
+    }
+  },
+  {
+    "country": "South Africa",
+    "startMonth": "Jun",
+    "startYear": 2019,
+    "endMonth": "Jun",
+    "endYear": 2019,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "South Africa",
+      "date": "Jun, 2019",
+      "y": 7095
+    }
+  },
+  {
+    "country": "India",
+    "startMonth": "Feb",
+    "startYear": 2019,
+    "endMonth": "Feb",
+    "endYear": 2019,
+    "kind": "visited",
+    "dotRGB": [
+      228,
+      162,
+      36
+    ],
+    "raw": {
+      "country": "• India",
+      "date": "Feb, 2019",
+      "y": 7247
+    }
+  },
+  {
+    "country": "Singapore",
+    "startMonth": "Feb",
+    "startYear": 2019,
+    "endMonth": "Feb",
+    "endYear": 2019,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "e Singapore",
+      "date": "Feb, 2019",
+      "y": 7391
+    }
+  },
+  {
+    "country": "India",
+    "startMonth": "Jan",
+    "startYear": 2019,
+    "endMonth": "Jan",
+    "endYear": 2019,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• India",
+      "date": "Jan, 2019",
+      "y": 7543
+    }
+  },
+  {
+    "country": "Colombia",
+    "startMonth": "Nov",
+    "startYear": 2018,
+    "endMonth": "Nov",
+    "endYear": 2018,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "— Colombia",
+      "date": "Nov, 2018",
+      "y": 7802
+    }
+  },
+  {
+    "country": "Canada",
+    "startMonth": "Jul",
+    "startYear": 2018,
+    "endMonth": "Jul",
+    "endYear": 2018,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "1*] Canada",
+      "date": "Jul, 2018",
+      "y": 7947
+    }
+  },
+  {
+    "country": "Mexico",
+    "startMonth": "Apr",
+    "startYear": 2018,
+    "endMonth": "Apr",
+    "endYear": 2018,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "# Mexico",
+      "date": "Apr, 2018",
+      "y": 8095
+    }
+  },
+  {
+    "country": "Germany",
+    "startMonth": "Oct",
+    "startYear": 2016,
+    "endMonth": "Oct",
+    "endYear": 2016,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "- Germany",
+      "date": "Oct, 2016",
+      "y": 8356
+    }
+  },
+  {
+    "country": "United Kingdom",
+    "startMonth": "Oct",
+    "startYear": 2016,
+    "endMonth": "Oct",
+    "endYear": 2016,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "K United Kingdom",
+      "date": "Oct, 2016",
+      "y": 8499
+    }
+  },
+  {
+    "country": "Colombia",
+    "startMonth": "Jul",
+    "startYear": 2016,
+    "endMonth": "Jul",
+    "endYear": 2016,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      160,
+      36
+    ],
+    "raw": {
+      "country": "- Colombia",
+      "date": "Jul, 2016",
+      "y": 8651
+    }
+  },
+  {
+    "country": "India",
+    "startMonth": "Jan",
+    "startYear": 2016,
+    "endMonth": "Jan",
+    "endYear": 2016,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "e India",
+      "date": "Jan, 2016",
+      "y": 8799
+    }
+  },
+  {
+    "country": "Belize",
+    "startMonth": "Apr",
+    "startYear": 2015,
+    "endMonth": "Apr",
+    "endYear": 2015,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Belize",
+      "date": "Apr, 2015",
+      "y": 9057
+    }
+  },
+  {
+    "country": "Guatemala",
+    "startMonth": "Apr",
+    "startYear": 2015,
+    "endMonth": "Apr",
+    "endYear": 2015,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "1\" Guatemala",
+      "date": "Apr, 2015",
+      "y": 9203
+    }
+  },
+  {
+    "country": "Denmark",
+    "startMonth": "Sep",
+    "startYear": 2014,
+    "endMonth": "Sep",
+    "endYear": 2014,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "•• Denmark",
+      "date": "Sep, 2014",
+      "y": 9462
+    }
+  },
+  {
+    "country": "Norway",
+    "startMonth": "Sep",
+    "startYear": 2014,
+    "endMonth": "Sep",
+    "endYear": 2014,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      160,
+      36
+    ],
+    "raw": {
+      "country": "Norway",
+      "date": "Sep, 2014",
+      "y": 9610
+    }
+  },
+  {
+    "country": "Germany",
+    "startMonth": "Sep",
+    "startYear": 2014,
+    "endMonth": "Sep",
+    "endYear": 2014,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Germany",
+      "date": "Sep, 2014",
+      "y": 9756
+    }
+  },
+  {
+    "country": "Sweden",
+    "startMonth": "Sep",
+    "startYear": 2014,
+    "endMonth": "Sep",
+    "endYear": 2014,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Sweden",
+      "date": "Sep, 2014",
+      "y": 9900
+    }
+  },
+  {
+    "country": "United Kingdom",
+    "startMonth": "Sep",
+    "startYear": 2013,
+    "endMonth": "Sep",
+    "endYear": 2013,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "2s United Kingdom",
+      "date": "Sep, 2013",
+      "y": 10163
+    }
+  },
+  {
+    "country": "Portugal",
+    "startMonth": "Sep",
+    "startYear": 2013,
+    "endMonth": "Sep",
+    "endYear": 2013,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Portugal",
+      "date": "Sep, 2013",
+      "y": 10314
+    }
+  },
+  {
+    "country": "Spain",
+    "startMonth": "Sep",
+    "startYear": 2013,
+    "endMonth": "Sep",
+    "endYear": 2013,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      160,
+      36
+    ],
+    "raw": {
+      "country": "Spain",
+      "date": "Sep, 2013",
+      "y": 10465
+    }
+  },
+  {
+    "country": "United States of America",
+    "startMonth": "Aug",
+    "startYear": 2010,
+    "endMonth": "Dec",
+    "endYear": 2026,
+    "kind": "lived",
+    "dotRGB": [
+      156,
+      212,
+      141
+    ],
+    "raw": {
+      "country": "United States of America",
+      "date": "Aug, 2010 - Dec, 2026",
+      "y": 10727
+    }
+  },
+  {
+    "country": "Belgium",
+    "startMonth": "Aug",
+    "startYear": 2010,
+    "endMonth": "Aug",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Belgium",
+      "date": "Aug, 2010",
+      "y": 10877
+    }
+  },
+  {
+    "country": "Croatia",
+    "startMonth": "Jul",
+    "startYear": 2010,
+    "endMonth": "Jul",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Croatia",
+      "date": "Jul, 2010",
+      "y": 11026
+    }
+  },
+  {
+    "country": "Italy",
+    "startMonth": "Jul",
+    "startYear": 2010,
+    "endMonth": "Jul",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Italy",
+      "date": "Jul, 2010",
+      "y": 11175
+    }
+  },
+  {
+    "country": "Austria",
+    "startMonth": "Jul",
+    "startYear": 2010,
+    "endMonth": "Jul",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "— Austria",
+      "date": "Jul, 2010",
+      "y": 11319
+    }
+  },
+  {
+    "country": "Czechia",
+    "startMonth": "Jul",
+    "startYear": 2010,
+    "endMonth": "Jul",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• Czechia",
+      "date": "Jul, 2010",
+      "y": 11466
+    }
+  },
+  {
+    "country": "Netherlands",
+    "startMonth": "Jul",
+    "startYear": 2010,
+    "endMonth": "Jul",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "• = Netherlands",
+      "date": "Jul, 2010",
+      "y": 11605
+    }
+  },
+  {
+    "country": "France",
+    "startMonth": "Jul",
+    "startYear": 2010,
+    "endMonth": "Jul",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      160,
+      36
+    ],
+    "raw": {
+      "country": "L• France",
+      "date": "Jul, 2010",
+      "y": 11765
+    }
+  },
+  {
+    "country": "Morocco",
+    "startMonth": "Jun",
+    "startYear": 2010,
+    "endMonth": "Jun",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      230,
+      161,
+      36
+    ],
+    "raw": {
+      "country": "Morocco",
+      "date": "Jun, 2010",
+      "y": 11915
+    }
+  },
+  {
+    "country": "Turkey",
+    "startMonth": "Jun",
+    "startYear": 2010,
+    "endMonth": "Jun",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      206,
+      145,
+      32
+    ],
+    "raw": {
+      "country": "Turkey",
+      "date": "Jun, 2010",
+      "y": 12065
+    }
+  },
+  {
+    "country": "Greece",
+    "startMonth": "Jun",
+    "startYear": 2010,
+    "endMonth": "Jun",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      183,
+      129,
+      28
+    ],
+    "raw": {
+      "country": "Greece",
+      "date": "Jun, 2010",
+      "y": 12215
+    }
+  },
+  {
+    "country": "Spain",
+    "startMonth": "May",
+    "startYear": 2010,
+    "endMonth": "Jun",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      159,
+      109,
+      21
+    ],
+    "raw": {
+      "country": "Spain",
+      "date": "May - Jun, 2010",
+      "y": 12361
+    }
+  },
+  {
+    "country": "Wales",
+    "startMonth": "May",
+    "startYear": 2010,
+    "endMonth": "May",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      158,
+      109,
+      21
+    ],
+    "raw": {
+      "country": "Wales",
+      "date": "May, 2010",
+      "y": 12509
+    }
+  },
+  {
+    "country": "Germany",
+    "startMonth": "Jan",
+    "startYear": 2010,
+    "endMonth": "Jan",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      159,
+      109,
+      21
+    ],
+    "raw": {
+      "country": "Germany",
+      "date": "Jan, 2010",
+      "y": 12662
+    }
+  },
+  {
+    "country": "Ireland",
+    "startMonth": "Dec",
+    "startYear": 2009,
+    "endMonth": "Jan",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      159,
+      109,
+      20
+    ],
+    "raw": {
+      "country": "• II Ireland",
+      "date": "Dec, 2009 - Jan, 2010",
+      "y": 12917
+    }
+  },
+  {
+    "country": "Northern Ireland",
+    "startMonth": "Dec",
+    "startYear": 2009,
+    "endMonth": "Dec",
+    "endYear": 2009,
+    "kind": "visited",
+    "dotRGB": [
+      159,
+      109,
+      18
+    ],
+    "raw": {
+      "country": "• -i- Northern Ireland",
+      "date": "Dec, 2009",
+      "y": 13065
+    }
+  },
+  {
+    "country": "Italy",
+    "startMonth": "Nov",
+    "startYear": 2009,
+    "endMonth": "Nov",
+    "endYear": 2009,
+    "kind": "visited",
+    "dotRGB": [
+      159,
+      109,
+      22
+    ],
+    "raw": {
+      "country": "• II Italy",
+      "date": "Nov, 2009",
+      "y": 13215
+    }
+  },
+  {
+    "country": "Vatican",
+    "startMonth": "Nov",
+    "startYear": 2009,
+    "endMonth": "Nov",
+    "endYear": 2009,
+    "kind": "visited",
+    "dotRGB": [
+      159,
+      109,
+      21
+    ],
+    "raw": {
+      "country": "• é Vatican",
+      "date": "Nov, 2009",
+      "y": 13365
+    }
+  },
+  {
+    "country": "United Kingdom",
+    "startMonth": "Sep",
+    "startYear": 2009,
+    "endMonth": "Aug",
+    "endYear": 2010,
+    "kind": "lived",
+    "dotRGB": [
+      107,
+      147,
+      96
+    ],
+    "raw": {
+      "country": "• zK United Kingdom",
+      "date": "Sep, 2009 - Aug, 2010",
+      "y": 13513
+    }
+  },
+  {
+    "country": "United Kingdom",
+    "startMonth": "Sep",
+    "startYear": 2009,
+    "endMonth": "Aug",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      159,
+      109,
+      22
+    ],
+    "raw": {
+      "country": "• 2≤ United Kingdom",
+      "date": "Sep, 2009 - Aug, 2010",
+      "y": 13664
+    }
+  },
+  {
+    "country": "England",
+    "startMonth": "Sep",
+    "startYear": 2009,
+    "endMonth": "Jun",
+    "endYear": 2010,
+    "kind": "visited",
+    "dotRGB": [
+      158,
+      109,
+      22
+    ],
+    "raw": {
+      "country": "• + England",
+      "date": "Sep, 2009 - Jun, 2010",
+      "y": 13802
+    }
+  },
+  {
+    "country": "Scotland",
+    "startMonth": "Aug",
+    "startYear": 2009,
+    "endMonth": "Aug",
+    "endYear": 2009,
+    "kind": "visited",
+    "dotRGB": [
+      158,
+      109,
+      22
+    ],
+    "raw": {
+      "country": "Scotland",
+      "date": "Aug, 2009",
+      "y": 13963
+    }
+  },
+  {
+    "country": "Gibraltar",
+    "startMonth": "Jun",
+    "startYear": 2009,
+    "endMonth": "Jun",
+    "endYear": 2009,
+    "kind": "visited",
+    "dotRGB": [
+      158,
+      109,
+      25
+    ],
+    "raw": {
+      "country": "Gibraltar",
+      "date": "Jun, 2009",
+      "y": 14111
+    }
+  },
+  {
+    "country": "Canada",
+    "startMonth": "Jul",
+    "startYear": 2002,
+    "endMonth": "Jul",
+    "endYear": 2002,
+    "kind": "visited",
+    "dotRGB": [
+      156,
+      110,
+      24
+    ],
+    "raw": {
+      "country": "[+] Canada",
+      "date": "Jul, 2002",
+      "y": 14367
+    }
+  },
+  {
+    "country": "Bahamas",
+    "startMonth": "Jun",
+    "startYear": 2001,
+    "endMonth": "Jun",
+    "endYear": 2001,
+    "kind": "visited",
+    "dotRGB": [
+      158,
+      109,
+      23
+    ],
+    "raw": {
+      "country": "Bahamas",
+      "date": "Jun, 2001",
+      "y": 14629
+    }
+  },
+  {
+    "country": "Mexico",
+    "startMonth": "Jun",
+    "startYear": 2001,
+    "endMonth": "Jun",
+    "endYear": 2001,
+    "kind": "visited",
+    "dotRGB": [
+      160,
+      109,
+      24
+    ],
+    "raw": {
+      "country": "Mexico",
+      "date": "Jun, 2001",
+      "y": 14777
+    }
+  },
+  {
+    "country": "United States of America",
+    "startMonth": "Sep",
+    "startYear": 1988,
+    "endMonth": "Dec",
+    "endYear": 2026,
+    "kind": "visited",
+    "dotRGB": [
+      156,
+      110,
+      19
+    ],
+    "raw": {
+      "country": "United States of America",
+      "date": "Sep, 1988 - Dec, 2026",
+      "y": 15037
+    }
+  },
+  {
+    "country": "United States of America",
+    "startMonth": "Sep",
+    "startYear": 1988,
+    "endMonth": "Sep",
+    "endYear": 2009,
+    "kind": "lived",
+    "dotRGB": [
+      109,
+      147,
+      98
+    ],
+    "raw": {
+      "country": "United States of America",
+      "date": "Sen. 1988 - Seo. 2009",
+      "y": 15186
+    }
+  }
+]

@@ -1,0 +1,68 @@
+/* Explorer page — fullscreen globe view. The page is just a black
+   canvas with the globe mounting into it; chrome is minimal: a back
+   link that returns to the splash. */
+
+.root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--splash-canvas);
+  overflow: hidden;
+}
+
+.mount {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.back {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
+  font-family: var(--splash-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--splash-canvas-fg-muted);
+  background: transparent;
+  border: 1px solid var(--splash-canvas-rule);
+  border-radius: 4px;
+  padding: 6px 10px;
+  text-decoration: none;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.back:hover,
+.back:focus-visible {
+  color: var(--splash-canvas-fg-strong);
+  border-color: var(--splash-canvas-fg-strong);
+  outline: none;
+}
+
+.title {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 10;
+  font-family: var(--splash-mono);
+  font-size: 11px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--splash-canvas-fg-muted);
+  pointer-events: none;
+}
+
+.title em {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--splash-serif, Georgia, "Times New Roman", serif);
+  font-size: 14px;
+  font-style: italic;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--splash-canvas-fg);
+}

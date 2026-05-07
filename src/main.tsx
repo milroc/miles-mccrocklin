@@ -6,7 +6,9 @@ import { EDIT_ENABLED, EditProvider } from './edit';
 import RESUME from '../data/resume.json' with { type: 'json' };
 import type { Resume } from './types';
 import './styles/globals.css';
-import './lightning';
+import { initResumeAmbient } from './lightning';
+
+initResumeAmbient();
 
 const rootEl = document.getElementById('root');
 if (!rootEl) throw new Error('#root element not found in DOM');

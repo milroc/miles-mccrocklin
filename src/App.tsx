@@ -125,6 +125,7 @@ export function App() {
     <div className={`app mode-${mode}`}>
       <a href="#resume-content" className="skip-link">Skip to resume</a>
       <nav className="toolbar" aria-label="Resume controls">
+        <a className="back-link" href="/" aria-label="Back to home">← back</a>
         <span className="label">{WORDMARK}</span>
         <button
           className={mode === 'interactive' ? 'active' : ''}
