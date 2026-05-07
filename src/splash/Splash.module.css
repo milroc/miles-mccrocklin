@@ -581,6 +581,19 @@
   .tile[data-id="explorer"] .tileVisual {
     aspect-ratio: 16 / 10;
   }
+  /* Explorer breaks out of .root's 20px horizontal padding so the globe
+     container is exactly 100vw. Combined with aspect-ratio: 16/10 above,
+     both dimensions are locked to vw units — so iOS Safari's address-bar
+     show/hide (which only changes vh) can't retrigger the globe's
+     ResizeObserver and shuffle the canvas size. */
+  .tile {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+  .tile .tileVisual {
+    border-left: none;
+    border-right: none;
+  }
   .tile[data-id="builder"] .tileLabel {
     font-size: 13px;
     letter-spacing: 0.32em;
