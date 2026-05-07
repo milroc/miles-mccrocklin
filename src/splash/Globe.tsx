@@ -222,17 +222,41 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
     // Six independent imports run in parallel (async-parallel rule):
     // overlapping these network fetches saves ~1s on cold cache vs.
     // sequential await.
-    const [{ default: Globe }, { createRoot }, React, THREE, world, atlasMod] = await Promise.all([
+    // Geo + atlas data are fetched as raw JSON from /data/ instead of
+    // imported. Dynamic-importing them with `with: { type: 'json' }`
+    // makes the browser enforce a JSON MIME on the bundled JS chunk and
+    // strict MIME checks reject it; dropping the assertion confuses
+    // some parsers and is fragile across bundlers. Plain fetch is
+    // honest about what's happening and ships the files as static
+    // assets that GH Pages serves with the right content-type. build.ts
+    // copies ./data → ./dist/data so these paths resolve in prod.
+    const [globeMod, reactDomClientMod, reactMod, THREE, world, atlas] = await Promise.all([
       import('react-globe.gl'),
       import('react-dom/client'),
       import('react'),
       import('three'),
-      import('../../data/world-countries-110m.json', { with: { type: 'json' } }),
-      import('../../data/photo-atlas.json', { with: { type: 'json' } }),
+      fetch('/data/world-countries-110m.json').then((r) => r.json() as Promise<{ features: CountryFeature[] }>),
+      fetch('/data/photo-atlas.json').then((r) => r.json() as Promise<AtlasEntry[]>),
     ]);
+    // Bun's dynamic-import namespace shape varies by source module: CJS
+    // packages (react, react-dom/client, react-globe.gl) hide their named
+    // exports under `.default`, while ESM packages (three) expose them
+    // directly on the namespace. Unwrap defensively so the call sites
+    // below see the same shape regardless of which form Bun produced.
+    const unwrap = <T,>(mod: unknown): T => {
+      const m = mod as { default?: unknown };
+      if (m && typeof m === 'object' && 'default' in m && m.default && typeof m.default === 'object') {
+        return m.default as T;
+      }
+      return mod as T;
+    };
+    const Globe = ((globeMod as { default?: typeof import('react-globe.gl').default }).default
+      ?? (globeMod as unknown as typeof import('react-globe.gl').default));
+    const reactDomClient = unwrap<typeof import('react-dom/client')>(reactDomClientMod);
+    const React = unwrap<typeof import('react')>(reactMod);
+    const { createRoot } = reactDomClient;
 
-    const countries = (world as unknown as { default: { features: CountryFeature[] } }).default.features;
-    const atlas = (atlasMod as unknown as { default: AtlasEntry[] }).default;
+    const countries = world.features;
 
     // Per-country materials are created UPFRONT in a shimmer-loading
     // state (uHasPhoto = 0). Each country's texture lazily loads in the
