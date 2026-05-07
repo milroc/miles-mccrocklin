@@ -114,7 +114,7 @@ const BUILDER_GRID: ReadonlyArray<MasonryItem> = [
   {
     src: '/media/meta-misinformation/fact-check-labels.jpg',
     alt: 'Misinformation warning labels — Facebook & Instagram surfaces',
-    aspect: 1.5,
+    aspect: 1.7778,
   },
   {
     src: '/media/summary/3PFC_LATAM_2019.jpg',
@@ -131,12 +131,12 @@ const BUILDER_GRID: ReadonlyArray<MasonryItem> = [
   {
     src: '/media/meta-forecast/Election_Forecasts.jpg',
     alt: 'Forecast — 2020 US election prediction markets',
-    aspect: 1.5,
+    aspect: 1.9733,
   },
   {
     src: '/media/meta-forecast/forecast-us-canada.jpeg',
     alt: 'Forecast — US/Canada prediction market view',
-    aspect: 1.5,
+    aspect: 1.7729,
   },
 
   // Forecast continued + LATAM team
