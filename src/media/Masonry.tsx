@@ -86,11 +86,20 @@ export function Masonry({
   // triggers `computeJustifiedLayout` over every item. Coalesce all
   // observations within one animation frame so the layout recomputes at
   // most once per paint, with the latest contentRect winning.
+  //
+  // Width-gated: skip the setState when only height changed. iOS Safari's
+  // URL-bar show/hide, late image loads, and content reflow blip the
+  // container's height by a few px without changing the column width —
+  // and every blip used to re-justify the rows, producing a visible
+  // mobile "shuffle." Width is what justified-layout actually needs to
+  // re-pack; height changes get picked up implicitly the next time width
+  // changes (e.g. real rotation, breakpoint flip).
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     setSize({ w: rect.width, h: rect.height });
+    let lastW = rect.width;
 
     let rafId: number | null = null;
     let pending: { w: number; h: number } | null = null;
@@ -101,7 +110,10 @@ export function Masonry({
       if (rafId !== null) return;
       rafId = requestAnimationFrame(() => {
         rafId = null;
-        if (pending) setSize(pending);
+        if (!pending) return;
+        if (Math.abs(pending.w - lastW) < 0.5) return;
+        lastW = pending.w;
+        setSize(pending);
       });
     });
     ro.observe(el);

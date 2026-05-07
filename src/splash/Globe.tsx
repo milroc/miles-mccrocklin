@@ -821,22 +821,34 @@ export async function mountGlobe(
     requestAnimationFrame(enableAutoRotate);
   });
 
-  // Recompute on container resize. Two layers of protection here:
+  // Recompute on container resize. Three layers of protection here:
   //
-  //   1. 150ms trailing debounce so an active window-drag doesn't
+  //   1. Width gate: skip when only the container's height changed.
+  //      iOS Safari's address-bar show/hide blips vh by ~60px without
+  //      touching width, and the resulting height shift on any tile
+  //      whose height isn't fully width-locked used to retrigger
+  //      renderGlobe — re-mounting react-globe.gl, dropping the spin,
+  //      and rebuilding bubble DOM for a visible flicker. Real
+  //      rotations / window drags change width too, so they still pass.
+  //   2. 150ms trailing debounce so an active window-drag doesn't
   //      thrash the WebGL context — only the final size of the drag
   //      reaches renderGlobe.
-  //   2. 400ms post-render "settle" window during which observer fires
+  //   3. 400ms post-render "settle" window during which observer fires
   //      are ignored. After we re-render, react-globe.gl's DOM
   //      (atmosphere overlay, label container, etc.) reflows for a
   //      few hundred ms and the mount's measured size shifts by ~1-2px
   //      per observer tick. Without this guard, render → observer →
   //      re-render → observer → … forms a feedback loop that walks the
-  //      size up by ~13px over 1.5s as the splash loads in. Real
-  //      user-driven resizes (window drag, device rotation) sit well
-  //      outside the 400ms window so they still apply normally.
-  const ro = new ResizeObserver(() => {
+  //      size up by ~13px over 1.5s as the splash loads in.
+  let lastContainerWidth = mountEl.getBoundingClientRect().width;
+  const ro = new ResizeObserver((entries) => {
     if (performance.now() - lastRenderAt < SETTLE_MS) return;
+    const entry = entries[0];
+    if (entry) {
+      const w = entry.contentRect.width;
+      if (Math.abs(w - lastContainerWidth) < 0.5) return;
+      lastContainerWidth = w;
+    }
     if (resizeTimer !== null) clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       resizeTimer = null;

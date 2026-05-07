@@ -585,10 +585,25 @@
      container is exactly 100vw. Combined with aspect-ratio: 16/10 above,
      both dimensions are locked to vw units — so iOS Safari's address-bar
      show/hide (which only changes vh) can't retrigger the globe's
-     ResizeObserver and shuffle the canvas size. */
+     ResizeObserver and shuffle the canvas size.
+
+     `min-width: 0` short-circuits the grid item's default
+     `min-width: auto` (which resolves to min-content). Without this,
+     iOS Safari treats the masonry's intrinsic sizing pass as
+     min-content and grows the tile past its grid track every time the
+     image-load aspect refinement runs — visible as a "shuffle" where
+     each tile widens 5–30px in steps. With `min-width: 0` the tile
+     stays at the cell width (362) + the negative margins (=402vw),
+     and never overflows.
+
+     `max-width: 100vw` is belt-and-braces: even if a future child
+     overflows, the tile can never grow past the viewport. */
   .tile {
     margin-left: -20px;
     margin-right: -20px;
+    min-width: 0;
+    max-width: 100vw;
+    overflow: hidden;
   }
   .tile .tileVisual {
     border-left: none;
