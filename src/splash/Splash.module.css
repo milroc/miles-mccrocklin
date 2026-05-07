@@ -586,11 +586,11 @@
      both dimensions are locked to vw units — so iOS Safari's address-bar
      show/hide (which only changes vh) can't retrigger the globe's
      ResizeObserver and shuffle the canvas size. */
-  .tile[data-id="explorer"] {
+  .tile {
     margin-left: -20px;
     margin-right: -20px;
   }
-  .tile[data-id="explorer"] .tileVisual {
+  .tile .tileVisual {
     border-left: none;
     border-right: none;
   }
