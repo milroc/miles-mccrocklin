@@ -21,9 +21,6 @@
 // the granular `minify: { ... }` options to Bun.build() avoids that.
 
 import { rmSync, cpSync, writeFileSync, readFileSync } from 'node:fs';
-import { renderToString } from 'react-dom/server';
-import { createElement } from 'react';
-import { Splash } from './src/splash/Splash';
 
 rmSync('./dist', { recursive: true, force: true });
 
@@ -46,22 +43,24 @@ if (!result.success) {
   process.exit(1);
 }
 
-// SSR inject: render the splash chrome and substitute it into the
-// dist'd splash HTML's empty <div id="root"></div>. The chrome is a
-// pure component with no browser-API dependencies — safe to renderToString.
-const splashSsr = renderToString(createElement(Splash));
-const splashHtmlPath = './dist/index.html';
-const splashHtmlBefore = readFileSync(splashHtmlPath, 'utf8');
-const splashHtmlAfter = splashHtmlBefore.replace(
-  '<div id="root"></div>',
-  `<div id="root">${splashSsr}</div>`,
-);
-if (splashHtmlAfter === splashHtmlBefore) {
-  console.error('SSR injection failed: <div id="root"></div> not found in', splashHtmlPath);
-  process.exit(1);
-}
-writeFileSync(splashHtmlPath, splashHtmlAfter);
-console.log(`  SSR'd splash chrome (${splashSsr.length} chars)`);
+// SSR injection used to live here — renderToString(<Splash />) into the
+// empty <div id="root"></div>. It's been removed because Bun's RUNTIME
+// (which executes this script directly) loads `*.module.css` imports as
+// the raw CSS source string rather than the hashed-class-name mapping
+// that the Bun BUNDLER produces in the emitted JS chunks. So when the
+// SSR pass evaluated `s.root`, `s.tile`, etc., every key resolved to
+// undefined, and the rendered HTML shipped class="undefined undefined"
+// strings everywhere. The client bundle still works (the bundler maps
+// names correctly there) — the splash just hydrates from an empty
+// root and paints once JS runs.
+//
+// Tradeoff: crawlers + no-JS visitors no longer see the splash chrome
+// inline. The OG/Twitter meta tags + page title carry the SEO; no-JS
+// browsers see a blank dark canvas. Acceptable for a personal site.
+// To restore SSR cleanly we'd need to either (a) build a CSS-Module
+// hash manifest from the emitted CSS and inject it before
+// renderToString, or (b) move the SSR call into a bundler entrypoint
+// so it gets the same module resolution as the client.
 
 // Static asset copies — same as before, plus 404.html now.
 cpSync('./media', './dist/media', { recursive: true });
