@@ -64,6 +64,12 @@ if (!result.success) {
 
 // Static asset copies — same as before, plus 404.html now.
 cpSync('./media', './dist/media', { recursive: true });
+// Globe data fetched at runtime by src/splash/Globe.tsx. Shipped as
+// raw JSON (served with application/json) instead of bundled as JS
+// modules so dynamic-import MIME-type strictness can't break the
+// globe in prod.
+cpSync('./data/world-countries-110m.json', './dist/data/world-countries-110m.json');
+cpSync('./data/photo-atlas.json', './dist/data/photo-atlas.json');
 cpSync('./favicon-32.png', './dist/favicon-32.png');
 // Bun content-hashes favicon.svg for any HTML it processes, but 404.html is
 // copied as-is below — so it needs an un-hashed copy at the canonical path.
