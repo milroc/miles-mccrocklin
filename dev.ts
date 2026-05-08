@@ -77,8 +77,9 @@ const server = serve({
   },
 });
 
-console.log(`dev server → ${server.url}`);
-console.log(`  splash     → ${server.url}`);
+// Print the splash URL last on purpose: tools like Conductor scan
+// stdout and grab the last URL they see for their "Open" button.
 console.log(`  long-form  → ${server.url}long-form/`);
 console.log(`  explorer   → ${server.url}explorer/`);
 console.log(`  legacy     → /resume, /dossier, /about, /work all 302 → /long-form/`);
+console.log(`dev server → ${server.url}`);
