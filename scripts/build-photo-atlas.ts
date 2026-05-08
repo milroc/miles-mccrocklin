@@ -2,9 +2,10 @@
 //
 // Scrape the portfolio index pages for each album's cover image (the
 // `_carw_4x3xN` srcset, taking the largest variant). For each entry in
-// MANIFEST below, look up the cover URL and download. For
-// `polygon_grid` countries (India, USA), do that for every album, then
-// composite into a single square grid texture via sharp.
+// MANIFEST below, look up the primary album's cover URL and download.
+// One photo per country — composited multi-album grids were dropped
+// because users were reading the grid cells as states/provinces
+// inside the country shape.
 //
 // Output:
 //   data/photo-atlas.json          — schema below
@@ -26,7 +27,7 @@ const ATLAS_PATH = join(ROOT, 'data/photo-atlas.json');
 const MAX_LONG_EDGE = 2048;
 const ALBUM_HOST = 'https://milesmccrocklin.myportfolio.com';
 
-interface AlbumRef {
+export interface AlbumRef {
   title: string;
   url: string;
 }
@@ -40,6 +41,13 @@ interface SingleEntry {
   primary_album?: AlbumRef;
   secondary_albums?: AlbumRef[];
   local_image?: LocalImageRef;
+  // Paper trail for countries where the primary photo is a local file
+  // but multiple shots exist on disk. Not consumed at build time —
+  // preserved so future curation can swap the hero without re-discovering
+  // the file paths. Originally these were composited into a grid texture
+  // (`render_kind: 'polygon_grid'`); the grid was dropped because the
+  // cells read as states/provinces within the country shape.
+  secondary_local_images?: LocalImageRef[];
   notes?: string;
 }
 
@@ -53,6 +61,7 @@ interface BubbleEntry {
   primary_album?: AlbumRef;
   secondary_albums?: AlbumRef[];
   local_image?: LocalImageRef;
+  secondary_local_images?: LocalImageRef[];
   notes?: string;
 }
 
@@ -61,50 +70,29 @@ interface BubbleEntry {
 // relative path to the JPEG. Use for countries we haven't yet published
 // a portfolio album for but already have suitable shots in
 // media/sabbatical-travel or similar.
-interface LocalImageRef {
+export interface LocalImageRef {
   title: string;
   path: string;
 }
 
-interface GridEntry {
-  country: string;
-  country_slug: string;
-  render_kind: 'polygon_grid';
-  grid: { rows: number; cols: number };
-  // Either pull cells from the portfolio (`albums`) or from local files
-  // (`local_images`) — at least one must be non-empty. Mixed not
-  // supported for now; if a country needs both, publish the local shots
-  // to the portfolio first.
-  albums?: AlbumRef[];
-  local_images?: LocalImageRef[];
-  // Optional per-cell overrides keyed by zero-based cell index (row-
-  // major, top-left = 0). Replaces whatever album/local would have
-  // landed in that cell with a specific local file. Used for spotting
-  // a hand-picked hero shot in the visual center of a country
-  // (Australia's 3×3 → cell 4 = center → "Splash!" Sydney photo).
-  cell_overrides?: Record<number, LocalImageRef>;
-  notes?: string;
-}
-
-// Flat photo card overlay — rendered as a rectangular HTML element
-// anchored at lat/lng, like a bubble but bigger. Used for countries
-// where the polygon's UV mapping distorts the photo (Antarctica, where
-// the polygon wraps around the south pole). Composite image is built
-// the same way as a polygon_grid; only the renderer differs.
+// Flat photo card overlay — rendered on a tangent-plane shader at
+// lat/lng. Used for countries where the polygon's UV mapping distorts
+// the photo (Antarctica, where the polygon wraps around the south
+// pole). Same single-source shape as SingleEntry, plus lat/lng.
 interface FlatEntry {
   country: string;
   country_slug: string;
   render_kind: 'flat';
   lat: number;
   lng: number;
-  grid: { rows: number; cols: number };
-  albums?: AlbumRef[];
-  local_images?: LocalImageRef[];
-  cell_overrides?: Record<number, LocalImageRef>;
+  primary_album?: AlbumRef;
+  secondary_albums?: AlbumRef[];
+  local_image?: LocalImageRef;
+  secondary_local_images?: LocalImageRef[];
   notes?: string;
 }
 
-type Entry = SingleEntry | BubbleEntry | GridEntry | FlatEntry;
+export type Entry = SingleEntry | BubbleEntry | FlatEntry;
 
 // Slug helper. Lowercases, replaces non-alphanumerics with hyphens.
 const slug = (s: string) =>
@@ -120,19 +108,20 @@ const albumSlug = (url: string) => url.split('/').pop()!;
 // (no political ordering implied).
 // =============================================================
 
-const MANIFEST: Entry[] = [
+export const MANIFEST: Entry[] = [
   {
-    // 'flat' instead of 'polygon_grid': Antarctica's polygon wraps
-    // around the south pole and ConicPolygonGeometry stretches the
-    // composite into an unreadable smear. Render as a rectangular HTML
-    // overlay anchored deep in Antarctica (lat -78) — react-globe.gl
-    // handles the spherical projection, photo never warps.
+    // 'flat' polygon: Antarctica's NE 110m polygon wraps the south pole
+    // and ConicPolygonGeometry stretches a UV-mapped photo into an
+    // unreadable smear. Render via the FLAT shader on a tangent plane
+    // at the south pole — circumpolar geometry projects symmetrically
+    // there. Globe.tsx sizes the rect to the polygon's tangent-plane
+    // bbox so the photo fills Antarctica's actual footprint, with the
+    // polygon clipping any overflow.
     country: 'Antarctica', country_slug: 'antarctica', render_kind: 'flat',
-    lat: -78, lng: 0,
-    grid: { rows: 2, cols: 2 }, // 4 cells, 4 photos — no cycling needed
-    albums: [
+    lat: -90, lng: 0,
+    primary_album: { title: 'Antarctica - Glaciers', url: `${ALBUM_HOST}/antarctica-glaciers` },
+    secondary_albums: [
       { title: 'Antarctica - Penguins', url: `${ALBUM_HOST}/antarctica-penguins` },
-      { title: 'Antarctica - Glaciers', url: `${ALBUM_HOST}/antarctica-glaciers` },
       { title: 'Antarctica - Otherwildlife', url: `${ALBUM_HOST}/antarctica-otherwildlife-1` },
       { title: 'Antarctica - Everything else', url: `${ALBUM_HOST}/antarctica-everything-else-1` },
     ],
@@ -148,9 +137,14 @@ const MANIFEST: Entry[] = [
     secondary_albums: [],
   },
   {
-    country: 'Australia', country_slug: 'australia', render_kind: 'polygon_grid',
-    grid: { rows: 3, cols: 3 }, // 9 cells, 9 photos — no cycling needed
-    albums: [
+    // Hero: "Splash!" — Sydney swimmer mid-air, the most iconic
+    // Australia frame in the splash gallery. Was previously pinned to
+    // the visual-center cell of a 3×3 grid; with the grid dropped, it
+    // becomes the country's single texture. Portfolio albums kept
+    // below as a paper trail for future hero swaps.
+    country: 'Australia', country_slug: 'australia', render_kind: 'polygon',
+    local_image: { title: 'Splash!, Sydney, Australia', path: 'media/sabbatical-travel/travel-24.jpeg' },
+    secondary_albums: [
       { title: 'Sydney', url: `${ALBUM_HOST}/sydney` },
       { title: 'Toranga Zoo', url: `${ALBUM_HOST}/toranga-zoo` },
       { title: 'Blue Mountains', url: `${ALBUM_HOST}/blue-mountains` },
@@ -161,21 +155,13 @@ const MANIFEST: Entry[] = [
       { title: 'Daintree', url: `${ALBUM_HOST}/daintree` },
       { title: 'Melbourne', url: `${ALBUM_HOST}/melbourne` },
     ],
-    // Spot the "Splash!" shot (Sydney swimmer mid-air, the most
-    // iconic Australia frame in the splash gallery) at the visual
-    // center of the 3×3 grid.
-    cell_overrides: {
-      4: { title: 'Splash!, Sydney, Australia', path: 'media/sabbatical-travel/travel-24.jpeg' },
-    },
   },
   {
-    country: 'Austria', country_slug: 'austria', render_kind: 'polygon_grid',
-    grid: { rows: 1, cols: 3 }, // 3 cells, 3 photos. Austria is E-W
-    // elongated, so a horizontal strip matches the country shape.
-    local_images: [
+    country: 'Austria', country_slug: 'austria', render_kind: 'polygon',
+    local_image: { title: 'Vienna — Stephansplatz + Haas Haus', path: 'media/europe-2010/austria-vienna-stephansplatz.jpg' },
+    secondary_local_images: [
       { title: 'Vienna — Hundertwasserhaus', path: 'media/europe-2010/austria-vienna-hundertwasserhaus.jpg' },
       { title: 'Vienna — math.space stairs at the Museumsquartier', path: 'media/europe-2010/austria-vienna-math-space.jpg' },
-      { title: 'Vienna — Stephansplatz + Haas Haus', path: 'media/europe-2010/austria-vienna-stephansplatz.jpg' },
     ],
   },
   {
@@ -199,12 +185,9 @@ const MANIFEST: Entry[] = [
     ],
   },
   {
-    country: 'Brazil', country_slug: 'brazil', render_kind: 'polygon_grid',
-    grid: { rows: 3, cols: 4 }, // 12 cells, 10 photos + 2 cycled. Brazil
-    // is roughly square; the slightly wider 3×4 grid spreads Rio + Iguaçu
-    // + wildlife shots across the bbox.
-    local_images: [
-      { title: 'Sugarloaf — Botafogo Bay from Corcovado',     path: 'media/brazil-2025/rio-sugarloaf-from-corcovado.jpg' },
+    country: 'Brazil', country_slug: 'brazil', render_kind: 'polygon',
+    local_image: { title: 'Sugarloaf — Botafogo Bay from Corcovado', path: 'media/brazil-2025/rio-sugarloaf-from-corcovado.jpg' },
+    secondary_local_images: [
       { title: 'Iguaçu Falls with rainbow',                   path: 'media/brazil-2025/iguazu-falls-rainbow.jpg' },
       { title: 'Christ the Redeemer — face',                  path: 'media/brazil-2025/rio-christ-face.jpg' },
       { title: 'Royal Portuguese Reading Room',               path: 'media/brazil-2025/rio-royal-portuguese-library.jpg' },
@@ -223,12 +206,9 @@ const MANIFEST: Entry[] = [
     notes: 'Niagara Falls span US/Canada border; assigned to Canada per user.',
   },
   {
-    country: 'Chile', country_slug: 'chile', render_kind: 'polygon_grid',
-    grid: { rows: 3, cols: 3 }, // 9 cells, 7 albums + 2 cycled. Chile's
-    // bbox aspect is 0.18 (5.5× taller than wide) so a single photo
-    // gets crushed horizontally — grid fixes that.
-    albums: [
-      { title: 'Cajon de Maipo', url: `${ALBUM_HOST}/cajon-de-maipo` },
+    country: 'Chile', country_slug: 'chile', render_kind: 'polygon',
+    primary_album: { title: 'Cajon de Maipo', url: `${ALBUM_HOST}/cajon-de-maipo` },
+    secondary_albums: [
       { title: 'Valle de la Luna y San Pedro de Atacama', url: `${ALBUM_HOST}/valle-de-la-luna-y-san-pedro-de-atacama` },
       { title: 'El Tatio', url: `${ALBUM_HOST}/el-tatio` },
       { title: 'Santiago Bird Watching', url: `${ALBUM_HOST}/santiago-bird-watching` },
@@ -251,13 +231,11 @@ const MANIFEST: Entry[] = [
     local_image: { title: 'Plitvice Lakes — turquoise cascades + boardwalk', path: 'media/europe-2010/croatia-plitvice-lakes.jpg' },
   },
   {
-    country: 'Czechia', country_slug: 'czechia', render_kind: 'polygon_grid',
-    grid: { rows: 2, cols: 3 }, // 6 cells, 5 photos + 1 cycled. Czechia
-    // bbox is wider than tall (~3:1) — wider grid mirrors the country shape.
-    local_images: [
+    country: 'Czechia', country_slug: 'czechia', render_kind: 'polygon',
+    local_image: { title: "Prague — Týn Church", path: 'media/europe-2010/czechia-prague-tyn-church.jpg' },
+    secondary_local_images: [
       { title: 'Prague — Astronomical Clock',           path: 'media/europe-2010/czechia-prague-astronomical-clock.jpg' },
       { title: 'Prague — Astronomical Clock dial',      path: 'media/europe-2010/czechia-prague-astronomical-clock-dial.jpg' },
-      { title: "Prague — Týn Church",                   path: 'media/europe-2010/czechia-prague-tyn-church.jpg' },
       { title: 'Prague — Dancing House (Gehry)',        path: 'media/europe-2010/czechia-prague-dancing-house.jpg' },
       { title: 'Prague — Žižkov Tower with Černý babies', path: 'media/europe-2010/czechia-prague-zizkov-tower-babies.jpg' },
     ],
@@ -268,14 +246,12 @@ const MANIFEST: Entry[] = [
     secondary_albums: [],
   },
   {
-    country: 'Ecuador', country_slug: 'ecuador', render_kind: 'polygon_grid',
-    grid: { rows: 2, cols: 1 }, // 2 cells stacked, both filled.
-    // Sources are local sabbatical-travel files (Galapagos shots) since
-    // there's no Ecuador portfolio album yet. When one lands, swap to
-    // `albums:` with portfolio URLs.
-    local_images: [
+    // Local-file source: there's no Ecuador portfolio album yet. When
+    // one lands, swap `local_image` for `primary_album`.
+    country: 'Ecuador', country_slug: 'ecuador', render_kind: 'polygon',
+    local_image: { title: 'Recursive reptiles, Galapagos Islands, Ecuador', path: 'media/sabbatical-travel/travel-26.jpeg' },
+    secondary_local_images: [
       { title: "Darwin's finch, Galapagos Islands, Ecuador", path: 'media/sabbatical-travel/travel-25.jpeg' },
-      { title: 'Recursive reptiles, Galapagos Islands, Ecuador', path: 'media/sabbatical-travel/travel-26.jpeg' },
     ],
   },
   {
@@ -323,9 +299,9 @@ const MANIFEST: Entry[] = [
     ],
   },
   {
-    country: 'India', country_slug: 'india', render_kind: 'polygon_grid',
-    grid: { rows: 4, cols: 4 }, // 16 cells, 15 photos + 1 empty
-    albums: [
+    country: 'India', country_slug: 'india', render_kind: 'polygon',
+    primary_album: { title: 'Amritsar', url: `${ALBUM_HOST}/amritsar` },
+    secondary_albums: [
       { title: 'Taj Mahal', url: `${ALBUM_HOST}/taj-mahal-1` },
       { title: 'India Work Trip', url: `${ALBUM_HOST}/jaipur-hyderabad-taj-mahal` },
       { title: 'Srinagar, Kashmir', url: `${ALBUM_HOST}/srinagar-kashmir` },
@@ -333,7 +309,6 @@ const MANIFEST: Entry[] = [
       { title: 'Bir & Keori', url: `${ALBUM_HOST}/bir-keori` },
       { title: 'Palpung Sherabling Monastery', url: `${ALBUM_HOST}/palpung-sherabling-monastery-1` },
       { title: 'Wagah Border', url: `${ALBUM_HOST}/wagah-border` },
-      { title: 'Amritsar', url: `${ALBUM_HOST}/amritsar` },
       { title: 'Bullet Baba Temple', url: `${ALBUM_HOST}/bullet-baba-temple` },
       { title: 'Jodhpur', url: `${ALBUM_HOST}/jodhpur` },
       { title: 'Rajasthan Bus & Desert', url: `${ALBUM_HOST}/rajasthan-bus-desert` },
@@ -344,40 +319,38 @@ const MANIFEST: Entry[] = [
     ],
   },
   {
-    country: 'Ireland', country_slug: 'ireland', render_kind: 'polygon_grid',
-    grid: { rows: 1, cols: 2 }, // 2 cells, 2 photos. Cliffs of Moher pair.
-    local_images: [
-      { title: 'Cliffs of Moher — sun flare',           path: 'media/ireland-2009/ireland-cliffs-of-moher-sunflare.jpg' },
-      { title: "Cliffs of Moher — O'Brien's Tower",     path: 'media/ireland-2009/ireland-cliffs-of-moher-obriens-tower.jpg' },
+    country: 'Ireland', country_slug: 'ireland', render_kind: 'polygon',
+    local_image: { title: 'Cliffs of Moher — sun flare', path: 'media/ireland-2009/ireland-cliffs-of-moher-sunflare.jpg' },
+    secondary_local_images: [
+      { title: "Cliffs of Moher — O'Brien's Tower", path: 'media/ireland-2009/ireland-cliffs-of-moher-obriens-tower.jpg' },
     ],
   },
   {
-    country: 'Italy', country_slug: 'italy', render_kind: 'polygon_grid',
-    grid: { rows: 1, cols: 2 }, // 2 cells, 2 photos. From Alps 2025 trip.
-    local_images: [
+    country: 'Italy', country_slug: 'italy', render_kind: 'polygon',
+    local_image: { title: 'Venice — canal at sunset', path: 'media/alps-2025/italy-venice-canal.jpg' },
+    secondary_local_images: [
       { title: 'Naples — Spanish Quarter', path: 'media/alps-2025/italy-naples.jpg' },
-      { title: 'Venice — canal at sunset',  path: 'media/alps-2025/italy-venice-canal.jpg' },
     ],
   },
   {
-    country: 'Japan', country_slug: 'japan', render_kind: 'polygon_grid',
-    grid: { rows: 2, cols: 2 }, // 4 cells, 3 albums + 1 cycled.
-    // Archipelago — three sub-polygons (Honshu, Hokkaido, Kyushu/Shikoku)
-    // each get the full texture, so a single photo gets repeated
-    // verbatim 3× across the islands. Grid spreads it.
-    albums: [
-      { title: 'Japan', url: `${ALBUM_HOST}/japan` },
+    // Japan is an archipelago — its NE 110m geometry is three sub-
+    // polygons (Honshu, Hokkaido, Kyushu/Shikoku). Each polygon gets
+    // its own UV-mapped sample of the same hero photo, which is fine:
+    // a recognizable shot reads three times instead of distorted once.
+    country: 'Japan', country_slug: 'japan', render_kind: 'polygon',
+    primary_album: { title: 'Japan', url: `${ALBUM_HOST}/japan` },
+    secondary_albums: [
       { title: 'Japan - Sakura Festival', url: `${ALBUM_HOST}/japan-sakura-festival` },
       { title: 'Japan - Team Labs Planets', url: `${ALBUM_HOST}/japan-team-labs-planets` },
     ],
   },
   {
     country: 'Kenya', country_slug: 'kenya', render_kind: 'polygon',
-    primary_album: { title: 'Masai Mara', url: `${ALBUM_HOST}/masai-mara` },
+    primary_album: { title: 'Nairobi National Park', url: `${ALBUM_HOST}/nairobi-national-park` },
     secondary_albums: [
+      { title: 'Masai Mara', url: `${ALBUM_HOST}/masai-mara` },
       { title: 'GRAPHIC! - Lion Hunt in Masai Mara', url: `${ALBUM_HOST}/graphic-lion-hunt-in-masai-mara` },
       { title: 'Lake Nakuru', url: `${ALBUM_HOST}/lake-nakuru` },
-      { title: 'Nairobi National Park', url: `${ALBUM_HOST}/nairobi-national-park` },
     ],
   },
   {
@@ -387,15 +360,13 @@ const MANIFEST: Entry[] = [
     notes: 'Microstate; not in NE 110m. Render as bubble at lat/lng.',
   },
   {
-    country: 'Madagascar', country_slug: 'madagascar', render_kind: 'polygon_grid',
-    grid: { rows: 3, cols: 2 }, // 6 cells, 5 albums + 1 cycled. Long
-    // N-S island, bbox aspect 0.5 (twice as tall as wide).
-    albums: [
+    country: 'Madagascar', country_slug: 'madagascar', render_kind: 'polygon',
+    primary_album: { title: 'Andasibe Analamazaotra National Park', url: `${ALBUM_HOST}/andasibe-analamazaotra-national-park` },
+    secondary_albums: [
       { title: 'Zazamalala Wildlife Centre', url: `${ALBUM_HOST}/zazamalala-wildlife-centre` },
       { title: 'Avenue of the Baobabs', url: `${ALBUM_HOST}/avenue-of-the-baobabs` },
       { title: 'Tsingy of Bemaraha National Park', url: `${ALBUM_HOST}/tsingy-of-bemaraha-national-park` },
       { title: 'Kirindy Reserve', url: `${ALBUM_HOST}/kirindy-reserve` },
-      { title: 'Andasibe Analamazaotra National Park', url: `${ALBUM_HOST}/andasibe-analamazaotra-national-park` },
     ],
   },
   {
@@ -409,10 +380,9 @@ const MANIFEST: Entry[] = [
     secondary_albums: [],
   },
   {
-    country: 'Morocco', country_slug: 'morocco', render_kind: 'polygon_grid',
-    grid: { rows: 3, cols: 4 }, // 12 cells, 11 photos + 1 cycled. Morocco
-    // bbox is wider than tall (~1.4:1) — Atlas range plus coast.
-    local_images: [
+    country: 'Morocco', country_slug: 'morocco', render_kind: 'polygon',
+    local_image: { title: 'Marrakech — Madrasa Ben Youssef', path: 'media/morocco-2010/morocco-marrakech-madrasa-ben-youssef.jpg' },
+    secondary_local_images: [
       { title: 'Marrakech — Jemaa el-Fna at night',     path: 'media/morocco-2010/morocco-marrakech-jemaa-el-fna.jpg' },
       { title: 'Sahara — sunset over the dunes',        path: 'media/morocco-2010/morocco-sahara-sunset.jpg' },
       { title: 'Sahara — camel caravan',                path: 'media/morocco-2010/morocco-sahara-camel-caravan.jpg' },
@@ -422,27 +392,22 @@ const MANIFEST: Entry[] = [
       { title: 'Marrakech — Menara Gardens pool jump',  path: 'media/morocco-2010/morocco-marrakech-menara-gardens.jpg' },
       { title: 'Marrakech — souk sweets stall',         path: 'media/morocco-2010/morocco-marrakech-souk-sweets.jpg' },
       { title: 'Marrakech — drying leather hide',       path: 'media/morocco-2010/morocco-marrakech-leather-hide.jpg' },
-      { title: 'Marrakech — Madrasa Ben Youssef',       path: 'media/morocco-2010/morocco-marrakech-madrasa-ben-youssef.jpg' },
       { title: 'High Atlas Mountains',                  path: 'media/morocco-2010/morocco-atlas-mountains.jpg' },
     ],
   },
   {
-    country: 'Netherlands', country_slug: 'netherlands', render_kind: 'polygon_grid',
-    grid: { rows: 2, cols: 2 }, // 4 cells, 4 photos. Netherlands is roughly square.
-    local_images: [
-      { title: 'Amsterdam — stepped-gable house',   path: 'media/europe-2010/netherlands-amsterdam-gable-house.jpg' },
+    country: 'Netherlands', country_slug: 'netherlands', render_kind: 'polygon',
+    local_image: { title: 'Amsterdam — stepped-gable house', path: 'media/europe-2010/netherlands-amsterdam-gable-house.jpg' },
+    secondary_local_images: [
       { title: 'Amsterdam — canal with tour boats', path: 'media/europe-2010/netherlands-amsterdam-canal-boats.jpg' },
       { title: 'Amsterdam — red Canta microcar',    path: 'media/europe-2010/netherlands-amsterdam-canta-car.jpg' },
       { title: 'Amsterdam — canal houseboat garden', path: 'media/europe-2010/netherlands-amsterdam-canal-houseboat.jpg' },
     ],
   },
   {
-    country: 'Norway', country_slug: 'norway', render_kind: 'polygon_grid',
-    grid: { rows: 3, cols: 2 }, // 6 cells, 5 albums + 1 cycled. Fjord
-    // coastline gives Norway a 15% bbox-fill ratio — single photo
-    // wastes most of its texture on ocean.
-    albums: [
-      { title: 'Tromsø', url: `${ALBUM_HOST}/tromso` },
+    country: 'Norway', country_slug: 'norway', render_kind: 'polygon',
+    primary_album: { title: 'Tromsø', url: `${ALBUM_HOST}/tromso` },
+    secondary_albums: [
       { title: 'Polar Park', url: `${ALBUM_HOST}/polar-park` },
       { title: 'Bergen', url: `${ALBUM_HOST}/bergen` },
       { title: 'Aurlandsfjord - Flåm', url: `${ALBUM_HOST}/aurlandsfjord-flam` },
@@ -450,25 +415,21 @@ const MANIFEST: Entry[] = [
     ],
   },
   {
-    country: 'Panama', country_slug: 'panama', render_kind: 'polygon_grid',
-    grid: { rows: 2, cols: 3 }, // 6 cells, 5 photos + 1 cycled. Panama
-    // is elongated E-W, so the wider grid mirrors the country shape.
-    local_images: [
-      { title: 'Panama City — skyline + F&F Tower',         path: 'media/panama-2025/panama-city-skyline.jpg' },
-      { title: 'Panama Canal — Baltic Spirit in the locks', path: 'media/panama-2025/panama-canal-baltic-spirit.jpg' },
-      { title: 'Three-toed sloth in the rainforest',         path: 'media/panama-2025/panama-three-toed-sloth.jpg' },
-      { title: 'Biomuseo — Frank Gehry roof',                path: 'media/panama-2025/panama-biomuseo.jpg' },
-      { title: 'Panama Canal — tanker with tugboat',         path: 'media/panama-2025/panama-canal-tanker.jpg' },
+    country: 'Panama', country_slug: 'panama', render_kind: 'polygon',
+    local_image: { title: 'Panama Canal — Baltic Spirit in the locks', path: 'media/panama-2025/panama-canal-baltic-spirit.jpg' },
+    secondary_local_images: [
+      { title: 'Panama City — skyline + F&F Tower',  path: 'media/panama-2025/panama-city-skyline.jpg' },
+      { title: 'Three-toed sloth in the rainforest', path: 'media/panama-2025/panama-three-toed-sloth.jpg' },
+      { title: 'Biomuseo — Frank Gehry roof',        path: 'media/panama-2025/panama-biomuseo.jpg' },
+      { title: 'Panama Canal — tanker with tugboat', path: 'media/panama-2025/panama-canal-tanker.jpg' },
     ],
   },
   {
-    country: 'Paraguay', country_slug: 'paraguay', render_kind: 'polygon_grid',
-    grid: { rows: 2, cols: 2 }, // 4 cells, 3 photos + 1 cycled. Paraguay
-    // bbox is essentially square (aspect 0.94), so a 2×2 fits its shape.
-    local_images: [
-      { title: 'River canoe through wetlands',  path: 'media/paraguay-2025/paraguay-river-canoe.jpg' },
-      { title: 'Red-and-green macaw',           path: 'media/paraguay-2025/paraguay-scarlet-macaw.jpg' },
-      { title: 'Wetland cumulus reflection',    path: 'media/paraguay-2025/paraguay-wetland-cloud.jpg' },
+    country: 'Paraguay', country_slug: 'paraguay', render_kind: 'polygon',
+    local_image: { title: 'River canoe through wetlands', path: 'media/paraguay-2025/paraguay-river-canoe.jpg' },
+    secondary_local_images: [
+      { title: 'Red-and-green macaw',        path: 'media/paraguay-2025/paraguay-scarlet-macaw.jpg' },
+      { title: 'Wetland cumulus reflection', path: 'media/paraguay-2025/paraguay-wetland-cloud.jpg' },
     ],
   },
   {
@@ -484,9 +445,9 @@ const MANIFEST: Entry[] = [
   },
   {
     country: 'Portugal', country_slug: 'portugal', render_kind: 'polygon',
-    primary_album: { title: 'Porto', url: `${ALBUM_HOST}/porto` },
+    primary_album: { title: 'Lisbon', url: `${ALBUM_HOST}/lisbon-1` },
     secondary_albums: [
-      { title: 'Lisbon', url: `${ALBUM_HOST}/lisbon-1` },
+      { title: 'Porto', url: `${ALBUM_HOST}/porto` },
       { title: 'Pena Palace & Castelo de São Jorge', url: `${ALBUM_HOST}/pena-palace-castelo-de-sao-jorge` },
     ],
   },
@@ -526,11 +487,10 @@ const MANIFEST: Entry[] = [
     secondary_albums: [],
   },
   {
-    country: 'Switzerland', country_slug: 'switzerland', render_kind: 'polygon_grid',
-    grid: { rows: 2, cols: 2 }, // 4 cells, 4 photos. From Alps 2025 trip.
-    local_images: [
+    country: 'Switzerland', country_slug: 'switzerland', render_kind: 'polygon',
+    local_image: { title: 'Zurich — old town alley', path: 'media/alps-2025/switzerland-zurich-old-town.jpg' },
+    secondary_local_images: [
       { title: 'Lucerne — Hofkirche St. Leodegar',         path: 'media/alps-2025/switzerland-lucerne-hofkirche.jpg' },
-      { title: 'Zurich — old town alley',                  path: 'media/alps-2025/switzerland-zurich-old-town.jpg' },
       { title: 'Lake Lucerne — sailboat under the Alps',   path: 'media/alps-2025/switzerland-lake-lucerne.jpg' },
       { title: 'Lucerne — Hofkirche from across the lake', path: 'media/alps-2025/switzerland-lucerne-hofkirche-wide.jpg' },
     ],
@@ -541,12 +501,10 @@ const MANIFEST: Entry[] = [
     secondary_albums: [],
   },
   {
-    country: 'Turkey', country_slug: 'turkey', render_kind: 'polygon_grid',
-    grid: { rows: 1, cols: 2 }, // 2 cells, 2 photos. Turkey bbox is wide
-    // (1600km × 600km, ~2.7:1) so a horizontal pair matches the shape.
-    local_images: [
-      { title: 'Cappadocia — fairy chimneys',          path: 'media/turkey-2010/turkey-cappadocia-fairy-chimneys.jpg' },
-      { title: 'Cappadocia — hot-air balloon at dawn', path: 'media/turkey-2010/turkey-cappadocia-balloon.jpg' },
+    country: 'Turkey', country_slug: 'turkey', render_kind: 'polygon',
+    local_image: { title: 'Cappadocia — hot-air balloon at dawn', path: 'media/turkey-2010/turkey-cappadocia-balloon.jpg' },
+    secondary_local_images: [
+      { title: 'Cappadocia — fairy chimneys', path: 'media/turkey-2010/turkey-cappadocia-fairy-chimneys.jpg' },
     ],
   },
   {
@@ -571,9 +529,9 @@ const MANIFEST: Entry[] = [
     secondary_albums: [],
   },
   {
-    country: 'United States of America', country_slug: 'united-states-of-america', render_kind: 'polygon_grid',
-    grid: { rows: 5, cols: 5 }, // 25 cells, 21 photos + 4 empty
-    albums: [
+    country: 'United States of America', country_slug: 'united-states-of-america', render_kind: 'polygon',
+    primary_album: { title: 'Minneapolis', url: `${ALBUM_HOST}/minneapolis-1` },
+    secondary_albums: [
       { title: 'Grand Canyon', url: `${ALBUM_HOST}/grand-canyon` },
       { title: 'New Orleans', url: `${ALBUM_HOST}/new-orleans-1` },
       { title: 'Meowwolf - Denver', url: `${ALBUM_HOST}/meowwolf-denver` },
@@ -592,7 +550,6 @@ const MANIFEST: Entry[] = [
       { title: 'New Orleans (older)', url: `${ALBUM_HOST}/new-orleans-2` },
       { title: 'Red Rocks Ampitheater', url: `${ALBUM_HOST}/red-rocks-ampitheater` },
       { title: 'San Diego', url: `${ALBUM_HOST}/san-diego` },
-      { title: 'Minneapolis', url: `${ALBUM_HOST}/minneapolis-1` },
       { title: 'Portland', url: `${ALBUM_HOST}/portland` },
       { title: 'Napa Valley', url: `${ALBUM_HOST}/napa-valley` },
     ],
@@ -710,74 +667,7 @@ async function resizeToTexture(srcPath: string, destPath: string): Promise<void>
     .toFile(destPath);
 }
 
-// Composite N images into a rows×cols grid texture. Each cell gets
-// center-crop fit (sharp.resize with fit:cover) so the cells line up
-// flush regardless of source aspect.
-//
-// `srcPaths` fills cells in row-major order, cycling if shorter than
-// rows*cols. `cellOverrides` (optional) replaces specific cell indices
-// with a different local file — used to pin a hand-picked hero photo
-// at a known position (e.g. center of a 3×3 grid).
-async function buildGridTexture(
-  srcPaths: string[],
-  rows: number, cols: number,
-  destPath: string,
-  cellOverrides?: Record<number, string>,
-): Promise<void> {
-  const cellSize = Math.floor(MAX_LONG_EDGE / Math.max(rows, cols));
-  const canvasW = cellSize * cols;
-  const canvasH = cellSize * rows;
-  const totalCells = rows * cols;
-
-  // Pre-resize each cell to a Buffer (one per unique photo, then we cycle
-  // them across all cells below).
-  const cellBuffers = await Promise.all(
-    srcPaths.map((p) =>
-      sharp(p)
-        .resize({ width: cellSize, height: cellSize, fit: 'cover', position: 'attention' })
-        .toBuffer(),
-    ),
-  );
-
-  // Pre-resize override buffers, indexed by cell position.
-  const overrideBuffers: Record<number, Buffer> = {};
-  if (cellOverrides) {
-    for (const [idxStr, path] of Object.entries(cellOverrides)) {
-      const idx = parseInt(idxStr, 10);
-      overrideBuffers[idx] = await sharp(path)
-        .resize({ width: cellSize, height: cellSize, fit: 'cover', position: 'attention' })
-        .toBuffer();
-    }
-  }
-
-  // Cycle through photos to fill every cell. Without this, leftover cells
-  // stay the empty splash-canvas background — and because polygon-grid
-  // textures are bbox-mapped onto the country polygon, those empty cells
-  // are sampled by real geography. For the USA the empty trio in the
-  // bottom-right of the grid landed exactly on Florida.
-  if (cellBuffers.length === 0) {
-    throw new Error(`no photos to composite into ${rows}x${cols} grid`);
-  }
-  const composite = Array.from({ length: totalCells }, (_, i) => ({
-    input: overrideBuffers[i] ?? cellBuffers[i % cellBuffers.length]!,
-    top: Math.floor(i / cols) * cellSize,
-    left: (i % cols) * cellSize,
-  }));
-
-  await sharp({
-    create: {
-      width: canvasW,
-      height: canvasH,
-      channels: 3,
-      background: { r: 28, g: 31, b: 26 }, // matches splash-canvas
-    },
-  })
-    .composite(composite)
-    .jpeg({ quality: 85, mozjpeg: true })
-    .toFile(destPath);
-}
-
-async function buildIndexCoverMap(): Promise<Map<string, string>> {
+export async function buildIndexCoverMap(): Promise<Map<string, string>> {
   const indexes = [
     `${ALBUM_HOST}/`,
     `${ALBUM_HOST}/2012-2023`,
@@ -802,22 +692,16 @@ async function main() {
   console.log(`  total ${coverByUrl.size} covers indexed\n`);
 
   // Sanity check: every album URL referenced in MANIFEST must exist in
-  // the cover map. Fail loud at startup rather than mid-run. Local-file
-  // entries (no portfolio URL) skip this check; their files are verified
-  // at processing time below.
+  // the cover map. Fail loud at startup rather than mid-run. Validates
+  // both `primary_album` (the source for the texture) and any
+  // `secondary_albums` paper trail — catches dead URLs even when the
+  // album isn't currently used as a source.
   const missing: string[] = [];
   for (const entry of MANIFEST) {
-    let refs: AlbumRef[];
-    if (entry.render_kind === 'polygon_grid' || entry.render_kind === 'flat') {
-      refs = entry.albums ?? [];
-    } else if (entry.local_image) {
-      refs = []; // local-file polygon/bubble — nothing to validate against the portfolio
-    } else {
-      refs = [
-        ...(entry.primary_album ? [entry.primary_album] : []),
-        ...(entry.secondary_albums ?? []),
-      ];
-    }
+    const refs: AlbumRef[] = [
+      ...(entry.primary_album ? [entry.primary_album] : []),
+      ...(entry.secondary_albums ?? []),
+    ];
     for (const r of refs) {
       if (!coverByUrl.has(r.url)) missing.push(`  ${entry.country}: ${r.url}`);
     }
@@ -845,104 +729,47 @@ async function main() {
     const dest = join(MEDIA_DIR, `${entry.country_slug}.jpg`);
     process.stdout.write(`\n[${entry.country}] (${entry.render_kind}) → ${dest}\n`);
 
-    if (entry.render_kind === 'polygon' || entry.render_kind === 'bubble') {
-      if (entry.local_image) {
-        const localPath = join(ROOT, entry.local_image.path);
-        if (!existsSync(localPath)) {
-          console.error(`local image missing for ${entry.country}: ${localPath}`);
-          process.exit(1);
-        }
-        await resizeToTexture(localPath, dest);
-        atlas.push({
-          country: entry.country,
-          country_slug: entry.country_slug,
-          render_kind: entry.render_kind,
-          ...(entry.render_kind === 'bubble' ? { lat: entry.lat, lng: entry.lng } : {}),
-          image: `media/portfolio/${entry.country_slug}.jpg`,
-          local_image: entry.local_image,
-          ...(entry.notes ? { notes: entry.notes } : {}),
-        });
-      } else if (entry.primary_album) {
-        const { path, sourceUrl } = await resolveAlbumCover(entry.primary_album, coverByUrl);
-        await resizeToTexture(path, dest);
-        atlas.push({
-          country: entry.country,
-          country_slug: entry.country_slug,
-          render_kind: entry.render_kind,
-          ...(entry.render_kind === 'bubble' ? { lat: entry.lat, lng: entry.lng } : {}),
-          image: `media/portfolio/${entry.country_slug}.jpg`,
-          primary_album: {
-            ...entry.primary_album,
-            source_image_url: sourceUrl,
-          },
-          secondary_albums: entry.secondary_albums ?? [],
-          ...(entry.notes ? { notes: entry.notes } : {}),
-        });
-      } else {
-        console.error(`${entry.country}: needs primary_album or local_image`);
+    // All three render kinds (polygon, bubble, flat) use a single source
+    // photo. local_image wins over primary_album when both are set
+    // (Australia: hero pinned to a local file, portfolio albums stay as
+    // a paper trail in secondary_albums).
+    const needsLatLng = entry.render_kind === 'bubble' || entry.render_kind === 'flat';
+    const record: Record<string, unknown> = {
+      country: entry.country,
+      country_slug: entry.country_slug,
+      render_kind: entry.render_kind,
+      ...(needsLatLng ? { lat: entry.lat, lng: entry.lng } : {}),
+      image: `media/portfolio/${entry.country_slug}.jpg`,
+    };
+
+    if (entry.local_image) {
+      const localPath = join(ROOT, entry.local_image.path);
+      if (!existsSync(localPath)) {
+        console.error(`local image missing for ${entry.country}: ${localPath}`);
         process.exit(1);
       }
+      await resizeToTexture(localPath, dest);
+      record.local_image = entry.local_image;
+      if (entry.secondary_local_images && entry.secondary_local_images.length) {
+        record.secondary_local_images = entry.secondary_local_images;
+      }
+      // An entry with a local_image hero may still carry portfolio
+      // albums as a paper trail (e.g. Australia). Preserve them.
+      if (entry.secondary_albums && entry.secondary_albums.length) {
+        record.secondary_albums = entry.secondary_albums;
+      }
+    } else if (entry.primary_album) {
+      const { path, sourceUrl } = await resolveAlbumCover(entry.primary_album, coverByUrl);
+      await resizeToTexture(path, dest);
+      record.primary_album = { ...entry.primary_album, source_image_url: sourceUrl };
+      record.secondary_albums = entry.secondary_albums ?? [];
     } else {
-      // polygon_grid OR flat — both use a composite grid texture.
-      // Sources are either portfolio albums or local files. Mixed
-      // sources aren't supported (publish locals to the portfolio
-      // first if you need them in the same grid).
-      // Resolve cell_overrides (if any) into absolute paths and verify
-      // they exist on disk. Same for both branches below.
-      let overrideMap: Record<number, string> | undefined;
-      if (entry.cell_overrides) {
-        overrideMap = {};
-        for (const [idx, ref] of Object.entries(entry.cell_overrides)) {
-          const p = join(ROOT, ref.path);
-          if (!existsSync(p)) {
-            console.error(`cell_override image missing for ${entry.country} cell ${idx}: ${p}`);
-            process.exit(1);
-          }
-          overrideMap[parseInt(idx, 10)] = p;
-        }
-      }
-
-      if (entry.local_images && entry.local_images.length > 0) {
-        const localPaths = entry.local_images.map((img) => join(ROOT, img.path));
-        for (const p of localPaths) {
-          if (!existsSync(p)) {
-            console.error(`local image missing for ${entry.country}: ${p}`);
-            process.exit(1);
-          }
-        }
-        await buildGridTexture(localPaths, entry.grid.rows, entry.grid.cols, dest, overrideMap);
-        atlas.push({
-          country: entry.country,
-          country_slug: entry.country_slug,
-          render_kind: entry.render_kind,
-          ...(entry.render_kind === 'flat' ? { lat: entry.lat, lng: entry.lng } : {}),
-          grid: entry.grid,
-          image: `media/portfolio/${entry.country_slug}.jpg`,
-          local_images: entry.local_images,
-          ...(entry.cell_overrides ? { cell_overrides: entry.cell_overrides } : {}),
-          ...(entry.notes ? { notes: entry.notes } : {}),
-        });
-      } else {
-        const albums = entry.albums ?? [];
-        const resolved: Array<{ album: AlbumRef; path: string; sourceUrl: string }> = [];
-        for (const album of albums) {
-          const r = await resolveAlbumCover(album, coverByUrl);
-          resolved.push({ album, ...r });
-        }
-        await buildGridTexture(resolved.map((r) => r.path), entry.grid.rows, entry.grid.cols, dest, overrideMap);
-        atlas.push({
-          country: entry.country,
-          country_slug: entry.country_slug,
-          render_kind: entry.render_kind,
-          ...(entry.render_kind === 'flat' ? { lat: entry.lat, lng: entry.lng } : {}),
-          grid: entry.grid,
-          image: `media/portfolio/${entry.country_slug}.jpg`,
-          albums: resolved.map((r) => ({ ...r.album, source_image_url: r.sourceUrl })),
-          ...(entry.cell_overrides ? { cell_overrides: entry.cell_overrides } : {}),
-          ...(entry.notes ? { notes: entry.notes } : {}),
-        });
-      }
+      console.error(`${entry.country}: needs primary_album or local_image`);
+      process.exit(1);
     }
+
+    if (entry.notes) record.notes = entry.notes;
+    atlas.push(record);
   }
 
   await writeFile(ATLAS_PATH, JSON.stringify(atlas, null, 2) + '\n');
@@ -950,4 +777,9 @@ async function main() {
 }
 
 void slug; // exported helper kept for future curated-rename passes
-main().catch((err) => { console.error(err); process.exit(1); });
+
+// Only run main() when invoked directly (e.g. `bun run scripts/build-photo-atlas.ts`).
+// Other scripts import MANIFEST + helpers from this module without triggering a build.
+if (import.meta.main) {
+  main().catch((err) => { console.error(err); process.exit(1); });
+}
