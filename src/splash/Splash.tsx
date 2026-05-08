@@ -26,8 +26,6 @@ import {
 } from 'react-icons/fa6';
 import { SYL, SMALLCAP_PREFIX_RE } from '../me';
 import { Masonry, type MasonryItem } from '../media/Masonry';
-import { CodeChips } from './CodeChips';
-import { Terminal } from './Terminal';
 import {PORTFOLIO} from '../me';
 import './splash-globals.css';
 import s from './Splash.module.css';
@@ -318,8 +316,6 @@ export function Splash(): JSX.Element {
         >
           <div className={s.tileVisual}>
             <Masonry items={BUILDER_GRID} imageClassName={s.builderImage} />
-            <CodeChips />
-            <Terminal />
             <div className={s.tileLabelOverlay}>
               <p className={s.tileLabel}>BUILDER</p>
               <p className={s.tileSublabel}>technologist</p>

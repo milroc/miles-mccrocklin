@@ -1,0 +1,107 @@
+/* TerminalDock — fixed-bottom dock that hosts the Claude Code Terminal
+   artifact on the long-form resume page. Revealed on first skill hover,
+   sticks until dismissed via the × button. */
+
+.dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+
+  /* No drop shadow — the original splash version cast a 28px dark glow
+     upward, which absorbed into that page's dark canvas. On the cream
+     resume paper the same shadow read as a visible halo/band above the
+     dock. The dark Claude background already produces a sharp enough
+     edge against cream; the dock reads as floating without help. */
+  transition: transform 240ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  will-change: transform;
+}
+
+/* Hidden state — translated fully off-screen. Pointer events disabled so
+   the dismiss button can't be tab-focused before the dock is shown. */
+.hidden {
+  transform: translateY(110%);
+  pointer-events: none;
+}
+
+.revealed {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock {
+    transition: none;
+  }
+}
+
+/* Dismiss button — circular tag that overhangs the dock's top edge so
+   it reads as a clear, lift-off-able affordance rather than a quiet
+   corner glyph. Dark Claude surface with the orange brand border; on
+   hover the surface flips to orange so the cream × inverts to a warm
+   solid pill. */
+.dismiss {
+  position: absolute;
+  /* Anchored to the welcome frame's top-right corner, not the dock's
+     arbitrary edge. Frame margin is 14px 18px; centering a 32px button
+     on that corner = top:-2 / right:2, biased inward to right:14 so the
+     button isn't flush against the viewport edge. */
+  top: -2px;
+  right: 14px;
+  z-index: 1;
+
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+
+  background: var(--guest-claude-bg);
+  border: 1px solid var(--guest-claude-border);
+  border-radius: 50%;
+
+  color: var(--guest-claude-fg);
+  font-family: var(--mono);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+
+  /* Tight, contained shadow — just lifts the pill off the dock surface
+     without the broad halo that the original dock-edge shadow created. */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
+
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease,
+    box-shadow 140ms ease;
+}
+.dismiss:hover {
+  background: var(--guest-claude-accent);
+  border-color: var(--guest-claude-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.32);
+}
+.dismiss:focus-visible {
+  outline: 2px solid var(--guest-claude-accent);
+  outline-offset: 3px;
+}
+
+/* Mobile — hidden for now (per design call). The skill-hover
+   interaction doesn't translate to touch; revisit once the mobile
+   skills experience is itself rethought. */
+@media (max-width: 720px) {
+  .dock {
+    display: none;
+  }
+}
+
+/* Print — never include the brand artifact in the printed document. */
+@media print {
+  .dock {
+    display: none;
+  }
+}
