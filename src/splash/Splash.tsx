@@ -1,8 +1,8 @@
-// Splash page chrome. SSR-safe: no browser-API imports, no lightning,
-// no react-globe.gl. Renders the full static end-state visible to
+// Splash page chrome. SSR-safe: no browser-API imports, no
+// react-globe.gl. Renders the full static end-state visible to
 // crawlers, no-JS users, and prefers-reduced-motion users.
 //
-// The reveal animation (lightning strikes + globe mount) is layered on
+// The reveal animation (chrome fade-in + globe mount) is layered on
 // top by src/splash/effects.tsx after hydration, via dynamic import
 // triggered from a useEffect — guaranteed to run after React commits
 // the DOM in both dev (createRoot) and prod (hydrateRoot).
@@ -247,10 +247,10 @@ export function Splash(): JSX.Element {
       .then(({ runReveal, prewarmGlobe }) => {
         if (cancelled) return;
         // Fire-and-forget: kick off three.js + texture downloads in
-        // parallel with the lightning reveal. Idempotent — when
-        // mountGlobe runs after the storm, it awaits the same promise
-        // and gets the cached state. Failures swallowed: mountGlobe's
-        // own error path takes over if the prewarm rejected.
+        // parallel with the reveal. Idempotent — when mountGlobe runs
+        // after, it awaits the same promise and gets the cached state.
+        // Failures swallowed: mountGlobe's own error path takes over
+        // if the prewarm rejected.
         void prewarmGlobe().catch(() => {});
         return runReveal(root);
       })

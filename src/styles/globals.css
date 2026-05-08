@@ -116,8 +116,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* App shell (.app, .toolbar, .page, .skip-link, body.printing,
-   page-shell @media print) lives in components/app/App.css.
-   Lightning lives in lightning.css (sibling to lightning.ts). */
+   page-shell @media print) lives in components/app/App.css. */
 
 /* Section primitive (.section) lives in layout/Section.module.css.
    SectionHead primitive (.section-head, h2, .rule) lives in

@@ -3,7 +3,6 @@
   "private": true,
   "type": "module",
   "sideEffects": [
-    "./src/lightning.ts",
     "./src/splash/splash-entry.tsx",
     "./src/splash/effects.tsx",
     "*.css"

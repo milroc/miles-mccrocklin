@@ -36,9 +36,9 @@ Rules:
   component class, it imports the same module and uses
   `` `.${s.tile}` ``.
 - **`data-*` attributes for cross-component hooks.** When a non-React
-  consumer (lightning, an external script) needs to find an element
-  inside a component, expose a `data-*` attribute (`data-splash-skip`),
-  not a class. Class names are hashed; data attributes aren't.
+  consumer (an external script) needs to find an element inside a
+  component, expose a `data-*` attribute (`data-splash-skip`), not a
+  class. Class names are hashed; data attributes aren't.
 - **`<noscript>` fallbacks** that need to reference hashed names must
   be rendered from inside the React component, with the class names
   templated in via `dangerouslySetInnerHTML` so SSR'd HTML carries the

@@ -9,10 +9,6 @@
 //      three.js dynamically; prewarmGlobe was kicked off at hydration
 //      by Splash.tsx so most of the cost has already been paid).
 //
-// Lightning has been removed from the splash. The resume page (long-
-// form) still uses src/lightning.ts for its ambient bolts; the splash
-// module no longer imports from it.
-//
 // This module is dynamic-imported by splash-entry.tsx after hydration.
 // All browser-API calls (matchMedia, etc) live here, so build.ts's
 // renderToString never executes them.
