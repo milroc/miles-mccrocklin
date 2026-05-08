@@ -52,27 +52,27 @@ const VISITED_COUNTRIES: ReadonlySet<string> = new Set(
 // Country→photo dataset, built by scripts/build-photo-atlas.ts from the
 // portfolio at milesmccrocklin.myportfolio.com. Three render kinds:
 //
-//   polygon       — country polygon textured with the primary album's
-//                    first photo (UV-mapped to the lat/lng bbox).
-//   polygon_grid  — country polygon textured with a pre-composited
-//                    grid image of every album in that country.
-//   bubble        — microstate not represented as a polygon in
-//                    Natural Earth 110m (Singapore today). Rendered
-//                    as a circular thumbnail anchored at lat/lng.
+//   polygon — country polygon textured with the primary album's first
+//             photo (UV-mapped to the lat/lng bbox). One photo per
+//             country; multi-album grids were dropped because users
+//             read the cells as states/provinces.
+//   bubble  — microstate not represented as a polygon in Natural Earth
+//             110m (Singapore, Vatican, etc). Rendered as a circular
+//             thumbnail anchored at lat/lng.
+//   flat    — country polygon textured via a tangent-plane shader at
+//             lat/lng instead of the geometry's UVs. Used when the
+//             polygon's UV mapping distorts the photo (Antarctica
+//             wraps around the south pole).
 type AtlasEntry =
   | {
       country: string;
       country_slug: string;
-      render_kind: 'polygon' | 'polygon_grid';
+      render_kind: 'polygon';
       image: string;
     }
   | {
       country: string;
       country_slug: string;
-      // bubble — circular thumbnail anchored at lat/lng (microstates).
-      // flat   — rectangular photo card anchored at lat/lng (countries
-      //          where the polygon distorts the texture too aggressively
-      //          to read, e.g. Antarctica wrapping around the south pole).
       render_kind: 'bubble' | 'flat';
       image: string;
       lat: number;
@@ -288,7 +288,7 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
 
     // Vertex/fragment shader pairs. All polygon-cap materials share the
     // same loading-state machine; only the UV sampling differs between
-    // 'polygon'/'polygon_grid' (geometry UVs) and 'flat' (tangent plane).
+    // 'polygon' (geometry UVs) and 'flat' (tangent plane).
     //
     // The shimmer is a slow gradient sweep across the polygon: muted
     // canvas-fg (#7a7770) → cream canvas-fg-strong (#ece9e2). Keeps
@@ -392,26 +392,87 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
       }
 
       const isFlat = entry.render_kind === 'flat';
+      // Tangent-plane bbox half-extents for `flat` countries — derived
+      // from the country's polygon vertices. The photo-load handler
+      // uses these as the target rect to do aspect-cover sizing.
+      let flatBboxHalfWidth = 0;
+      let flatBboxHalfHeight = 0;
       let mat: THREE_T.ShaderMaterial;
       if (isFlat) {
-        // Tangent-plane frame for the flat shader.
+        // Tangent-plane frame anchored at (entry.lat, entry.lng). For
+        // Antarctica that's the south pole, so the projection onto
+        // (uAxis, vAxis) is symmetric around a circumpolar polygon.
         const phi = (90 - entry.lat) * Math.PI / 180;
         const theta = (entry.lng + 180) * Math.PI / 180;
-        const center = new THREE.Vector3(
+        const anchor = new THREE.Vector3(
           -Math.sin(phi) * Math.cos(theta),
           Math.cos(phi),
           Math.sin(phi) * Math.sin(theta),
         ).multiplyScalar(GLOBE_RADIUS);
-        const normal = center.clone().normalize();
+        const normal = anchor.clone().normalize();
         const refUp = new THREE.Vector3(0, 1, 0);
         let uAxis = new THREE.Vector3().crossVectors(refUp, normal);
         if (uAxis.lengthSq() < 1e-6) uAxis.set(0, 0, -1);
         uAxis.normalize();
         const vAxis = new THREE.Vector3().crossVectors(normal, uAxis).normalize();
-        // Half-extents — width adjusts to photo aspect once the texture
-        // loads. Initialized with a square assumption; the load handler
-        // updates uHalfWidth when the real aspect is known.
-        const FLAT_HALF_HEIGHT = 22;
+
+        // Walk the country polygon and find the bbox in tangent-plane
+        // (u, v) coords. Sizes the photo rect to fit the country's
+        // actual footprint instead of using a fixed-size card; the
+        // rect's center sits at the bbox centroid in world space.
+        const feature = countries.find((f) => f.properties.name === entry.country);
+        let uMin = Infinity, uMax = -Infinity, vMin = Infinity, vMax = -Infinity;
+        if (feature) {
+          const tmp = new THREE.Vector3();
+          const project = (lng: number, lat: number) => {
+            const ph = (90 - lat) * Math.PI / 180;
+            const th = (lng + 180) * Math.PI / 180;
+            tmp.set(
+              -Math.sin(ph) * Math.cos(th),
+              Math.cos(ph),
+              Math.sin(ph) * Math.sin(th),
+            ).multiplyScalar(GLOBE_RADIUS);
+            const u = (tmp.x - anchor.x) * uAxis.x + (tmp.y - anchor.y) * uAxis.y + (tmp.z - anchor.z) * uAxis.z;
+            const v = (tmp.x - anchor.x) * vAxis.x + (tmp.y - anchor.y) * vAxis.y + (tmp.z - anchor.z) * vAxis.z;
+            if (u < uMin) uMin = u;
+            if (u > uMax) uMax = u;
+            if (v < vMin) vMin = v;
+            if (v > vMax) vMax = v;
+          };
+          // GeoJSON: Polygon = [rings]; MultiPolygon = [polygons[rings]].
+          // Rings are arrays of [lng, lat] pairs.
+          type Ring = Array<[number, number]>;
+          const geom = feature.geometry as { type: string; coordinates: Ring[] | Ring[][] };
+          if (geom.type === 'Polygon') {
+            for (const ring of geom.coordinates as Ring[]) {
+              for (const [lng, lat] of ring) project(lng, lat);
+            }
+          } else if (geom.type === 'MultiPolygon') {
+            for (const poly of geom.coordinates as Ring[][]) {
+              for (const ring of poly) {
+                for (const [lng, lat] of ring) project(lng, lat);
+              }
+            }
+          }
+        }
+        // Fallback if the country wasn't in the world atlas (shouldn't
+        // happen — earlier `countries.find` already gates this branch
+        // — but keep the math safe).
+        if (!Number.isFinite(uMin)) {
+          uMin = -22; uMax = 22; vMin = -22; vMax = 22;
+        }
+
+        // Recenter on the bbox centroid (in world coords). The shader
+        // samples `(vWorldPos - uCenter) · uAxis` so this offset just
+        // shifts where (u=0, v=0) lands on the tangent plane.
+        const cu = (uMin + uMax) / 2;
+        const cv = (vMin + vMax) / 2;
+        const center = anchor.clone()
+          .add(uAxis.clone().multiplyScalar(cu))
+          .add(vAxis.clone().multiplyScalar(cv));
+        flatBboxHalfWidth = (uMax - uMin) / 2;
+        flatBboxHalfHeight = (vMax - vMin) / 2;
+
         mat = new THREE.ShaderMaterial({
           uniforms: {
             uPhoto: { value: placeholderTex },
@@ -420,8 +481,11 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
             uCenter: { value: center },
             uUAxis: { value: uAxis },
             uVAxis: { value: vAxis },
-            uHalfWidth: { value: FLAT_HALF_HEIGHT },
-            uHalfHeight: { value: FLAT_HALF_HEIGHT },
+            // Pre-set to bbox extents so the shimmer fills the country
+            // before the photo arrives. The photo-load handler does
+            // aspect-cover sizing once the texture is decoded.
+            uHalfWidth: { value: flatBboxHalfWidth },
+            uHalfHeight: { value: flatBboxHalfHeight },
           },
           vertexShader: FLAT_VS,
           fragmentShader: FLAT_FS,
@@ -457,9 +521,20 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
             mat.uniforms.uPhoto.value = tex;
             mat.uniforms.uHasPhoto.value = 1.0;
             if (isFlat && tex.image && tex.image.width && tex.image.height) {
+              // Aspect-cover: photo fills the country's bbox while
+              // preserving its own aspect ratio. The dimension that
+              // would otherwise leave letterbox bands is expanded
+              // beyond the bbox; the polygon clips the overflow so
+              // visible pixels are always inside the photo.
               const photoAspect = tex.image.width / tex.image.height;
-              mat.uniforms.uHalfWidth.value =
-                (mat.uniforms.uHalfHeight.value as number) * photoAspect;
+              const bboxAspect = flatBboxHalfWidth / flatBboxHalfHeight;
+              if (photoAspect > bboxAspect) {
+                mat.uniforms.uHalfHeight.value = flatBboxHalfHeight;
+                mat.uniforms.uHalfWidth.value = flatBboxHalfHeight * photoAspect;
+              } else {
+                mat.uniforms.uHalfWidth.value = flatBboxHalfWidth;
+                mat.uniforms.uHalfHeight.value = flatBboxHalfWidth / photoAspect;
+              }
             }
             resolve();
           },
