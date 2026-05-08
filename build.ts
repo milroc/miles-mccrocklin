@@ -13,7 +13,7 @@
 // and the resulting markup is injected into dist/index.html so crawlers
 // + no-JS users see the full composition (wordmark, tiles, CTA, role
 // labels) without running JavaScript. The client bundle hydrates and
-// runs the lightning reveal effect.
+// runs the reveal effect.
 //
 // Uses Bun's JS bundler API instead of `bun build --minify` because the
 // CLI's `--minify` umbrella flag emits a broken JSX-runtime binding

@@ -196,9 +196,9 @@ let prewarmPromise: Promise<PrewarmedGlobe> | null = null;
 //
 // Splash.tsx calls this at hydration time so the three.js bundle
 // (~1.3 MB) and the 35 portfolio JPEGs (~14 MB) download in parallel
-// with the lightning reveal animation, instead of after it. By the
-// time runReveal() finishes and mountGlobe() is invoked, the imports
-// are usually resolved and the texture bytes are sitting in the HTTP
+// with the reveal animation, instead of after it. By the time
+// runReveal() finishes and mountGlobe() is invoked, the imports are
+// usually resolved and the texture bytes are sitting in the HTTP
 // cache, so the first frame paints almost immediately.
 //
 // Cheap to call: returns a no-op resolved promise when the globe gate
@@ -580,7 +580,7 @@ export async function mountGlobe(
 
   // Heavy work (imports + image preloads) is centralized in
   // prewarmGlobe so Splash.tsx can kick it off at hydration time, in
-  // parallel with the lightning reveal. By the time we reach this
+  // parallel with the reveal animation. By the time we reach this
   // line on the splash path, the promise is usually already resolved
   // and this await returns the cached state synchronously. On the
   // /explorer/ path (or if a caller skipped the prewarm), this kicks
@@ -653,7 +653,7 @@ export async function mountGlobe(
 
   // countries + atlas + photoMaterials come from the prewarm above —
   // texture decode + material creation happened in parallel with the
-  // lightning reveal, so by the time we get here the materials are
+  // reveal animation, so by the time we get here the materials are
   // already on the GPU and the first frame paints in one tick.
   // 'bubble' microstate thumbnails ride the htmlElements pipeline.
   // 'flat' polygons (Antarctica) render as a polygon cap with a custom

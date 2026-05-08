@@ -308,56 +308,13 @@ token family for everything that renders on the mat (toolbar,
 skip-link). Print mode is unaffected; the resume itself is still cream
 paper with black ink.
 
-### D9 — Lightning strikes (delight) ✅ Shipped 2026-05-01
+### D9 — Lightning strikes (removed 2026-05-08)
 
-Brief jagged typographic bolts arc from the cursor in the dark mat to
-fixed anchors on the resume page — like the resume is a Faraday cage
-absorbing the discharge. Each bolt spells a fragment of the user's bio
-(names, roles, teams, products, tools) along its zigzag path, flashes
-briefly, and fades. Five marquees fire on staggered cadences so the
-storm reads as organic, not synchronized.
-
-**Lives in `src/lightning.ts`.** Self-installing ES module, no globals.
-Hides under `prefers-reduced-motion` and on print. The lightning
-metaphor is product-meaningful: the resume *attracts* the discharge.
-
-**Phrase pool** is hardcoded as `MARQUEES` — five sublists for five
-marquees. Each strike picks one phrase and lays it head-to-tail along
-the jagged path with natural Georgia letter widths, repeating if the
-path is longer than the phrase. Reverse-emit isn't needed (chars are
-static during the strike, not scrolling).
-
-**Path generation.** Midpoint-displacement subdivision. Start with
-`[cursor, anchor]`, then for `PATH_DEPTH: 5` passes, insert a
-perpendicular-jittered midpoint between every adjacent pair. Initial
-displacement `BASE_DISPLACEMENT: 60px`, decaying by `DISP_FALLOFF: 0.55`
-per pass. Yields a self-similar jagged bolt with ~32 segments.
-
-**Strike envelope** (per bolt):
-- `STRIKE_PEAK_MS: 60` — opacity ramps 0→1 (the snap of the bolt
-  appearing).
-- `STRIKE_HOLD_MS: 80` — full brightness (the channel).
-- `STRIKE_DECAY_MS: 380` — linear fade 1→0 (the afterimage).
-- Inter-strike gap: `GAP_MS_MIN: 320 + rand(0..1200)` ms.
-
-**Visual treatment.** Bright cream chars (`var(--canvas-fg-strong)`) with
-green text-shadow at full bold weight. The shadow gives an electrical
-aura at peak; opacity decay carries it away. Each char is rotated to the
-tangent of its path segment so the text follows the bolt's bends.
-
-**Path is frozen during the strike.** The bolt's geometry and chars are
-captured when `startStrike()` fires and stay fixed for `STRIKE_TOTAL_MS`.
-Real lightning bolts have a fixed shape during their brief existence;
-re-randomizing per frame would feel like static. The cursor and anchor
-ARE re-evaluated only when the *next* strike fires.
-
-**Fixed viewport anchors.** Each marquee has a fixed fraction of the
-viewport height for its anchor Y — `ANCHOR_Y_VIEWPORT: [0.10, 0.30, 0.50,
-0.70, 0.90]`. Anchors live in screen space, not page space, so they
-NEVER converge regardless of scroll position (page-px offsets like 1900
-and 4500 both clamped to the bottom-of-viewport edge when the page was
-scrolled to the top — visible "two tendrils land on the same spot"
-collision). Anchor X always rides the page edge nearest the cursor.
+Originally shipped as cursor-driven typographic bolts in the dark mat —
+each bolt spelled a bio fragment along a jagged path and faded. Removed
+because the words flashed too quickly to parse and the effect competed
+with the editorial restraint of the rest of the page. No replacement;
+the dark mat reads cleaner as a quiet frame.
 
 ### D8 — Paper realism cues ✅ Shipped 2026-05-01
 

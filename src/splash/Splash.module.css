@@ -492,10 +492,10 @@
 }
 
 /* ============================================================
-   Reveal state — wordmark + tiles + CTA hidden until lightning ends.
+   Reveal state — wordmark + tiles + CTA hidden until reveal fires.
    - SSR adds .revealing to the root by default.
    - prefers-reduced-motion media query overrides the hide.
-   - effects.tsx removes .revealing after the third strike completes.
+   - effects.tsx removes .revealing on first paint after hydration.
    - The noscript fallback (inlined inside <Splash> with hashed names)
      overrides the hide when JS is disabled.
    ============================================================ */

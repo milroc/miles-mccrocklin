@@ -69,21 +69,3 @@ export const SPLASH_CONFIG = {
 } as const;
 
 export const PORTFOLIO = 'https://milesmccrocklin.myportfolio.com/';
-
-// Lightning marquees — bio fragments that streak across the canvas mat.
-// Five lists fire on staggered cadences; each list is one rhythmic theme.
-export const LIGHTNING_MARQUEES: readonly (readonly string[])[] = [
-  // Names
-  ['Miles Kendrick McCrocklin', 'milroc', 'Miles', 'Kilometers', 'MKM'],
-  // Roles
-  ['human', 'engineer', 'traveler', 'manager', 'builder', 'photographer', 'investor',
-   'artist', 'vagabond', 'airbnb superhost', 'husband', 'friend'],
-  // Teams
-  ['Facebook', 'Meta', 'Facebook Creators', 'Facebook Integrity', 'Newsfeed', 'New Product Experiences'],
-  // Products
-  ['Fact-checking', 'Forecast', 'Prediction Markets', 'Fighting Misinformation',
-   'Professional Mode', 'NLP @ FB scale', 'data products'],
-  // Tools
-  ['React', 'GraphQL', 'claude-code', 'Typescript', 'Python', 'Sony A7CR',
-   'Sony 100-400mm G Master', 'Laowa 10mm ZD'],
-];
