@@ -95,9 +95,22 @@
   color: var(--rule);
 }
 
-/* Handle-origin delight: hovering either social handle (github, twitter)
-   underlines "Mil" and "roc" in BOTH the handle and the name above it,
-   so the user can see where the milroc handle came from. */
+/* Name itself is plain type (not a link). Two flavors of underline
+   delight fire on contact-strip hover:
+
+   1. Hovering a milroc social handle (github, twitter, instagram,
+      threads — `.handleLink`) underlines just "Mil" + "roc" syllables
+      inside the wordmark, showing how the handle was drawn from the
+      name. Inside the handle itself, the matching letter spans
+      underline too so the connection visually wraps around.
+
+   2. Hovering a "real-name" link (website, email, LinkedIn) underlines
+      the whole first name and whole last name — those links carry the
+      full name, so the whole word is the natural target. */
+/* Handle-origin delight: hovering a milroc social handle (github,
+   twitter, instagram, threads) underlines `Mil` and `roc` in BOTH the
+   handle text and the wordmark above, so the user can see where the
+   milroc handle came from. */
 .syl {
   text-decoration: none;
   text-underline-offset: 3px;
@@ -105,10 +118,7 @@
   transition: text-decoration-color 200ms ease;
 }
 .header:has(.handleLink:hover) .sylMil,
-.header:has(.handleLink:hover) .sylRoc {
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-}
+.header:has(.handleLink:hover) .sylRoc,
 .handleLink:hover .syl {
   text-decoration: underline;
   text-decoration-color: var(--accent);

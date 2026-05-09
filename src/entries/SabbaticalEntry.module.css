@@ -1,0 +1,60 @@
+/* Inline "learn more" affordance for the Sabbatical entry. The Building
+   track is always visible; the Real Estate and Travel tracks live behind
+   this button so the top of the page leads with builder/professional
+   content. Clicking expands them in place. */
+.expandRow {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.expandBtn {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+  font: inherit;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: var(--fs-bullet);
+  color: var(--ink-soft);
+  letter-spacing: 0.01em;
+  position: relative;
+  transition: color 160ms ease;
+}
+.expandBtn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.35;
+  transition: opacity 160ms ease, background 160ms ease;
+}
+.expandBtn:hover,
+.expandBtn:focus-visible {
+  color: var(--accent);
+  outline: none;
+}
+.expandBtn:hover::after,
+.expandBtn:focus-visible::after {
+  opacity: 1;
+  background: var(--accent);
+}
+
+.collapseRow {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Hide the affordance entirely in 1pager / print contexts — those modes
+   render their own collapsed bullet list. The button only matters in
+   the interactive / text reading flows. */
+:global(.page.mode-1pager) .expandRow,
+:global(.page.mode-1pager) .collapseRow {
+  display: none !important;
+}

@@ -173,6 +173,10 @@ export function App() {
           {isInteractive && <SummaryGallery media={r.summary_media} />}
         </Section>
 
+        <Section title="Skills" show={showSkills}>
+          <Skills skills={r.skills} path="/skills" />
+        </Section>
+
         <Section title="Experience" show={showExperience}>
           {r.experience.map((j, i) => renderable(j) && (
             <ExperienceEntry
@@ -189,10 +193,6 @@ export function App() {
             items={r.community_organization}
             path="/community_organization"
           />
-        </Section>
-
-        <Section title="Skills" show={showSkills}>
-          <Skills skills={r.skills} path="/skills" />
         </Section>
 
         <Section title="Education" show={showEducation}>

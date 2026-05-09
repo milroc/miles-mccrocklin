@@ -131,37 +131,49 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ---------- Caption: pinned to bottom, safe-area aware ------------------ */
+/* ---------- Caption: pinned to bottom, safe-area aware ------------------
+   The lightbox is the "fullscreen" view of every figure — including UI
+   screenshots whose captions explain what the surface is and who used
+   it. Sized larger than the inline cards for legibility at full bleed. */
 .caption {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 4;
-  padding: 16px max(16px, env(safe-area-inset-right))
-           max(16px, env(safe-area-inset-bottom))
-           max(16px, env(safe-area-inset-left));
-  background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0));
+  padding: 24px max(20px, env(safe-area-inset-right))
+           max(24px, env(safe-area-inset-bottom))
+           max(20px, env(safe-area-inset-left));
+  background: linear-gradient(to top, rgba(0,0,0,0.78), rgba(0,0,0,0));
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
   align-items: center;
   text-align: center;
   font-family: var(--serif);
-  color: #ddd;
-  font-size: var(--fs-bullet);
+  color: #e8e8e8;
+  font-size: 16px;
+  line-height: 1.55;
   pointer-events: none;
   transition: opacity 220ms ease;
 }
 .captionText {
-  max-width: min(640px, 90vw);
+  max-width: min(820px, 92vw);
 }
 .captionTag {
   font-family: var(--mono);
   font-size: var(--fs-eyebrow);
-  letter-spacing: 0.1em;
-  color: #999;
+  letter-spacing: 0.12em;
+  color: #b0b0b0;
   text-transform: uppercase;
+}
+@media (min-width: 721px) {
+  .caption {
+    font-size: 17px;
+    padding: 28px max(28px, env(safe-area-inset-right))
+             max(32px, env(safe-area-inset-bottom))
+             max(28px, env(safe-area-inset-left));
+  }
 }
 
 /* ---------- Prev/next nav buttons --------------------------------------
@@ -277,3 +289,100 @@
    defensive hide rule keeps the overlay out even if the state were
    mismatched. */
 :global(.page.text-only) .lightbox { display: none !important; }
+
+/* ---------- UI mode: side-of-content "about" panel ----------------------
+   When the active item is `subtype: 'ui'`, the lightbox switches from
+   "photo with overlay caption" to "screenshot with paired about-panel."
+   The panel sits beside the slide track (desktop) or below it (mobile)
+   so the about-text never floats over the screenshot pixels.
+
+   Implementation: turn the lightbox into a CSS grid. The track + topbar
+   + nav buttons stay positioned relative to the lightbox box (their
+   `position: absolute` rules already work inside grid items), and the
+   panel becomes a real grid cell that reserves layout space.
+
+   The panel is exempt from chrome auto-hide — only `.topbar` and `.nav`
+   continue to fade after idle (the existing `.chromeHidden` rules above
+   target only those classes). */
+.lightbox.ui {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 28vw);
+  grid-template-rows: 1fr;
+}
+@media (max-width: 720px) {
+  .lightbox.ui {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+}
+
+.panel {
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.55);
+  border-left: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 28px 28px max(28px, env(safe-area-inset-bottom))
+           max(28px, env(safe-area-inset-right));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: var(--serif);
+  color: #e8e8e8;
+}
+.panelTag {
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.14em;
+  color: #c8c8c8;
+  text-transform: uppercase;
+}
+.panelText {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #ececec;
+}
+@media (max-width: 720px) {
+  .panel {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(0, 0, 0, 0.7);
+    max-height: 38dvh;
+    padding: 16px 18px max(20px, env(safe-area-inset-bottom));
+    gap: 10px;
+  }
+  .panelText { font-size: 15px; }
+}
+
+/* In UI mode the slide track lives inside the first grid column, so the
+   100vw-anchored peek padding from the desktop block above over-pads.
+   Reset to fill the column edge-to-edge with a soft mask. */
+.lightbox.ui .track {
+  padding-inline: 0;
+  scroll-padding-inline: 0;
+  -webkit-mask-image: linear-gradient(
+    to right, transparent 0, #000 2%, #000 98%, transparent 100%);
+          mask-image: linear-gradient(
+    to right, transparent 0, #000 2%, #000 98%, transparent 100%);
+}
+.lightbox.ui .slide {
+  flex-basis: 100%;
+  /* Default `.slide` is 100dvh tall (built for the photo lightbox where
+     the slide is the full viewport). In UI mode the track lives in a
+     grid row that's shorter than 100dvh because the panel claims its
+     own row/column — so size to the row instead of the viewport. */
+  height: 100%;
+}
+@media (min-width: 721px) {
+  /* Drop the active-slide drop shadow in UI mode — the panel border
+     already separates the image from the chrome. */
+  .lightbox.ui .slide img,
+  .lightbox.ui .slide video {
+    box-shadow: none;
+  }
+  /* Anchor the next-arrow inside the image column, not the panel. */
+  .lightbox.ui .next {
+    right: calc(28vw + 20px);
+  }
+}
