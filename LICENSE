@@ -69,9 +69,10 @@ photographers) remain the property of their respective owners and are
 included here under fair use or with permission. Nothing in this
 license grants any rights to those works.
 
-The file data/world-countries-110m.json is derived from Natural Earth
-1:110m country boundaries (https://www.naturalearthdata.com/), which
-is in the public domain. It is not covered by the reservation above.
+The files data/world-countries-50m.topo.json and
+data/world-countries-tile.topo.json are derived from Natural Earth
+1:50m country boundaries (https://www.naturalearthdata.com/), which
+is in the public domain. They are not covered by the reservation above.
 
 To request permission for any use beyond what's allowed above, contact
 miles@mccrockl.in.

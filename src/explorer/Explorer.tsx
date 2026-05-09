@@ -28,7 +28,29 @@ export function Explorer(): JSX.Element {
   return (
     <div className={s.root}>
       <a className={s.back} href="/" aria-label="Back to home">← back</a>
-      <div className={s.mount} ref={mountRef} />
+      <div className={s.mount} ref={mountRef}>
+        {/* Loading state — CSS 3D wireframe globe (meridians +
+            parallels) spinning around a tilted polar axis.
+            mountGlobe fades the WebGL canvas in over this once
+            polygons paint, then strips it from the DOM, so no
+            React state machine needed. */}
+        <div className={s.loadingScene} aria-hidden="true">
+          <div className={s.loadingGlobe}>
+            <div className={s.meridian} />
+            <div className={s.meridian} />
+            <div className={s.meridian} />
+            <div className={s.meridian} />
+            <div className={s.meridian} />
+            <div className={s.meridian} />
+            <div className={`${s.parallel} ${s.parallelEq}`} />
+            <div className={`${s.parallel} ${s.parallel30N}`} />
+            <div className={`${s.parallel} ${s.parallel30S}`} />
+            <div className={`${s.parallel} ${s.parallel60N}`} />
+            <div className={`${s.parallel} ${s.parallel60S}`} />
+          </div>
+        </div>
+        <span className={s.loadingLabel}>loading</span>
+      </div>
       <p className={s.title}>
         Explorer
         <em>every country I've been to, the routes I took & some example photos for each.</em>

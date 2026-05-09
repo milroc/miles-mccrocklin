@@ -68,7 +68,8 @@ cpSync('./media', './dist/media', { recursive: true });
 // raw JSON (served with application/json) instead of bundled as JS
 // modules so dynamic-import MIME-type strictness can't break the
 // globe in prod.
-cpSync('./data/world-countries-110m.json', './dist/data/world-countries-110m.json');
+cpSync('./data/world-countries-50m.topo.json', './dist/data/world-countries-50m.topo.json');
+cpSync('./data/world-countries-tile.topo.json', './dist/data/world-countries-tile.topo.json');
 cpSync('./data/photo-atlas.json', './dist/data/photo-atlas.json');
 cpSync('./favicon-32.png', './dist/favicon-32.png');
 // Bun content-hashes favicon.svg for any HTML it processes, but 404.html is

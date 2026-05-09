@@ -242,14 +242,8 @@ export function Splash(): JSX.Element {
     let cancelled = false;
 
     import('./effects')
-      .then(({ runReveal, prewarmGlobe }) => {
+      .then(({ runReveal }) => {
         if (cancelled) return;
-        // Fire-and-forget: kick off three.js + texture downloads in
-        // parallel with the reveal. Idempotent — when mountGlobe runs
-        // after, it awaits the same promise and gets the cached state.
-        // Failures swallowed: mountGlobe's own error path takes over
-        // if the prewarm rejected.
-        void prewarmGlobe().catch(() => {});
         return runReveal(root);
       })
       .then(() => {
@@ -352,7 +346,21 @@ export function Splash(): JSX.Element {
           <div className={s.tileVisual}>
             <div className={s.explorerContent}>
               <div className={s.globeMount} data-splash-globe-mount="true">
-                <div className={s.globeStatic} aria-hidden="true" />
+                <div className={s.globeStatic} aria-hidden="true">
+                  <div className={s.globeStaticInner}>
+                    <div className={s.staticMeridian} />
+                    <div className={s.staticMeridian} />
+                    <div className={s.staticMeridian} />
+                    <div className={s.staticMeridian} />
+                    <div className={s.staticMeridian} />
+                    <div className={s.staticMeridian} />
+                    <div className={`${s.staticParallel} ${s.staticParallelEq}`} />
+                    <div className={`${s.staticParallel} ${s.staticParallel30N}`} />
+                    <div className={`${s.staticParallel} ${s.staticParallel30S}`} />
+                    <div className={`${s.staticParallel} ${s.staticParallel60N}`} />
+                    <div className={`${s.staticParallel} ${s.staticParallel60S}`} />
+                  </div>
+                </div>
               </div>
             </div>
             <div className={s.tileLabelOverlay}>

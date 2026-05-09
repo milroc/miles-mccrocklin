@@ -1,5 +1,5 @@
 {
-  "$comment": "Generated from data/timeline.json by scripts/timeline/build-journey.py. One waypoint per timeline entry, ordered chronologically by start month/year. Arcs draw between consecutive stops. Coordinates are country centroids (bbox of largest polygon) from world-countries-110m.json, with manual overrides for geographically sprawling countries.",
+  "$comment": "Generated from data/timeline.json by scripts/timeline/build-journey.py. One waypoint per timeline entry, ordered chronologically by start month/year. Arcs draw between consecutive stops. Coordinates are country centroids (bbox of largest polygon) from world-countries-50m.json, with manual overrides for geographically sprawling countries.",
   "waypoints": [
     {
       "label": "United States of America",
