@@ -64,6 +64,27 @@
 }
 
 /* ============================================================
+   Tagline — Georgia italic at the muted color (per DESIGN.md italic
+   register: serif italic recedes into the body voice). Sourced from
+   the LinkedIn cover's lede. Sits between the wordmark and the tiles
+   grid as one composition. clamp() shrinks the line on narrow
+   viewports so the single-line register holds without overflow.
+   ============================================================ */
+.tagline {
+  font-family: var(--splash-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(13px, 3.4vw, 18px);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: var(--splash-canvas-fg);
+  text-align: center;
+  margin: -16px 0 28px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* ============================================================
    Two-column layout — Builder dominates the left, Artist + Explorer
    stack on the right at half-height each.
        | Builder | Artist   |
@@ -471,6 +492,7 @@
      overrides the hide when JS is disabled.
    ============================================================ */
 .revealing .wordmark,
+.revealing .tagline,
 .revealing .tile,
 .revealing .socials,
 .revealing .cta {
@@ -479,6 +501,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .revealing .wordmark,
+  .revealing .tagline,
   .revealing .tile,
   .revealing .socials,
   .revealing .cta {

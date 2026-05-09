@@ -284,6 +284,7 @@ export function Splash(): JSX.Element {
   // when scripts are disabled, so the styles activate cleanly.
   const noscriptCss = `
     .${s.revealing} .${s.wordmark},
+    .${s.revealing} .${s.tagline},
     .${s.revealing} .${s.tile},
     .${s.revealing} .${s.socials},
     .${s.revealing} .${s.cta} {
@@ -306,6 +307,8 @@ export function Splash(): JSX.Element {
         {syllable(first, SYL.mil, 'mil')}{' '}
         <span className={s.last}>{renderLast(last)}</span>
       </h1>
+
+      <p className={s.tagline}>Building for humans in an agentic world.</p>
 
       <div className={s.tiles}>
         <a
