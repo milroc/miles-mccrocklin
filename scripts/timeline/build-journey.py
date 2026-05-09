@@ -3,8 +3,8 @@
 Build data/journey.json from data/timeline.json.
 
 One waypoint per timeline entry, in chronological order (oldest → newest).
-Lat/lng come from each country's centroid in data/world-countries-110m.json;
-microstates the 110m mesh omits use hardcoded coordinates.
+Lat/lng come from each country's centroid in data/world-countries-50m.json;
+microstates the mesh omits use hardcoded coordinates.
 
 Output schema matches the existing journey.json (waypoints used by Globe.tsx
 to draw arcs between consecutive stops).
@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 TIMELINE = ROOT / "data" / "timeline.json"
-GEO = ROOT / "data" / "world-countries-110m.json"
+GEO = ROOT / "data" / "world-countries-50m.json"
 OUT = ROOT / "data" / "journey.json"
 
 MONTH_INDEX = {m: i + 1 for i, m in enumerate(
@@ -148,7 +148,7 @@ def main() -> int:
             "One waypoint per timeline entry, ordered chronologically by "
             "start month/year. Arcs draw between consecutive stops. "
             "Coordinates are country centroids (bbox of largest polygon) "
-            "from world-countries-110m.json, with manual overrides for "
+            "from world-countries-50m.json, with manual overrides for "
             "geographically sprawling countries."
         ),
         "waypoints": waypoints,

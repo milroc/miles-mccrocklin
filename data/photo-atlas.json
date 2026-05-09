@@ -6,6 +6,7 @@
     "lat": -90,
     "lng": 0,
     "image": "media/portfolio/antarctica.jpg",
+    "image_tile": "media/portfolio/antarctica-tile.jpg",
     "primary_album": {
       "title": "Antarctica - Glaciers",
       "url": "https://milesmccrocklin.myportfolio.com/antarctica-glaciers",
@@ -31,6 +32,7 @@
     "country_slug": "argentina",
     "render_kind": "polygon",
     "image": "media/portfolio/argentina.jpg",
+    "image_tile": "media/portfolio/argentina-tile.jpg",
     "primary_album": {
       "title": "Buenos Aires",
       "url": "https://milesmccrocklin.myportfolio.com/buenos-aires",
@@ -43,6 +45,7 @@
     "country_slug": "armenia",
     "render_kind": "polygon",
     "image": "media/portfolio/armenia.jpg",
+    "image_tile": "media/portfolio/armenia-tile.jpg",
     "primary_album": {
       "title": "Armenia",
       "url": "https://milesmccrocklin.myportfolio.com/armenia",
@@ -55,6 +58,7 @@
     "country_slug": "australia",
     "render_kind": "polygon",
     "image": "media/portfolio/australia.jpg",
+    "image_tile": "media/portfolio/australia-tile.jpg",
     "local_image": {
       "title": "Splash!, Sydney, Australia",
       "path": "media/sabbatical-travel/travel-24.jpeg"
@@ -103,6 +107,7 @@
     "country_slug": "austria",
     "render_kind": "polygon",
     "image": "media/portfolio/austria.jpg",
+    "image_tile": "media/portfolio/austria-tile.jpg",
     "local_image": {
       "title": "Vienna — Stephansplatz + Haas Haus",
       "path": "media/europe-2010/austria-vienna-stephansplatz.jpg"
@@ -123,6 +128,7 @@
     "country_slug": "belgium",
     "render_kind": "polygon",
     "image": "media/portfolio/belgium.jpg",
+    "image_tile": "media/portfolio/belgium-tile.jpg",
     "primary_album": {
       "title": "Belgium",
       "url": "https://milesmccrocklin.myportfolio.com/belgium",
@@ -135,6 +141,7 @@
     "country_slug": "belize",
     "render_kind": "polygon",
     "image": "media/portfolio/belize.jpg",
+    "image_tile": "media/portfolio/belize-tile.jpg",
     "primary_album": {
       "title": "Quay Caulker",
       "url": "https://milesmccrocklin.myportfolio.com/quay-caulker",
@@ -148,6 +155,7 @@
     "country_slug": "bolivia",
     "render_kind": "polygon",
     "image": "media/portfolio/bolivia.jpg",
+    "image_tile": "media/portfolio/bolivia-tile.jpg",
     "primary_album": {
       "title": "Salar de Uyuni",
       "url": "https://milesmccrocklin.myportfolio.com/salar-de-uyuni",
@@ -173,6 +181,7 @@
     "country_slug": "brazil",
     "render_kind": "polygon",
     "image": "media/portfolio/brazil.jpg",
+    "image_tile": "media/portfolio/brazil-tile.jpg",
     "local_image": {
       "title": "Sugarloaf — Botafogo Bay from Corcovado",
       "path": "media/brazil-2025/rio-sugarloaf-from-corcovado.jpg"
@@ -221,6 +230,7 @@
     "country_slug": "canada",
     "render_kind": "polygon",
     "image": "media/portfolio/canada.jpg",
+    "image_tile": "media/portfolio/canada-tile.jpg",
     "primary_album": {
       "title": "Niagra Falls",
       "url": "https://milesmccrocklin.myportfolio.com/niagra-falls",
@@ -234,6 +244,7 @@
     "country_slug": "chile",
     "render_kind": "polygon",
     "image": "media/portfolio/chile.jpg",
+    "image_tile": "media/portfolio/chile-tile.jpg",
     "primary_album": {
       "title": "Cajon de Maipo",
       "url": "https://milesmccrocklin.myportfolio.com/cajon-de-maipo",
@@ -271,6 +282,7 @@
     "country_slug": "colombia",
     "render_kind": "polygon",
     "image": "media/portfolio/colombia.jpg",
+    "image_tile": "media/portfolio/colombia-tile.jpg",
     "primary_album": {
       "title": "Salento",
       "url": "https://milesmccrocklin.myportfolio.com/salento",
@@ -296,6 +308,7 @@
     "country_slug": "croatia",
     "render_kind": "polygon",
     "image": "media/portfolio/croatia.jpg",
+    "image_tile": "media/portfolio/croatia-tile.jpg",
     "local_image": {
       "title": "Plitvice Lakes — turquoise cascades + boardwalk",
       "path": "media/europe-2010/croatia-plitvice-lakes.jpg"
@@ -306,6 +319,7 @@
     "country_slug": "czechia",
     "render_kind": "polygon",
     "image": "media/portfolio/czechia.jpg",
+    "image_tile": "media/portfolio/czechia-tile.jpg",
     "local_image": {
       "title": "Prague — Týn Church",
       "path": "media/europe-2010/czechia-prague-tyn-church.jpg"
@@ -334,6 +348,7 @@
     "country_slug": "denmark",
     "render_kind": "polygon",
     "image": "media/portfolio/denmark.jpg",
+    "image_tile": "media/portfolio/denmark-tile.jpg",
     "primary_album": {
       "title": "Copenhagen",
       "url": "https://milesmccrocklin.myportfolio.com/copenhagen",
@@ -346,6 +361,7 @@
     "country_slug": "ecuador",
     "render_kind": "polygon",
     "image": "media/portfolio/ecuador.jpg",
+    "image_tile": "media/portfolio/ecuador-tile.jpg",
     "local_image": {
       "title": "Recursive reptiles, Galapagos Islands, Ecuador",
       "path": "media/sabbatical-travel/travel-26.jpeg"
@@ -362,6 +378,7 @@
     "country_slug": "egypt",
     "render_kind": "polygon",
     "image": "media/portfolio/egypt.jpg",
+    "image_tile": "media/portfolio/egypt-tile.jpg",
     "primary_album": {
       "title": "Luxor",
       "url": "https://milesmccrocklin.myportfolio.com/luxor",
@@ -383,6 +400,7 @@
     "country_slug": "el-salvador",
     "render_kind": "polygon",
     "image": "media/portfolio/el-salvador.jpg",
+    "image_tile": "media/portfolio/el-salvador-tile.jpg",
     "local_image": {
       "title": "Iglesia El Rosario — rainbow stained glass",
       "path": "media/el-salvador-2025/iglesia-el-rosario.jpg"
@@ -393,6 +411,7 @@
     "country_slug": "france",
     "render_kind": "polygon",
     "image": "media/portfolio/france.jpg",
+    "image_tile": "media/portfolio/france-tile.jpg",
     "primary_album": {
       "title": "Paris",
       "url": "https://milesmccrocklin.myportfolio.com/paris",
@@ -405,6 +424,7 @@
     "country_slug": "germany",
     "render_kind": "polygon",
     "image": "media/portfolio/germany.jpg",
+    "image_tile": "media/portfolio/germany-tile.jpg",
     "primary_album": {
       "title": "Munich",
       "url": "https://milesmccrocklin.myportfolio.com/munich",
@@ -424,6 +444,7 @@
     "lat": 36.1408,
     "lng": -5.3536,
     "image": "media/portfolio/gibraltar.jpg",
+    "image_tile": "media/portfolio/gibraltar-tile.jpg",
     "local_image": {
       "title": "BA plane on the runway, Rock of Gibraltar behind",
       "path": "media/gibraltar-2009/gibraltar-rock-runway-ba-plane.jpg"
@@ -435,6 +456,7 @@
     "country_slug": "greece",
     "render_kind": "polygon",
     "image": "media/portfolio/greece.jpg",
+    "image_tile": "media/portfolio/greece-tile.jpg",
     "primary_album": {
       "title": "Greece - Athens, Spetses, Zakynthos",
       "url": "https://milesmccrocklin.myportfolio.com/greece-athens-spetses-zakynthos",
@@ -447,6 +469,7 @@
     "country_slug": "guatemala",
     "render_kind": "polygon",
     "image": "media/portfolio/guatemala.jpg",
+    "image_tile": "media/portfolio/guatemala-tile.jpg",
     "primary_album": {
       "title": "Tikal",
       "url": "https://milesmccrocklin.myportfolio.com/tikal",
@@ -472,6 +495,7 @@
     "country_slug": "india",
     "render_kind": "polygon",
     "image": "media/portfolio/india.jpg",
+    "image_tile": "media/portfolio/india-tile.jpg",
     "primary_album": {
       "title": "Amritsar",
       "url": "https://milesmccrocklin.myportfolio.com/amritsar",
@@ -541,6 +565,7 @@
     "country_slug": "ireland",
     "render_kind": "polygon",
     "image": "media/portfolio/ireland.jpg",
+    "image_tile": "media/portfolio/ireland-tile.jpg",
     "local_image": {
       "title": "Cliffs of Moher — sun flare",
       "path": "media/ireland-2009/ireland-cliffs-of-moher-sunflare.jpg"
@@ -557,6 +582,7 @@
     "country_slug": "italy",
     "render_kind": "polygon",
     "image": "media/portfolio/italy.jpg",
+    "image_tile": "media/portfolio/italy-tile.jpg",
     "local_image": {
       "title": "Venice — canal at sunset",
       "path": "media/alps-2025/italy-venice-canal.jpg"
@@ -573,6 +599,7 @@
     "country_slug": "japan",
     "render_kind": "polygon",
     "image": "media/portfolio/japan.jpg",
+    "image_tile": "media/portfolio/japan-tile.jpg",
     "primary_album": {
       "title": "Japan",
       "url": "https://milesmccrocklin.myportfolio.com/japan",
@@ -594,6 +621,7 @@
     "country_slug": "kenya",
     "render_kind": "polygon",
     "image": "media/portfolio/kenya.jpg",
+    "image_tile": "media/portfolio/kenya-tile.jpg",
     "primary_album": {
       "title": "Nairobi National Park",
       "url": "https://milesmccrocklin.myportfolio.com/nairobi-national-park",
@@ -621,6 +649,7 @@
     "lat": 47.166,
     "lng": 9.555,
     "image": "media/portfolio/liechtenstein.jpg",
+    "image_tile": "media/portfolio/liechtenstein-tile.jpg",
     "local_image": {
       "title": "Vaduz — castle reflected in glass",
       "path": "media/alps-2025/liechtenstein-vaduz.jpg"
@@ -632,6 +661,7 @@
     "country_slug": "madagascar",
     "render_kind": "polygon",
     "image": "media/portfolio/madagascar.jpg",
+    "image_tile": "media/portfolio/madagascar-tile.jpg",
     "primary_album": {
       "title": "Andasibe Analamazaotra National Park",
       "url": "https://milesmccrocklin.myportfolio.com/andasibe-analamazaotra-national-park",
@@ -661,6 +691,7 @@
     "country_slug": "malaysia",
     "render_kind": "polygon",
     "image": "media/portfolio/malaysia.jpg",
+    "image_tile": "media/portfolio/malaysia-tile.jpg",
     "primary_album": {
       "title": "Kuala Lampur",
       "url": "https://milesmccrocklin.myportfolio.com/kuala-lampur",
@@ -673,6 +704,7 @@
     "country_slug": "mexico",
     "render_kind": "polygon",
     "image": "media/portfolio/mexico.jpg",
+    "image_tile": "media/portfolio/mexico-tile.jpg",
     "primary_album": {
       "title": "Teotihuacan & Mexcio City",
       "url": "https://milesmccrocklin.myportfolio.com/teotihuacan-mexcio-city",
@@ -685,6 +717,7 @@
     "country_slug": "morocco",
     "render_kind": "polygon",
     "image": "media/portfolio/morocco.jpg",
+    "image_tile": "media/portfolio/morocco-tile.jpg",
     "local_image": {
       "title": "Marrakech — Madrasa Ben Youssef",
       "path": "media/morocco-2010/morocco-marrakech-madrasa-ben-youssef.jpg"
@@ -737,6 +770,7 @@
     "country_slug": "netherlands",
     "render_kind": "polygon",
     "image": "media/portfolio/netherlands.jpg",
+    "image_tile": "media/portfolio/netherlands-tile.jpg",
     "local_image": {
       "title": "Amsterdam — stepped-gable house",
       "path": "media/europe-2010/netherlands-amsterdam-gable-house.jpg"
@@ -761,6 +795,7 @@
     "country_slug": "norway",
     "render_kind": "polygon",
     "image": "media/portfolio/norway.jpg",
+    "image_tile": "media/portfolio/norway-tile.jpg",
     "primary_album": {
       "title": "Tromsø",
       "url": "https://milesmccrocklin.myportfolio.com/tromso",
@@ -790,6 +825,7 @@
     "country_slug": "panama",
     "render_kind": "polygon",
     "image": "media/portfolio/panama.jpg",
+    "image_tile": "media/portfolio/panama-tile.jpg",
     "local_image": {
       "title": "Panama Canal — Baltic Spirit in the locks",
       "path": "media/panama-2025/panama-canal-baltic-spirit.jpg"
@@ -818,6 +854,7 @@
     "country_slug": "paraguay",
     "render_kind": "polygon",
     "image": "media/portfolio/paraguay.jpg",
+    "image_tile": "media/portfolio/paraguay-tile.jpg",
     "local_image": {
       "title": "River canoe through wetlands",
       "path": "media/paraguay-2025/paraguay-river-canoe.jpg"
@@ -838,6 +875,7 @@
     "country_slug": "peru",
     "render_kind": "polygon",
     "image": "media/portfolio/peru.jpg",
+    "image_tile": "media/portfolio/peru-tile.jpg",
     "primary_album": {
       "title": "Machu Picchu",
       "url": "https://milesmccrocklin.myportfolio.com/machu-picchu-1",
@@ -871,6 +909,7 @@
     "country_slug": "portugal",
     "render_kind": "polygon",
     "image": "media/portfolio/portugal.jpg",
+    "image_tile": "media/portfolio/portugal-tile.jpg",
     "primary_album": {
       "title": "Lisbon",
       "url": "https://milesmccrocklin.myportfolio.com/lisbon-1",
@@ -892,6 +931,7 @@
     "country_slug": "rwanda",
     "render_kind": "polygon",
     "image": "media/portfolio/rwanda.jpg",
+    "image_tile": "media/portfolio/rwanda-tile.jpg",
     "primary_album": {
       "title": "Gorilla Trek - Rwanda",
       "url": "https://milesmccrocklin.myportfolio.com/gorilla-trek-rwanda",
@@ -906,6 +946,7 @@
     "lat": 43.9424,
     "lng": 12.4578,
     "image": "media/portfolio/san-marino.jpg",
+    "image_tile": "media/portfolio/san-marino-tile.jpg",
     "local_image": {
       "title": "Three Towers — Mount Titano",
       "path": "media/alps-2025/san-marino-three-towers.jpg"
@@ -917,6 +958,7 @@
     "country_slug": "south-africa",
     "render_kind": "polygon",
     "image": "media/portfolio/south-africa.jpg",
+    "image_tile": "media/portfolio/south-africa-tile.jpg",
     "primary_album": {
       "title": "Sabi Sands - Big Cats",
       "url": "https://milesmccrocklin.myportfolio.com/sabi-sands-big-cats",
@@ -950,6 +992,7 @@
     "country_slug": "spain",
     "render_kind": "polygon",
     "image": "media/portfolio/spain.jpg",
+    "image_tile": "media/portfolio/spain-tile.jpg",
     "primary_album": {
       "title": "Barcelona",
       "url": "https://milesmccrocklin.myportfolio.com/barcelona",
@@ -971,6 +1014,7 @@
     "country_slug": "sweden",
     "render_kind": "polygon",
     "image": "media/portfolio/sweden.jpg",
+    "image_tile": "media/portfolio/sweden-tile.jpg",
     "primary_album": {
       "title": "Stockholm",
       "url": "https://milesmccrocklin.myportfolio.com/stockholm",
@@ -983,6 +1027,7 @@
     "country_slug": "switzerland",
     "render_kind": "polygon",
     "image": "media/portfolio/switzerland.jpg",
+    "image_tile": "media/portfolio/switzerland-tile.jpg",
     "local_image": {
       "title": "Zurich — old town alley",
       "path": "media/alps-2025/switzerland-zurich-old-town.jpg"
@@ -1007,6 +1052,7 @@
     "country_slug": "thailand",
     "render_kind": "polygon",
     "image": "media/portfolio/thailand.jpg",
+    "image_tile": "media/portfolio/thailand-tile.jpg",
     "primary_album": {
       "title": "Thailand",
       "url": "https://milesmccrocklin.myportfolio.com/thailand-1",
@@ -1019,6 +1065,7 @@
     "country_slug": "turkey",
     "render_kind": "polygon",
     "image": "media/portfolio/turkey.jpg",
+    "image_tile": "media/portfolio/turkey-tile.jpg",
     "local_image": {
       "title": "Cappadocia — hot-air balloon at dawn",
       "path": "media/turkey-2010/turkey-cappadocia-balloon.jpg"
@@ -1035,6 +1082,7 @@
     "country_slug": "uganda",
     "render_kind": "polygon",
     "image": "media/portfolio/uganda.jpg",
+    "image_tile": "media/portfolio/uganda-tile.jpg",
     "primary_album": {
       "title": "Lake Victoria Chimpanzee Sanctuary",
       "url": "https://milesmccrocklin.myportfolio.com/lake-victoria-chimpanzee-sanctuary",
@@ -1068,6 +1116,7 @@
     "country_slug": "united-arab-emirates",
     "render_kind": "polygon",
     "image": "media/portfolio/united-arab-emirates.jpg",
+    "image_tile": "media/portfolio/united-arab-emirates-tile.jpg",
     "primary_album": {
       "title": "Dubai",
       "url": "https://milesmccrocklin.myportfolio.com/dubai",
@@ -1080,6 +1129,7 @@
     "country_slug": "united-kingdom",
     "render_kind": "polygon",
     "image": "media/portfolio/united-kingdom.jpg",
+    "image_tile": "media/portfolio/united-kingdom-tile.jpg",
     "primary_album": {
       "title": "London Layover",
       "url": "https://milesmccrocklin.myportfolio.com/london-layover-1",
@@ -1092,6 +1142,7 @@
     "country_slug": "united-states-of-america",
     "render_kind": "polygon",
     "image": "media/portfolio/united-states-of-america.jpg",
+    "image_tile": "media/portfolio/united-states-of-america-tile.jpg",
     "primary_album": {
       "title": "Minneapolis",
       "url": "https://milesmccrocklin.myportfolio.com/minneapolis-1",
@@ -1185,6 +1236,7 @@
     "country_slug": "uruguay",
     "render_kind": "polygon",
     "image": "media/portfolio/uruguay.jpg",
+    "image_tile": "media/portfolio/uruguay-tile.jpg",
     "primary_album": {
       "title": "Uruguay",
       "url": "https://milesmccrocklin.myportfolio.com/uruguay",
@@ -1199,6 +1251,7 @@
     "lat": 1.3521,
     "lng": 103.8198,
     "image": "media/portfolio/singapore.jpg",
+    "image_tile": "media/portfolio/singapore-tile.jpg",
     "primary_album": {
       "title": "Singapore",
       "url": "https://milesmccrocklin.myportfolio.com/singapore",
@@ -1214,6 +1267,7 @@
     "lat": 41.9029,
     "lng": 12.4534,
     "image": "media/portfolio/vatican.jpg",
+    "image_tile": "media/portfolio/vatican-tile.jpg",
     "local_image": {
       "title": "Gallery of Maps — Vatican Museums",
       "path": "media/alps-2025/vatican-gallery-of-maps.jpg"

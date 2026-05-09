@@ -1,17 +1,18 @@
 // Globe — react-globe.gl wrapper with server-safe shell + perf fallback.
 //
 // The Splash chrome (Splash.tsx) renders a static wireframe globe div.
-// effects.tsx, after hydration, calls mountGlobe() to replace the static
-// content with the live three.js globe (or a 2D d3-geo fallback under
-// the perf threshold).
+// effects.tsx, after hydration, calls mountGlobe() to replace the
+// static content with the live three.js globe (or a 2D d3-geo fallback
+// under the perf threshold). The /explorer/ page calls mountGlobe()
+// directly with fullscreen=true.
 //
-// react-globe.gl + three are dynamic-imported here so the splash entry
-// chunk doesn't pull three.js into its initial bundle. Three is loaded
-// only after the reveal completes (effects.tsx waits 1.8s before
-// calling mountGlobe).
+// react-globe.gl + three are dynamic-imported inside loadGlobeAssets()
+// so the splash entry chunk doesn't pull three.js into its initial
+// bundle.
 
 import { SPLASH_CONFIG } from '../me';
 import journeyData from '../../data/journey.json' with { type: 'json' };
+import splashStyles from './Splash.module.css';
 // Type-only — three is dynamic-imported below. The `import type` form
 // is erased at compile time, so it doesn't pull three into the splash
 // entry chunk; we use it only for type annotations on cached state.
@@ -69,12 +70,18 @@ type AtlasEntry =
       country_slug: string;
       render_kind: 'polygon';
       image: string;
+      // 384-edge low-res variant of `image`. Splash uses this (~15 KB
+      // each) so the first paint isn't waiting on 26 MB of full-res
+      // photos. /explorer/ uses the full-size `image`. Generated
+      // alongside `image` by scripts/build-photo-atlas.ts.
+      image_tile?: string;
     }
   | {
       country: string;
       country_slug: string;
       render_kind: 'bubble' | 'flat';
       image: string;
+      image_tile?: string;
       lat: number;
       lng: number;
     };
@@ -153,14 +160,20 @@ type CountryFeature = {
   geometry: object;
 };
 
-// Result of the heavy preload phase. Stored at module scope so the
-// promise is reused across calls (Splash hydration → splash mount,
-// /explorer page → explorer mount, hot navigation between them).
-//
-// Materials wrap GPU textures and are cached for the lifetime of the
-// page — not disposed in mountGlobe's cleanup — so subsequent mounts
-// reuse the same GPU uploads instead of re-decoding 35 JPEGs.
-interface PrewarmedGlobe {
+// Shape of the TopoJSON file we ship for country polygons.
+// topojson-client.feature() turns this into a FeatureCollection at
+// runtime. Narrow typing matches what we actually pass through.
+type TopoJsonRoot = {
+  type: 'Topology';
+  objects: { countries: { type: 'GeometryCollection'; geometries: unknown[] } };
+  arcs: unknown[];
+  transform?: unknown;
+};
+
+// Bundle of dynamic imports + decoded data + per-country materials
+// that mountGlobe needs to render the globe. Built once per mount by
+// loadGlobeAssets() below.
+interface GlobeAssets {
   Globe: typeof import('react-globe.gl').default;
   createRoot: typeof import('react-dom/client').createRoot;
   React: typeof import('react');
@@ -182,43 +195,19 @@ interface PrewarmedGlobe {
   // All ShaderMaterials with a uTime uniform. mountGlobe ticks them
   // in rAF so the shimmer animates smoothly.
   shimmerMaterials: THREE_T.ShaderMaterial[];
-  // Resolves when every atlas entry has been processed (photo loaded
-  // OR errored OR skipped). Lets mountGlobe stage a fast first paint
-  // of just the sphere + country polygons, then a second paint with
-  // the photo textures and the journey arcs.
-  photosReady: Promise<void>;
+  // Fire the photo texture downloads. mountGlobe calls this AFTER
+  // its stage-1 paint so the photo bytes don't compete with the JS
+  // bundle and topology fetch on the critical path. Returns a promise
+  // that resolves when every atlas entry has been processed (loaded,
+  // errored, or skipped). Idempotent — repeat calls return the
+  // in-flight promise.
+  loadPhotos: () => Promise<void>;
 }
 
-let prewarmPromise: Promise<PrewarmedGlobe> | null = null;
-
-// Kick off all the work mountGlobe would otherwise do at the last
-// minute. Idempotent — repeat calls return the same in-flight promise.
-//
-// Splash.tsx calls this at hydration time so the three.js bundle
-// (~1.3 MB) and the 35 portfolio JPEGs (~14 MB) download in parallel
-// with the reveal animation, instead of after it. By the time
-// runReveal() finishes and mountGlobe() is invoked, the imports are
-// usually resolved and the texture bytes are sitting in the HTTP
-// cache, so the first frame paints almost immediately.
-//
-// Cheap to call: returns a no-op resolved promise when the globe gate
-// is closed and we're not in /explorer/, so callers don't need to
-// gate themselves.
-export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<PrewarmedGlobe | null> {
-  const fullscreen = options.fullscreen ?? false;
-
-  // Same gates as mountGlobe — don't burn bandwidth on the prewarm
-  // when the production state is the static wireframe, or when the
-  // device fails the perf check and we'd fall back to 2D anyway.
-  if (!SPLASH_CONFIG.globeReady && !fullscreen) {
-    return Promise.resolve(null);
-  }
-  if (!fullscreen && shouldUse2DFallback()) {
-    return Promise.resolve(null);
-  }
-  if (prewarmPromise) return prewarmPromise;
-
-  prewarmPromise = (async () => {
+// Load the dynamic imports + topology + photo atlas + per-country
+// materials that mountGlobe needs. Called once per page mount.
+async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
+  return await (async () => {
     // Six independent imports run in parallel (async-parallel rule):
     // overlapping these network fetches saves ~1s on cold cache vs.
     // sequential await.
@@ -230,12 +219,22 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
     // honest about what's happening and ships the files as static
     // assets that GH Pages serves with the right content-type. build.ts
     // copies ./data → ./dist/data so these paths resolve in prod.
-    const [globeMod, reactDomClientMod, reactMod, THREE, world, atlas] = await Promise.all([
+    // Country polygons ship as TopoJSON in two variants. /explorer/
+    // (fullscreen) fetches the full 1:50m dataset (~97 KB gz) for
+    // visible coastline detail at fullscreen camera distance. The
+    // splash tile fetches an aggressively-simplified variant
+    // (~25 KB gz) — at 240 px square, sub-degree detail just becomes
+    // high-frequency noise. One fetch per page, no mid-flight swap.
+    const polygonsUrl = fullscreen
+      ? '/data/world-countries-50m.topo.json'
+      : '/data/world-countries-tile.topo.json';
+    const [globeMod, reactDomClientMod, reactMod, THREE, topojsonClientMod, topology, atlas] = await Promise.all([
       import('react-globe.gl'),
       import('react-dom/client'),
       import('react'),
       import('three'),
-      fetch('/data/world-countries-110m.json').then((r) => r.json() as Promise<{ features: CountryFeature[] }>),
+      import('topojson-client'),
+      fetch(polygonsUrl).then((r) => r.json() as Promise<TopoJsonRoot>),
       fetch('/data/photo-atlas.json').then((r) => r.json() as Promise<AtlasEntry[]>),
     ]);
     // Bun's dynamic-import namespace shape varies by source module: CJS
@@ -254,9 +253,18 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
       ?? (globeMod as unknown as typeof import('react-globe.gl').default));
     const reactDomClient = unwrap<typeof import('react-dom/client')>(reactDomClientMod);
     const React = unwrap<typeof import('react')>(reactMod);
+    const topojsonClient = unwrap<typeof import('topojson-client')>(topojsonClientMod);
     const { createRoot } = reactDomClient;
 
-    const countries = world.features;
+    // Decode the shipped TopoJSON to a GeoJSON FeatureCollection.
+    // Adjacent country borders share arcs in the source, so the
+    // expanded coordinate sequences are byte-identical on both sides
+    // of every shared border — no slivers, no holes.
+    const decoded = topojsonClient.feature(
+      topology as Parameters<typeof topojsonClient.feature>[0],
+      topology.objects.countries as Parameters<typeof topojsonClient.feature>[1],
+    ) as unknown as { features: CountryFeature[] };
+    const countries = decoded.features;
 
     // Per-country materials are created UPFRONT in a shimmer-loading
     // state (uHasPhoto = 0). Each country's texture lazily loads in the
@@ -290,10 +298,11 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
     // same loading-state machine; only the UV sampling differs between
     // 'polygon' (geometry UVs) and 'flat' (tangent plane).
     //
-    // The shimmer is a slow gradient sweep across the polygon: muted
-    // canvas-fg (#7a7770) → cream canvas-fg-strong (#ece9e2). Keeps
-    // the editorial register intact; reads as "loading" without
-    // shouting.
+    // The shimmer is a slow radial pulse emanating from each country's
+    // centroid: muted canvas-fg (#7a7770) → cream canvas-fg-strong
+    // (#ece9e2). Concentric rings travel outward like sonar — reads as
+    // "loading" without shouting, and the per-country origin keeps the
+    // editorial register intact instead of a single sheet sweep.
     const POLYGON_VS = `
       varying vec2 vUv;
       void main() {
@@ -326,8 +335,10 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
           gl_FragColor = vec4(linearToSRGB(col.rgb), col.a);
         } else {
           // Shimmer colors are already specified in sRGB display space,
-          // so they pass through without re-encoding.
-          float sweep = 0.5 + 0.5 * sin((vUv.x + vUv.y * 0.3) * 6.2832 - uTime * 1.6);
+          // so they pass through without re-encoding. Radial pulse from
+          // the UV centroid (0.5, 0.5) — concentric rings travel outward.
+          float r = length(vUv - vec2(0.5));
+          float sweep = 0.5 + 0.5 * sin(r * 12.5664 - uTime * 1.6);
           vec3 muted = vec3(0.478, 0.467, 0.439);
           vec3 cream = vec3(0.925, 0.913, 0.886);
           gl_FragColor = vec4(mix(muted, cream, sweep), 1.0);
@@ -366,7 +377,10 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
           vec4 col = texture2D(uPhoto, vec2(u, v) * 0.5 + 0.5);
           gl_FragColor = vec4(linearToSRGB(col.rgb), col.a);
         } else {
-          float sweep = 0.5 + 0.5 * sin(u * 3.1416 - uTime * 1.6);
+          // Radial pulse from the tangent-plane origin (the bbox
+          // centroid in world space) — matches POLYGON_FS visually.
+          float r = length(vec2(u, v));
+          float sweep = 0.5 + 0.5 * sin(r * 6.2832 - uTime * 1.6);
           vec3 muted = vec3(0.478, 0.467, 0.439);
           vec3 cream = vec3(0.925, 0.913, 0.886);
           gl_FragColor = vec4(mix(muted, cream, sweep), 1.0);
@@ -375,15 +389,40 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
     `;
 
     // Build the materials synchronously, register in photoMaterials,
-    // then kick off lazy texture loads. photosReady resolves after every
-    // texture has either landed or failed — used to time the stage 2
-    // paint (arcs).
-    const loadPromises: Array<Promise<void>> = [];
+    // and capture the work that the texture loads will need to do —
+    // but DON'T fire the loads yet. mountGlobe calls loadPhotos()
+    // after its first stage-1 paint, so the photo bytes don't
+    // compete with the JS bundle and topology fetch on the
+    // critical path.
+    //
+    // Splash renders all photos at ~240 px tile size, so we prefer the
+    // 384-edge `image_tile` variant (~15 KB each, 27× smaller than the
+    // 2048-edge originals). /explorer/ uses the full-res `image`.
+    const photoSrcOf = (entry: AtlasEntry): string =>
+      `/${(!fullscreen && entry.image_tile) ? entry.image_tile : entry.image}`;
+    interface PhotoLoadJob {
+      src: string;
+      mat: THREE_T.ShaderMaterial;
+      isFlat: boolean;
+      flatBboxHalfWidth: number;
+      flatBboxHalfHeight: number;
+    }
+    const photoLoadJobs: PhotoLoadJob[] = [];
+    // Counter for per-country polygonOffset bias. Every polygon (photo
+    // and non-photo) renders at the same altitude — see polygonAltitude
+    // in mountGlobe — so adjacent caps are coplanar and would z-fight
+    // at borders without a bias. Each photo material gets a unique
+    // negative polygonOffsetUnits so it (a) always wins the depth test
+    // against the neighboring non-photo cap and (b) wins deterministically
+    // against adjacent photo caps. Result: no flicker, no transparent
+    // side-wall slivers (no side walls at all when altitude is uniform).
+    let photoIdx = 0;
     for (const entry of atlas) {
       if (entry.render_kind === 'bubble') {
-        const img = new Image();
-        img.src = `/${entry.image}`;
-        // <img> in the DOM does its own decode; Image() warms the cache.
+        // Bubbles render via the htmlElements pipeline (an <img> tag
+        // in the DOM that the browser fetches itself with loading=lazy
+        // + fetchPriority=low). No preload needed; bubbles are too
+        // small to be on the critical path.
         continue;
       }
       if (!countries.find((f) => f.properties.name === entry.country)) {
@@ -456,8 +495,8 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
           }
         }
         // Fallback if the country wasn't in the world atlas (shouldn't
-        // happen — earlier `countries.find` already gates this branch
-        // — but keep the math safe).
+        // happen — earlier `countries.find` already gates this
+        // branch — but keep the math safe).
         if (!Number.isFinite(uMin)) {
           uMin = -22; uMax = 22; vMin = -22; vMax = 22;
         }
@@ -501,57 +540,119 @@ export function prewarmGlobe(options: MountGlobeOptions = {}): Promise<Prewarmed
           fragmentShader: POLYGON_FS,
         });
       }
+      // Bias the depth value during rasterization so this photo cap
+      // wins against the coplanar non-photo cap at every shared border,
+      // and against adjacent photo caps via a unique units value.
+      // factor=0 is critical: the slope-dependent component would
+      // scale the bias by the polygon's depth-gradient, which is huge
+      // for polygons near the sphere's silhouette and would punch
+      // back-face caps through the globe sphere material.
+      mat.polygonOffset = true;
+      mat.polygonOffsetFactor = 0;
+      mat.polygonOffsetUnits = -1 - photoIdx;
+      photoIdx++;
+
       photoMaterials.set(entry.country, mat);
       shimmerMaterials.push(mat);
-
-      // Kick off lazy texture load. On success, swap uniforms; the
-      // existing material reference is unchanged so three-globe doesn't
-      // need to rebuild the polygon — next render samples the new
-      // uPhoto and the uHasPhoto > 0.5 branch.
-      const src = `/${entry.image}`;
-      loadPromises.push(new Promise<void>((resolve) => {
-        textureLoader.load(
-          src,
-          (tex) => {
-            tex.colorSpace = THREE.SRGBColorSpace;
-            tex.anisotropy = 4;
-            tex.flipY = true;
-            tex.wrapS = THREE.RepeatWrapping;
-            tex.wrapT = THREE.RepeatWrapping;
-            mat.uniforms.uPhoto.value = tex;
-            mat.uniforms.uHasPhoto.value = 1.0;
-            if (isFlat && tex.image && tex.image.width && tex.image.height) {
-              // Aspect-cover: photo fills the country's bbox while
-              // preserving its own aspect ratio. The dimension that
-              // would otherwise leave letterbox bands is expanded
-              // beyond the bbox; the polygon clips the overflow so
-              // visible pixels are always inside the photo.
-              const photoAspect = tex.image.width / tex.image.height;
-              const bboxAspect = flatBboxHalfWidth / flatBboxHalfHeight;
-              if (photoAspect > bboxAspect) {
-                mat.uniforms.uHalfHeight.value = flatBboxHalfHeight;
-                mat.uniforms.uHalfWidth.value = flatBboxHalfHeight * photoAspect;
-              } else {
-                mat.uniforms.uHalfWidth.value = flatBboxHalfWidth;
-                mat.uniforms.uHalfHeight.value = flatBboxHalfWidth / photoAspect;
-              }
-            }
-            resolve();
-          },
-          undefined,
-          () => {
-            console.warn(`[Globe] failed to load photo texture: ${src}`);
-            resolve();
-          },
-        );
-      }));
+      photoLoadJobs.push({
+        src: photoSrcOf(entry),
+        mat,
+        isFlat,
+        flatBboxHalfWidth,
+        flatBboxHalfHeight,
+      });
     }
-    const photosReady = Promise.all(loadPromises).then(() => {});
 
-    return { Globe, createRoot, React, THREE, countries, atlas, photoMaterials, photosReady, shimmerMaterials };
+    // Idempotent. mountGlobe calls this from a requestAnimationFrame
+    // after the stage-1 paint; the returned promise drives the stage-2
+    // arc paint. On the splash path, photo bytes are only ~800 KB
+    // total (image_tile variants), so this resolves in ~1–2 s on
+    // mobile bandwidth. On /explorer/ the full ~26 MB downloads
+    // progressively while the user is already looking at geometry.
+    // Texture-upload drip: when each JPEG finishes downloading +
+    // decoding, we queue it for assignment instead of immediately
+    // mutating `mat.uniforms.uPhoto.value`. A rAF loop pulls one
+    // queued texture per frame and does the assignment, which is
+    // what triggers the synchronous `texImage2D` upload to the GPU.
+    // Effect: instead of a single ~1.3 s burst of 49 uploads (during
+    // which the autoRotate animation freezes), the cost is amortized
+    // at ~25 ms per frame, one upload per ~16 ms tick. Animation
+    // never pauses; photos pop in over ~1 s, distributed.
+    let photosReadyPromise: Promise<void> | null = null;
+    const loadPhotos = (): Promise<void> => {
+      if (photosReadyPromise) return photosReadyPromise;
+      interface Pending {
+        tex: THREE_T.Texture;
+        mat: THREE_T.ShaderMaterial;
+        isFlat: boolean;
+        flatBboxHalfWidth: number;
+        flatBboxHalfHeight: number;
+      }
+      const queue: Pending[] = [];
+      let pumpScheduled = false;
+      const pumpOne = (): void => {
+        pumpScheduled = false;
+        const job = queue.shift();
+        if (!job) {
+          // Nothing decoded yet; wait for the next decode to schedule us.
+          return;
+        }
+        job.mat.uniforms.uPhoto.value = job.tex;
+        job.mat.uniforms.uHasPhoto.value = 1.0;
+        const img = job.tex.image as { width?: number; height?: number } | undefined;
+        if (job.isFlat && img && img.width && img.height) {
+          // Aspect-cover: photo fills the country's bbox while
+          // preserving its own aspect ratio. The dimension that
+          // would otherwise leave letterbox bands is expanded
+          // beyond the bbox; the polygon clips the overflow so
+          // visible pixels are always inside the photo.
+          const photoAspect = img.width / img.height;
+          const bboxAspect = job.flatBboxHalfWidth / job.flatBboxHalfHeight;
+          if (photoAspect > bboxAspect) {
+            job.mat.uniforms.uHalfHeight.value = job.flatBboxHalfHeight;
+            job.mat.uniforms.uHalfWidth.value = job.flatBboxHalfHeight * photoAspect;
+          } else {
+            job.mat.uniforms.uHalfWidth.value = job.flatBboxHalfWidth;
+            job.mat.uniforms.uHalfHeight.value = job.flatBboxHalfWidth / photoAspect;
+          }
+        }
+        if (queue.length > 0) schedulePump();
+      };
+      const schedulePump = (): void => {
+        if (pumpScheduled) return;
+        pumpScheduled = true;
+        requestAnimationFrame(pumpOne);
+      };
+
+      const jobPromises = photoLoadJobs.map(
+        ({ src, mat, isFlat, flatBboxHalfWidth, flatBboxHalfHeight }) =>
+          new Promise<void>((resolve) => {
+            textureLoader.load(
+              src,
+              (tex) => {
+                tex.colorSpace = THREE.SRGBColorSpace;
+                tex.anisotropy = 4;
+                tex.flipY = true;
+                tex.wrapS = THREE.RepeatWrapping;
+                tex.wrapT = THREE.RepeatWrapping;
+                queue.push({ tex, mat, isFlat, flatBboxHalfWidth, flatBboxHalfHeight });
+                schedulePump();
+                resolve();
+              },
+              undefined,
+              () => {
+                console.warn(`[Globe] failed to load photo texture: ${src}`);
+                resolve();
+              },
+            );
+          }),
+      );
+      photosReadyPromise = Promise.all(jobPromises).then(() => {});
+      return photosReadyPromise;
+    };
+
+    return { Globe, createRoot, React, THREE, countries, atlas, photoMaterials, loadPhotos, shimmerMaterials };
   })();
-
-  return prewarmPromise;
 }
 
 // Mount the live globe into the placeholder div. Returns a cleanup
@@ -578,20 +679,12 @@ export async function mountGlobe(
     return () => {};
   }
 
-  // Heavy work (imports + image preloads) is centralized in
-  // prewarmGlobe so Splash.tsx can kick it off at hydration time, in
-  // parallel with the reveal animation. By the time we reach this
-  // line on the splash path, the promise is usually already resolved
-  // and this await returns the cached state synchronously. On the
-  // /explorer/ path (or if a caller skipped the prewarm), this kicks
-  // it off here and waits.
-  const prewarm = await prewarmGlobe({ fullscreen });
-  if (!prewarm) {
-    // Gate failed (globeReady=false on splash, or 2D fallback fired).
-    // Same no-op behavior as before the prewarm refactor.
-    return () => {};
-  }
-  const { Globe, createRoot, React, THREE, countries, atlas, photoMaterials, photosReady, shimmerMaterials } = prewarm;
+  // Dynamic imports + topology + photo-atlas + per-country materials.
+  // Runs once per mount — JS bundle plus a topology fetch (~15 KB gz
+  // tile for splash, ~50 KB gz full for /explorer/) plus the topojson
+  // decode (~10–30 ms on main thread).
+  const assets = await loadGlobeAssets(fullscreen);
+  const { Globe, createRoot, React, THREE, countries, atlas, photoMaterials, loadPhotos, shimmerMaterials } = assets;
 
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -610,13 +703,30 @@ export async function mountGlobe(
   // globe.gl anchors its canvas at the top-left, leaving a stripe of
   // empty space. Flex-centering the mount keeps the sphere visually
   // centered regardless of mount aspect.
-  mountEl.innerHTML = '';
+  // Don't clear mountEl yet. The /explorer/ page renders a loading
+  // wireframe inside it (and the splash a static globe div); leaving
+  // those in place until the WebGL globe actually paints prevents a
+  // ~1-second blank-screen window between "loader removed" and "first
+  // polygon paint". We layer the WebGL mount on TOP of whatever's
+  // there, then strip the loaders once the globe scene starts
+  // showing real content (see canvasObserver below).
+  // Make sure mountEl can host an absolutely-positioned child.
+  if (getComputedStyle(mountEl).position === 'static') {
+    mountEl.style.position = 'relative';
+  }
   const reactMountEl = document.createElement('div');
+  reactMountEl.style.position = 'absolute';
+  reactMountEl.style.inset = '0';
   reactMountEl.style.width = '100%';
   reactMountEl.style.height = '100%';
   reactMountEl.style.display = 'flex';
   reactMountEl.style.alignItems = 'center';
   reactMountEl.style.justifyContent = 'center';
+  // Transparent until first real paint, fading in over 200 ms once
+  // the WebGL canvas has content underneath. The previous loaders
+  // remain visible through the transparency until then.
+  reactMountEl.style.opacity = '0';
+  reactMountEl.style.transition = 'opacity 200ms ease';
   mountEl.appendChild(reactMountEl);
 
   const root = createRoot(reactMountEl);
@@ -651,7 +761,7 @@ export async function mountGlobe(
     color: 0x232620,
   });
 
-  // countries + atlas + photoMaterials come from the prewarm above —
+  // features + atlas + photoMaterials come from loadGlobeAssets above —
   // texture decode + material creation happened in parallel with the
   // reveal animation, so by the time we get here the materials are
   // already on the GPU and the first frame paints in one tick.
@@ -683,8 +793,12 @@ export async function mountGlobe(
   // those caches, re-run polygon material setup, reset arc dash state,
   // and rebuild bubble DOM nodes — all of which read as a visible
   // jitter when a resize triggers a re-render.
-  const polygonAltitudeFn = (d: object): number =>
-    photoMaterials.has((d as CountryFeature).properties.name) ? 0.012 : 0.006;
+  // All polygons render on the same spherical shell. Layer ordering at
+  // shared borders is handled by polygonOffset on the photo materials
+  // (set in loadGlobeAssets), which biases their depth values so they
+  // always win the depth test against neighboring non-photo caps and
+  // against each other.
+  const POLYGON_ALTITUDE = 0.01;
   const polygonCapMaterialFn = (d: object): THREE_T.Material | undefined =>
     photoMaterials.get((d as CountryFeature).properties.name);
   const polygonCapColorFn = (d: object): string => {
@@ -693,10 +807,17 @@ export async function mountGlobe(
     if (VISITED_COUNTRIES.has(name)) return 'rgba(58, 107, 74, 0.78)'; // --splash-accent — visited but no photo (e.g. The Bahamas)
     return 'rgba(184, 181, 173, 0.55)'; // --canvas-fg @ ~55% — un-visited
   };
-  const polygonSideColorFn = (): string => 'rgba(28, 31, 26, 0.0)';
-  // No coastline stroke — borders strip the editorial register and
-  // fight the photo textures for visual attention. three-globe hides
-  // the stroke layer entirely when this returns falsy.
+  // Side walls match the sphere material so any side wall that does
+  // become visible at oblique angles blends with the sphere and reads
+  // as a thin dark line at the polygon edge — same color as the
+  // canvas behind the globe (#1c1f1a), so the eye doesn't catch a gap.
+  const polygonSideColorFn = (): string => 'rgba(28, 31, 26, 1.0)';
+  // Strokes (country borders) cost ~250 ms of polygon-mesh-build time
+  // on /explorer/ first paint — three-globe creates a separate
+  // GeoJsonGeometry line mesh per polygon. Returning false skips that
+  // layer entirely. The polygon side walls (opaque, sphere-colored)
+  // provide a thin dark line at oblique angles which reads similarly
+  // enough at globe scale.
   const polygonStrokeColorFn = (): false => false;
   // Per-arc gradient for the smoke fade. The dash sample at the start
   // of the arc reads at full ARC_HEAD_ALPHA; by the end of the arc it's
@@ -721,10 +842,17 @@ export async function mountGlobe(
     wrap.className = 'splash-globe-bubble';
     wrap.title = entry.country;
     const img = document.createElement('img');
-    img.src = `/${entry.image}`;
+    // Splash bubbles use the 384-edge tile variant (~15 KB) for first
+    // paint; /explorer/ renders bubbles at full ~2048-edge.
+    const tileSrc = (!fullscreen && entry.image_tile) ? entry.image_tile : entry.image;
+    img.src = `/${tileSrc}`;
     img.alt = entry.country;
     img.loading = 'lazy';
     img.decoding = 'async';
+    // Photos aren't critical-path: deprioritize behind any future
+    // user-initiated nav. Modern Chrome/Safari honor this; older
+    // browsers ignore the attribute harmlessly.
+    (img as HTMLImageElement & { fetchPriority?: string }).fetchPriority = 'low';
     wrap.appendChild(img);
     return wrap;
   };
@@ -733,18 +861,11 @@ export async function mountGlobe(
   };
 
 
-  // Two-stage paint:
-  //   stage 1 (immediate): sphere + country polygons (cream fill
-  //                        because photoMaterials Map is still empty).
-  //                        No arcs yet — the journey timeline is part
-  //                        of stage 2 so it lands together with the
-  //                        photos as a single second beat.
-  //   stage 2 (photosReady): same render, but photoMaterials is now
-  //                        populated and arcsData carries the journey.
-  // The `staged` flag is the only thing that changes between calls —
-  // every other prop is built from stable closures so React's
-  // reconciliation only updates the fields that actually moved.
-  let staged = false;
+  // Single-stage paint: sphere + country polygons (shimmer state) +
+  // arcs all in the first render. Arcs animate immediately; photos
+  // pop in independently as each texture mutates its material's
+  // uniforms (no re-render needed — three-globe's autoRotate frame
+  // loop picks the new uniforms up on the next tick).
 
   // animateIn deliberately stays off. Three-globe's animateIn=true
   // animates the camera distance from MAX_DISTANCE down to the target
@@ -774,18 +895,18 @@ export async function mountGlobe(
         // higher off the sphere so the textured cap reads as the focal
         // layer; the cream landmasses recede.
         //
-        // photoMaterials is populated synchronously in prewarm with
+        // photoMaterials is populated synchronously in loadGlobeAssets with
         // shimmer-state ShaderMaterials, then mutated in place as each
         // texture lands — no polygonsData invalidation needed.
         polygonsData: countries,
-        polygonAltitude: polygonAltitudeFn,
+        polygonAltitude: POLYGON_ALTITUDE,
         polygonCapMaterial: polygonCapMaterialFn,
         polygonCapColor: polygonCapColorFn,
         polygonSideColor: polygonSideColorFn,
         polygonStrokeColor: polygonStrokeColorFn,
         // Stage 1: empty arcs (timeline withheld for the second beat).
         // Stage 2: full journey wave.
-        arcsData: staged ? arcs : [],
+        arcsData: arcs,
         // Per-arc 2-color gradient ([head, tail]) does the smoke-fade
         // automatically — pattern from the airline-routes example in
         // the react-globe.gl docs. The dash itself is uniform; the arc
@@ -824,8 +945,9 @@ export async function mountGlobe(
     );
   }
 
-  // Resize observer guards (declared up here so the staged re-render
-  // below can poke `lastRenderAt`). See the ResizeObserver block lower
+  // Resize observer guards (declared up here so the deferred 50m
+  // re-render can poke `lastRenderAt`). See the ResizeObserver block
+  // lower
   // for the full rationale on why both protections are needed.
   const SETTLE_MS = 400;
   let lastRenderAt = performance.now();
@@ -836,6 +958,44 @@ export async function mountGlobe(
   // overlays. Arcs withheld; they fire once every photo has finished
   // loading so the journey timeline lands as one closing beat.
   renderGlobe();
+
+  // Cross-fade WebGL onto the pre-mount loader (loading wireframe or
+  // SSR'd static globe) once real polygon content has been added to
+  // the scene. The polling loop is necessary because react-globe.gl
+  // builds the scene asynchronously across several frames; the
+  // MutationObserver that watches the canvas-mounted event fires
+  // earlier than the polygons are visible.
+  const canvasObserver = new MutationObserver(() => {
+    const canvas = mountEl.querySelector('canvas');
+    if (canvas) canvasObserver.disconnect();
+  });
+  canvasObserver.observe(mountEl, { childList: true, subtree: true });
+  let realPaintRevealed = false;
+  const revealRealGlobe = (): void => {
+    if (realPaintRevealed) return;
+    realPaintRevealed = true;
+    reactMountEl.style.opacity = '1';
+    // Strip the pre-mount loaders (loading wireframe, static globe)
+    // 220 ms after the fade kicks off, so they don't show through the
+    // crossfade once it completes.
+    setTimeout(() => {
+      for (const child of Array.from(mountEl.children)) {
+        if (child !== reactMountEl) mountEl.removeChild(child);
+      }
+    }, 220);
+  };
+  const tickPaint = (): void => {
+    const inst = globeRef.current as (typeof globeRef.current & { scene?: () => { children: unknown[] } }) | null;
+    let sceneCount = -1;
+    try { sceneCount = inst?.scene?.()?.children?.length ?? -1; } catch { /* scene not yet available */ }
+    if (sceneCount > 1) revealRealGlobe();
+    if (!realPaintRevealed) requestAnimationFrame(tickPaint);
+  };
+  requestAnimationFrame(tickPaint);
+  // Safety belt: even if the rAF stops firing for some reason, force
+  // a reveal after 8 s. Better to flash a fade than leave the user
+  // looking at a loader forever.
+  setTimeout(revealRealGlobe, 8000);
 
   // Drive the shimmer animation + zoom-driven bubble scale. The
   // ShaderMaterials' uTime uniform is ticked every animation frame;
@@ -881,19 +1041,17 @@ export async function mountGlobe(
     shimmerRaf = requestAnimationFrame(tickFrame);
   }
 
-  // Stage 2 paint — fires once every photo has loaded (or failed). At
-  // this point every shader has had its photo uniform swapped in, so the
-  // re-render is just for the arcs (timeline). Single closing beat.
+  // Photos are deferred until AFTER stage-1 paints. Fire-and-forget:
+  // as each texture decodes + uploads, it mutates its material's
+  // uniforms (uPhoto + uHasPhoto). Three-globe's autoRotate frame
+  // loop is already running, so the next render tick picks up the
+  // new uniforms automatically — no re-render call from us is needed.
+  // Photos pop in piecemeal; the arcs and rotation animate the whole
+  // time.
   let cancelled = false;
-  const readyPromise = photosReady ?? Promise.resolve();
-  void readyPromise.then(() => {
+  requestAnimationFrame(() => {
     if (cancelled) return;
-    staged = true;
-    renderGlobe();
-    lastRenderAt = performance.now();
-    // Re-apply autoRotate — the re-render runs through react-globe.gl's
-    // controls reset path and would otherwise drop the spin.
-    requestAnimationFrame(enableAutoRotate);
+    void loadPhotos();
   });
 
   // Recompute on container resize. Three layers of protection here:
@@ -943,9 +1101,8 @@ export async function mountGlobe(
   //
   // Animation: snap to a far altitude on the first frame, then
   // pointOfView-transition in to the target. Done via our own
-  // pointOfView call instead of three-globe's `animateIn` so the
-  // staged second paint (photos + arcs arriving after textures load)
-  // doesn't restart the fly-in. Reduced-motion skips the transition.
+  // pointOfView call instead of three-globe's `animateIn`.
+  // Reduced-motion skips the transition.
   const targetAltitude = fullscreen ? 2.0 : 1.6;
   // Initial camera framing — Americas-centered. Default three-globe
   // pose is (0°N, 0°E) which lands on the Gulf of Guinea / west Africa;
@@ -956,10 +1113,8 @@ export async function mountGlobe(
 
   // Auto-rotate setup as a callable. Called after the fly-in completes
   // (the pointOfView tween clobbers OrbitControls' rotation each frame
-  // during transitions, so enabling autoRotate before/during the fly-in
-  // gets silently undone) and again after the staged second paint
-  // (re-rendering with new props re-applies the controls config and
-  // would otherwise reset autoRotate=false).
+  // during transitions, so enabling autoRotate before/during the
+  // fly-in gets silently undone).
   function enableAutoRotate(): void {
     if (reduceMotion) return;
     const inst = globeRef.current;
@@ -982,33 +1137,53 @@ export async function mountGlobe(
       return;
     }
     inst.pointOfView({ lat: initialLat, lng: initialLng, altitude: targetAltitude }, 0);
-    // Tiny delay before turning on autoRotate so the camera-set has a
-    // frame to apply before OrbitControls starts driving it.
-    setTimeout(enableAutoRotate, 50);
+    // Enable autoRotate on the next paint — one rAF gives the
+    // pointOfView call a frame to apply through OrbitControls before
+    // autoRotate starts driving it. (No fly-in delay needed; the
+    // pointOfView call is instant — transitionMs=0.)
+    requestAnimationFrame(() => enableAutoRotate());
   }
   setInitialCamera();
 
   return () => {
     cancelled = true;
     if (shimmerRaf !== null) cancelAnimationFrame(shimmerRaf);
+    canvasObserver.disconnect();
     ro.disconnect();
     if (resizeTimer !== null) clearTimeout(resizeTimer);
     root.unmount();
     globeMaterial.dispose();
     // photoMaterials are NOT disposed here: they live in the
-    // module-scoped prewarm cache so a subsequent mount (e.g.
+    // module-scoped material map so a subsequent mount (e.g.
     // navigating to /explorer/ after the splash) reuses the same
     // GPU textures instead of re-decoding 35 JPEGs. They're freed
     // when the page itself unloads.
     mountEl.innerHTML = '';
-    // Tile mode restores the static wireframe so the tile doesn't go
-    // blank. Fullscreen leaves the mount empty — the page is being
-    // unmounted entirely.
+    // Tile mode restores the static 3D wireframe so the tile doesn't
+    // go blank. Fullscreen leaves the mount empty — the page is being
+    // unmounted entirely. Mirrors the structure SSR'd by Splash.tsx
+    // (perspective container → preserve-3d sphere → meridians +
+    // parallels) so the visual is identical to the pre-mount state.
     if (!fullscreen) {
-      const fallback = document.createElement('div');
-      fallback.className = 'splash-globe-static';
-      fallback.setAttribute('aria-hidden', 'true');
-      mountEl.appendChild(fallback);
+      const outer = document.createElement('div');
+      outer.className = splashStyles.globeStatic ?? '';
+      outer.setAttribute('aria-hidden', 'true');
+      const inner = document.createElement('div');
+      inner.className = splashStyles.globeStaticInner ?? '';
+      const meridianClass = splashStyles.staticMeridian ?? '';
+      const parallelClass = splashStyles.staticParallel ?? '';
+      for (let i = 0; i < 6; i++) {
+        const m = document.createElement('div');
+        m.className = meridianClass;
+        inner.appendChild(m);
+      }
+      for (const variantKey of ['staticParallelEq', 'staticParallel30N', 'staticParallel30S', 'staticParallel60N', 'staticParallel60S'] as const) {
+        const p = document.createElement('div');
+        p.className = `${parallelClass} ${splashStyles[variantKey] ?? ''}`;
+        inner.appendChild(p);
+      }
+      outer.appendChild(inner);
+      mountEl.appendChild(outer);
     }
   };
 }
