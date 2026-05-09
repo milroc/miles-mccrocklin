@@ -133,17 +133,6 @@
   .toolbar .label { display: none; }
   .toolbar { gap: 6px; }
   .toolbar button { padding: 6px 10px; letter-spacing: 0.04em; }
-
-  /* Text-only mode keeps the wordmark visible on mobile — text-only is
-     the "document" register, where the toolbar reads more like a
-     masthead than chrome. */
-  .app.mode-text .toolbar { flex-wrap: wrap; row-gap: 8px; }
-  .app.mode-text .toolbar .label {
-    display: block;
-    flex: 0 0 100%;
-    text-align: center;
-    margin-right: 0;
-  }
 }
 
 /* The .page article — the cream paper that floats on the canvas mat.
