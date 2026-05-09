@@ -47,8 +47,16 @@
   --guest-claude-border: #cb6f55;
   --guest-claude-accent: #d97757;
   --guest-claude-fg: #ece9e2;
-  --guest-claude-fg-muted: #7a7770;
+  /* Soft sage-teal for path-like and secondary-info text. Cool enough
+     to read as a distinct register against the orange brand and yellow
+     hostname; warm enough to belong to the same composition. Replaces
+     the prior neutral gray (#7a7770) which felt unintentional. */
+  --guest-claude-fg-muted: #7da59e;
   --guest-claude-rule: rgba(217, 119, 87, 0.32);
+  /* Hostname yellow — matches the [milroc-local] tag in the real
+     Claude Code shell prompt; soft warm yellow that reads against the
+     near-black panel without competing with the orange brand color. */
+  --guest-claude-yellow: #d4c469;
 
   /* Laurel gold — used for the "Top-5% Superhost" star + rating signal in
      the Airbnb reviews block. Picked to read as an editorial accent (gold

@@ -1,35 +1,29 @@
-import { useEffect, useRef, useState, type JSX } from 'react';
+import { useEffect, useState, type JSX } from 'react';
 import { Terminal } from './Terminal';
 import s from './TerminalDock.module.css';
 
-// Custom-event channel that Skills (and any other consumer) uses to
-// reveal the dock on hover. Plain DOM event keeps coupling to zero —
+// Custom-event channel that SkillsCaption (and any other consumer)
+// uses to reveal the dock. Plain DOM event keeps coupling to zero —
 // no provider, no context — at the cost of one global event name.
 export const TERMINAL_DOCK_REVEAL_EVENT = 'terminal-dock:reveal';
 
 /**
  * TerminalDock — fixed-bottom dock that holds the Claude Code Terminal
- * artifact. Reveals on the first skill hover (via TERMINAL_DOCK_REVEAL_EVENT),
- * sticks until the user clicks the dismiss button, then stays dismissed
- * for the session.
+ * artifact. Toggles open via TERMINAL_DOCK_REVEAL_EVENT, closes via the
+ * × button, can be reopened from the same trigger any number of times.
+ * Each reveal remounts the Terminal so the boot animation replays from
+ * scratch every time.
  *
- * Hidden on mobile and in print. Slide animation respects
- * prefers-reduced-motion.
+ * Hidden in print. Slide animation respects prefers-reduced-motion.
  */
-export function TerminalDock(): JSX.Element | null {
+export function TerminalDock(): JSX.Element {
   const [revealed, setRevealed] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const handler = (): void => {
-      setRevealed((prev) => prev || true);
-    };
+    const handler = (): void => setRevealed(true);
     window.addEventListener(TERMINAL_DOCK_REVEAL_EVENT, handler);
     return () => window.removeEventListener(TERMINAL_DOCK_REVEAL_EVENT, handler);
   }, []);
-
-  if (dismissed) return null;
 
   const stateClass = revealed ? s.revealed : s.hidden;
 
@@ -41,17 +35,19 @@ export function TerminalDock(): JSX.Element | null {
       aria-hidden={!revealed}
     >
       <button
-        ref={closeBtnRef}
         type="button"
         className={s.dismiss}
-        onClick={() => setDismissed(true)}
-        aria-label="Dismiss Claude Code terminal"
-        title="Dismiss"
+        onClick={() => setRevealed(false)}
+        aria-label="Close"
+        title="Close"
       >
-        ×
+        <span aria-hidden="true" className={s.dismissGlyph}>×</span>
+        <span className={s.dismissLabel}>close</span>
       </button>
-      {/* Mount Terminal only on first reveal so its boot animation runs
-          when the dock actually slides up, not at page-load time. */}
+      {/* Terminal mounts only while revealed. Dismissing unmounts it;
+          re-revealing remounts a fresh instance so the boot animation
+          (shell prompt → cycle through CLIs → claude → session render
+          → /ship typing) plays from scratch each time. */}
       {revealed && <Terminal />}
     </div>
   );

@@ -1,10 +1,27 @@
-/* Terminal — Claude Code session, rendered via Prism. Custom CSS owns
-   only the panel surface, line layout, fade-in, and the blinking cursor.
-   All token colors come from the claudeTermTheme in Terminal.tsx. */
+/* Terminal — visual replica of a Claude Code session. Three regions:
+   shell prompt above, welcome box (notched border via fieldset/legend
+   with two-column body), prompt + status footer below. All colors come
+   from the --guest-claude-* tokens in src/styles/globals.css. */
 
 .panel {
   display: block;
-  background: var(--guest-claude-bg);
+  /* Frosted-glass surface — the dark Claude bg dropped to 62% opacity,
+     with a heavy backdrop blur + slight saturation boost so the page
+     content underneath bleeds through softened, like a ghosted
+     terminal floating above the resume. */
+  background: rgba(28, 29, 40, 0.58);
+  backdrop-filter: blur(36px) saturate(1.6);
+  -webkit-backdrop-filter: blur(36px) saturate(1.6);
+  /* Glass meniscus — a hairline at the top edge tinted with the
+     Claude orange, plus a faint inner highlight that reads as the
+     curve of the glass catching ambient light. */
+  border-top: 1px solid rgba(217, 119, 87, 0.22);
+  box-shadow: inset 0 1px 0 rgba(236, 233, 226, 0.07);
+  /* Subtle text-shadow keeps cream type crisp across whatever the
+     blur is averaging from the page underneath — same trick the
+     splash glass labels use over busy imagery. */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+
   color: var(--guest-claude-fg);
   font-family: var(--mono);
   font-size: 12px;
@@ -14,53 +31,161 @@
   padding: 14px clamp(20px, 5vw, 40px) 12px;
 }
 
-/* Each Highlight renders a <pre> via this class. Reset margins so
-   stacked lines flow as one terminal stream. white-space: pre-wrap so
-   long lines wrap inside the dock's available width without breaking
-   the box-drawing rules in the welcome banner. */
-.line {
-  margin: 0;
-  padding: 0;
-  white-space: pre-wrap;
-  word-break: keep-all;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  color: inherit;
-}
-.row {
-  display: inline;
+/* Older browsers (or any context where backdrop-filter is disabled —
+   e.g., Firefox without layout.css.backdrop-filter.enabled) get a
+   denser fallback so the panel still reads as a discrete surface. */
+@supports not (backdrop-filter: blur(1px)) {
+  .panel {
+    background: rgba(28, 29, 40, 0.92);
+  }
 }
 
+/* ────────────────────────────────────────────────────────────
+   Shell line — yellow [host] tag, muted ~/path:, cream command.
+   Mirrors a real bash prompt: hostname/cwd always present, the
+   typed command builds up to its right.
+   ─────────────────────────────────────────────────────────── */
 .shellLine {
   display: flex;
   align-items: baseline;
-  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  white-space: pre;
+}
+.shellHost {
+  color: var(--guest-claude-yellow);
+}
+.shellPath {
+  color: var(--guest-claude-fg-muted);
+}
+.shellCmd {
+  color: var(--guest-claude-fg);
 }
 
-.welcome {
+/* ────────────────────────────────────────────────────────────
+   Welcome box — fieldset for the notched top border. The legend
+   sits inside the border at top-left, replacing a slice of it
+   ("Claude Code vLATEST"). Two-column grid below, divided by a
+   vertical orange rule.
+   ─────────────────────────────────────────────────────────── */
+.welcomeBox {
+  border: 1px solid var(--guest-claude-border);
+  border-radius: 8px;
+  margin: 0;
+  padding: 8px 22px 16px;
+  /* Reset fieldset's default min-inline-size so the box doesn't
+     try to stretch to its longest descendant. */
+  min-inline-size: 0;
+}
+.welcomeLegend {
+  padding: 0 8px;
+  margin-left: 4px;
+  color: var(--guest-claude-accent);
+  font-weight: 500;
+  font-size: inherit;
+}
+
+.welcomeGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 0;
+  align-items: start;
   margin-top: 4px;
 }
 
+.welcomeLeft {
+  text-align: center;
+  padding: 4px 24px 0 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.welcomeRight {
+  border-left: 1px solid var(--guest-claude-rule);
+  padding: 4px 4px 0 24px;
+}
+
+.greeting {
+  color: var(--guest-claude-fg);
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.metaLine {
+  color: var(--guest-claude-fg);
+  margin: 2px 0;
+}
+.cwdLine {
+  color: var(--guest-claude-fg-muted);
+  margin: 6px 0 0;
+  font-size: 11px;
+}
+
+.tipHeading {
+  color: var(--guest-claude-accent);
+  font-weight: 500;
+  margin: 0 0 4px;
+}
+.tipBody {
+  color: var(--guest-claude-fg);
+  margin: 0 0 10px;
+  line-height: 1.55;
+}
+.tipRule {
+  border: none;
+  border-top: 1px solid var(--guest-claude-rule);
+  margin: 12px 0;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Slash-command tokens — orange, slight weight bump. Used both
+   inline in tip body (/init) and on the typed prompt below the
+   box (/ship anything on any stack...).
+   ─────────────────────────────────────────────────────────── */
+.cmd {
+  color: var(--guest-claude-accent);
+  font-weight: 500;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Prompt line below the welcome box — orange › carat, then the
+   muted placeholder until typing begins, then the typed command.
+   ─────────────────────────────────────────────────────────── */
 .promptLine {
   display: flex;
   align-items: baseline;
-  margin-top: 6px;
-  gap: 0;
+  margin-top: 12px;
+  gap: 8px;
 }
-.prompt {
-  flex: 0 1 auto;
+.promptCarat {
+  color: var(--guest-claude-accent);
+  font-weight: 500;
+}
+.promptCmd {
+  color: var(--guest-claude-fg);
+}
+.promptPlaceholder {
+  color: var(--guest-claude-fg-muted);
 }
 
+/* ────────────────────────────────────────────────────────────
+   Status footer — single dim line with | separators.
+   ─────────────────────────────────────────────────────────── */
 .status {
-  margin-top: 8px;
   color: var(--guest-claude-fg-muted);
   font-size: 10.5px;
+  margin: 8px 0 0;
+}
+.statusSep {
+  margin: 0 8px;
+  opacity: 0.6;
 }
 
-/* Session block — welcome banner + prompt + status. Hidden until the
-   boot sequence reaches the 'session' phase, then fades + lifts into
-   place to mimic a terminal redrawing the screen. */
+/* ────────────────────────────────────────────────────────────
+   Session block — welcome box + prompt + status. Hidden until
+   the boot sequence reaches the 'session' phase, then fades and
+   lifts into place.
+   ─────────────────────────────────────────────────────────── */
 .session {
   opacity: 0;
   transform: translateY(4px);
@@ -78,9 +203,9 @@
   }
 }
 
-/* Blinking cursor — a flat cream block sized to the current line
-   height. Used at the end of the shell line during the 'shell' phase
-   and at the end of the prompt line from 'session' onward. */
+/* ────────────────────────────────────────────────────────────
+   Cursor — flat cream block, blink animation.
+   ─────────────────────────────────────────────────────────── */
 .cursor {
   display: inline-block;
   width: 0.55em;
@@ -99,13 +224,32 @@
   50%, 100% { opacity: 0.15; }
 }
 
-/* Mobile (defensive — TerminalDock hides the dock on mobile). */
+/* ────────────────────────────────────────────────────────────
+   Mobile — single-column welcome (greeting/meta stacked above
+   tips/activity), tighter type, smaller status separators.
+   ─────────────────────────────────────────────────────────── */
 @media (max-width: 720px) {
   .panel {
     font-size: 10.5px;
     padding: 12px 16px 10px;
   }
+  .welcomeGrid {
+    grid-template-columns: 1fr;
+  }
+  .welcomeLeft {
+    padding-right: 0;
+  }
+  .welcomeRight {
+    border-left: none;
+    border-top: 1px solid var(--guest-claude-rule);
+    padding-left: 0;
+    padding-top: 12px;
+    margin-top: 12px;
+  }
   .status {
     font-size: 9.5px;
+  }
+  .statusSep {
+    margin: 0 5px;
   }
 }

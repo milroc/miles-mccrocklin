@@ -36,66 +36,70 @@
   }
 }
 
-/* Dismiss button — circular tag that overhangs the dock's top edge so
-   it reads as a clear, lift-off-able affordance rather than a quiet
-   corner glyph. Dark Claude surface with the orange brand border; on
-   hover the surface flips to orange so the cream × inverts to a warm
-   solid pill. */
+/* Dismiss button — terminal-native hint label, not a floating coin.
+   Sits inside the panel's top-right corner with a transparent surface
+   so the dock's glass shows through; orange-tinted rule border anchors
+   it to the Claude register; muted monospace text matches the rest of
+   the terminal's secondary chrome (paths, status footer). Reads as
+   part of the terminal, not a UI overlay. */
 .dismiss {
   position: absolute;
-  /* Anchored to the welcome frame's top-right corner, not the dock's
-     arbitrary edge. Frame margin is 14px 18px; centering a 32px button
-     on that corner = top:-2 / right:2, biased inward to right:14 so the
-     button isn't flush against the viewport edge. */
-  top: -2px;
-  right: 14px;
+  top: 12px;
+  right: 16px;
   z-index: 1;
 
   appearance: none;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 12px;
 
-  background: var(--guest-claude-bg);
-  border: 1px solid var(--guest-claude-border);
-  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--guest-claude-rule);
+  border-radius: 4px;
 
-  color: var(--guest-claude-fg);
+  color: #fff;
   font-family: var(--mono);
-  font-size: 18px;
+  font-size: 11px;
   line-height: 1;
+  letter-spacing: 0;
   cursor: pointer;
-
-  /* Tight, contained shadow — just lifts the pill off the dock surface
-     without the broad halo that the original dock-edge shadow created. */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
 
   transition:
     background-color 140ms ease,
-    border-color 140ms ease,
-    transform 140ms ease,
-    box-shadow 140ms ease;
+    border-color 140ms ease;
 }
 .dismiss:hover {
-  background: var(--guest-claude-accent);
-  border-color: var(--guest-claude-accent);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.32);
+  background: rgba(217, 119, 87, 0.08);
+  border-color: var(--guest-claude-border);
 }
 .dismiss:focus-visible {
   outline: 2px solid var(--guest-claude-accent);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
-/* Mobile — hidden for now (per design call). The skill-hover
-   interaction doesn't translate to touch; revisit once the mobile
-   skills experience is itself rethought. */
+.dismissGlyph {
+  font-size: 14px;
+  /* The × character sits high in its em-box; nudge it to align with
+     the lowercase "close" baseline next to it. */
+  line-height: 1;
+  position: relative;
+  top: 1px;
+}
+.dismissLabel {
+  font-size: 11px;
+}
+
+/* Mobile: more vertical padding so the touch target stays comfortable
+   even though the visual register is unchanged. */
 @media (max-width: 720px) {
-  .dock {
-    display: none;
+  .dismiss {
+    top: 10px;
+    right: 12px;
+    padding: 8px 12px;
+  }
+  .dismissLabel {
+    font-size: 10.5px;
   }
 }
 
