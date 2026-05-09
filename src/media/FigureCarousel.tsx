@@ -16,6 +16,14 @@ interface FigureCarouselProps {
 
 const COPIES = 3;
 
+// When the user clicks a card whose center sits this close (or closer) to
+// the viewport edge — measured as a fraction of the viewport width —
+// treat the click as "advance the strip" instead of "open the lightbox".
+// 0.18 ≈ the leftmost / rightmost partially-clipped card under the
+// edge mask, without catching the next-in card whose center is well
+// inside the visible area.
+const EDGE_RATIO = 0.18;
+
 export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const N = matches.length;
@@ -28,6 +36,13 @@ export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
     let copyBStart = 0;
     let copyCStart = 0;
     let jumping = false;
+    // Wall-clock until which normalize() is paused. Set when a click on
+    // an edge card kicks off a smooth-scroll-to-center. The 3-copy track
+    // can absorb scrollLeft drifting outside [copyBStart, copyCStart) for
+    // the duration of one animation without any visual discontinuity —
+    // pausing normalize prevents its synchronous scrollLeft reassignment
+    // from interrupting the in-flight smooth scroll.
+    let smoothUntil = 0;
 
     const measure = (): boolean => {
       const cards = el.querySelectorAll<HTMLElement>('.figure-card');
@@ -49,13 +64,52 @@ export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
       el.scrollLeft = card.offsetLeft;
     };
 
+    // Tag cards whose center sits inside the masked edge zone with
+    // `data-edge="true"`. Edge cards advance the strip on click instead
+    // of opening the lightbox — so the hover-zoom (which signals "click
+    // to open") is suppressed on them via CSS keyed off this attribute.
+    let edgeFrame = 0;
+    const classifyEdges = () => {
+      const cards = el.querySelectorAll<HTMLElement>('.figure-card');
+      const elRect = el.getBoundingClientRect();
+      cards.forEach((card) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const fromLeft = (cardCenter - elRect.left) / elRect.width;
+        const fromRight = 1 - fromLeft;
+        const onEdge = fromLeft < EDGE_RATIO || fromRight < EDGE_RATIO;
+        if (onEdge) card.setAttribute('data-edge', 'true');
+        else card.removeAttribute('data-edge');
+      });
+    };
+    const scheduleClassifyEdges = () => {
+      if (edgeFrame) return;
+      edgeFrame = requestAnimationFrame(() => {
+        edgeFrame = 0;
+        classifyEdges();
+      });
+    };
+
     const normalize = () => {
-      if (jumping || !setWidth) return;
+      if (jumping || !setWidth) {
+        scheduleClassifyEdges();
+        return;
+      }
+      // Don't fight an in-flight smooth scroll: the synchronous
+      // scrollLeft reassignment below would cancel the animation and
+      // leave the clicked card off-center.
+      if (performance.now() < smoothUntil) {
+        scheduleClassifyEdges();
+        return;
+      }
       const left = el.scrollLeft;
       let next = left;
       if (left >= copyCStart) next = left - setWidth;
       else if (left < copyBStart) next = left + setWidth;
-      if (next === left) return;
+      if (next === left) {
+        scheduleClassifyEdges();
+        return;
+      }
       jumping = true;
       // Disable snap during the jump so mandatory scroll-snap doesn't
       // try to re-snap to the position we just left.
@@ -65,23 +119,89 @@ export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
       requestAnimationFrame(() => {
         el.style.scrollSnapType = prevSnap;
         jumping = false;
+        classifyEdges();
       });
+    };
+
+    // Capture-phase click: when the user clicks a figure-card whose
+    // center sits inside the masked edge zone, intercept the event before
+    // FigureCard's onClick fires and scroll the clicked card into the
+    // center of the viewport instead of opening the lightbox. Cards in
+    // the visible interior pass through to their default behavior.
+    const SMOOTH_MS = 700;
+    let smoothEndTimer: ReturnType<typeof setTimeout> | null = null;
+    const onClickCapture = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      const card = target?.closest('.figure-card') as HTMLElement | null;
+      if (!card || !el.contains(card)) return;
+      const elRect = el.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const cardCenter = cardRect.left + cardRect.width / 2;
+      const fromLeft = (cardCenter - elRect.left) / elRect.width;
+      const fromRight = 1 - fromLeft;
+      const onEdge = fromLeft < EDGE_RATIO || fromRight < EDGE_RATIO;
+      if (!onEdge) return;
+      e.preventDefault();
+      e.stopPropagation();
+      // Compute the scrollLeft that centers the clicked card. cardRect is
+      // viewport-relative, so we add the carousel's current scrollLeft to
+      // get the card's position inside the scrollable content, then back
+      // off by half the leftover space so the card lands centered. The
+      // target may sit outside [copyBStart, copyCStart); the 3-copy track
+      // makes that visually invisible, and normalize() is paused via
+      // `smoothUntil` so it doesn't interrupt the animation.
+      const cardLeftInContent = cardRect.left - elRect.left + el.scrollLeft;
+      const targetScrollLeft = cardLeftInContent - (el.clientWidth - cardRect.width) / 2;
+      smoothUntil = performance.now() + SMOOTH_MS;
+      el.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
+      // After the smooth scroll settles, manually normalize scrollLeft
+      // back into the safe window so subsequent loops keep working.
+      // Using a timer (not scrollend) because scrollend support is
+      // uneven and a small fixed budget is plenty for this animation.
+      if (smoothEndTimer) clearTimeout(smoothEndTimer);
+      smoothEndTimer = setTimeout(() => {
+        smoothEndTimer = null;
+        smoothUntil = 0;
+        const left = el.scrollLeft;
+        if (left >= copyCStart || left < copyBStart) {
+          jumping = true;
+          const prevSnap = el.style.scrollSnapType;
+          el.style.scrollSnapType = 'none';
+          el.scrollLeft = left >= copyCStart ? left - setWidth : left + setWidth;
+          requestAnimationFrame(() => {
+            el.style.scrollSnapType = prevSnap;
+            jumping = false;
+            classifyEdges();
+          });
+        } else {
+          classifyEdges();
+        }
+      }, SMOOTH_MS);
     };
 
     const id = requestAnimationFrame(() => {
       if (!measure()) return;
       startAtZero();
+      classifyEdges();
       el.addEventListener('scroll', normalize, { passive: true });
     });
 
+    el.addEventListener('click', onClickCapture, true);
+
     const ro = new ResizeObserver(() => {
-      if (measure()) normalize();
+      if (measure()) {
+        normalize();
+        classifyEdges();
+      }
     });
     ro.observe(el);
 
     return () => {
       cancelAnimationFrame(id);
+      if (edgeFrame) cancelAnimationFrame(edgeFrame);
+      if (smoothEndTimer) clearTimeout(smoothEndTimer);
       el.removeEventListener('scroll', normalize);
+      el.removeEventListener('click', onClickCapture, true);
       ro.disconnect();
     };
   }, [matches, N]);

@@ -8,7 +8,13 @@
 //
 // All visual styling lives on the global `.figure-card` primitive in
 // globals.css; layout containers add their own modifier rules on top.
-import { useContext, type CSSProperties, type ReactNode } from 'react';
+import {
+  useContext,
+  useEffect,
+  useRef,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 import { MediaCtx, prefersReducedMotion, mediaSrc } from '../utils/media';
 import type { MediaItem } from '../types';
 
@@ -43,8 +49,6 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
       </div>
     );
   }
-  // Honor prefers-reduced-motion on every video card.
-  const reduceMotion = prefersReducedMotion();
   return (
     <button
       type="button"
@@ -57,15 +61,9 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
       style={cardStyle}
     >
       {p.type === 'video' ? (
-        <video
-          src={mediaSrc(p.src)}
-          poster={mediaSrc(p.poster)}
-          muted
-          loop={!reduceMotion}
-          autoPlay={!reduceMotion}
-          playsInline
-          preload="metadata"
-        />
+        // Video tiles autoplay only while in the viewport (see
+        // VideoInView). Click still opens the lightbox.
+        <VideoInView src={mediaSrc(p.src)} poster={mediaSrc(p.poster)} />
       ) : (
         // Explicit width/height (derived from aspect) gives the browser an
         // intrinsic-size hint so loading="lazy" + an aspect-ratio'd parent
@@ -84,5 +82,54 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
       )}
       {p.tag && !hideTag && <span className="figure-tag">{p.tag}</span>}
     </button>
+  );
+}
+
+// Inline video that autoplays only when scrolled into view and pauses
+// when scrolled away. Muted + playsInline so mobile browsers allow the
+// autoplay; reduced-motion users get a paused first frame.
+function VideoInView({ src, poster }: { src?: string; poster?: string }) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const reduceMotion = prefersReducedMotion();
+    if (reduceMotion) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      // No IO support: fall back to autoplay always.
+      void v.play().catch(() => {});
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            // play() returns a promise that may reject if the user navigated
+            // away or autoplay was blocked; swallow it silently.
+            void v.play().catch(() => {});
+          } else {
+            v.pause();
+          }
+        }
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(v);
+    return () => {
+      io.disconnect();
+    };
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      poster={poster}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+    />
   );
 }

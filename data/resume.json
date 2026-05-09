@@ -112,13 +112,13 @@
       "location": "Global",
       "start_date": "May 2024",
       "end_date": "Present",
-      "summary": "Built products at Meta for a decade. Stepped away in 2024 to explore & make art. Back to building in 2026.",
+      "summary": "Stepped away in 2024 to invest, explore, & make art. Back to building in Mar 2026 determining how AI will change the way humans collaborate.",
       "tracks": [
         {
           "period": "Mar 2026 – Present",
           "focus": "Building",
-          "summary": "-1 to 0 exploration of how AI changes the way humans collaborate. Two experiments stood out:",
-          "summary_1pager": "Builder: -1 to 0 exploration of AI to help humans collaborate. /human and diction.coach stood out and are in early alpha from several experiments.",
+          "summary": "Early exploration of how AI changes the way humans collaborate. Two experiments stood out:",
+          "summary_1pager": "Builder: early exploration of AI to help humans collaborate. /human and diction.coach stood out and are in early alpha from several experiments.",
           "metrics": {
             "commits": 150,
             "lines_added": 131093,
@@ -222,17 +222,17 @@
         {
           "period": "Jul 2022 – Present",
           "focus": "Real Estate Investor & Operator",
-          "tagline": "My wife and I built every layer ourselves: no agency, no property manager.",
-          "summary_1pager": "Real Estate Investor & Operator: my wife and I built every layer ourselves, no agency or property manager. Top-5% Airbnb Superhost in San Francisco (4.97, 70+ reviews); long-term rental property manager. I've been the janitor when I've had to.",
+          "tagline": "An investment, not a job. My wife and I designed the systems, then handed the day-to-day to software, SOPs, and contractors. ~100–200 hrs/yr of our time.",
+          "summary_1pager": "Real Estate Investor & Operator: top-5% Airbnb Superhost (4.97, 70+ reviews) and long-term rental property manager, owner-operated on ~100–200 hrs/yr.",
           "achievements": [
             {
               "text": "Top-5% guest favorite Airbnb Superhost in San Francisco with a 4.97 rating and over 70 reviews."
             },
             {
-              "text": "Long-term rental property manager: direct operations, tenant relations, and financial planning."
+              "text": "Long-term rental property manager: financial planning, tenant relations, and oversight. "
             },
             {
-              "text": "I've been the janitor when I've had to."
+              "text": "Designed the playbook so the homes run themselves. Janitor only when the system breaks."
             }
           ],
           "toolchains": [
@@ -417,7 +417,7 @@
         {
           "period": "May 2024 – Present",
           "focus": "Travel & Wildlife Photography",
-          "summary_1pager": "Travel & Wildlife Photography: 22 countries, 7 continents, 54,000 shutter clicks across wildlife, landscape, and street photography.",
+          "summary_1pager": "Travel & Wildlife Photography: 22 countries, 7 continents, 54,000 shutter clicks (wildlife, landscape, street).",
           "achievements": [
             {
               "text": "22 countries on all 7 continents, and countless friends along the way."
@@ -658,7 +658,7 @@
           "role": "Engineering Manager",
           "achievements": [
             {
-              "text": "Shipped Professional Mode for Facebook Creators as EM of a team of 10. Owned composer, settings, and onboarding surfaces. Onboarded εM creators in the first 3 months. Unlocked α% of the org's top-line annual goal, β× target.",
+              "text": "Shipped Professional Mode for Facebook Creators as EM of a team of 10. Owned composer, settings, and onboarding surfaces. Onboarded ΞM creators in the first 3 months, unlocking α% of the org's top-line annual goal at β× target.",
               "visibility": "all"
             },
             {
@@ -673,17 +673,19 @@
                 "id": "ui-pro-mode-hero",
                 "type": "image",
                 "src": "media/meta-bulletin-promode/pro-mode-hero.jpeg",
-                "caption": "Facebook Professional Mode",
+                "caption": "Facebook Professional Mode (2023). Opt-in creator surface that bundled monetization, analytics, audience tools, and safety controls into one home for people building on Facebook. Letting anyone on Facebook become a creator on the platform.",
                 "tag": "Pro Mode · 2023",
-                "aspect": 1.7778
+                "aspect": 1.7778,
+                "subtype": "ui"
               },
               {
                 "id": "ui-bulletin",
                 "type": "image",
                 "src": "media/meta-bulletin-promode/bulletin.jpeg",
-                "caption": "Bulletin: independent-creator newsletter platform.",
+                "caption": "Bulletin (2021). Meta's independent newsletter platform for paid writers: discovery, publishing, and subscriptions. Used by a curated roster of journalists and authors including Malcolm Gladwell, Erin Andrews, and Mitch Albom.",
                 "tag": "Bulletin · 2021",
-                "aspect": 1.5
+                "aspect": 1.5,
+                "subtype": "ui"
               }
             ]
           },
@@ -695,11 +697,19 @@
           "role": "0 -> 1 Eng",
           "achievements": [
             {
-              "text": "UI tech lead on Forecast, Meta's 0→1 social prediction market. Built the buy/sell market page, scoring, leaderboards, and community feed from scratch. Shipped forecastapp.net, the public election-prediction surface for the 2020 US election.",
+              "text": "Tech lead on Forecast, Meta's 0→1 social-first prediction market. Built on an internal points economy rather than real money, so accuracy and community discussion drove engagement instead of financial speculation.",
+              "visibility": "all"
+            },
+            {
+              "text": "Shipped in 2020: the same year Polymarket launched, the year before Kalshi got CFTC approval, and four years before either reached mainstream visibility around the 2024 election.",
               "visibility": "all"
             },
             {
               "text": "Set up the team's experimentation framework, driving the post-launch shift from rapid idea exploration to isolating the surfaces that drove growth and retention.",
+              "visibility": "all"
+            },
+            {
+              "text": "Personally shipped the buy/sell market page, scoring, leaderboards, and community feed from scratch, plus forecastapp.net, the public election-prediction surface for the 2020 US election.",
               "visibility": "all"
             }
           ],
@@ -712,34 +722,38 @@
                 "id": "ui-forecast-web",
                 "type": "image",
                 "src": "media/meta-forecast/forecast-web.png",
-                "caption": "Forecast: public web experience built for the 2020 election predictions.",
-                "tag": "forecastapp.net",
-                "aspect": 0.689
+                "caption": "forecastapp.net (2020). Public election surface for Forecast, Meta's social prediction market. Aggregated forecasts on the 2020 US election were watched by journalists, election-night newsrooms, and the general public.",
+                "tag": "forecastapp.net · 2020",
+                "aspect": 0.689,
+                "subtype": "ui"
               },
               {
                 "id": "ui-forecast-flow",
                 "type": "image",
                 "src": "media/meta-forecast/forecast-trading-flow.jpg",
-                "caption": "Forecast: prediction market page for the social prediction markets.",
-                "tag": "Forecast Trading",
-                "aspect": 0.4605
+                "caption": "Forecast Trading (2020). The prediction market page inside Forecast: order flow, real-time pricing, and resolution rules. Used to forecast everything from elections to sports outcomes.",
+                "tag": "Forecast Trading · 2020",
+                "aspect": 0.4605,
+                "subtype": "ui"
               },
               {
                 "id": "ui-forecast-ui",
                 "type": "image",
                 "src": "media/meta-forecast/forecast-ui.png",
-                "caption": "Forecast's social feed of predictions",
-                "tag": "Forecast's social feed of predictions",
-                "aspect": 0.4618
+                "caption": "Forecast Feed (2021). Community feed of predictions, leaderboards, and market discussion threads. Used to keep in sync on the market & follow each other's positions and reasoning.",
+                "tag": "Forecast Feed · 2021",
+                "aspect": 0.4618,
+                "subtype": "ui"
               },
               {
                 "id": "ui-forecast-movement",
                 "type": "video",
                 "src": "media/meta-forecast/forecast-trading-movement.mp4",
                 "poster": "media/meta-forecast/forecast-trading-movement-poster.jpg",
-                "caption": "Forecast: trading volume example analysis",
-                "tag": "Forecast Motion",
-                "aspect": 1.7846
+                "caption": "Forecast Motion (2021). External explainer animation showing how prices moved with volume across Forecast's prediction markets. Built to understand market mechanics and explain the platforms choices.",
+                "tag": "Forecast Motion · 2021",
+                "aspect": 1.7846,
+                "subtype": "ui"
               }
             ]
           },
@@ -755,19 +769,19 @@
               "visibility": "all"
             },
             {
-              "text": "Architected the misinformation detection system from web links only (~γ% of posts) up to 100% of content across Facebook (posts, photos, video). Shipped Instagram support a quarter later, then Ads. The platform powered every misinformation policy launch after that and is still in production today.",
+              "text": "Architected the misinformation detection system from web links only (~σ% of posts) up to 100% of content across Facebook (posts, photos, video). Shipped Instagram support a quarter later, then Ads. The platform powered every misinformation policy launch after that and is still in production today.",
               "visibility": "not_1pager"
             },
             {
-              "text": "Integrated with Meta’s content-deduplication so one journalist’s rating fanned out to ζ near-identical pieces per viral original across Facebook, Instagram, and Ads.",
+              "text": "Integrated with Meta’s content-deduplication so one journalist’s rating fanned out to Σ near-identical pieces per viral original across Facebook, Instagram, and Ads.",
               "visibility": "not_1pager"
             },
             {
-              "text": "Shipped warning labels and friction surfaces on Facebook and Instagram with UXR, design, and policy, cutting the share rate of fact-checked content by δ%. By the time I left, the work had grown into a dedicated Misinformation UI engineering team.",
+              "text": "Shipped warning labels and friction surfaces on Facebook and Instagram with UXR, design, and policy, measurably cutting the share rate of fact-checked content. By the time I left, the work had grown into a dedicated Misinformation UI engineering team.",
               "visibility": "all"
             },
             {
-              "text": "Architected misinformation detection from web links (~γ% of posts) to 100% of content across Facebook, Instagram, and Ads; one journalist’s rating fanned out to ζ near-identical pieces via content-deduplication.",
+              "text": "Architected misinformation detection from web links (~σ% of posts) to 100% of content across Facebook, Instagram, and Ads; one journalist’s rating fanned out to Σ near-identical pieces via content-deduplication.",
               "visibility": "1pager_only"
             }
           ],
@@ -778,16 +792,17 @@
                 "id": "ui-fact-check-2",
                 "type": "image",
                 "src": "media/meta-misinformation/fact-check-ui-1.jpeg",
-                "caption": "Fact-checked content on Facebook & Instagram.",
-                "tag": "Fact-checked content on Facebook & Instagram.",
-                "aspect": 1.0925
+                "caption": "Fact-Checking UI (2018–20). The warning-label and friction surfaces shown to people who encountered content rated false on Facebook and Instagram (posts, photos, video, then Ads). Ratings authored by 80 partner organizations including Reuters, AFP, and PolitiFact, then fanned out via Meta's content-deduplication so one rating covered every near-identical copy.",
+                "tag": "3PFC UI · 2018–20",
+                "aspect": 1.0925,
+                "subtype": "ui"
               },
               {
                 "id": "meta-misinformation-video",
                 "type": "embed",
                 "src": "https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook%2Fvideos%2F2169674999973363%2F&show_text=0&width=560",
-                "caption": "Facebook on fighting misinformation.",
-                "tag": "Facebook · Misinformation",
+                "caption": "Facebook Newsroom (2019). Public explainer on the third-party fact-checking program: the system, the partners, and the surfaces I led the engineering on.",
+                "tag": "Facebook · Misinformation · 2019",
                 "aspect": 1.7778
               }
             ]
@@ -803,11 +818,11 @@
               "visibility": "all"
             },
             {
-              "text": "Main UI engineer on Ψ (rebuilt the UI) and Ω, NLP analytics tools used by η Facebook employees: Sales driving revenue, Communications running real-time election reporting alongside Fox News and other newsrooms, and Safety Check monitoring crises around the world.",
+              "text": "Main UI engineer on Ψ (rebuilt the UI) and Ω, NLP analytics tools used by Φ Facebook employees: Sales driving revenue, Communications running real-time election reporting alongside Fox News and other newsrooms, and Safety Check monitoring crises around the world.",
               "visibility": "not_1pager"
             },
             {
-              "text": "Shipped a data layer and UI for a CNF/DNF that let users assemble topic anthologies and process them in real time across every post on Facebook and Instagram. RegEx wasn't explainable for our users, and it couldn't keep up at real-time data scale.",
+              "text": "Shipped a data layer and UI that let users assemble topic anthologies and process them in real time across every post on Facebook and Instagram.",
               "visibility": "not_1pager"
             }
           ],
@@ -853,17 +868,19 @@
             "id": "ui-bluenose",
             "type": "image",
             "src": "media/bluenose/bluenose-ui.gif",
-            "caption": "Bluenose Analytics: Customer Success Accounts Page",
+            "caption": "Bluenose Analytics: Accounts (2013–14). The book-of-business view used by Customer Success teams at SaaS companies who used Bluenose. Our system ranked accounts by app usage health, drilled into renewal risk, and triaged outreach from this page.",
             "tag": "Bluenose · 2013–14",
-            "aspect": 1.8205
+            "aspect": 1.8205,
+            "subtype": "ui"
           },
           {
             "id": "ui-bluenose-usage",
             "type": "image",
             "src": "media/bluenose/bluenose-usage-visualization.png",
-            "caption": "Bluenose Analytics: Customer usage visualization, learn what features lead to successful customers.",
-            "tag": "Bluenose · Usage",
-            "aspect": 1.8205
+            "caption": "Bluenose Analytics: Usage (2013–14). Heat-map visualization of which features customers actually used. Account managers leaned on this view to find the behaviors that correlated with retention and to coach at-risk accounts toward them.",
+            "tag": "Bluenose · Usage · 2013–14",
+            "aspect": 1.8205,
+            "subtype": "ui"
           }
         ]
       },
@@ -1103,9 +1120,9 @@
   ],
   "redactions": [
     {
-      "id": "epsilon",
-      "glyph": "ε",
-      "context": "Creators onboarded to Pro Mode in the first 3 months."
+      "id": "xi",
+      "glyph": "Ξ",
+      "context": "Creators onboarded to Pro Mode in the first 3 months — measured in millions."
     },
     {
       "id": "alpha",
@@ -1118,24 +1135,14 @@
       "context": "How far Pro Mode's 3-month onboarding overshot the team's stated target."
     },
     {
-      "id": "gamma",
-      "glyph": "γ",
-      "context": "Share of Facebook posts with links."
+      "id": "sigma-small",
+      "glyph": "σ",
+      "context": "Share of Facebook posts that contain a web link. Small slice of total posts — the entry point for first-generation misinformation detection."
     },
     {
-      "id": "zeta",
-      "glyph": "ζ",
+      "id": "sigma",
+      "glyph": "Σ",
       "context": "Per-rating fan-out count via Meta's content-deduplication system."
-    },
-    {
-      "id": "delta",
-      "glyph": "δ",
-      "context": "Share-rate reduction on fact-checked content after the warning labels and friction surfaces shipped."
-    },
-    {
-      "id": "eta",
-      "glyph": "η",
-      "context": "Internal-tool user base across Sales, Communications, and Safety Check at Facebook."
     },
     {
       "id": "psi",
@@ -1146,6 +1153,11 @@
       "id": "omega",
       "glyph": "Ω",
       "context": "Internal Meta NLP analytics tool used across Sales, Communications, and Safety Check."
+    },
+    {
+      "id": "phi",
+      "glyph": "Φ",
+      "context": "Internal-tool user base across Sales, Communications, and Safety Check at Facebook."
     }
   ]
 }

@@ -20,6 +20,10 @@ export type RichText = string | { text: string; short?: string; visibility?: Vis
 
 export type MediaType = 'image' | 'video' | 'embed';
 export type MediaLayout = 'stack' | 'strip' | 'carousel' | 'grid';
+// Lightbox treatment. 'ui' renders the about-text in a dedicated side/bottom
+// panel beside the screenshot; 'photo' (default when omitted) keeps the
+// existing bottom gradient caption overlay. Opt-in via resume.json.
+export type MediaSubtype = 'photo' | 'ui';
 
 export interface MediaItem {
   id: string;
@@ -30,6 +34,7 @@ export interface MediaItem {
   aspect?: number;
   poster?: string;
   span?: { col?: number; row?: number };
+  subtype?: MediaSubtype;
 }
 
 export interface MediaGroup {
@@ -176,7 +181,8 @@ export interface Redaction {
   // `id="note-{id}"`. Use lowercase Greek letter names ("alpha", etc).
   id: string;
   // The actual character that appears in resume.json prose. Kept
-  // narrow on purpose — KPText scans for `[αβγδεζηθ]` only.
+  // narrow on purpose — KPText scans for `[ΞαβσΣΨΩΦ]` only (see
+  // REDACTED_GLYPH_RE in me.ts).
   glyph: string;
   // Short context string. Shown in the hover tooltip (desktop) and the
   // Notes section (everywhere). Should describe what the variable

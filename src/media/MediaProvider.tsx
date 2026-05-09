@@ -14,7 +14,7 @@ import {
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from 'react';
-import { MediaCtx, prefersReducedMotion, mediaSrc } from '../utils/media';
+import { MediaCtx, prefersReducedMotion, mediaSrc, isUiItem } from '../utils/media';
 import type { MediaItem } from '../types';
 import s from './MediaProvider.module.css';
 
@@ -396,7 +396,11 @@ export function MediaProvider({ children }: MediaProviderProps) {
     return () => dialog.removeEventListener('focusin', onFocusIn);
   }, [openIdx == null]);
 
-  const lightboxClass = `${s.lightbox} ${chromeVisible ? s.chromeVisible : s.chromeHidden}`;
+  // UI items get a dedicated about-text panel beside the screenshot instead
+  // of the photo-style bottom gradient overlay. Driven by `subtype: 'ui'`
+  // in resume.json — see isUiItem in src/utils/media.ts.
+  const isUi = isUiItem(cur);
+  const lightboxClass = `${s.lightbox} ${chromeVisible ? s.chromeVisible : s.chromeHidden}${isUi ? ` ${s.ui}` : ''}`;
 
   return (
     <MediaCtx.Provider value={{ open }}>
@@ -474,10 +478,20 @@ export function MediaProvider({ children }: MediaProviderProps) {
             </>
           )}
           {(cur.caption || cur.tag) && (
-            <div className={s.caption}>
-              {cur.caption && <span className={s.captionText}>{cur.caption}</span>}
-              {cur.tag && <span className={s.captionTag}>{cur.tag}</span>}
-            </div>
+            isUi ? (
+              // UI mode: about-text in a dedicated panel beside (desktop) or
+              // below (mobile) the screenshot. Stays visible while topbar +
+              // nav fade with the chrome-idle timer.
+              <aside className={s.panel} aria-label="About this surface">
+                {cur.tag && <span className={s.panelTag}>{cur.tag}</span>}
+                {cur.caption && <p className={s.panelText}>{cur.caption}</p>}
+              </aside>
+            ) : (
+              <div className={s.caption}>
+                {cur.caption && <span className={s.captionText}>{cur.caption}</span>}
+                {cur.tag && <span className={s.captionTag}>{cur.tag}</span>}
+              </div>
+            )
           )}
         </div>
       )}

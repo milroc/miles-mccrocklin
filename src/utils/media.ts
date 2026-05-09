@@ -1,6 +1,6 @@
 // Media-related utilities shared by Figure, FigureCarousel, and MediaProvider.
 import { createContext } from 'react';
-import type { MediaContextValue } from '../types';
+import type { MediaContextValue, MediaItem } from '../types';
 
 // The lightbox is global (single overlay at the app root) but it has no
 // global media list — every Figure passes its own items as the lightbox
@@ -13,6 +13,14 @@ export const prefersReducedMotion = (): boolean =>
   typeof window !== 'undefined' &&
   !!window.matchMedia &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Lightbox treatment selector. UI items render with a dedicated about-text
+// panel beside the screenshot; everything else (default) keeps the bottom
+// gradient caption overlay. Driven by `subtype` in resume.json — no id-prefix
+// heuristic, opt-in only.
+export function isUiItem(p: MediaItem | null | undefined): boolean {
+  return p?.subtype === 'ui';
+}
 
 // Resolve a media src from data/resume.json against the site root.
 //

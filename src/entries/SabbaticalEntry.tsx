@@ -1,14 +1,19 @@
-// Sabbatical entry — special-cased because tracks (Real Estate, AI, Travel)
-// only render in interactive/text modes; in the 1-pager we collapse to a
-// short summary plus one bullet per track.
-import { useContext, type ReactNode } from 'react';
-import { KPText } from '../primitives/KPText';
+// Sabbatical entry — special-cased because tracks (Building, Real Estate,
+// Travel) only render in interactive/text modes; in the 1-pager we collapse
+// to the entry's `summary_1pager` lead line and skip the tracks entirely.
+//
+// Reading flow: the Building track always renders inline so the top of the
+// page leads with the professional/builder pitch. Subsequent tracks (Real
+// Estate, Travel) sit behind a "learn more" toggle so visitors can opt in
+// to the personal-pursuit detail without it dominating the top third.
+import { useContext, useState, type ReactNode } from 'react';
 import { Track } from './Track';
 import { ModeContext, visible, isArchived as isArchivedItem } from '../utils/mode';
 import {
   EDIT_ENABLED, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
 import editStyles from '../edit/edit.module.css';
+import s from './SabbaticalEntry.module.css';
 import type { Job, Track as TrackData } from '../types';
 
 interface SabbaticalEntryProps {
@@ -25,15 +30,8 @@ export function SabbaticalEntry({ job, path, archived }: SabbaticalEntryProps) {
   const cls = `entry sabbatical ${archived ? editStyles.archived : ''}`.trim();
 
   if (mode === '1pager' && !editActive) {
-    const trackBullets = (job.tracks || [])
-      .filter((t): t is TrackData & { summary_1pager: string } =>
-        visible(t, mode) && !!t.summary_1pager);
-    const renderTrackBullet = (text: string): ReactNode => {
-      const idx = text.indexOf(':');
-      if (idx === -1) return <KPText text={text} />;
-      const after = text.slice(idx + 1).replace(/^ /, '');
-      return <KPText text={after} prefix={text.slice(0, idx + 1) + ' '} />;
-    };
+    // 1-pager: just the entry header, sub-line, and the standard summary.
+    // Track detail lives in the interactive/text modes only.
     return (
       <div className={cls}>
         <div className="entry-head">
@@ -47,13 +45,6 @@ export function SabbaticalEntry({ job, path, archived }: SabbaticalEntryProps) {
         {job.summary && (
           <div className="entry-summary lead">{job.summary}</div>
         )}
-        {trackBullets.length > 0 && (
-          <ul className="bullets">
-            {trackBullets.map((t, i) => (
-              <li key={i}>{renderTrackBullet(t.summary_1pager)}</li>
-            ))}
-          </ul>
-        )}
       </div>
     );
   }
@@ -62,6 +53,26 @@ export function SabbaticalEntry({ job, path, archived }: SabbaticalEntryProps) {
     editActive || visible(t, mode);
   const trackArchived = (t: TrackData): boolean =>
     editActive && isArchivedItem(t);
+
+  // Visible tracks in array order. The first one (Building) anchors the
+  // entry; the rest sit behind the expand toggle. In edit mode every
+  // track renders inline so the user can re-classify without hunting
+  // for a hidden affordance.
+  const visibleTracks = (job.tracks || []).filter(trackRenderable);
+  const [primary, ...rest] = visibleTracks;
+  const hasMore = rest.length > 0 && !editActive;
+
+  const [expanded, setExpanded] = useState(false);
+  const showRest = editActive || expanded;
+
+  const renderTrack = (t: TrackData, i: number, offset = 0): ReactNode => (
+    <Track
+      key={i + offset}
+      track={t}
+      path={path ? joinPath(path, 'tracks', i + offset) : undefined}
+      archived={trackArchived(t)}
+    />
+  );
 
   return (
     <div className={cls}>
@@ -84,14 +95,38 @@ export function SabbaticalEntry({ job, path, archived }: SabbaticalEntryProps) {
       {job.summary && (
         <div className="entry-summary lead">{job.summary}</div>
       )}
-      {(job.tracks || []).map((t, i) => trackRenderable(t) && (
-        <Track
-          key={i}
-          track={t}
-          path={path ? joinPath(path, 'tracks', i) : undefined}
-          archived={trackArchived(t)}
-        />
-      ))}
+      {primary && renderTrack(primary, 0)}
+      {hasMore && !showRest && (
+        <div className={s.expandRow}>
+          <button
+            type="button"
+            className={s.expandBtn}
+            onClick={() => setExpanded(true)}
+            aria-expanded={false}
+            aria-controls="sabbatical-more"
+          >
+            Learn more about my sabbatical →
+          </button>
+        </div>
+      )}
+      {showRest && (
+        <div id="sabbatical-more">
+          {rest.map((t, i) => renderTrack(t, i, 1))}
+        </div>
+      )}
+      {hasMore && showRest && !editActive && (
+        <div className={s.collapseRow}>
+          <button
+            type="button"
+            className={s.expandBtn}
+            onClick={() => setExpanded(false)}
+            aria-expanded={true}
+            aria-controls="sabbatical-more"
+          >
+            ← Show less
+          </button>
+        </div>
+      )}
     </div>
   );
 }

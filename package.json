@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "NODE_ENV=development bun --hot dev.ts",
     "build": "NODE_ENV=production bun build.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "edit-ui": "bun scripts/edit-ui-copy.ts"
   },
   "dependencies": {
     "@chenglou/pretext": "^0.0.6",
