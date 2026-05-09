@@ -5,9 +5,11 @@ import { useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { Header } from './layout/Header';
 import { Section } from './layout/Section';
+import { TerminalDock } from './layout/TerminalDock';
 import { ExperienceEntry } from './entries/ExperienceEntry';
 import { EduEntry } from './entries/EduEntry';
 import { Skills } from './entries/Skills';
+import { SkillsCaption } from './entries/SkillsCaption';
 import { Community } from './entries/Community';
 import { RedactionNotes } from './primitives/RedactionNotes';
 import { SummaryGallery } from './media/SummaryGallery';
@@ -174,6 +176,7 @@ export function App() {
         </Section>
 
         <Section title="Skills" show={showSkills}>
+          <SkillsCaption />
           <Skills skills={r.skills} path="/skills" />
         </Section>
 
@@ -213,6 +216,7 @@ export function App() {
       </article>
       </main>
       <EditToolbar />
+      {isInteractive && <TerminalDock />}
     </div>
     </MediaProvider>
     </PrintContext.Provider>

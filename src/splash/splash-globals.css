@@ -21,16 +21,6 @@
   --splash-rule: #d9d6cf;
   --splash-accent: #3a6b4a;
 
-  /* Guest palette — Claude Code terminal chip. Distinct from the
-     editorial paper register; quoted as a brand artifact, like the
-     Airbnb block on the resume. See DESIGN.md "Guest palette". */
-  --guest-claude-bg: #1c1d28;
-  --guest-claude-border: #cb6f55;
-  --guest-claude-accent: #d97757;
-  --guest-claude-fg: #ece9e2;
-  --guest-claude-fg-muted: #7a7770;
-  --guest-claude-rule: rgba(217, 119, 87, 0.32);
-
   --splash-serif: Georgia, 'Times New Roman', Times, serif;
   --splash-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 

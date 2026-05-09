@@ -319,43 +319,14 @@
    on top of the masonry's structural rules.
    ============================================================ */
 .builderImage {
-  /* Snap to the blurred state on hover — the chips animate in over
-     the dimmed backdrop, but the blur itself is instant so cream
-     chips have legible contrast from frame zero. */
+  /* Snap to the blurred state on hover — same vocabulary as
+     Photographer/Explorer. The instant blur gives the glass label
+     full contrast from frame zero, no fade. */
   transition: filter 0ms;
 }
 .tile[data-id="builder"]:hover .builderImage,
 .tile[data-id="builder"]:focus-visible .builderImage {
   filter: blur(8px) brightness(0.55);
-}
-
-/* Code-chip overlay (CodeChips.tsx) — fades in tiny code snippets when
-   the Builder tile is hovered. The chip component reads these CSS
-   variables; this rule owns the trigger so the cross-component coupling
-   is one CSS variable, not a hashed class name. */
-.tile[data-id="builder"] {
-  --chip-opacity: 0;
-  --chip-ty: 8px;
-  --chip-scale: 0.96;
-  /* Terminal panel is always docked at the bottom. At rest the
-     `› /ship` prompt + status footer render (~58px); on hover the
-     panel grows upward to reveal the Claude Code welcome frame above. */
-  --terminal-h: 58px;
-}
-.tile[data-id="builder"]:hover,
-.tile[data-id="builder"]:focus-visible {
-  --chip-opacity: 1;
-  --chip-ty: 0px;
-  --chip-scale: 1;
-  --terminal-h: 240px;
-}
-@media (prefers-reduced-motion: reduce) {
-  .tile[data-id="builder"]:hover,
-  .tile[data-id="builder"]:focus-visible {
-    --chip-ty: 0px;
-    --chip-scale: 1;
-    --terminal-h: 240px;
-  }
 }
 
 /* ============================================================
