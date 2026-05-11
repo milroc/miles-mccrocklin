@@ -1,12 +1,13 @@
 /* Explorer page — fullscreen globe view. The page is just a black
-   canvas with the globe mounting into it; chrome is minimal: a back
-   link that returns to the splash. */
+   canvas with the globe mounting into it; chrome (toolbar, loading
+   wireframe, country detail panel) lives in sibling components with
+   their own CSS modules. */
 
 .root {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
   background: var(--splash-canvas);
   overflow: hidden;
 }
@@ -21,173 +22,29 @@
   justify-content: center;
 }
 
-/* Loading state — a CSS 3D wireframe globe (meridians + parallels)
-   spinning around a slightly-tilted polar axis. Sits in the mount
-   div until Globe.tsx fades in the WebGL canvas on top of it. The
-   3D effect comes from layering circle borders rotated through a
-   common perspective: meridians as great circles at varying rotateY
-   angles, parallels as horizontal circles at varying altitudes. The
-   parent applies a single rotateY animation; meridians appear to
-   move around the back/front of the sphere, parallels stay as
-   apparent ellipses (they're rotationally symmetric around Y).
-
-   Same visual register as the splash's static wireframe
-   (.globeStatic in Splash.module.css) — same muted-cream lines on
-   dark canvas — so navigating /explorer/ from the splash feels like
-   a continuation. */
-.loadingScene {
-  width: min(60vmin, 480px);
-  aspect-ratio: 1;
-  position: relative;
-  perspective: 1200px;
-  /* Entrance animation — fade + slight scale-up over 600 ms so the
-     wireframe arrives gently instead of popping in. Keeps the final
-     state with `animation-fill-mode: both`. */
-  animation: explorer-loader-enter 600ms cubic-bezier(0.2, 0.65, 0.3, 1) both;
-}
-@keyframes explorer-loader-enter {
-  from { opacity: 0; transform: scale(0.92); }
-  to   { opacity: 1; transform: scale(1); }
-}
-.loadingGlobe {
-  position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
-  /* Faint radial highlight gives the sphere some sense of front-lit
-     volume without the meridian/parallel grid losing legibility. */
-  background:
-    radial-gradient(circle at 32% 30%, rgba(255,255,255,0.04), transparent 55%);
-  border-radius: 50%;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .loadingGlobe {
-    /* 6 s period — fast enough that ≥1/4 of a rotation is visible
-       during the typical ~1–2 s loader-visible window, slow enough
-       to read as a deliberate "earth spinning" rhythm rather than a
-       frantic spinner. */
-    animation: explorer-globe-spin 6s linear infinite;
-  }
-}
-@keyframes explorer-globe-spin {
-  from { transform: rotateX(15deg) rotateY(0deg); }
-  to   { transform: rotateX(15deg) rotateY(360deg); }
-}
-
-.meridian {
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgba(184, 181, 173, 0.18);
-  border-radius: 50%;
-}
-/* Six meridians spaced 30° apart. Together they form half of the
-   sphere's longitude grid; the rotation animation supplies the rest
-   over time. */
-.meridian:nth-child(1) { transform: rotateY(0deg); }
-.meridian:nth-child(2) { transform: rotateY(30deg); }
-.meridian:nth-child(3) { transform: rotateY(60deg); }
-.meridian:nth-child(4) { transform: rotateY(90deg); }
-.meridian:nth-child(5) { transform: rotateY(120deg); }
-.meridian:nth-child(6) { transform: rotateY(150deg); }
-
-.parallel {
-  position: absolute;
-  left: 50%;
-  border: 1px solid rgba(184, 181, 173, 0.14);
-  border-radius: 50%;
-}
-/* Parallels at L = 0° (equator), ±30°, ±60°. Sizes derived from
-   geometry: a parallel at latitude L is a horizontal circle with
-   radius cos(L) and altitude sin(L) (in units of sphere radius).
-   The rotateX(90deg) tips the horizontal circle so its plane is
-   the sphere's equatorial plane; we then translate it up/down
-   along the polar axis. */
-.parallelEq {
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  transform: rotateX(90deg);
-}
-.parallel30N {
-  width: 86.6%;
-  height: 86.6%;
-  top: -18.3%;
-  transform: translateX(-50%) rotateX(90deg);
-}
-.parallel30S {
-  width: 86.6%;
-  height: 86.6%;
-  top: 31.7%;
-  transform: translateX(-50%) rotateX(90deg);
-}
-.parallel60N {
-  width: 50%;
-  height: 50%;
-  top: -18.3%;
-  transform: translateX(-50%) rotateX(90deg);
-}
-.parallel60S {
-  width: 50%;
-  height: 50%;
-  top: 68.3%;
-  transform: translateX(-50%) rotateX(90deg);
-}
-.loadingLabel {
-  position: absolute;
-  top: calc(50% + min(33vmin, 264px));
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--splash-mono);
-  font-size: 10px;
-  letter-spacing: 0.36em;
-  text-transform: uppercase;
-  color: var(--splash-canvas-fg-muted);
-  pointer-events: none;
-  white-space: nowrap;
-  /* Pulse the label gently so the user knows something's happening. */
-  animation: explorer-loading-pulse 2.4s ease-in-out infinite;
-}
-@keyframes explorer-loading-pulse {
-  0%, 100% { opacity: 0.45; }
-  50%      { opacity: 1; }
-}
-
-.back {
-  position: absolute;
-  top: 24px;
-  left: 24px;
-  z-index: 10;
-  font-family: var(--splash-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--splash-canvas-fg-muted);
-  background: transparent;
-  border: 1px solid var(--splash-canvas-rule);
-  border-radius: 4px;
-  padding: 6px 10px;
-  text-decoration: none;
-  transition: color 120ms ease, border-color 120ms ease;
-}
-
-.back:hover,
-.back:focus-visible {
-  color: var(--splash-canvas-fg-strong);
-  border-color: var(--splash-canvas-fg-strong);
-  outline: none;
-}
-
 .title {
   position: absolute;
   bottom: 24px;
   left: 24px;
   z-index: 10;
+  margin: 0;
+  max-width: 38em;
   font-family: var(--splash-mono);
   font-size: 11px;
   letter-spacing: 0.36em;
   text-transform: uppercase;
-  color: var(--splash-canvas-fg-muted);
+  color: var(--splash-canvas-fg);
   pointer-events: none;
+  /* Frosted-glass plate so the caption stays readable when a bright
+     photo polygon (Niagara, Dubai, Antarctica) drifts under it.
+     Matches the toolbar buttons' treatment. */
+  padding: 10px 14px;
+  background: rgba(28, 31, 26, 0.55);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid var(--splash-canvas-rule);
+  border-radius: 2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 
 .title em {
@@ -198,5 +55,5 @@
   font-style: italic;
   letter-spacing: 0;
   text-transform: none;
-  color: var(--splash-canvas-fg);
+  color: var(--splash-canvas-fg-strong);
 }

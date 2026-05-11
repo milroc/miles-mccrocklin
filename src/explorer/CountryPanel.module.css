@@ -1,0 +1,365 @@
+/* Country detail panel. Opens on polygon click, anchored to the right
+   edge so the globe stays visible and interactive on the left. Dismiss
+   via the close button, Escape, or by clicking another country (the
+   panel swaps in place). No backdrop — the globe behind isn't dimmed,
+   and clicks that miss the panel still reach the canvas. */
+.root {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  width: min(440px, 100%);
+  display: flex;
+  flex-direction: column;
+  background: var(--splash-canvas);
+  border-left: 1px solid var(--splash-canvas-rule);
+  box-shadow: -16px 0 40px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  animation: explorer-panel-slide 220ms cubic-bezier(0.2, 0.65, 0.3, 1) both;
+}
+@keyframes explorer-panel-slide {
+  from { transform: translateX(100%); opacity: 0.4; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+/* Inner wrapper that owns scrolling. Lives directly under .root so
+   that .close (also a child of .root) stays pinned to the panel's
+   top corner regardless of how far the content has scrolled. */
+.scrollArea {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.media {
+  flex: 0 0 auto;
+  background: var(--splash-canvas-void);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  overflow: hidden;
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 26px 28px;
+  gap: 14px;
+  overflow-y: auto;
+}
+
+/* Country name — the primary identifier for the panel. Georgia
+   display register so it reads as the title of the document, not a
+   label. Sits directly under the hero image with no eyebrow above,
+   so the first thing a user sees is "Antarctica", not the album's
+   internal sub-title. */
+.kicker {
+  margin: 0;
+  font-family: var(--splash-serif, Georgia, "Times New Roman", serif);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  color: var(--splash-canvas-fg-strong);
+}
+
+.visits {
+  margin: 4px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--splash-canvas-rule);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sectionLabel {
+  margin: 0;
+  font-family: var(--splash-mono);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--splash-canvas-fg-muted);
+}
+
+.visitList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.visitList li {
+  font-family: var(--splash-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--splash-canvas-fg);
+  /* Tabular numerals so years and date ranges line up vertically when
+     multiple trips stack — visually scannable like a flight log. */
+  font-variant-numeric: tabular-nums;
+}
+
+.albumsSection {
+  margin: 4px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--splash-canvas-rule);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.albums {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Empty-state line for countries without a portfolio album. Italic
+   serif body register so it reads as an editorial note, not a label —
+   sits where the album card stack would otherwise be. */
+.albumEmpty {
+  margin: 0;
+  font-family: var(--splash-serif, Georgia, "Times New Roman", serif);
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--splash-canvas-fg-muted);
+}
+
+/* Card stack: each album = full-width 3:2 cover with the title beneath.
+   The whole card is the link target. Desktop and mobile share the same
+   layout; affordance differs (see below). */
+.album {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--splash-canvas-fg-strong);
+  border-radius: 2px;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Full-width cover. 3:2 to differentiate from the 4:3 hero up top and
+   to match how landscape portfolio shots are typically framed. Black
+   placeholder background covers albums without a source_image_url. */
+.albumCover {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border-radius: 2px;
+  background: var(--splash-canvas-void);
+  border: 1px solid rgba(236, 233, 226, 0.18);
+  overflow: hidden;
+  display: block;
+  position: relative;
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+
+.albumCover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 480ms cubic-bezier(0.2, 0.65, 0.3, 1);
+}
+
+/* "View album" sheen — a thin gradient + label that fades up from the
+   bottom of the cover on desktop hover. On touch devices the same
+   surface is shown at lower opacity at rest, so the affordance is
+   visible without needing hover. */
+.albumCoverOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 12px 14px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.0) 55%
+  );
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+
+.albumCoverCta {
+  font-family: var(--splash-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--splash-canvas-fg-strong);
+  /* Subtle text shadow keeps the cta legible on bright photos. */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.albumTitle {
+  /* Editorial caption — Georgia regular, sits in the body register
+     (not the strong heading register) so it reads as a label for the
+     photo above rather than competing with the country kicker. */
+  font-family: var(--splash-serif, Georgia, "Times New Roman", serif);
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--splash-canvas-fg);
+  transition: color 160ms ease;
+}
+
+/* Title brightens to strong cream on hover/focus so the card has a
+   clear typographic affordance even past the cover overlay. */
+.album:hover .albumTitle,
+.album:focus-visible .albumTitle {
+  color: var(--splash-canvas-fg-strong);
+}
+
+/* ─── Desktop affordance ─────────────────────────────────────────────
+   Hover lifts the cover off the surface (cream border + shadow), the
+   photo slow-scales 1.04 inside its frame, and the "VIEW ALBUM →"
+   gradient/label fades in. Title stays cream (already at full
+   weight); the cover does the work. */
+@media (hover: hover) and (pointer: fine) {
+  .album:hover .albumCover,
+  .album:focus-visible .albumCover {
+    border-color: rgba(236, 233, 226, 0.55);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+    transform: translateY(-2px);
+  }
+
+  .album:hover .albumCover img,
+  .album:focus-visible .albumCover img {
+    transform: scale(1.04);
+  }
+
+  .album:hover .albumCoverOverlay,
+  .album:focus-visible .albumCoverOverlay {
+    opacity: 1;
+  }
+}
+
+/* ─── Touch affordance ───────────────────────────────────────────────
+   No hover available, so the "VIEW ALBUM →" label sits on the cover
+   at rest (gradient at lower strength so the photo still reads).
+   :active gives press feedback. */
+@media (hover: none), (pointer: coarse) {
+  .albumCoverOverlay {
+    opacity: 0.85;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.0) 45%
+    );
+  }
+  .album:active .albumCover {
+    transform: scale(0.99);
+    border-color: rgba(236, 233, 226, 0.55);
+  }
+  .album:active .albumCoverOverlay {
+    opacity: 1;
+  }
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  /* 40×40 hits the 44px touch-target minimum once you include the
+     surrounding hit-slop most browsers add for mouse targets, and
+     keeps the visual footprint compact against the hero photo. */
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--splash-canvas-fg);
+  border: 1px solid var(--splash-canvas-rule);
+  border-radius: 2px;
+  font-family: var(--splash-mono);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.close:hover,
+.close:focus-visible {
+  color: var(--splash-canvas-fg-strong);
+  border-color: var(--splash-canvas-fg-strong);
+  background: rgba(0, 0, 0, 0.65);
+  outline: none;
+}
+
+/* Mobile — switch to a bottom sheet so the globe still has top
+   real estate. The hero scrolls together with the body inside
+   .scrollArea (rather than the hero being pinned at the top and
+   the body scrolling independently). .close sits outside
+   .scrollArea so it stays pinned at the sheet's top corner
+   regardless of scroll offset. */
+@media (max-width: 720px) {
+  .root {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 75dvh;
+    border-left: none;
+    border-top: 1px solid var(--splash-canvas-rule);
+    box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.4);
+    animation-name: explorer-panel-slide-up;
+  }
+  @keyframes explorer-panel-slide-up {
+    from { transform: translateY(100%); opacity: 0.4; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+  .scrollArea {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  .body {
+    /* Defer scrolling to .scrollArea on mobile so the hero
+       participates in the same scroll. */
+    overflow-y: visible;
+    flex: 0 0 auto;
+  }
+  .media { aspect-ratio: 16 / 9; }
+}
+
+/* Reduced-motion — kill the slide-in, the hover cover lift, and the
+   image scale. Vestibular-sensitive users get a static panel that
+   appears without movement, and album hover state shifts to a
+   pure color/border treatment (still legible, no motion). */
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    animation: none;
+  }
+  .albumCover,
+  .albumCover img,
+  .album:hover .albumCover,
+  .album:focus-visible .albumCover,
+  .album:hover .albumCover img,
+  .album:focus-visible .albumCover img {
+    transform: none;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+}
