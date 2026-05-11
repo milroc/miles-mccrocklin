@@ -22,11 +22,36 @@ interface Waypoint {
   label: string;
   lat: number;
   lng: number;
+  startMonth?: string;
   startYear?: number;
+  endMonth?: string;
+  endYear?: number;
+  kind?: 'visited' | 'lived';
 }
 
 interface JourneyJson {
   waypoints: Waypoint[];
+}
+
+// A single trip to a country. One waypoint = one Visit. Multiple visits
+// per country are common (e.g. Mexico has six trips between 2001 and 2024).
+export interface Visit {
+  startMonth?: string;
+  startYear?: number;
+  endMonth?: string;
+  endYear?: number;
+  kind?: 'visited' | 'lived';
+}
+
+// Payload handed to onCountryClick. `entry` is null for countries the
+// user visited but doesn't have photos for (e.g. The Bahamas — visit
+// predates the digital archive). `visits` is always present for any
+// country eligible to be clicked: the click flow gates on either an
+// atlas entry OR at least one visit.
+export interface CountrySelection {
+  name: string;
+  entry: AtlasEntry | null;
+  visits: Visit[];
 }
 
 // Visited countries (post-alias). Built from journey.json's waypoint
@@ -50,6 +75,27 @@ const VISITED_COUNTRIES: ReadonlySet<string> = new Set(
   WAYPOINTS.map((w) => VISITED_NAME_ALIASES[w.label] ?? w.label),
 );
 
+// Canonical country name → list of trips, in chronological order
+// (journey.json is sorted that way). The panel reads this to show
+// when each country was visited; multiple trips show as a list.
+const VISITS_BY_COUNTRY: ReadonlyMap<string, readonly Visit[]> = (() => {
+  const map = new Map<string, Visit[]>();
+  for (const w of WAYPOINTS) {
+    const name = VISITED_NAME_ALIASES[w.label] ?? w.label;
+    const visit: Visit = {
+      startMonth: w.startMonth,
+      startYear: w.startYear,
+      endMonth: w.endMonth,
+      endYear: w.endYear,
+      kind: w.kind,
+    };
+    const existing = map.get(name);
+    if (existing) existing.push(visit);
+    else map.set(name, [visit]);
+  }
+  return map;
+})();
+
 // Country→photo dataset, built by scripts/build-photo-atlas.ts from the
 // portfolio at milesmccrocklin.myportfolio.com. Three render kinds:
 //
@@ -64,7 +110,12 @@ const VISITED_COUNTRIES: ReadonlySet<string> = new Set(
 //             lat/lng instead of the geometry's UVs. Used when the
 //             polygon's UV mapping distorts the photo (Antarctica
 //             wraps around the south pole).
-type AtlasEntry =
+export interface AtlasAlbum {
+  title: string;
+  url: string;
+  source_image_url?: string;
+}
+export type AtlasEntry =
   | {
       country: string;
       country_slug: string;
@@ -75,6 +126,8 @@ type AtlasEntry =
       // photos. /explorer/ uses the full-size `image`. Generated
       // alongside `image` by scripts/build-photo-atlas.ts.
       image_tile?: string;
+      primary_album?: AtlasAlbum;
+      secondary_albums?: AtlasAlbum[];
     }
   | {
       country: string;
@@ -84,6 +137,8 @@ type AtlasEntry =
       image_tile?: string;
       lat: number;
       lng: number;
+      primary_album?: AtlasAlbum;
+      secondary_albums?: AtlasAlbum[];
     };
 
 // Build arc data: connect each consecutive pair of waypoints. With N
@@ -130,6 +185,124 @@ function buildArcs(waypoints: Waypoint[]): Arc[] {
 // 'flat' polygon shader, custom-layer mesh placement, etc.).
 const GLOBE_RADIUS = 100;
 
+// Altitude (in units of GLOBE_RADIUS) at which we render the country
+// polygon caps. three-globe applies this as a uniform scale on the
+// cap mesh, so the rendered vertices live at GLOBE_RADIUS * (1 + alt).
+// Any world-space math that compares against rendered vertex positions
+// must use this same scale or the result is off by 1%.
+const POLYGON_ALTITUDE = 0.01;
+
+// Slerp two [lng, lat] points on the unit sphere. Returns the
+// interpolated [lng, lat] at parameter t ∈ [0, 1]. Used to subdivide
+// polygon edges along great circles so the selection border curves
+// with the globe instead of cutting chords through the sphere.
+function slerpLngLat(
+  a: [number, number],
+  b: [number, number],
+  t: number,
+): [number, number] {
+  const phA = (a[1] * Math.PI) / 180;
+  const lnA = (a[0] * Math.PI) / 180;
+  const phB = (b[1] * Math.PI) / 180;
+  const lnB = (b[0] * Math.PI) / 180;
+  const xA = Math.cos(phA) * Math.cos(lnA);
+  const yA = Math.cos(phA) * Math.sin(lnA);
+  const zA = Math.sin(phA);
+  const xB = Math.cos(phB) * Math.cos(lnB);
+  const yB = Math.cos(phB) * Math.sin(lnB);
+  const zB = Math.sin(phB);
+  const om = Math.acos(Math.max(-1, Math.min(1, xA * xB + yA * yB + zA * zB)));
+  const so = Math.sin(om);
+  if (so < 1e-10) return a;
+  const sA = Math.sin((1 - t) * om) / so;
+  const sB = Math.sin(t * om) / so;
+  const x = xA * sA + xB * sB;
+  const y = yA * sA + yB * sB;
+  const z = zA * sA + zB * sB;
+  const ln = Math.atan2(y, x);
+  const ph = Math.atan2(z, Math.sqrt(x * x + y * y));
+  return [(ln * 180) / Math.PI, (ph * 180) / Math.PI];
+}
+
+// Trace the outer ring of every (sub-)polygon in `feature` as a
+// THREE.Line, projected onto a sphere of the given radius. Long edges
+// are subdivided along the great circle so the border follows the
+// globe's curvature. Uses the same lng→xyz formula as
+// three-conic-polygon-geometry's `polar2Cartesian` so the line sits
+// exactly above the rendered polygon cap, not a rotated copy of it.
+function buildSelectionBorder(
+  feature: { geometry: object },
+  radius: number,
+  THREE: typeof THREE_T,
+  opacity: number = 1.0,
+): THREE_T.Object3D {
+  type Ring = Array<[number, number]>;
+  const geom = feature.geometry as { type: string; coordinates: Ring[] | Ring[][] };
+  const rings: Ring[] = [];
+  if (geom.type === 'Polygon') {
+    const c = geom.coordinates as Ring[];
+    if (c[0]) rings.push(c[0]);
+  } else if (geom.type === 'MultiPolygon') {
+    for (const poly of geom.coordinates as Ring[][]) {
+      if (poly[0]) rings.push(poly[0]);
+    }
+  }
+  const project = (lng: number, lat: number): THREE_T.Vector3 => {
+    const ph = ((90 - lat) * Math.PI) / 180;
+    const th = ((90 - lng) * Math.PI) / 180;
+    return new THREE.Vector3(
+      radius * Math.sin(ph) * Math.cos(th),
+      radius * Math.cos(ph),
+      radius * Math.sin(ph) * Math.sin(th),
+    );
+  };
+  const MAX_SEG_DEG = 3;
+  const group = new THREE.Group();
+  for (const ring of rings) {
+    const points: THREE_T.Vector3[] = [];
+    for (let i = 0; i < ring.length; i++) {
+      const a = ring[i];
+      const b = ring[(i + 1) % ring.length];
+      points.push(project(a[0], a[1]));
+      // Angular distance (radians → degrees)
+      const phA = (a[1] * Math.PI) / 180;
+      const phB = (b[1] * Math.PI) / 180;
+      const dl = ((b[0] - a[0]) * Math.PI) / 180;
+      const dotV =
+        Math.sin(phA) * Math.sin(phB) + Math.cos(phA) * Math.cos(phB) * Math.cos(dl);
+      const dDeg = (Math.acos(Math.max(-1, Math.min(1, dotV))) * 180) / Math.PI;
+      if (dDeg > MAX_SEG_DEG) {
+        const steps = Math.ceil(dDeg / MAX_SEG_DEG);
+        for (let s = 1; s < steps; s++) {
+          const mid = slerpLngLat(a, b, s / steps);
+          points.push(project(mid[0], mid[1]));
+        }
+      }
+    }
+    // Close the loop visibly (LineLoop would do this but doesn't expose
+    // dash/dotted state; stick with Line + explicit closing segment).
+    if (points.length > 0) points.push(points[0].clone());
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    // Bright cream (--splash-canvas-fg-strong) reads against both the
+    // dark canvas and the textured photos. Depth test stays ON so the
+    // globe sphere (radius 100) occludes the line's back-hemisphere
+    // portion — otherwise the outline ghosts through the planet on
+    // countries facing away from the camera. We rely on the radial
+    // offset (line at 101.4 vs cap at 101) plus renderOrder to win
+    // against the polygon cap on the front-facing side without
+    // disabling depth test.
+    const material = new THREE.LineBasicMaterial({
+      color: 0xece9e2,
+      transparent: opacity < 1,
+      opacity,
+    });
+    const line = new THREE.Line(geometry, material);
+    line.renderOrder = 999;
+    group.add(line);
+  }
+  return group;
+}
+
 // Perf threshold for falling back to 2D static globe. WebGL globe is
 // expensive; on low-end Android we'd rather render the wireframe.
 function shouldUse2DFallback(): boolean {
@@ -143,12 +316,38 @@ function shouldUse2DFallback(): boolean {
   return false;
 }
 
+// Public globe-control surface returned to the page via options.onReady.
+// Currently a single hook: kickIdleTimer() — Explorer pings this when
+// the country modal closes so the 5s "resume rotate" timer runs from
+// dismiss, matching the rule applied to drag/zoom interactions.
+export interface GlobeControls {
+  kickIdleTimer: () => void;
+  // Highlights the selected country's photo cap (brightens + pulses).
+  // Pass null to clear. Names that don't match a photo material are
+  // silently ignored.
+  setSelectedCountry: (name: string | null) => void;
+  // User-level rotation lock. When locked, autoRotate stays off
+  // permanently — kickIdleTimer no longer re-enables it after the 5s
+  // idle window. Toggling unlock immediately resumes rotation.
+  // Independent of the click/drag-driven idle pause/resume.
+  setRotationLocked: (locked: boolean) => void;
+}
+
 interface MountGlobeOptions {
   // When true, fill the full mount rect with a non-square globe canvas
   // (used by the /explorer/ page). When false (default), the globe is a
   // centered square sized to min(rect.width, rect.height) and the
   // 2D-fallback perf check applies — used by the splash tile.
   fullscreen?: boolean;
+  // Fires when a user clicks a country polygon that has a photo atlas
+  // entry. Only invoked in fullscreen mode (the splash tile keeps
+  // enablePointerInteraction off). Explorer uses this to open its
+  // detail modal.
+  onCountryClick?: (selection: CountrySelection) => void;
+  // Called once the globe ref + OrbitControls are wired, handing back
+  // a small control surface. Used by Explorer to ping the idle timer
+  // when the modal dismisses.
+  onReady?: (controls: GlobeControls) => void;
 }
 
 // Cached country-feature view of the bundled world atlas. Narrowed to
@@ -441,13 +640,19 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
         // Tangent-plane frame anchored at (entry.lat, entry.lng). For
         // Antarctica that's the south pole, so the projection onto
         // (uAxis, vAxis) is symmetric around a circumpolar polygon.
+        // The lng→xyz formula must match three-conic-polygon-geometry's
+        // `polar2Cartesian` exactly; otherwise the bbox is computed in a
+        // frame rotated relative to the rendered mesh and the (u, v)
+        // half-extents are swapped, causing texture wrap inside the
+        // polygon.
+        const polygonRadius = GLOBE_RADIUS * (1 + POLYGON_ALTITUDE);
         const phi = (90 - entry.lat) * Math.PI / 180;
-        const theta = (entry.lng + 180) * Math.PI / 180;
+        const theta = (90 - entry.lng) * Math.PI / 180;
         const anchor = new THREE.Vector3(
-          -Math.sin(phi) * Math.cos(theta),
+          Math.sin(phi) * Math.cos(theta),
           Math.cos(phi),
           Math.sin(phi) * Math.sin(theta),
-        ).multiplyScalar(GLOBE_RADIUS);
+        ).multiplyScalar(polygonRadius);
         const normal = anchor.clone().normalize();
         const refUp = new THREE.Vector3(0, 1, 0);
         let uAxis = new THREE.Vector3().crossVectors(refUp, normal);
@@ -465,12 +670,12 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
           const tmp = new THREE.Vector3();
           const project = (lng: number, lat: number) => {
             const ph = (90 - lat) * Math.PI / 180;
-            const th = (lng + 180) * Math.PI / 180;
+            const th = (90 - lng) * Math.PI / 180;
             tmp.set(
-              -Math.sin(ph) * Math.cos(th),
+              Math.sin(ph) * Math.cos(th),
               Math.cos(ph),
               Math.sin(ph) * Math.sin(th),
-            ).multiplyScalar(GLOBE_RADIUS);
+            ).multiplyScalar(polygonRadius);
             const u = (tmp.x - anchor.x) * uAxis.x + (tmp.y - anchor.y) * uAxis.y + (tmp.z - anchor.z) * uAxis.z;
             const v = (tmp.x - anchor.x) * vAxis.x + (tmp.y - anchor.y) * vAxis.y + (tmp.z - anchor.z) * vAxis.z;
             if (u < uMin) uMin = u;
@@ -783,9 +988,249 @@ export async function mountGlobe(
       // derive the current altitude for the bubble-scale calculation
       // in the rAF loop below.
       object?: { position: { length: () => number } };
+      // OrbitControls extends EventDispatcher. We listen for 'start'
+      // (user begins drag/zoom) to feed the idle-rotate timer.
+      addEventListener?: (type: string, listener: () => void) => void;
+      removeEventListener?: (type: string, listener: () => void) => void;
     };
     pointOfView: (pov: { lat?: number; lng?: number; altitude?: number }, transitionMs?: number) => void;
+    // Screen XY (relative to the globe canvas) → globe surface lat/lng,
+    // or null if the ray misses the sphere. Used to find the country
+    // under a click that landed on an arc mesh instead of the polygon.
+    toGlobeCoords: (x: number, y: number) => { lat: number; lng: number } | null;
+    // The underlying three.js scene. We attach the selection border
+    // line mesh here directly — three-globe doesn't have a "highlight
+    // one polygon" primitive, and polygonStrokeColor needs the stroke
+    // mesh built at polygon-creation time (it's off for perf).
+    scene: () => THREE_T.Scene;
   }>();
+
+  // Country-name → atlas entry. Used by the click handler to look up
+  // photo data when the user taps a polygon. Names match the polygon
+  // properties.name keys (same source as photoMaterials).
+  const atlasByName = new Map<string, AtlasEntry>(atlas.map((e) => [e.country, e]));
+
+  // Idle-rotate manager. Any user interaction (polygon click, drag,
+  // zoom, modal dismiss) pauses autoRotate immediately and starts a 5s
+  // timer; when the timer fires without further interaction, autoRotate
+  // resumes. The OrbitControls 'start' event covers drag + zoom; the
+  // polygon click handler calls kickIdleTimer directly; Explorer pings
+  // it via the GlobeControls surface on modal close.
+  const IDLE_RESUME_MS = 5000;
+  let idleTimer: ReturnType<typeof setTimeout> | null = null;
+  // User-level rotation lock. When true, kickIdleTimer's setTimeout
+  // callback skips re-enabling autoRotate, so rotation stays off until
+  // the user explicitly unlocks via setRotationLocked(false).
+  let rotationLocked = false;
+  function kickIdleTimer(): void {
+    if (reduceMotion) return;
+    const inst = globeRef.current;
+    const controls = inst?.controls();
+    if (controls) controls.autoRotate = false;
+    if (idleTimer !== null) clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      idleTimer = null;
+      if (rotationLocked) return;
+      const inst2 = globeRef.current;
+      const controls2 = inst2?.controls();
+      if (controls2) controls2.autoRotate = true;
+    }, IDLE_RESUME_MS);
+  }
+  function setRotationLocked(locked: boolean): void {
+    if (locked === rotationLocked) return;
+    rotationLocked = locked;
+    const inst = globeRef.current;
+    const controls = inst?.controls();
+    if (!controls) return;
+    if (locked) {
+      // Pause now; cancel any pending idle-resume so it doesn't kick
+      // rotation back on at the 5s mark.
+      controls.autoRotate = false;
+      if (idleTimer !== null) {
+        clearTimeout(idleTimer);
+        idleTimer = null;
+      }
+    } else {
+      // Resume immediately. The next user interaction will reset the
+      // idle timer through kickIdleTimer as usual.
+      controls.autoRotate = true;
+    }
+  }
+
+  // Selection border. `setSelectedCountry(name)` traces the country's
+  // outer ring as a three.js Line at radius slightly above the polygon
+  // cap and attaches it directly to the globe scene. Null clears it.
+  // We use a custom mesh instead of three-globe's polygonStrokeColor
+  // because that builds the stroke geometry at polygon-creation time
+  // (off by default here for ~250 ms perf), and dynamic enabling
+  // would require reflowing all 241 polygons.
+  let selectedCountryName: string | null = null;
+  let borderMesh: THREE_T.Object3D | null = null;
+  let hoveredCountryName: string | null = null;
+  let hoverBorderMesh: THREE_T.Object3D | null = null;
+  function disposeMesh(mesh: THREE_T.Object3D | null): void {
+    if (!mesh) return;
+    const inst = globeRef.current;
+    const scene = inst?.scene?.();
+    if (scene) scene.remove(mesh);
+    mesh.traverse((obj) => {
+      const o = obj as THREE_T.Object3D & {
+        geometry?: { dispose: () => void };
+        material?: { dispose: () => void };
+      };
+      o.geometry?.dispose();
+      o.material?.dispose();
+    });
+  }
+  function disposeBorder(): void {
+    disposeMesh(borderMesh);
+    borderMesh = null;
+  }
+  function disposeHoverBorder(): void {
+    disposeMesh(hoverBorderMesh);
+    hoverBorderMesh = null;
+  }
+  // Toggle the `data-selected` attribute on the matching bubble DOM
+  // node. Bubbles live in the document, created by three-globe via
+  // htmlElementFn — querySelector reaches them regardless of which
+  // container three-globe parents them under.
+  function setBubbleSelection(name: string | null): void {
+    document.querySelectorAll<HTMLElement>(
+      '.splash-globe-bubble[data-selected="true"]',
+    ).forEach((el) => { el.dataset.selected = 'false'; });
+    if (!name) return;
+    const el = document.querySelector<HTMLElement>(
+      `.splash-globe-bubble[data-country="${CSS.escape(name)}"]`,
+    );
+    if (el) el.dataset.selected = 'true';
+  }
+  function isClickable(name: string): boolean {
+    return atlasByName.has(name) || VISITED_COUNTRIES.has(name);
+  }
+  // Float the border slightly above the polygon cap to avoid z-fighting
+  // with the textured surface. polygonAltitude = 0.01; add another 0.004
+  // so the line sits about 0.4% of the globe radius above the photo.
+  const BORDER_RADIUS = GLOBE_RADIUS * (1 + POLYGON_ALTITUDE + 0.004);
+  function setSelectedCountry(name: string | null): void {
+    // Eligible: any atlas entry (polygon, flat, or bubble) OR any
+    // visited-only country (Bahamas etc — no photo album, but the
+    // panel still has visit dates to show).
+    const next = name && isClickable(name) ? name : null;
+    if (next === selectedCountryName) return;
+    selectedCountryName = next;
+    disposeBorder();
+    setBubbleSelection(next);
+    // If the new selection is also currently hovered, drop the hover
+    // ring — the full-opacity selection ring supersedes it. Otherwise
+    // a previously-hovered polygon should keep its dim ring.
+    if (next && next === hoveredCountryName) disposeHoverBorder();
+    if (!next) return;
+    // Bubbles have no polygon — only the CSS ring above applies.
+    const feature = countries.find((f) => f.properties.name === next);
+    if (!feature) return;
+    const inst = globeRef.current;
+    const scene = inst?.scene?.();
+    if (!scene) return;
+    borderMesh = buildSelectionBorder(feature, BORDER_RADIUS, THREE, 1.0);
+    scene.add(borderMesh);
+  }
+  // Polygon hover affordance — only fires for clickable countries
+  // (atlas + visited). Bubbles handle their own hover via CSS.
+  function setHoveredCountry(name: string | null): void {
+    const next = name && isClickable(name) && name !== selectedCountryName
+      ? name
+      : null;
+    if (next === hoveredCountryName) return;
+    hoveredCountryName = next;
+    updateCanvasCursor();
+    disposeHoverBorder();
+    if (!next) return;
+    const feature = countries.find((f) => f.properties.name === next);
+    if (!feature) return;
+    const inst = globeRef.current;
+    const scene = inst?.scene?.();
+    if (!scene) return;
+    // 38% opacity reads as "hoverable" without competing with the full
+    // cream of a selected country — same color family, lower weight.
+    hoverBorderMesh = buildSelectionBorder(feature, BORDER_RADIUS, THREE, 0.38);
+    scene.add(hoverBorderMesh);
+  }
+
+  // Point-in-polygon (ray-casting) in lng/lat space. Used by the
+  // arc-click forwarder: when a user clicks a journey arc, we project
+  // the screen click onto the globe surface and look up which country
+  // polygon contains that point. The arcs themselves stay visually on
+  // top, but clicks pass through to the country underneath. Crosses
+  // the antimeridian without special handling — fine for the world
+  // map at 1:50m where antimeridian-spanning countries (Russia, Fiji)
+  // either don't matter for click targeting (Russia's far east is the
+  // only span) or aren't in the visited set.
+  function pointInRing(lng: number, lat: number, ring: number[][]): boolean {
+    let inside = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const a = ring[i];
+      const b = ring[j];
+      if (!a || !b) continue;
+      const [xi, yi] = a;
+      const [xj, yj] = b;
+      const intersect = ((yi > lat) !== (yj > lat))
+        && (lng < ((xj - xi) * (lat - yi)) / ((yj - yi) || 1e-12) + xi);
+      if (intersect) inside = !inside;
+    }
+    return inside;
+  }
+  function featureContains(feature: CountryFeature, lng: number, lat: number): boolean {
+    const g = feature.geometry as
+      | { type: 'Polygon'; coordinates: number[][][] }
+      | { type: 'MultiPolygon'; coordinates: number[][][][] };
+    if (g.type === 'Polygon') {
+      const [outer, ...holes] = g.coordinates;
+      if (!outer || !pointInRing(lng, lat, outer)) return false;
+      return holes.every((h) => !pointInRing(lng, lat, h));
+    }
+    for (const poly of g.coordinates) {
+      const [outer, ...holes] = poly;
+      if (!outer || !pointInRing(lng, lat, outer)) continue;
+      if (holes.every((h) => !pointInRing(lng, lat, h))) return true;
+    }
+    return false;
+  }
+  function findCountryAt(lng: number, lat: number): CountryFeature | null {
+    for (const f of countries) {
+      if (featureContains(f, lng, lat)) return f;
+    }
+    return null;
+  }
+
+  // Bbox centroid of a country polygon. Used to center the camera on
+  // click when the atlas entry doesn't carry an explicit lat/lng
+  // (i.e. render_kind === 'polygon'). Walks the outer rings of each
+  // sub-polygon and averages min/max lng/lat. Crude but stable —
+  // good enough for "frame the country" camera moves; a true
+  // geo-centroid would buy nothing visible at globe scale.
+  function polygonCentroid(geometry: object): { lat: number; lng: number } {
+    const g = geometry as
+      | { type: 'Polygon'; coordinates: number[][][] }
+      | { type: 'MultiPolygon'; coordinates: number[][][][] };
+    let minLng = 180;
+    let maxLng = -180;
+    let minLat = 90;
+    let maxLat = -90;
+    const visit = (ring: number[][]): void => {
+      for (const [lng, lat] of ring) {
+        if (lng < minLng) minLng = lng;
+        if (lng > maxLng) maxLng = lng;
+        if (lat < minLat) minLat = lat;
+        if (lat > maxLat) maxLat = lat;
+      }
+    };
+    if (g.type === 'Polygon') {
+      visit(g.coordinates[0] ?? []);
+    } else {
+      for (const poly of g.coordinates) visit(poly[0] ?? []);
+    }
+    return { lat: (minLat + maxLat) / 2, lng: (minLng + maxLng) / 2 };
+  }
 
   // Stable accessor closures. These are passed as react-globe.gl props
   // and end up inside its internal useMemo / useEffect deps; building
@@ -798,7 +1243,6 @@ export async function mountGlobe(
   // (set in loadGlobeAssets), which biases their depth values so they
   // always win the depth test against neighboring non-photo caps and
   // against each other.
-  const POLYGON_ALTITUDE = 0.01;
   const polygonCapMaterialFn = (d: object): THREE_T.Material | undefined =>
     photoMaterials.get((d as CountryFeature).properties.name);
   const polygonCapColorFn = (d: object): string => {
@@ -841,6 +1285,18 @@ export async function mountGlobe(
     const wrap = document.createElement('div');
     wrap.className = 'splash-globe-bubble';
     wrap.title = entry.country;
+    // data-country lets setSelectedCountry find this bubble's DOM node
+    // to toggle the selection ring. The base CSS has pointer-events:
+    // none so the splash tile stays inert; data-clickable="true" flips
+    // it on for the fullscreen Explorer page.
+    wrap.dataset.country = entry.country;
+    if (fullscreen) {
+      wrap.dataset.clickable = 'true';
+      wrap.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectAtlasEntry(entry.country);
+      });
+    }
     const img = document.createElement('img');
     // Splash bubbles use the 384-edge tile variant (~15 KB) for first
     // paint; /explorer/ renders bubbles at full ~2048-edge.
@@ -859,6 +1315,132 @@ export async function mountGlobe(
   const htmlElementVisibilityModifierFn = (el: HTMLElement, isVisible: boolean): void => {
     el.style.opacity = isVisible ? '1' : '0';
   };
+
+  // Click handler shared by polygon caps, microstate bubbles, and the
+  // arc-forward fallback. Centers the camera on the country and fires
+  // onCountryClick. Eligible names are atlas entries OR visited-only
+  // countries (e.g. The Bahamas — visited but no photo album). Bubbles
+  // store lat/lng directly; polygons either reuse the atlas entry's
+  // curated lat/lng or fall back to a bbox centroid. pointOfView
+  // altitude 1.1 lands the country roughly half the frame.
+  function selectAtlasEntry(name: string, fallback?: { lat: number; lng: number }): void {
+    const entry = atlasByName.get(name) ?? null;
+    const visits = VISITS_BY_COUNTRY.get(name) ?? [];
+    if (!entry && visits.length === 0) return;
+    const target =
+      entry && 'lat' in entry && 'lng' in entry
+        ? { lat: entry.lat, lng: entry.lng }
+        : fallback;
+    const inst = globeRef.current;
+    if (inst && target) {
+      inst.pointOfView({ lat: target.lat, lng: target.lng, altitude: 1.1 }, 1200);
+    }
+    kickIdleTimer();
+    options.onCountryClick?.({ name, entry, visits: [...visits] });
+  }
+  function selectCountry(feature: CountryFeature): void {
+    const name = feature.properties.name;
+    selectAtlasEntry(name, polygonCentroid(feature.geometry));
+  }
+  // Hover fires with the polygon under the cursor (or null when the
+  // cursor leaves a polygon entirely). Drives a dim cream outline on
+  // clickable countries so users know which polygons respond.
+  const polygonHoverFn = (poly: object | null): void => {
+    const name = poly ? (poly as CountryFeature).properties.name : null;
+    setHoveredCountry(name);
+  };
+  // Custom click detection. We bypass three-globe's onPolygonClick /
+  // onArcClick entirely because three-render-objects flips
+  // isPointerDragging=true on *any* mousemove during press and (with
+  // its default clickAfterDrag: false) silently drops the click. Even
+  // 1 px of natural hand-tremor cancels a click on a mouse, which read
+  // as "have to click multiple times to open a country."
+  //
+  // Instead: listen for pointerdown/pointerup on mountEl, allow up to
+  // 5 px of movement and 600 ms between them, then raycast via
+  // toGlobeCoords + point-in-polygon. Same path the old arc-click
+  // forwarder used. Bubble overlays handle their own clicks; we ignore
+  // pointer events whose target is inside a .splash-globe-bubble.
+  const CLICK_PIXEL_TOLERANCE = 5;
+  const CLICK_TIME_MS = 600;
+  let pointerDownX = 0;
+  let pointerDownY = 0;
+  let pointerDownTime = 0;
+  let pointerDownActive = false;
+  // Whether the current press has crossed the drag threshold. Drives
+  // the `grabbing` cursor — we don't show it until the user actually
+  // starts moving, so a plain click doesn't flicker through `grabbing`.
+  let isDragging = false;
+  const isBubbleTarget = (target: EventTarget | null): boolean =>
+    !!(target instanceof Element && target.closest('.splash-globe-bubble'));
+  // Canvas cursor reflects: grabbing during a drag, pointer over a
+  // clickable polygon (atlas + visited), grab over everything else.
+  // Bubbles set their own cursor via CSS (pointer when data-clickable).
+  function updateCanvasCursor(): void {
+    if (!fullscreen) return;
+    const canvas = mountEl.querySelector('canvas') as HTMLElement | null;
+    if (!canvas) return;
+    const next = isDragging
+      ? 'grabbing'
+      : hoveredCountryName
+        ? 'pointer'
+        : 'grab';
+    if (canvas.style.cursor !== next) canvas.style.cursor = next;
+  }
+  const handlePointerDown = (e: PointerEvent): void => {
+    if (e.button !== 0) return;
+    if (isBubbleTarget(e.target)) {
+      pointerDownActive = false;
+      return;
+    }
+    pointerDownX = e.clientX;
+    pointerDownY = e.clientY;
+    pointerDownTime = performance.now();
+    pointerDownActive = true;
+    isDragging = false;
+    // Don't flip to `grabbing` yet — wait until the user actually moves.
+    // A plain click should never show the drag cursor.
+  };
+  const handlePointerMove = (e: PointerEvent): void => {
+    if (!pointerDownActive || isDragging) return;
+    const dx = Math.abs(e.clientX - pointerDownX);
+    const dy = Math.abs(e.clientY - pointerDownY);
+    if (dx > CLICK_PIXEL_TOLERANCE || dy > CLICK_PIXEL_TOLERANCE) {
+      isDragging = true;
+      updateCanvasCursor();
+    }
+  };
+  const handlePointerUp = (e: PointerEvent): void => {
+    if (e.button !== 0) return;
+    const wasActive = pointerDownActive;
+    pointerDownActive = false;
+    const wasDragging = isDragging;
+    isDragging = false;
+    updateCanvasCursor();
+    if (!wasActive) return;
+    if (isBubbleTarget(e.target)) return;
+    if (wasDragging) return;
+    const dx = Math.abs(e.clientX - pointerDownX);
+    const dy = Math.abs(e.clientY - pointerDownY);
+    if (dx > CLICK_PIXEL_TOLERANCE || dy > CLICK_PIXEL_TOLERANCE) return;
+    if (performance.now() - pointerDownTime > CLICK_TIME_MS) return;
+    const inst = globeRef.current;
+    if (!inst) return;
+    const canvas = mountEl.querySelector('canvas');
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const coords = inst.toGlobeCoords(x, y);
+    if (!coords) return;
+    const feature = findCountryAt(coords.lng, coords.lat);
+    if (feature) selectCountry(feature);
+  };
+  if (fullscreen) {
+    mountEl.addEventListener('pointerdown', handlePointerDown);
+    mountEl.addEventListener('pointermove', handlePointerMove);
+    mountEl.addEventListener('pointerup', handlePointerUp);
+  }
 
 
   // Single-stage paint: sphere + country polygons (shimmer state) +
@@ -939,7 +1521,15 @@ export async function mountGlobe(
         htmlAltitude: 0.02,
         htmlElement: htmlElementFn,
         htmlElementVisibilityModifier: htmlElementVisibilityModifierFn,
-        enablePointerInteraction: false,
+        // Tile (splash) stays view-only — pointer interaction there
+        // would compete with the splash's own click-to-explore tile
+        // affordance. Fullscreen (/explorer/) opts in so polygons are
+        // clickable for the country detail modal.
+        enablePointerInteraction: fullscreen,
+        // Click detection runs through mountEl's pointer listeners
+        // (see handlePointerDown / handlePointerUp above) — three-globe's
+        // onPolygonClick / onArcClick drop clicks under any mouse drift.
+        onPolygonHover: fullscreen ? polygonHoverFn : undefined,
         animateIn,
       } as Record<string, unknown>),
     );
@@ -967,7 +1557,11 @@ export async function mountGlobe(
   // earlier than the polygons are visible.
   const canvasObserver = new MutationObserver(() => {
     const canvas = mountEl.querySelector('canvas');
-    if (canvas) canvasObserver.disconnect();
+    if (!canvas) return;
+    canvasObserver.disconnect();
+    // Seed the cursor as soon as the canvas exists so the user sees
+    // `grab` over the ocean from the first frame, not the OS default.
+    updateCanvasCursor();
   });
   canvasObserver.observe(mountEl, { childList: true, subtree: true });
   let realPaintRevealed = false;
@@ -1142,6 +1736,16 @@ export async function mountGlobe(
     // autoRotate starts driving it. (No fly-in delay needed; the
     // pointOfView call is instant — transitionMs=0.)
     requestAnimationFrame(() => enableAutoRotate());
+
+    // Drag / zoom interaction → pause autoRotate + start the 5s
+    // resume timer. OrbitControls fires 'start' on mouse-down + wheel.
+    // Only wire in fullscreen — the splash tile leaves
+    // enablePointerInteraction off so there's nothing to listen for.
+    if (fullscreen) {
+      const controls = inst.controls();
+      controls.addEventListener?.('start', kickIdleTimer);
+      options.onReady?.({ kickIdleTimer, setSelectedCountry, setRotationLocked });
+    }
   }
   setInitialCamera();
 
@@ -1151,6 +1755,16 @@ export async function mountGlobe(
     canvasObserver.disconnect();
     ro.disconnect();
     if (resizeTimer !== null) clearTimeout(resizeTimer);
+    if (idleTimer !== null) clearTimeout(idleTimer);
+    disposeBorder();
+    disposeHoverBorder();
+    if (fullscreen) {
+      mountEl.removeEventListener('pointerdown', handlePointerDown);
+      mountEl.removeEventListener('pointermove', handlePointerMove);
+      mountEl.removeEventListener('pointerup', handlePointerUp);
+    }
+    const inst = globeRef.current;
+    inst?.controls().removeEventListener?.('start', kickIdleTimer);
     root.unmount();
     globeMaterial.dispose();
     // photoMaterials are NOT disposed here: they live in the

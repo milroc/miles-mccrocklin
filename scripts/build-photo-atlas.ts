@@ -42,6 +42,10 @@ const ALBUM_HOST = 'https://milesmccrocklin.myportfolio.com';
 export interface AlbumRef {
   title: string;
   url: string;
+  // Populated at build time from the portfolio index cover map. Used
+  // by the frontend (CountryPanel) to render a thumbnail next to each
+  // album in the country detail panel.
+  source_image_url?: string;
 }
 
 interface SingleEntry {
@@ -762,6 +766,16 @@ async function main() {
       image_tile: `media/portfolio/${entry.country_slug}-tile.jpg`,
     };
 
+    // Attach the portfolio's CDN cover URL to every album reference.
+    // The frontend uses it as a thumbnail; the validation pass at
+    // startup guarantees every album.url is present in coverByUrl, so
+    // a `.get(...) ?? ''` would mask a real bug — throw instead.
+    const withCover = (a: AlbumRef): AlbumRef => {
+      const url = coverByUrl.get(a.url);
+      if (!url) throw new Error(`no index cover for ${a.url}`);
+      return { ...a, source_image_url: url };
+    };
+
     if (entry.local_image) {
       const localPath = join(ROOT, entry.local_image.path);
       if (!existsSync(localPath)) {
@@ -776,13 +790,13 @@ async function main() {
       // An entry with a local_image hero may still carry portfolio
       // albums as a paper trail (e.g. Australia). Preserve them.
       if (entry.secondary_albums && entry.secondary_albums.length) {
-        record.secondary_albums = entry.secondary_albums;
+        record.secondary_albums = entry.secondary_albums.map(withCover);
       }
     } else if (entry.primary_album) {
       const { path, sourceUrl } = await resolveAlbumCover(entry.primary_album, coverByUrl);
       await resizeToTexture(path, dest);
       record.primary_album = { ...entry.primary_album, source_image_url: sourceUrl };
-      record.secondary_albums = entry.secondary_albums ?? [];
+      record.secondary_albums = (entry.secondary_albums ?? []).map(withCover);
     } else {
       console.error(`${entry.country}: needs primary_album or local_image`);
       process.exit(1);

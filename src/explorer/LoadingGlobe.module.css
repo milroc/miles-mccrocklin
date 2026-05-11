@@ -1,0 +1,130 @@
+/* Loading state — a CSS 3D wireframe globe (meridians + parallels)
+   spinning around a slightly-tilted polar axis. Sits in the mount
+   div until Globe.tsx fades in the WebGL canvas on top of it. The
+   3D effect comes from layering circle borders rotated through a
+   common perspective: meridians as great circles at varying rotateY
+   angles, parallels as horizontal circles at varying altitudes. The
+   parent applies a single rotateY animation; meridians appear to
+   move around the back/front of the sphere, parallels stay as
+   apparent ellipses (they're rotationally symmetric around Y).
+
+   Same visual register as the splash's static wireframe
+   (.globeStatic in Splash.module.css) — same muted-cream lines on
+   dark canvas — so navigating /explorer/ from the splash feels like
+   a continuation. */
+.scene {
+  width: min(60vmin, 480px);
+  aspect-ratio: 1;
+  position: relative;
+  perspective: 1200px;
+  /* Entrance animation — fade + slight scale-up over 600 ms so the
+     wireframe arrives gently instead of popping in. Keeps the final
+     state with `animation-fill-mode: both`. */
+  animation: explorer-loader-enter 600ms cubic-bezier(0.2, 0.65, 0.3, 1) both;
+}
+@keyframes explorer-loader-enter {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.globe {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  /* Faint radial highlight gives the sphere some sense of front-lit
+     volume without the meridian/parallel grid losing legibility. */
+  background:
+    radial-gradient(circle at 32% 30%, rgba(255,255,255,0.04), transparent 55%);
+  border-radius: 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .globe {
+    /* 6 s period — fast enough that ≥1/4 of a rotation is visible
+       during the typical ~1–2 s loader-visible window, slow enough
+       to read as a deliberate "earth spinning" rhythm rather than a
+       frantic spinner. */
+    animation: explorer-globe-spin 6s linear infinite;
+  }
+}
+@keyframes explorer-globe-spin {
+  from { transform: rotateX(15deg) rotateY(0deg); }
+  to   { transform: rotateX(15deg) rotateY(360deg); }
+}
+
+.meridian {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(184, 181, 173, 0.18);
+  border-radius: 50%;
+}
+/* Six meridians spaced 30° apart. Together they form half of the
+   sphere's longitude grid; the rotation animation supplies the rest
+   over time. */
+.meridian:nth-child(1) { transform: rotateY(0deg); }
+.meridian:nth-child(2) { transform: rotateY(30deg); }
+.meridian:nth-child(3) { transform: rotateY(60deg); }
+.meridian:nth-child(4) { transform: rotateY(90deg); }
+.meridian:nth-child(5) { transform: rotateY(120deg); }
+.meridian:nth-child(6) { transform: rotateY(150deg); }
+
+.parallel {
+  position: absolute;
+  left: 50%;
+  border: 1px solid rgba(184, 181, 173, 0.14);
+  border-radius: 50%;
+}
+/* Parallels at L = 0° (equator), ±30°, ±60°. Sizes derived from
+   geometry: a parallel at latitude L is a horizontal circle with
+   radius cos(L) and altitude sin(L) (in units of sphere radius).
+   The rotateX(90deg) tips the horizontal circle so its plane is
+   the sphere's equatorial plane; we then translate it up/down
+   along the polar axis. */
+.parallelEq {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  transform: rotateX(90deg);
+}
+.parallel30N {
+  width: 86.6%;
+  height: 86.6%;
+  top: -18.3%;
+  transform: translateX(-50%) rotateX(90deg);
+}
+.parallel30S {
+  width: 86.6%;
+  height: 86.6%;
+  top: 31.7%;
+  transform: translateX(-50%) rotateX(90deg);
+}
+.parallel60N {
+  width: 50%;
+  height: 50%;
+  top: -18.3%;
+  transform: translateX(-50%) rotateX(90deg);
+}
+.parallel60S {
+  width: 50%;
+  height: 50%;
+  top: 68.3%;
+  transform: translateX(-50%) rotateX(90deg);
+}
+.label {
+  position: absolute;
+  top: calc(50% + min(33vmin, 264px));
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--splash-mono);
+  font-size: 10px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--splash-canvas-fg-muted);
+  pointer-events: none;
+  white-space: nowrap;
+  /* Pulse the label gently so the user knows something's happening. */
+  animation: explorer-loading-pulse 2.4s ease-in-out infinite;
+}
+@keyframes explorer-loading-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 1; }
+}

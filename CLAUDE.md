@@ -9,6 +9,31 @@ Do not deviate without explicit user approval.
 In QA / design-review mode, flag any code that doesn't match `DESIGN.md`,
 including the "Known Drift" section (D1–D6) — those are the open gaps.
 
+### One component per file, one CSS module per component
+
+- **One React component per file.** A "component" is anything that
+  returns JSX (named like `Foo`, used as `<Foo />`). Each one lives in
+  its own `Foo.tsx`. Don't define a second JSX-returning function in
+  the same file as `Foo` — extract it to its own `Bar.tsx` instead.
+  Helper functions that don't return JSX (formatters, type guards,
+  pure utilities scoped to one component) may stay in the same file
+  as their only caller; if more than one component needs them, lift
+  them into a sibling `foo-utils.ts`.
+- **One CSS module per component.** `Foo.tsx` pairs with
+  `Foo.module.css`. Don't reach into a sibling component's module
+  from outside that component, and don't pile multiple components'
+  selectors into one shared module. If two components genuinely need
+  the same styling, extract the third component that owns them.
+- **Class names in a module describe the component, not the
+  component's role in some larger layout.** Inside `CountryPanel.module.css`,
+  the outer element is `.root`, not `.panel` — the `panel` prefix is
+  redundant because the module already scopes the name.
+- **Pages compose components; they don't grow them.** When a page's
+  `.tsx` file starts accumulating inline `function Foo(): JSX.Element`
+  definitions, that's the signal to extract — see `src/explorer/` for
+  the pattern (`Explorer.tsx` composes `Toolbar`, `LoadingGlobe`,
+  `CountryPanel`, each with its own module).
+
 ### CSS Modules
 
 All component-scoped styles live in `*.module.css` files and are

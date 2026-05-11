@@ -1,0 +1,82 @@
+/* Explorer toolbar — top-left cluster with a back link and the
+   rotation toggle. Sits above the globe canvas. */
+.root {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back,
+.rotateToggle {
+  font-family: var(--splash-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--splash-canvas-fg);
+  /* Dark glass backdrop so the labels stay readable when a bright
+     photo polygon (Niagara, Dubai, Antarctica) is directly behind
+     the toolbar. Blur gives the buttons a subtle frosted-glass cue
+     against the canvas without crushing the photo. */
+  background: rgba(28, 31, 26, 0.55);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid var(--splash-canvas-rule);
+  border-radius: 2px;
+  /* 10px vertical padding pushes the button to ~36-38px tall, closer
+     to the 44px touch-target minimum. The 14px horizontal value
+     preserves the mono caps tracking room. */
+  padding: 10px 14px;
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease, opacity 120ms ease;
+  cursor: pointer;
+  font-weight: inherit;
+}
+
+.back:hover,
+.back:focus-visible,
+.rotateToggle:hover,
+.rotateToggle:focus-visible {
+  color: var(--splash-canvas-fg-strong);
+  border-color: var(--splash-canvas-fg-strong);
+  background: rgba(28, 31, 26, 0.75);
+  outline: none;
+}
+
+.rotateToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Spin the icon when rotation is on, freeze it when off. Speed matches
+   the globe's autoRotateSpeed (0.4 → ~15s for a full revolution) so the
+   icon's tempo feels tied to what's happening on the globe. */
+.rotateIcon {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 1;
+}
+.rotateToggle[data-active="true"] .rotateIcon {
+  animation: rotate-icon-spin 15s linear infinite;
+}
+.rotateToggle[data-active="false"] {
+  color: var(--splash-canvas-fg);
+  opacity: 0.85;
+}
+.rotateToggle[data-active="false"]:hover {
+  opacity: 1;
+}
+@keyframes rotate-icon-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rotateToggle[data-active="true"] .rotateIcon {
+    animation: none;
+  }
+}
