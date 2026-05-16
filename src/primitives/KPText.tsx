@@ -12,7 +12,7 @@
 // Redactions: Greek letters in bullet text are rendered as italic,
 // accent-colored variables with a hover tooltip. The matched glyph set
 // lives in src/me.ts (REDACTED_GLYPH_RE) and must stay in sync with the
-// redaction registry in data/resume.json.
+// redaction registry in data/me.json.
 // The convention signals "I know the figure, intentionally not sharing it
 // publicly" — turns a leak risk into a discretion signal. Markers are
 // chosen so KP measures them as the actual visible glyph (no marker

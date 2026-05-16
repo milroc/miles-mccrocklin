@@ -1,7 +1,7 @@
 // Owner-coupled constants — code-shaped data that doesn't fit in
-// resume.json (regexes, derived URL labels, typographic syllables, fallback
+// me.json (regexes, derived URL labels, typographic syllables, fallback
 // URLs) but would change for any other person using this site. Update
-// here whenever resume.json's identity-bearing fields change.
+// here whenever me.json's identity-bearing fields change.
 
 // Toolbar wordmark — name · /human handle · year register.
 export const WORDMARK = 'Miles McCrocklin · /human · v2026';
@@ -36,7 +36,7 @@ export const LINKEDIN_HANDLE_TEXT = 'miles-mccrocklin';
 export const REDACTION_DESCRIPTION = 'Greek letters above mark figures and names intentionally withheld out of respect for the people who built the work with me. Each is described below; reach out to learn more about my role on these efforts'
 
 // Greek glyphs used as inline redaction anchors in bullet prose. Keep in
-// sync with the `redactions` array in data/resume.json — every glyph
+// sync with the `redactions` array in data/me.json — every glyph
 // listed here must have a matching registry entry, and vice versa.
 export const REDACTED_GLYPH_RE = /[ΞαβσΣΨΩΦ]/g;
 

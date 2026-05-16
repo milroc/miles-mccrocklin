@@ -1,5 +1,5 @@
 // Shared data shapes for the resume site.
-// All content lives in data/resume.json — there's no global media pool.
+// All content lives in data/me.json — there's no global media pool.
 // Media attaches inline to whichever entry it belongs to.
 
 // ----- Mode + visibility ----------------------------------------------
@@ -22,7 +22,7 @@ export type MediaType = 'image' | 'video' | 'embed';
 export type MediaLayout = 'stack' | 'strip' | 'carousel' | 'grid';
 // Lightbox treatment. 'ui' renders the about-text in a dedicated side/bottom
 // panel beside the screenshot; 'photo' (default when omitted) keeps the
-// existing bottom gradient caption overlay. Opt-in via resume.json.
+// existing bottom gradient caption overlay. Opt-in via me.json.
 export type MediaSubtype = 'photo' | 'ui';
 
 export interface MediaItem {
@@ -180,7 +180,7 @@ export interface Redaction {
   // `<a href="#note-{id}">` and the matching footnote `<dt>` carries
   // `id="note-{id}"`. Use lowercase Greek letter names ("alpha", etc).
   id: string;
-  // The actual character that appears in resume.json prose. Kept
+  // The actual character that appears in me.json prose. Kept
   // narrow on purpose — KPText scans for `[ΞαβσΣΨΩΦ]` only (see
   // REDACTED_GLYPH_RE in me.ts).
   glyph: string;

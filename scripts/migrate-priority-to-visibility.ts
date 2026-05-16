@@ -7,7 +7,7 @@
 // visibility filter. We detect MediaItems by their {id, type} shape.
 //
 // Run: `bun scripts/migrate-priority-to-visibility.ts`
-import resume from '../data/resume.json' with { type: 'json' };
+import me from '../data/me.json' with { type: 'json' };
 
 type Visibility = 'all' | 'not_1pager' | '1pager_only' | 'archived';
 
@@ -42,6 +42,6 @@ function migrate(node: unknown): unknown {
   return node;
 }
 
-const migrated = migrate(resume);
-await Bun.write('./data/resume.json', JSON.stringify(migrated, null, 2) + '\n');
-console.log('Migrated data/resume.json: priority/omit → visibility');
+const migrated = migrate(me);
+await Bun.write('./data/me.json', JSON.stringify(migrated, null, 2) + '\n');
+console.log('Migrated data/me.json: priority/omit → visibility');

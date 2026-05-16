@@ -398,7 +398,7 @@ export function MediaProvider({ children }: MediaProviderProps) {
 
   // UI items get a dedicated about-text panel beside the screenshot instead
   // of the photo-style bottom gradient overlay. Driven by `subtype: 'ui'`
-  // in resume.json — see isUiItem in src/utils/media.ts.
+  // in me.json — see isUiItem in src/utils/media.ts.
   const isUi = isUiItem(cur);
   const lightboxClass = `${s.lightbox} ${chromeVisible ? s.chromeVisible : s.chromeHidden}${isUi ? ` ${s.ui}` : ''}`;
 

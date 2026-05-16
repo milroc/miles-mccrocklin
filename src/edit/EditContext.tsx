@@ -3,7 +3,7 @@
 // purely in client memory (with a localStorage backup for crash
 // safety). The dev server is no longer involved; the only way out of
 // this list is the "Copy LLM" prompt, which the user pastes to an
-// agent that applies the records to `data/resume.json` directly.
+// agent that applies the records to `data/me.json` directly.
 //
 // Built-time gated by EDIT_ENABLED — the import boundary stays, the
 // runtime body no-ops in prod via the `EDIT_ENABLED ? Real : Stub`
@@ -141,10 +141,10 @@ function RealEditProvider({ initialResume, children }: EditProviderProps) {
   const copyPrompt = useCallback(async () => {
     if (changes.length === 0) {
       // No pending changes — short prompt asking the agent to polish
-      // whatever's in resume.json (e.g. recent git diffs).
+      // whatever's in me.json (e.g. recent git diffs).
       const empty = [
-        "I'm editing my resume. The state is in `data/resume.json`. Review",
-        "recent changes (`git diff data/resume.json` if helpful), fix anything",
+        "I'm editing my resume. The state is in `data/me.json`. Review",
+        "recent changes (`git diff data/me.json` if helpful), fix anything",
         'awkward, and write the cleaned JSON back. Preserve every field. Keep',
         'the same shape and field names.',
         '',
@@ -177,10 +177,10 @@ function RealEditProvider({ initialResume, children }: EditProviderProps) {
     const recordList = changes.map((c, i) => `${i + 1}. ${describe(c)}`);
 
     const prompt = [
-      "I'm editing my resume. The state lives in `data/resume.json`. The",
+      "I'm editing my resume. The state lives in `data/me.json`. The",
       'change records below were captured in my editor (client-side only —',
       'they were never written anywhere). Apply each record to',
-      '`data/resume.json` in order. Preserve every field not affected by a',
+      '`data/me.json` in order. Preserve every field not affected by a',
       'record. Keep the same shape and field names.',
       '',
       '## Records to apply',

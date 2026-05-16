@@ -1,4 +1,4 @@
-// Redaction registry, sourced from `data/resume.json` so the context
+// Redaction registry, sourced from `data/me.json` so the context
 // strings live with the rest of the resume prose. The `redactions` array
 // in the JSON powers two surfaces:
 //
@@ -9,10 +9,10 @@
 //      gets a glyph + a brief description.
 //
 // See `Redaction` in src/types.ts for the field contract.
-import RESUME from '../data/resume.json' with { type: 'json' };
+import ME from '../data/me.json' with { type: 'json' };
 import type { Redaction, Resume } from './types';
 
-const RESUME_DATA = RESUME as unknown as Resume;
+const RESUME_DATA = ME as unknown as Resume;
 
 export type { Redaction };
 

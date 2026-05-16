@@ -1,9 +1,9 @@
 #!/usr/bin/env bun
-// Edit captions and tags for UI items in data/resume.json.
+// Edit captions and tags for UI items in data/me.json.
 //
 // Finds every media item with `subtype: "ui"`, dumps the editable
 // fields into a temp file, opens it in $EDITOR, then merges the changes
-// back into resume.json. Save and quit to apply; quit without saving (or
+// back into me.json. Save and quit to apply; quit without saving (or
 // delete a block) to skip an item.
 //
 // Usage:
@@ -32,7 +32,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const ROOT = new URL("..", import.meta.url).pathname;
-const RESUME_PATH = `${ROOT}data/resume.json`;
+const RESUME_PATH = `${ROOT}data/me.json`;
 
 interface UiItem {
   id: string;
@@ -70,7 +70,7 @@ function findUiItems(node: unknown, out: UiItem[] = []): UiItem[] {
 
 function dump(items: UiItem[]): string {
   const header = [
-    "# UI copy editor — save and exit to apply changes to data/resume.json.",
+    "# UI copy editor — save and exit to apply changes to data/me.json.",
     "#",
     "# Edit `tag:` (one line) and the `caption:` body (free-form, multi-line).",
     "# Inside a caption, a wrap-only line break joins with a single space; a",
@@ -194,7 +194,7 @@ function main(): void {
 
   if (items.length === 0) {
     console.error(
-      'No UI items found. Mark items with `"subtype": "ui"` in data/resume.json first.',
+      'No UI items found. Mark items with `"subtype": "ui"` in data/me.json first.',
     );
     process.exit(1);
   }

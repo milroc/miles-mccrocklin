@@ -107,7 +107,7 @@
    Four mutually-exclusive visibility buttons (ALL · !1P · 1P · ARCH)
    followed by a real delete X. Visibility buttons push a `visibility`
    change record (see edit/VisibilityChip.tsx); the X pushes a `delete`
-   record that drops the item from data/resume.json on the next agent
+   record that drops the item from data/me.json on the next agent
    pass. Sized to read as inline metadata next to the bullet text. */
 .chip {
   display: inline-flex;

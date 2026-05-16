@@ -1,7 +1,7 @@
 // Inline chip: 4 mutually-exclusive visibility buttons + a real delete X.
 // Visibility buttons push a `visibility` change record. The X pushes a
 // `delete` record (the item disappears from the rendered preview
-// immediately, and the agent will remove it from data/resume.json on
+// immediately, and the agent will remove it from data/me.json on
 // the next pass).
 //
 // Conditional-assignment on the literal EDIT_ENABLED constant →
@@ -60,7 +60,7 @@ function Chip({ path }: VisibilityChipProps) {
           if (typeof window !== 'undefined' && !window.confirm('Delete this item from the resume?')) return;
           pushDelete(path);
         }}
-        title="Delete this item from data/resume.json"
+        title="Delete this item from data/me.json"
         aria-label="Delete"
       >
         ✕

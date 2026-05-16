@@ -80,7 +80,7 @@ produce visible jitter.
 
 ## Editing resume prose
 
-Whenever you touch prose inside `data/resume.json` (summaries, bullets,
+Whenever you touch prose inside `data/me.json` (summaries, bullets,
 taglines, captions, project descriptions, community details), run the
 `/humanizer` skill against the result before writing. Specifically watch
 for tells of AI-generated writing:

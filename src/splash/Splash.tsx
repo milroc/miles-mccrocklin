@@ -33,8 +33,8 @@ import s from './Splash.module.css';
 // Socials — same set the resume Header renders, but icons-only on the
 // splash for a tighter editorial register. URLs hardcoded for the same
 // reason as SPLASH_NAME below: keep the splash bundle from importing
-// data/resume.json and dragging all the prose into a chrome-only entry.
-// Source of truth lives in data/resume.json contact_information; if a
+// data/me.json and dragging all the prose into a chrome-only entry.
+// Source of truth lives in data/me.json contact_information; if a
 // handle changes, update both places.
 const SOCIALS: ReadonlyArray<{
   id: string;
@@ -51,7 +51,7 @@ const SOCIALS: ReadonlyArray<{
 ];
 
 // Photographer tile content — Miles's wildlife, landscape, and travel
-// shots. Order mirrors data/resume.json: first the curated personal
+// shots. Order mirrors data/me.json: first the curated personal
 // shots from `summary_media.items` (skipping the work-related fact-
 // checking summit photos and the badge post), then the sabbatical
 // travel set in the order it appears under the Travel & Wildlife
@@ -97,7 +97,7 @@ const PHOTOGRAPHER_GRID: ReadonlyArray<MasonryItem> = [
 
 ];
 
-// Builder tile content. Aspect ratios sourced from data/resume.json
+// Builder tile content. Aspect ratios sourced from data/me.json
 // where available; estimated for the LinkedIn-cover assets that don't
 // appear in the resume's media. Estimates drive first paint; <Masonry>
 // then refines via image-load measurement so cells match each image's
@@ -190,7 +190,7 @@ const BUILDER_GRID: ReadonlyArray<MasonryItem> = [
 ];
 
 // Wordmark uses the same name string as the resume's contact_information.name.
-// Hardcoded here to keep the splash bundle from importing data/resume.json
+// Hardcoded here to keep the splash bundle from importing data/me.json
 // (which would pull all bullet/review prose into a chrome-only entry).
 const SPLASH_NAME = 'Miles Kendrick McCrocklin';
 

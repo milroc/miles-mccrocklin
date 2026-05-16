@@ -3,7 +3,7 @@
 // in client memory (with a localStorage backup) — the dev server is
 // not involved. The only way records leave the browser is through the
 // "Copy LLM" prompt, which the user pastes into an in-repo agent that
-// applies them to `data/resume.json`.
+// applies them to `data/me.json`.
 import type { Resume, Visibility } from '../types';
 import { getAtPath, setAtPath, deleteAtPath, pathStartsWith } from './path';
 

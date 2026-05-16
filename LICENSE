@@ -49,7 +49,7 @@ without prior written permission.
     wildlife photography, and screenshots of work product.
   - Site icons and brand assets at the repository root: favicon.svg,
     favicon-32.png, apple-touch-icon.svg, apple-touch-icon.png.
-  - Resume content and prose in data/resume.json — including summaries,
+  - Resume content and prose in data/me.json — including summaries,
     bullets, taglines, captions, project descriptions, achievements,
     reviews, and any other authored text — and any other JSON or text
     files containing authored prose.
@@ -63,7 +63,7 @@ without prior written permission.
   - Long-form documentation authored for this project: README.md,
     DESIGN.md, CLAUDE.md, and similar.
 
-Third-party works (e.g., guest reviews quoted in data/resume.json,
+Third-party works (e.g., guest reviews quoted in data/me.json,
 embedded YouTube/Facebook videos, photos credited to other
 photographers) remain the property of their respective owners and are
 included here under fair use or with permission. Nothing in this

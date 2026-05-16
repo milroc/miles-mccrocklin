@@ -4,7 +4,7 @@
 // Pattern is editorial-CV native (academic-style endnotes) and works
 // on every device — no floating popover, no positioning math.
 //
-// Data is sourced from `data/resume.json` and passed in as a prop by
+// Data is sourced from `data/me.json` and passed in as a prop by
 // App.tsx, matching the pattern used by Community / Skills / EduEntry.
 // Preamble copy lives in `src/me.ts` (REDACTION_DESCRIPTION).
 import { Fragment } from 'react';

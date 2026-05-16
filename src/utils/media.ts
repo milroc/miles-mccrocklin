@@ -16,15 +16,15 @@ export const prefersReducedMotion = (): boolean =>
 
 // Lightbox treatment selector. UI items render with a dedicated about-text
 // panel beside the screenshot; everything else (default) keeps the bottom
-// gradient caption overlay. Driven by `subtype` in resume.json — no id-prefix
+// gradient caption overlay. Driven by `subtype` in me.json — no id-prefix
 // heuristic, opt-in only.
 export function isUiItem(p: MediaItem | null | undefined): boolean {
   return p?.subtype === 'ui';
 }
 
-// Resolve a media src from data/resume.json against the site root.
+// Resolve a media src from data/me.json against the site root.
 //
-// resume.json was authored when / WAS the long-form page, so paths
+// me.json was authored when / WAS the long-form page, so paths
 // look like "media/foo/bar.jpg" (no leading slash). After the splash
 // redesign the long-form lives at /long-form/, where a browser would
 // resolve the same relative path to /long-form/media/... and 404.

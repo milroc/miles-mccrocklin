@@ -1,4 +1,4 @@
-// Throwaway editor for media in data/resume.json.
+// Throwaway editor for media in data/me.json.
 // Drag thumbnails within a carousel to reorder items in their parent array
 // (the array order IS the priority). Edit text fields inline.
 // Run: `bun scripts/edit-media.ts` then open http://localhost:4318
@@ -7,7 +7,7 @@ import { serve } from "bun";
 
 const PORT = Number(process.env.PORT ?? 4318);
 const ROOT = new URL("..", import.meta.url).pathname;
-const RESUME_PATH = `${ROOT}data/resume.json`;
+const RESUME_PATH = `${ROOT}data/me.json`;
 
 type MediaItem = {
   path: (string | number)[];
@@ -379,7 +379,7 @@ function buildGroups() {
     if (!groups.has(k)) groups.set(k, []);
     groups.get(k).push(i);
   });
-  // Array order in resume.json IS the priority. Sort by trailing path
+  // Array order in me.json IS the priority. Sort by trailing path
   // index so the display matches the JSON's authored order.
   for (const [k, idxs] of groups) {
     idxs.sort((a, b) => {

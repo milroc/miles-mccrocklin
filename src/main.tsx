@@ -3,7 +3,7 @@
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { EDIT_ENABLED, EditProvider } from './edit';
-import RESUME from '../data/resume.json' with { type: 'json' };
+import ME from '../data/me.json' with { type: 'json' };
 import type { Resume } from './types';
 import './styles/globals.css';
 
@@ -15,7 +15,7 @@ const root = createRoot(rootEl);
 // code, and the bundler tree-shakes it. App reads its own resume import
 // directly in that path — provider is purely a dev-time wrapper.
 if (EDIT_ENABLED) {
-  const initialResume = RESUME as unknown as Resume;
+  const initialResume = ME as unknown as Resume;
   root.render(
     <EditProvider initialResume={initialResume}>
       <App />
