@@ -39,8 +39,13 @@ the end so future changes either close it or cite a reason.
 - **UI / mono / metrics:** JetBrains Mono (400, 500), with
   `ui-monospace, SFMono-Regular, Menlo, monospace` fallback. Used for
   toolbar, eyebrow labels, repo paths, metric numerals, contact mono row.
-- **Loading:** Google Fonts via `@import` for JetBrains Mono. Georgia is
-  system-installed, no network cost.
+- **Loading:** JetBrains Mono is self-hosted via the
+  `@fontsource-variable/jetbrains-mono` npm package, `@import`ed from
+  `globals.css` and `splash-globals.css`. Bun's CSS bundler resolves
+  through `node_modules` and inlines the woff2 files into the emitted
+  CSS chunks at build time — no external CDN. The family is referenced
+  as `'JetBrains Mono Variable'` (the name fontsource exports). Georgia
+  is system-installed, no network cost.
 - **Hierarchy convention:** Section labels are deliberately the *smallest*
   type on the page (~10.5px). Weight (800), tracking (0.36em), and caps do
   the work — size restraint is what creates the editorial hierarchy.

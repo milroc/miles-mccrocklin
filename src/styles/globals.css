@@ -10,7 +10,11 @@
    See DESIGN.md for the full system.
 */
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+/* Self-hosted JetBrains Mono — variable woff2 served from the
+   @fontsource-variable/jetbrains-mono npm package. Bun's CSS bundler
+   resolves the @import through node_modules and inlines the referenced
+   woff2 files into the emitted CSS chunks; no external CDN. */
+@import '@fontsource-variable/jetbrains-mono/wght.css';
 
 :root {
   /* ---- Color: canvas (the dark mat the paper floats on) ----
@@ -100,7 +104,7 @@
   --page-pad-y: clamp(28px, 4.5vw, 56px);
   --page-pad-x: clamp(16px, 5vw, 72px);
   --serif: Georgia, "Times New Roman", Times, serif;
-  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 * { box-sizing: border-box; }

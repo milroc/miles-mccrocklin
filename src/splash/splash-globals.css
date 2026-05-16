@@ -8,6 +8,13 @@
    so the splash bundle stays standalone and SSR-safe. The resume page
    has its own copies in src/styles/globals.css. */
 
+/* Self-hosted JetBrains Mono — served from the
+   @fontsource-variable/jetbrains-mono npm package. Re-@import'd here
+   (rather than relying on src/styles/globals.css) so the splash +
+   explorer bundles stay standalone. Bun's CSS bundler resolves through
+   node_modules and inlines the woff2 files; no external CDN. */
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+
 :root {
   --splash-canvas: #1c1f1a;
   --splash-canvas-fg-strong: #ece9e2;
@@ -22,7 +29,7 @@
   --splash-accent: #3a6b4a;
 
   --splash-serif: Georgia, 'Times New Roman', Times, serif;
-  --splash-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --splash-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* "Void" — the deep near-black behind missing/loading media inside
      canvas modules. Distinct from --splash-canvas (the mat) because
