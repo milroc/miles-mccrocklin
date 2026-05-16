@@ -10,6 +10,8 @@
 //   /              → splash      (./index.html, mounts splash-entry.tsx)
 //   /long-form     → long-form   (./long-form/index.html, mounts main.tsx)
 //   /long-form/    → long-form   (same)
+//   /explorer      → explorer    (./explorer/index.html, mounts explorer-entry.tsx)
+//   /explorer/     → explorer    (same)
 //
 // Legacy + alternative URL slugs all 302 to /long-form/. Production
 // handles the same redirects via 404.html.
@@ -23,6 +25,12 @@
 // data/) directly from disk so JSON-referenced image/video URLs resolve
 // against the dev server. The prod build copies these into dist/ at
 // build time — see build.ts.
+//
+// Dev/prod divergence note: dev serves source HTML directly. The Person
+// JSON-LD schema (injected by build.ts from me.json at build time) is
+// NOT present in dev — but it's crawler-only metadata, so nothing visible
+// to dev users is missing. To verify schema, run `bun run build` and
+// inspect dist/.
 
 import { serve } from "bun";
 import splash from "./index.html";
@@ -68,8 +76,8 @@ const server = serve({
     const url = new URL(req.url);
 
     // Fallback: serve any path that maps to a real file on disk.
-    // Covers /media/**, /data/*, and anything else referenced by string
-    // (not by JS import) inside JSON or markup.
+    // Covers /media/**, /data/*, favicon.svg, and anything else
+    // referenced by string (not by JS import) inside JSON or markup.
     const path = "." + decodeURIComponent(url.pathname);
     const file = Bun.file(path);
     if (await file.exists()) return new Response(file);

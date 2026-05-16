@@ -1,6 +1,11 @@
 {
   "contact_information": {
     "name": "Miles Kendrick McCrocklin",
+    "display_name": "Miles McCrocklin",
+    "given_name": "Miles",
+    "family_name": "McCrocklin",
+    "tagline": "Builder, photographer, explorer",
+    "portrait": "media/summary/portrait.jpg",
     "address": "San Francisco, CA",
     "website": "https://miles.mccrockl.in",
     "email": "miles@mccrockl.in",

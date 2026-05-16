@@ -4,22 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Miles McCrocklin</title>
-  <meta name="description" content="Builder, photographer, explorer. The 5-second version." />
+  <meta name="description" content="Builder (ex-FB), Photographer, Explorer. Designing for humans in an agentic world." />
   <link rel="canonical" href="https://miles.mccrockl.in/" />
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-  <link rel="alternate icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="miles.mccrockl.in" />
   <meta property="og:url" content="https://miles.mccrockl.in/" />
   <meta property="og:title" content="Miles McCrocklin" />
   <meta property="og:description" content="Builder, photographer, explorer." />
   <meta property="og:image" content="https://miles.mccrockl.in/media/og.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Miles McCrocklin — Builder, Photographer, Explorer." />
-  <meta property="og:site_name" content="miles.mccrockl.in" />
+  <meta property="og:image:alt" content="Miles McCrocklin — Builder, photographer, explorer" />
+  <meta property="og:image" content="https://miles.mccrockl.in/media/summary/portrait.jpg" />
+  <meta property="og:image:alt" content="Portrait of Miles McCrocklin" />
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -28,7 +30,16 @@
   <meta name="twitter:title" content="Miles McCrocklin" />
   <meta name="twitter:description" content="Builder, photographer, explorer." />
   <meta name="twitter:image" content="https://miles.mccrockl.in/media/og.png" />
-  <meta name="twitter:image:alt" content="Miles McCrocklin — Builder, Photographer, Explorer." />
+  <meta name="twitter:image:alt" content="Miles McCrocklin — Builder, photographer, explorer" />
+
+  <!--
+    JSON-LD Person schema is injected by build.ts at build time from
+    data/me.json (single source of truth for profile data + sameAs URLs).
+    Build-time only — dev does not inject it. The schema is crawler-only
+    metadata so dev users don't miss anything visible. Verify locally with
+    `bun run build && grep ld+json dist/index.html` or use Google's Rich
+    Results Test against the deployed URL.
+  -->
 
   <!--
     No-JS / no-effect override is rendered inline by <Splash> via a
