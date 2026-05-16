@@ -63,7 +63,26 @@ export interface MediaContextValue {
 // ----- Resume top-level -----------------------------------------------
 
 export interface Contact {
+  // Full legal name. Used in places that want the formal identity (e.g.,
+  // the printed 1-pager). For Google search display, OG titles, and the
+  // JSON-LD Person schema, prefer `display_name`.
   name: string;
+  // Search-friendly display name (drops middle names, suffixes, etc).
+  // Source of truth for the Person schema's `name` field and most
+  // social-share titles. Lives in me.json so it can change without code.
+  display_name: string;
+  // schema.org Person split. Both required because schema.org's
+  // `Person.givenName` / `Person.familyName` are independent fields, not
+  // derived from `name`.
+  given_name: string;
+  family_name: string;
+  // Short bio used as schema.org Person.jobTitle and as the og:description
+  // on the splash page. Distinct from the longer prose in `summary`.
+  tagline: string;
+  // Project-relative path to the canonical portrait image (no leading
+  // slash). Consumed by build.ts/dev.ts to build the absolute URL used in
+  // the JSON-LD Person.image field and the splash's secondary og:image.
+  portrait: string;
   address: string;
   website: string;
   email: string;

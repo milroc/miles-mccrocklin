@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://miles.mccrockl.in/sitemap.xml

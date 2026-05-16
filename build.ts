@@ -21,6 +21,7 @@
 // the granular `minify: { ... }` options to Bun.build() avoids that.
 
 import { rmSync, cpSync, writeFileSync, readFileSync } from 'node:fs';
+import { loadMe, buildContext, injectPersonSchema, PERSON_SCHEMA_PATHS } from './scripts/page-meta';
 
 rmSync('./dist', { recursive: true, force: true });
 
@@ -76,8 +77,28 @@ cpSync('./favicon-32.png', './dist/favicon-32.png');
 // copied as-is below — so it needs an un-hashed copy at the canonical path.
 cpSync('./favicon.svg', './dist/favicon.svg');
 cpSync('./404.html', './dist/404.html');
+cpSync('./robots.txt', './dist/robots.txt');
+cpSync('./sitemap.xml', './dist/sitemap.xml');
 writeFileSync('./dist/CNAME', 'miles.mccrockl.in');
 writeFileSync('./dist/.nojekyll', '');
+
+// JSON-LD Person schema injection. The only piece of <head> content
+// we inject at build time, because its sameAs/name/image fields all
+// derive from data/me.json — hardcoding it in the HTML would silently
+// drift on the next me.json edit. All other metadata (OG/Twitter,
+// favicons) lives literally in each page's source HTML.
+//
+// dev.ts intentionally does NOT inject this — Person schema is crawler-
+// only metadata that dev users never see. Verify locally with
+// `bun run build && grep ld+json dist/index.html` or Google's Rich
+// Results Test against the deployed URL.
+const ctx = buildContext(loadMe());
+for (const pathSegment of PERSON_SCHEMA_PATHS) {
+  const distPath = `./dist/${pathSegment}index.html`;
+  const html = readFileSync(distPath, 'utf8');
+  writeFileSync(distPath, injectPersonSchema(html, ctx));
+}
+console.log(`  injected Person JSON-LD into ${PERSON_SCHEMA_PATHS.length} HTML files`);
 
 // GA injection: walks every emitted .html file (splash + long-form) and
 // inserts the GA tag before </head>. Previously hardcoded dist/index.html.
