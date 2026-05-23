@@ -7,14 +7,14 @@
 // Hash redirect: legacy links like miles.mccrockl.in/#experience
 // historically pointed to the resume page (when / was the resume).
 // After the redesign, / is the splash and the long-form page is at
-// /long-form/. Preserve those links by redirecting any non-empty hash
-// on / to /long-form/#hash on first load.
+// /builder/. Preserve those links by redirecting any non-empty hash
+// on / to /builder/#hash on first load.
 
 import { hydrateRoot, createRoot } from 'react-dom/client';
 import { Splash } from './Splash';
 
 if (window.location.hash && window.location.hash !== '#') {
-  window.location.replace('/long-form/' + window.location.hash);
+  window.location.replace('/builder/' + window.location.hash);
 } else {
   bootSplash();
 }

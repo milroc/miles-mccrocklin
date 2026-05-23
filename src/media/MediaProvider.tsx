@@ -34,6 +34,14 @@ export function MediaProvider({ children }: MediaProviderProps) {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [scope, setScope] = useState<MediaItem[] | null>(null);
   const [chromeVisible, setChromeVisible] = useState(true);
+  // Per-session set of graphic-content photo ids the viewer revealed
+  // from inside the lightbox. Resets when the page reloads — matches
+  // the conservative default in MasonryWall. Not shared with the
+  // masonry's own set; the masonry strips graphic=true on items it
+  // already revealed before passing them to the lightbox.
+  const [lightboxRevealed, setLightboxRevealed] = useState<Set<string>>(
+    () => new Set(),
+  );
   const trackRef = useRef<HTMLDivElement | null>(null);
   // True while a programmatic scroll is in flight. Suppresses the scroll
   // listener's "snap into a new index" path so we don't fight ourselves.
@@ -435,18 +443,28 @@ export function MediaProvider({ children }: MediaProviderProps) {
             onScroll={onScroll}
             onClick={onTrackClick}
           >
-            {renderedSlides.map(({ p, key, renderedIdx }) => (
+            {renderedSlides.map(({ p, key, renderedIdx }) => {
+              // Graphic-content gate: re-uses the same UX as the masonry
+              // tile — image blurred behind a centered "Tap to reveal"
+              // overlay. The masonry strips graphic=true for items it
+              // already revealed there, so the lightbox only sees this
+              // for photos the viewer hasn't yet opted into.
+              const isGated = !!p.graphic && !lightboxRevealed.has(p.id);
               // The video here has no `controls`, so aria-hidden on the
               // slide wrapper does not strand focusable descendants. If
               // controls are ever added, this aria-hidden has to move or
               // the inactive slides need `inert` instead.
-              <div
-                key={key}
-                className={s.slide}
-                data-idx={renderedIdx}
-                aria-hidden={renderedIdx !== openIdx}
-              >
-                {p.type === 'video' ? (
+              // Inner media is wrapped in a .mediaBox for gated slides so
+              // the graphic overlay can anchor to the actual displayed
+              // image bounds (aspect-constrained, letterboxed by the
+              // flex parent) rather than the entire slide. Aspect
+              // ratio is taken from the photo's metadata; we fall back
+              // to plain {img|video} when aspect is missing OR the
+              // slide isn't gated, to keep the non-gated render path
+              // structurally unchanged.
+              const aspect = p.aspect && p.aspect > 0 ? p.aspect : undefined;
+              const renderMedia = (): JSX.Element =>
+                p.type === 'video' ? (
                   <video
                     src={mediaSrc(p.src)}
                     poster={mediaSrc(p.poster)}
@@ -457,9 +475,49 @@ export function MediaProvider({ children }: MediaProviderProps) {
                   />
                 ) : (
                   <img src={mediaSrc(p.src)} alt={p.caption || ''} draggable={false} />
-                )}
-              </div>
-            ))}
+                );
+              return (
+                <div
+                  key={key}
+                  className={`${s.slide} ${isGated ? s.slideGated : ''}`}
+                  data-idx={renderedIdx}
+                  aria-hidden={renderedIdx !== openIdx}
+                >
+                  {isGated && aspect ? (
+                    <div
+                      className={s.mediaBox}
+                      style={{ aspectRatio: String(aspect) }}
+                    >
+                      {renderMedia()}
+                      {renderedIdx === openIdx && (
+                        // Only render the reveal CTA on the active slide.
+                        // Gated peek slides stay blurred but pass clicks
+                        // through to the track's navigation handler so the
+                        // viewer can swipe past them without revealing.
+                        <button
+                          type="button"
+                          className={s.graphicOverlay}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLightboxRevealed((cur) => {
+                              const next = new Set(cur);
+                              next.add(p.id);
+                              return next;
+                            });
+                          }}
+                          aria-label="Reveal graphic content"
+                        >
+                          <span className={s.graphicBadge}>Graphic content</span>
+                          <span className={s.graphicHint}>Tap to reveal</span>
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    renderMedia()
+                  )}
+                </div>
+              );
+            })}
           </div>
           {N > 1 && (
             <>
@@ -477,7 +535,7 @@ export function MediaProvider({ children }: MediaProviderProps) {
               >›</button>
             </>
           )}
-          {(cur.caption || cur.tag) && (
+          {(cur.caption || cur.tag || cur.album_url) && (
             isUi ? (
               // UI mode: about-text in a dedicated panel beside (desktop) or
               // below (mobile) the screenshot. Stays visible while topbar +
@@ -490,6 +548,16 @@ export function MediaProvider({ children }: MediaProviderProps) {
               <div className={s.caption}>
                 {cur.caption && <span className={s.captionText}>{cur.caption}</span>}
                 {cur.tag && <span className={s.captionTag}>{cur.tag}</span>}
+                {cur.album_url && (
+                  <a
+                    className={s.albumCta}
+                    href={cur.album_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View full album →
+                  </a>
+                )}
               </div>
             )
           )}

@@ -1,0 +1,61 @@
+/* ChipRow — restrained mono filter row above the masonry wall. Just
+   two dropdown triggers and a Clear link; the dropdowns themselves
+   own their internal styling. Wraps to multiple rows on narrow widths
+   (search input takes its own full-width row first; dropdowns flow
+   below). */
+
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 16px 0 20px;
+  min-height: 44px;
+}
+
+.clear {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: var(--canvas-fg-muted);
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 8px 0;
+  margin-left: auto;
+  transition: color 140ms ease;
+}
+.clear:hover,
+.clear:focus-visible {
+  color: var(--canvas-fg-strong);
+}
+.clear:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Mobile (≤640px) ------------------------------------------ */
+@media (max-width: 640px) {
+  .root {
+    /* Slightly tighter padding — the masonry below feels close again
+       without losing breathing room. */
+    padding: 12px 0 14px;
+    gap: 8px 8px;
+  }
+  .clear {
+    /* On wrapped rows, "Clear filters" lands wherever there's space.
+       Drop `margin-left: auto` so it doesn't push itself to the far
+       right of whatever row it ends up on; give it a generous tap
+       target instead. */
+    margin-left: 0;
+    padding: 12px 4px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}

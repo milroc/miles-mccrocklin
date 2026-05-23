@@ -30,10 +30,14 @@ jobs:
       - name: Smoke check build output
         run: |
           test -f dist/index.html || (echo "missing dist/index.html"; exit 1)
+          test -f dist/builder/index.html || (echo "missing dist/builder/index.html"; exit 1)
+          test -f dist/explorer/index.html || (echo "missing dist/explorer/index.html"; exit 1)
+          test -f dist/photographer/index.html || (echo "missing dist/photographer/index.html"; exit 1)
           test -f dist/CNAME || (echo "missing CNAME"; exit 1)
           test -f dist/.nojekyll || (echo "missing .nojekyll"; exit 1)
           test -f dist/favicon-32.png || (echo "missing favicon-32.png"; exit 1)
           test -d dist/media || (echo "missing media/"; exit 1)
+          grep -q "__PHOTOGRAPHY_MANIFEST__" dist/photographer/index.html || (echo "photography manifest not inlined"; exit 1)
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist

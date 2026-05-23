@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>OG / Explorer / Variant B v4 — Globe right, type left</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+<style>
+  html, body { margin: 0; padding: 0; background: #1c1f1a; }
+  body { font-family: Georgia, "Times New Roman", Times, serif; -webkit-font-smoothing: antialiased; }
+  .og {
+    width: 1200px; height: 630px; position: relative; overflow: hidden;
+    background: #1c1f1a;
+    color: #fdfdfb;
+  }
+  /* Atlantic-centric pose with NA on the left and Europe on the right.
+     Pushed right so the globe bleeds slightly off the right edge,
+     leaving negative space on the left for the type stack. */
+  .hero {
+    position: absolute; inset: 0;
+    background-image: url('./globe-hero.png');
+    background-size: 1700px auto;
+    background-repeat: no-repeat;
+    background-position: 18% 50%;
+    background-color: #1c1f1a;
+  }
+  /* Veil on the left so the type sits on a near-flat field, gentle fade
+     across the globe so the right hemisphere stays luminous. */
+  .veil {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, #1c1f1a 0%, rgba(28,31,26,0.88) 28%, rgba(28,31,26,0.0) 58%);
+  }
+  .content {
+    position: relative; z-index: 2;
+    height: 100%;
+    padding: 60px 64px;
+    box-sizing: border-box;
+    display: flex; flex-direction: column; justify-content: center;
+    max-width: 580px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 500; font-size: 13px; letter-spacing: 0.40em;
+    color: #b8b5ad; text-transform: uppercase;
+    margin: 0 0 26px 0;
+  }
+  .accent-rule {
+    width: 64px; height: 2px;
+    background: linear-gradient(90deg, #3a6b4a 0%, rgba(58,107,74,0.55) 70%, rgba(58,107,74,0) 100%);
+    margin: 0 0 26px 0;
+  }
+  .display {
+    font-style: italic; font-weight: 400;
+    font-size: 64px; line-height: 1.08; letter-spacing: -0.01em;
+    margin: 0;
+    color: #fdfdfb;
+  }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="hero"></div>
+  <div class="veil"></div>
+  <div class="content">
+    <p class="eyebrow">Miles McCrocklin <span style="margin:0 10px; color:#7a7770;">/</span> Explorer</p>
+    <div class="accent-rule"></div>
+    <h1 class="display">Exploring<br />the globe.</h1>
+  </div>
+</div>
+<script>
+  Promise.all([document.fonts.ready])
+    .then(() => document.documentElement.setAttribute('data-fonts','ready'));
+</script>
+</body>
+</html>

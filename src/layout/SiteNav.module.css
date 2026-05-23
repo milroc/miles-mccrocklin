@@ -1,0 +1,102 @@
+/* SiteNav — shared canvas-context top nav. Brand (favicon + name) left,
+   three-pillar links right. Mono eyebrow register throughout, matching
+   the rest of the canvas chrome.
+
+   Token strategy: this component is dropped into pages that import
+   either src/styles/globals.css (long-form, /photography) or
+   src/splash/splash-globals.css (splash, /explorer). The two token sets
+   are value-identical but differently named (--canvas-fg vs
+   --splash-canvas-fg), so every token reference here uses a fallback
+   chain — the unprefixed token wins when present, the prefixed splash
+   token covers the splash-globals-only contexts. */
+
+/* No self-applied border-bottom or padding-bottom: the host page (or
+   the wrapping plate, in explorer's case) owns the divider treatment.
+   SiteNav inside Explorer's frosted overlay would otherwise double up
+   (plate border + nav border-bottom = stray stripe inside the plate). */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Brand cluster: favicon + spelled-out name as one tap target. */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--canvas-fg-strong, var(--splash-canvas-fg-strong));
+  transition: color 140ms ease;
+}
+.brand:hover,
+.brand:focus-visible {
+  color: #ffffff;
+}
+.brand:focus-visible {
+  outline: 2px solid var(--accent, var(--splash-accent));
+  outline-offset: 2px;
+}
+
+/* Favicon. The SVG is a dark-rect cream-M; the dark rect matches the
+   canvas (#1c1f1a) exactly, so the M reads as floating on the page,
+   not enclosed in a chip. */
+.brandIcon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  border-radius: 4px;          /* mirrors favicon's own rx for safety */
+  flex-shrink: 0;
+}
+
+/* Spelled-out name. Mono eyebrow register, same weight + tracking as
+   the pillar links so the brand cluster reads as part of the same nav
+   system. */
+.brandName {
+  font-family: var(--mono, var(--splash-mono));
+  font-size: var(--fs-eyebrow, 10.5px);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* Pillar links. */
+.links {
+  display: flex;
+  gap: 16px;
+  font-family: var(--mono, var(--splash-mono));
+  font-size: var(--fs-eyebrow, 10.5px);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.links a {
+  color: var(--canvas-fg, var(--splash-canvas-fg));
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+.links a:hover,
+.links a:focus-visible {
+  color: var(--canvas-fg-strong, var(--splash-canvas-fg-strong));
+}
+.links a:focus-visible {
+  outline: 2px solid var(--accent, var(--splash-accent));
+  outline-offset: 2px;
+}
+.current {
+  color: var(--canvas-fg-strong, var(--splash-canvas-fg-strong));
+}
+
+/* Mobile: nav wraps to two rows (brand on top, pillars below). */
+@media (max-width: 480px) {
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .links {
+    gap: 12px;
+  }
+}

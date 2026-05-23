@@ -1,0 +1,1444 @@
+{
+  "media/portfolio/antarctica.jpg": {
+    "theme": [
+      "mountains",
+      "monochrome"
+    ],
+    "caption": "Silent Sentinel: Iceberg in the Arctic",
+    "alt": "A towering iceberg with a pointed peak stands amidst a snowy mountainous landscape, surrounded by icy formations under a clear sky.",
+    "story": "A majestic iceberg stands tall against a backdrop of snow-capped mountains, its sharp edges and pristine white surface reflecting the cold beauty of an Arctic wilderness. The monochromatic palette enhances the stark, otherworldly atmosphere of this remote and untouched environment.",
+    "entities": [
+      "iceberg",
+      "snow-covered mountain",
+      "icy landscape",
+      "glacial formations"
+    ],
+    "country": "ata",
+    "dupeOf": "photo-20241202-dsc08677"
+  },
+  "media/portfolio/argentina.jpg": {
+    "theme": [
+      "street",
+      "food"
+    ],
+    "caption": "Priya Grilling in Buenos Aires",
+    "alt": "A woman tends large cuts of meat over an open fire pit at a bustling open-air market in Buenos Aires, surrounded by stacked wood and market activity.",
+    "story": "Priya works the grill at a lively Buenos Aires market, tending large cuts of meat over an open fire the traditional way. Stacks of wood frame the scene as the market buzzes around her.",
+    "entities": [
+      "woman",
+      "fire pit",
+      "grilled meat",
+      "wood pile",
+      "market stall",
+      "open-air market",
+      "people"
+    ],
+    "country": "arg",
+    "city": "Buenos Aires"
+  },
+  "media/portfolio/armenia.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Statue Among Playful Skies",
+    "alt": "A large statue stands prominently in a park, framed by trees and a bright blue sky with fluffy white clouds. In the foreground, parts of a colorful playground are visible, including a gear-like structure and other equipment, creating a juxtaposition between nature and human-made elements.",
+    "story": "A serene park scene unfolds with a towering statue as the focal point, surrounded by lush greenery and playful elements of a colorful playground. The vibrant blue sky and scattered clouds add to the tranquil yet lively atmosphere.",
+    "entities": [
+      "statue",
+      "tree",
+      "playground equipment",
+      "blue sky",
+      "clouds",
+      "fence"
+    ],
+    "dupeOf": "photo-20240527-dsc00432"
+  },
+  "media/portfolio/australia.jpg": {
+    "theme": [
+      "water"
+    ],
+    "caption": "Foam and Reflections at Sydney Opera House",
+    "alt": "The Sydney Opera House with its distinctive white sails is surrounded by harbor water dotted with foam bubbles, set against a backdrop of blue sky and scattered clouds. The city skyline is visible in the distance.",
+    "story": "The iconic Sydney Opera House stands majestically by the harbor, its white sails reflecting on the rippling water below. Foam bubbles dance across the surface of the bay, adding a dynamic texture to the serene scene. The city skyline in the background completes this picturesque view of one of Australia's most recognizable landmarks.",
+    "entities": [
+      "sydney opera house",
+      "harbor water",
+      "foam bubbles",
+      "docks",
+      "skyline buildings",
+      "blue sky",
+      "clouds"
+    ],
+    "country": "aus",
+    "dupeOf": "photo-20241117-dsc05104"
+  },
+  "media/portfolio/austria.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Contrasts of Vienna",
+    "alt": "A vibrant urban scene featuring a mix of ornate historical buildings and sleek modern architecture. Pedestrians walk through the square, some pulling suitcases, under large white awning tents on a clear evening.",
+    "story": "A bustling city square blends historic and contemporary architectural styles, with people going about their day, some carrying luggage as if arriving or departing.",
+    "entities": [
+      "historic buildings",
+      "modern architecture",
+      "pedestrians",
+      "suitcases",
+      "awning tents",
+      "street lamps",
+      "city square"
+    ],
+    "country": "aut"
+  },
+  "media/portfolio/belgium.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Reflecting Modernity: The Atomium",
+    "alt": "A close-up view of the iconic Atomium structure in Brussels, featuring its metallic framework and spherical domes set against a bright blue sky with scattered clouds. Green trees are visible on one side, adding a touch of nature to the scene.",
+    "story": "The Atomium, a striking architectural marvel, stands tall against the backdrop of a clear blue sky. Its intricate design and reflective surfaces create a futuristic contrast with the natural elements surrounding it.",
+    "entities": [
+      "atomium structure",
+      "spherical domes",
+      "metal framework",
+      "blue sky",
+      "white clouds",
+      "green trees"
+    ],
+    "country": "bel",
+    "dupeOf": "photo-20241008-dsc03534"
+  },
+  "media/portfolio/belize.jpg": {
+    "theme": [
+      "water"
+    ],
+    "caption": "Calm Waters and Reflections",
+    "alt": "A rustic wooden pier stretches into still water reflecting its structure, with several small sailboats anchored in the distance on a bright day.",
+    "story": "A serene coastal scene unfolds with a weathered wooden pier extending into tranquil waters. The calm surface mirrors the structures, creating a peaceful symmetry, while sailing boats dot the distant horizon under a clear blue sky.",
+    "entities": [
+      "wooden pier",
+      "sailing boats",
+      "calm water",
+      "blue sky",
+      "distant horizon",
+      "fishing boat"
+    ]
+  },
+  "media/portfolio/bolivia.jpg": {
+    "theme": [
+      "water",
+      "sunset",
+      "minimalist"
+    ],
+    "caption": "Golden Reflections on Salar de Uyuni",
+    "alt": "Bolivia's vast salt flat mirrors a sunset sky, golden light stretching across a perfectly still, flooded surface to a flat horizon.",
+    "story": "During the wet season, Salar de Uyuni becomes the world's largest natural mirror, the boundary between sky and earth dissolving into a single plane of gold.",
+    "entities": [
+      "salt flat",
+      "reflections",
+      "sunset",
+      "horizon",
+      "sky",
+      "clouds",
+      "shallow water",
+      "calm water",
+      "sun"
+    ],
+    "country": "bol",
+    "featured": true,
+    "sort_order": 80
+  },
+  "media/portfolio/brazil.jpg": {
+    "theme": [
+      "water"
+    ],
+    "caption": "Coastal Metropolis: A Symphony of City and Sea",
+    "alt": "An aerial view of a bustling city with dense buildings, surrounded by lush green hills and a vast ocean. The landscape includes prominent mountains in the background and scattered islands on the water's surface.",
+    "story": "The vibrant city sprawls across the hills, nestled between lush greenery and the expansive blue waters. The interplay of urban development and natural beauty creates a dynamic scene that captures the essence of coastal living.",
+    "entities": [
+      "cityscape",
+      "ocean",
+      "mountains",
+      "buildings",
+      "beach",
+      "trees",
+      "islands"
+    ],
+    "country": "bra"
+  },
+  "media/portfolio/canada.jpg": {
+    "theme": [
+      "water"
+    ],
+    "caption": "Navigating the Majesty: A Tour Boat at Niagara Falls",
+    "alt": "A red tour boat floats on the turbulent waters near Niagara Falls, with a thick layer of mist rising from the powerful cascading waterfall. The sky is overcast, adding to the dramatic atmosphere.",
+    "story": "A tour boat navigates the turbulent waters of Niagara Falls, surrounded by the powerful spray and mist created by the cascading waterfall. The scene captures the raw beauty and energy of one of nature's most iconic landmarks.",
+    "entities": [
+      "niagara falls",
+      "tour boat",
+      "water mist",
+      "river",
+      "cloudy sky"
+    ],
+    "country": "can"
+  },
+  "media/portfolio/chile.jpg": {
+    "theme": [
+      "night",
+      "mountains"
+    ],
+    "caption": "Starry Night Over the Peaks",
+    "alt": "Mountainous landscape under a clear night sky filled with stars, pine trees lining the foreground and snow-capped peaks rising in the distance.",
+    "story": "The vast expanse of a starry sky dominates the frame above rugged mountain peaks and valleys, illuminated by soft moonlight, pine trees lining the foreground.",
+    "entities": [
+      "stars",
+      "constellations",
+      "mountain range",
+      "pine trees",
+      "snow-capped peak",
+      "night sky",
+      "mountains",
+      "trees"
+    ],
+    "country": "chl"
+  },
+  "media/portfolio/colombia.jpg": {
+    "theme": [
+      "mountains"
+    ],
+    "caption": "Whispering Hills: Nature's Serenity",
+    "alt": "A picturesque view of green hills covered in dense forest and scattered with tall palm trees under a cloudy sky. A small house is visible near the bottom left corner, surrounded by fencing.",
+    "story": "A serene landscape unfolds with rolling green hills blanketed in lush vegetation, dotted by tall palm trees that stand out against the verdant backdrop. The scene captures a tranquil and untouched natural beauty, evoking a sense of peace and connection to nature.",
+    "entities": [
+      "grasslands",
+      "palm trees",
+      "mountains",
+      "clouds",
+      "small house",
+      "fence"
+    ]
+  },
+  "media/portfolio/croatia.jpg": {
+    "theme": [
+      "water"
+    ],
+    "caption": "Exploring the Emerald Wonders of Plitvice",
+    "alt": "A scenic view of Plitvice Lakes with clear turquoise waters, surrounded by dense forests and towering cliffs. Wooden bridges carry tourists across the cascading waterfalls and lush landscapes.",
+    "story": "Visitors explore the serene beauty of Plitvice Lakes, walking along wooden bridges that weave through cascading waterfalls and emerald-green lakes. The lush greenery and dramatic cliffs create a breathtaking natural wonderland.",
+    "entities": [
+      "plitvice-lakes",
+      "lakes",
+      "waterfalls",
+      "wooden-bridges",
+      "tourists",
+      "trees",
+      "cliffs"
+    ],
+    "country": "hrv"
+  },
+  "media/portfolio/czechia.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Gothic Majesty in the Heart of Prague",
+    "alt": "A view of a grand Gothic church with multiple tall spires, surrounded by historic European-style buildings under a cloudy sky.",
+    "story": "The grand Gothic architecture of a historic church dominates the scene, its intricate spires reaching towards an overcast sky. The surrounding classical European buildings and ornate fence suggest a bustling city center steeped in history.",
+    "entities": [
+      "gothic church",
+      "spires",
+      "historical buildings",
+      "fence",
+      "cityscape"
+    ],
+    "country": "cze"
+  },
+  "media/portfolio/denmark.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Gateway to Joy: The Majestic Entrance of Tivoli",
+    "alt": "A large, ornate architectural entrance marked 'TIVOLI' with flags flying on either side. People are gathered near ticket booths under clear blue skies.",
+    "story": "The grand entrance to Tivoli welcomes visitors with its ornate architecture and vibrant atmosphere, setting the stage for a day of fun and exploration.",
+    "entities": [
+      "tivoli gate",
+      "architectural entrance",
+      "flag",
+      "traffic light",
+      "people",
+      "ticket booth",
+      "signage",
+      "trees"
+    ],
+    "country": "dnk"
+  },
+  "media/portfolio/ecuador.jpg": {
+    "theme": [
+      "reptiles-amphibians"
+    ],
+    "caption": "Marine Iguanas at Rest",
+    "alt": "Several marine iguanas are sitting on volcanic rocks and sand, with one prominently displaying its head raised high. The background shows more iguanas blending into the rugged terrain.",
+    "story": "A group of marine iguanas basks on a rocky beach, their rugged forms silhouetted against the stark landscape. The scene captures the raw beauty and resilience of these unique creatures in their natural habitat.",
+    "entities": [
+      "marine iguanas",
+      "volcanic rocks",
+      "sand",
+      "galápagos islands"
+    ],
+    "country": "ecu",
+    "species": "marine iguana"
+  },
+  "media/portfolio/egypt.jpg": {
+    "theme": [
+      "architecture",
+      "history"
+    ],
+    "caption": "Echoes of Ancient Egypt",
+    "alt": "A beautifully preserved ancient Egyptian temple interior featuring detailed hieroglyphics and colorful wall paintings along a central staircase with red railings. Tourists explore this historical site.",
+    "story": "The photograph captures the grandeur of an ancient Egyptian temple, its walls adorned with intricate hieroglyphics and vibrant wall paintings. The long staircase leads visitors deeper into the sacred space, where history and artistry converge in a mesmerizing display of cultural heritage.",
+    "entities": [
+      "ancient egyptian temple",
+      "hieroglyphics",
+      "wall paintings",
+      "staircase",
+      "red railing",
+      "tourists"
+    ],
+    "country": "egy"
+  },
+  "media/portfolio/el-salvador.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Sacred Presence in the City Lights",
+    "alt": "A statue of a robed figure wearing a flower crown is positioned in a dark urban alleyway. Behind it, a tall building is lit up with colorful lights, showcasing modern architecture against the backdrop of traditional religious imagery.",
+    "story": "A statue of a religious figure, adorned with flowers, stands solemnly in an urban alleyway. The surrounding modern buildings are illuminated with vibrant lights, creating a striking contrast between tradition and contemporary city life.",
+    "entities": [
+      "statue",
+      "religious figure",
+      "urban setting",
+      "illuminated building",
+      "modern architecture",
+      "flower crown",
+      "dark alleyway"
+    ]
+  },
+  "media/portfolio/france.jpg": {
+    "theme": [
+      "cityscape"
+    ],
+    "caption": "Paris from Above",
+    "alt": "An aerial photograph of Paris showing a vast urban landscape with numerous buildings, streets, parks, and the River Seine. The Eiffel Tower's structure is prominently visible in the foreground, framing the expansive cityscape beneath a bright blue sky.",
+    "story": "An aerial view of Paris captures the sprawling urban landscape, with the iconic Eiffel Tower framing the scene. The city's grid-like layout and vibrant green spaces are highlighted against a clear blue sky, offering a stunning perspective on one of the world's most recognizable cities.",
+    "entities": [
+      "paris cityscape",
+      "eiffel tower structure",
+      "buildings",
+      "streets",
+      "parks",
+      "river seine"
+    ],
+    "country": "fra",
+    "dupeOf": "photo-20241016-dsc03794"
+  },
+  "media/portfolio/germany.jpg": {
+    "theme": [
+      "water",
+      "people",
+      "street"
+    ],
+    "caption": "Urban Surfing: River Waves in the City",
+    "alt": "Surfers holding colorful surfboards stand near a river with artificial waves, surrounded by trees and spectators on a sunny day.",
+    "story": "A group of surfers gathers at a river with artificial waves, preparing to ride the water. The scene is lively and energetic, with onlookers watching from the shore and bridge above.",
+    "entities": [
+      "surfboard",
+      "surfer",
+      "river",
+      "bridge",
+      "trees",
+      "spectators",
+      "wetsuit"
+    ],
+    "dupeOf": "photo-20140919-2014-09-19-06-34-07"
+  },
+  "media/portfolio/gibraltar.jpg": {
+    "theme": [
+      "mountains",
+      "street"
+    ],
+    "caption": "Departure at Gibraltar",
+    "alt": "A crowd of people stands near a traffic light, observing a British Airways airplane on the tarmac with the rocky cliffs of Gibraltar visible behind it. The scene captures the blend of human activity and natural grandeur typical of this location.",
+    "story": "A group of onlookers gathers at an airport, watching a British Airways plane taxiing towards the runway. The iconic Rock of Gibraltar looms in the background, adding a dramatic natural backdrop to this moment of travel and anticipation.",
+    "entities": [
+      "people",
+      "airplane",
+      "gibraltar rock",
+      "traffic light",
+      "airport terminal",
+      "mountain"
+    ],
+    "country": "gib"
+  },
+  "media/portfolio/greece.jpg": {
+    "theme": [
+      "mountains",
+      "architecture",
+      "night"
+    ],
+    "caption": "Eternal Glory: Night at the Acropolis",
+    "alt": "A nighttime view of the Acropolis in Athens, with the illuminated Parthenon atop a hill overlooking a bustling cityscape. The ancient ruins are highlighted against the dark sky, showcasing the enduring beauty of Greek architecture.",
+    "story": "The Acropolis of Athens stands majestically against the night sky, its ancient stones glowing under artificial lighting. The Parthenon, a symbol of classical Greek architecture, dominates the scene, while the modern city below creates a striking contrast between history and contemporary life.",
+    "entities": [
+      "acropolis of athens",
+      "parthenon",
+      "ancient ruins",
+      "cityscape",
+      "buildings",
+      "illuminated structures",
+      "hillside"
+    ],
+    "country": "grc",
+    "dupeOf": "photo-20240619-dsc01399-enhanced-nr"
+  },
+  "media/portfolio/guatemala.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Echoes of an Ancient Civilization",
+    "alt": "A large ancient temple ruin with a stepped pyramid design surrounded by dense jungle vegetation and scattered statues on a grassy field under a partly cloudy sky.",
+    "story": "The ancient temple stands majestically amidst a lush jungle, its weathered stone blocks and stepped pyramid structure hinting at the grandeur of a bygone civilization. The surrounding greenery envelops the ruins, creating a serene yet mysterious atmosphere that speaks to the passage of time.",
+    "entities": [
+      "temple ruins",
+      "ancient architecture",
+      "jungle backdrop",
+      "stone structures",
+      "green grass",
+      "trees",
+      "statues"
+    ]
+  },
+  "media/portfolio/india.jpg": {
+    "theme": [
+      "water",
+      "architecture",
+      "night",
+      "reflection",
+      "religion"
+    ],
+    "caption": "Sacred Reflections: The Golden Temple at Night",
+    "alt": "A nighttime view of the Golden Temple with its illuminated domes and minarets reflected in a tranquil body of water. The surrounding architecture is also lit up, showcasing the grandeur of this historic site.",
+    "story": "The Golden Temple, a sacred Sikh site, glows brilliantly under the night sky. Its golden facade and intricate architecture are mirrored perfectly in the calm waters of the reflecting pool below, creating a serene and majestic atmosphere.",
+    "entities": [
+      "golden temple",
+      "temple complex",
+      "reflecting pool",
+      "illuminated building",
+      "domes",
+      "minarets",
+      "bridge"
+    ],
+    "country": "ind",
+    "dupeOf": "photo-20160113-dsc06372-enhanced-nr"
+  },
+  "media/portfolio/ireland.jpg": {
+    "theme": [
+      "water"
+    ],
+    "caption": "Where Sky Meets Sea: The Majesty of the Cliffs of Moher",
+    "alt": "A breathtaking view of the Cliffs of Moher, with towering cliffs overlooking a calm ocean under a clear blue sky. The foreground features grassy terrain and scattered rocks, adding to the natural beauty.",
+    "story": "The rugged cliffs of the Cliffs of Moher stand majestically against a vast expanse of ocean, their imposing presence accentuated by the warm sunlight. The contrast between the rocky terrain and the serene water creates a dramatic and awe-inspiring scene.",
+    "entities": [
+      "cliffs",
+      "ocean",
+      "grassland",
+      "rock formations",
+      "seaweed"
+    ],
+    "country": "irl"
+  },
+  "media/portfolio/italy.jpg": {
+    "theme": [
+      "water",
+      "sunset"
+    ],
+    "caption": "Sunset Serenity on the Venetian Canal",
+    "alt": "A picturesque view of a narrow Venetian canal at sunset, with gondolas and traditional buildings reflecting in the calm waters. The sun casts a golden hue over the scene, highlighting the historic charm of Venice.",
+    "story": "The tranquil waters of a Venetian canal shimmer under the warm glow of a setting sun, casting long shadows and creating a serene atmosphere. The historic architecture lining the canal reflects in the still water, capturing the timeless beauty of this iconic cityscape.",
+    "entities": [
+      "canal",
+      "gondola",
+      "bridge",
+      "buildings",
+      "sunlight reflection",
+      "water"
+    ],
+    "country": "ita"
+  },
+  "media/portfolio/japan.jpg": {
+    "theme": [
+      "street",
+      "night"
+    ],
+    "caption": "Neon Dreams: A Nighttime Street Scene",
+    "alt": "A bustling city street at night, adorned with bright neon signs and glowing red lanterns hanging from buildings. Power lines crisscross above, adding to the dynamic urban landscape.",
+    "story": "A vibrant street scene at night, illuminated by dazzling neon lights and traditional lanterns. The colorful display creates a lively atmosphere, capturing the essence of urban nightlife in Japan.",
+    "entities": [
+      "neon signs",
+      "lanterns",
+      "buildings",
+      "power lines",
+      "posters",
+      "japanese text"
+    ],
+    "country": "jpn"
+  },
+  "media/portfolio/kenya.jpg": {
+    "theme": [
+      "mammals"
+    ],
+    "caption": "Nature Meets City: Antelope at the Edge",
+    "alt": "A lone antelope grazes in a grassy plain with a cityscape featuring tall skyscrapers visible in the background. The scene captures the blend of urban and natural environments.",
+    "story": "An antelope stands in a grassy field, its silhouette contrasting against the backdrop of an urban skyline. The juxtaposition highlights the coexistence of nature and modern development, creating a striking visual narrative.",
+    "entities": [
+      "antelope",
+      "grassland",
+      "cityscape",
+      "skyscrapers",
+      "bridge"
+    ],
+    "species": "antelope"
+  },
+  "media/portfolio/liechtenstein.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Reflections of a Swiss Town",
+    "alt": "A colorful photograph showing buildings, trees, and a car reflected in a window, set against a backdrop of a mountainous landscape with clear blue skies. The scene includes flags, a road, and a fence, capturing the charm of an urban environment nestled among nature.",
+    "story": "A vibrant urban scene captures the essence of a European town, where modern architecture blends seamlessly with lush greenery and distant mountains. The reflection in a window adds an artistic touch, highlighting the interplay between nature and human-made structures.",
+    "entities": [
+      "buildings",
+      "trees",
+      "car",
+      "flag",
+      "mountain",
+      "sky",
+      "fence",
+      "road"
+    ],
+    "country": "lie"
+  },
+  "media/portfolio/madagascar.jpg": {
+    "theme": [
+      "mammals"
+    ],
+    "caption": "Eyes of Curiosity",
+    "alt": "A close-up portrait of a lemur with bright yellow eyes and fluffy white fur against a blurred background.",
+    "story": "A curious lemur stares directly into the camera, its striking yellow eyes and fluffy white fur drawing attention. The close-up captures a moment of connection between the viewer and this fascinating creature.",
+    "entities": [
+      "lemur",
+      "eyes",
+      "fur",
+      "animal"
+    ],
+    "species": "black-and-white ruffed lemur"
+  },
+  "media/portfolio/malaysia.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Divine Majesty: A Golden Statue Amidst Nature",
+    "alt": "A large golden statue of a Hindu deity with elaborate jewelry and ornaments stands outdoors. The backdrop features lush greenery and towering mountains, with colorful steps leading to temple-like structures in the distance.",
+    "story": "A majestic golden statue of a Hindu deity stands prominently against the lush, forested backdrop of a mountainous landscape. The intricate details of the statue's attire and accessories suggest a rich cultural heritage, while the temple structures in the background hint at a sacred site nestled within nature.",
+    "entities": [
+      "golden statue",
+      "temple complex",
+      "mountain backdrop",
+      "greenery",
+      "steps and railings"
+    ]
+  },
+  "media/portfolio/mexico.jpg": {
+    "theme": [
+      "sky",
+      "sunset"
+    ],
+    "caption": "Sunset Over the City",
+    "alt": "A panoramic view of a city at sunset, with tall buildings silhouetted against a vibrant orange sky. The sun is setting behind mountain ranges in the distance, surrounded by trees and urban structures.",
+    "story": "The sun sets over a sprawling city, casting a warm glow across the urban landscape. The silhouette of modern skyscrapers contrasts sharply with the natural beauty of distant mountains and lush greenery, creating a harmonious blend of nature and architecture.",
+    "entities": [
+      "cityscape",
+      "skyscrapers",
+      "sun",
+      "mountains",
+      "trees",
+      "buildings"
+    ]
+  },
+  "media/portfolio/morocco.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Calm Reflections: Courtyard of a Moroccan Mosque",
+    "alt": "A beautifully designed mosque courtyard featuring ornate arches, colorful mosaic tiles, stucco walls with geometric patterns, and a rectangular pool in the foreground. The architecture showcases intricate details under bright sunlight.",
+    "story": "The serene courtyard of a traditional mosque invites contemplation, with its intricate architectural details and the cool presence of a central pool reflecting the vibrant colors of the surrounding mosaics.",
+    "entities": [
+      "mosque",
+      "courtyard",
+      "pool",
+      "arches",
+      "ornate tiles",
+      "stucco walls",
+      "pillars"
+    ],
+    "country": "mar"
+  },
+  "media/portfolio/netherlands.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Historic Charm Meets Modernity",
+    "alt": "A row of traditional brick buildings with red wooden shutters, a street lamp, and a tree lining the sidewalk. A blue signpost and a construction crane are visible in the background under an overcast sky.",
+    "story": "The image captures the charm of a historic European street, showcasing traditional architecture with intricate details and vibrant red shutters. The juxtaposition of old buildings against modern elements like construction cranes hints at ongoing preservation efforts in this picturesque urban setting.",
+    "entities": [
+      "brick building",
+      "wooden shutters",
+      "street lamp",
+      "tree",
+      "signpost",
+      "construction crane"
+    ],
+    "country": "nld"
+  },
+  "media/portfolio/norway.jpg": {
+    "theme": [
+      "mountains",
+      "night",
+      "silhouette",
+      "sky",
+      "aurora"
+    ],
+    "caption": "Aurora Over Tromsø",
+    "alt": "A dark silhouette of a mountain peak set against a starry sky with vivid green auroras dancing above Tromsø, Norway.",
+    "story": "Standing over the fjords of northern Norway, a mountain ridge cuts a clean silhouette against the aurora borealis. The green curtains stretch across the sky above Tromsø, one of the world's prime aurora-watching destinations.",
+    "entities": [
+      "mountain peak",
+      "mountain silhouette",
+      "northern lights",
+      "aurora borealis",
+      "starry sky",
+      "fjord",
+      "snow"
+    ],
+    "country": "nor",
+    "city": "Tromsø",
+    "state": "Troms og Finnmark"
+  },
+  "media/portfolio/panama.jpg": {
+    "theme": [
+      "water"
+    ],
+    "caption": "Intermodal Logistics: Ship Meets Rail",
+    "alt": "A large blue cargo ship labeled 'BALTIC SPIRIT' is docked at a port with a train next to it. Railway tracks run parallel to the ship, and the surrounding area includes industrial structures and greenery under a partly cloudy sky.",
+    "story": "A massive cargo ship named 'BALTIC SPIRIT' is docked at a port, with a train positioned alongside it. The scene captures the intersection of maritime and rail transportation in an industrial setting, highlighting the logistical operations involved in global shipping.",
+    "entities": [
+      "cargo ship",
+      "train",
+      "railway tracks",
+      "port facility",
+      "blue sky",
+      "clouds",
+      "greenery"
+    ]
+  },
+  "media/portfolio/paraguay.jpg": {
+    "theme": [
+      "water",
+      "people"
+    ],
+    "caption": "Reflections on the River",
+    "alt": "Two people in a blue canoe glide across a still river, with trees lining the banks and clouds reflected perfectly in the water's surface.",
+    "story": "A serene moment unfolds as two individuals navigate a canoe through calm waters, surrounded by lush greenery and mirrored reflections of the sky. The tranquil scene captures the peaceful coexistence between nature and human activity.",
+    "entities": [
+      "canoe",
+      "river",
+      "trees",
+      "clouds",
+      "reflection",
+      "people"
+    ]
+  },
+  "media/portfolio/peru.jpg": {
+    "theme": [
+      "mountains",
+      "history"
+    ],
+    "caption": "Llama Among Ruins",
+    "alt": "A llama stands on grass near ancient stone walls, with a person taking photos in the background against a dramatic mountain range.",
+    "story": "A serene moment unfolds at an ancient ruin, where a llama grazes peacefully in the foreground while a lone tourist captures the majestic mountain backdrop. The juxtaposition of nature and history creates a timeless scene that speaks to the enduring allure of these sacred sites.",
+    "entities": [
+      "llama",
+      "ancient ruins",
+      "stone wall",
+      "tourist",
+      "mountain range",
+      "grass field"
+    ],
+    "country": "per"
+  },
+  "media/portfolio/portugal.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Monument to Exploration",
+    "alt": "A large stone monument featuring statues of historical figures dressed in period clothing, set against a vibrant blue sky.",
+    "story": "The statue depicts a group of historical figures, possibly explorers or leaders, standing together in a moment of significance. The clear blue sky and the dramatic lighting suggest a sense of grandeur and reverence for their legacy.",
+    "entities": [
+      "statue",
+      "historical figures",
+      "monument",
+      "blue sky"
+    ]
+  },
+  "media/portfolio/rwanda.jpg": {
+    "theme": [
+      "mammals"
+    ],
+    "caption": "Gorilla Encounter",
+    "alt": "A close-up portrait of a gorilla with piercing eyes set against a vibrant background of green foliage in a forest setting.",
+    "story": "A gorilla stares directly into the camera, its intense gaze conveying a sense of curiosity and connection. The lush green backdrop suggests a natural habitat, highlighting the animal's wild essence.",
+    "entities": [
+      "gorilla",
+      "green leaves",
+      "forest foliage"
+    ],
+    "species": "gorilla",
+    "featured": true,
+    "sort_order": 140
+  },
+  "media/portfolio/san-marino.jpg": {
+    "theme": [
+      "cityscape"
+    ],
+    "caption": "Castle Overlook: A Glimpse Through Time",
+    "alt": "Aerial view from castle ramparts showing lush greenery, trees, and a small village below, with distant mountains under a bright blue sky dotted with clouds.",
+    "story": "The viewer is perched atop ancient castle ramparts, gazing out over a lush valley dotted with greenery and a quaint village nestled below. The scene evokes a sense of history and tranquility, as the rugged stone walls frame a picturesque vista stretching into the horizon.",
+    "entities": [
+      "castle walls",
+      "trees",
+      "village",
+      "mountains in distance",
+      "sky",
+      "clouds"
+    ]
+  },
+  "media/portfolio/singapore.jpg": {
+    "theme": [
+      "water",
+      "architecture"
+    ],
+    "caption": "Merlion Majesty: Gateway to Singapore",
+    "alt": "A scenic view of the Merlion statue in Marina Bay, Singapore, with water spraying from its mouth. The background features tall skyscrapers, including the distinctive Marina Bay Sands hotel, and a waterfront promenade bustling with people enjoying the sunny day.",
+    "story": "The iconic Merlion statue spouts water into the Marina Bay, serving as a vibrant centerpiece for visitors and locals alike. The backdrop of modern skyscrapers reflects Singapore's blend of tradition and cutting-edge architecture, creating a striking contrast against the serene waters.",
+    "entities": [
+      "merlion statue",
+      "fountain",
+      "marina bay sands hotel",
+      "skyscrapers",
+      "waterfront promenade",
+      "tourists",
+      "trees",
+      "cloudy sky"
+    ],
+    "country": "sgp"
+  },
+  "media/portfolio/south-africa.jpg": {
+    "theme": [
+      "mammals"
+    ],
+    "caption": "Curious Gaze: Leopard in the Canopy",
+    "alt": "A close-up of a leopard's face as it looks directly at the camera from within the branches of a tree, surrounded by lush greenery.",
+    "story": "A leopard peers curiously from its perch in a tree, its piercing gaze fixed on the camera. The scene captures the wild beauty and alertness of this majestic predator in its natural habitat.",
+    "entities": [
+      "leopard",
+      "tree",
+      "branch",
+      "forest"
+    ],
+    "species": "leopard",
+    "dupeOf": "photo-20190615-dsc04381"
+  },
+  "media/portfolio/spain.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Cathedral of Light",
+    "alt": "A stunning view inside a cathedral with elaborate stained glass windows illuminating the space with vibrant colors and patterns.",
+    "story": "The vibrant stained glass windows of a grand cathedral cast colorful light across its intricate interior, creating an awe-inspiring interplay between light and shadow. The architectural details evoke a sense of reverence and artistic mastery.",
+    "entities": [
+      "stained glass windows",
+      "gothic architecture",
+      "interior space",
+      "light patterns",
+      "religious art"
+    ],
+    "country": "esp"
+  },
+  "media/portfolio/sweden.jpg": {
+    "theme": [
+      "art"
+    ],
+    "caption": "Shaded Gaze: A Statue in Contemplation",
+    "alt": "A close-up of a bronze statue depicting a person wearing sunglasses and a beret, with one hand raised to shield their eyes. The weathered surface adds depth and character to the sculpture.",
+    "story": "A bronze statue captures a moment of contemplation, with its subject shielding their eyes from the sun. The weathered texture and thoughtful pose suggest a timeless homage to an individual's character or legacy.",
+    "entities": [
+      "statue",
+      "sunglasses",
+      "beret",
+      "hand gesture"
+    ]
+  },
+  "media/portfolio/switzerland.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Narrow Lane to the Spire",
+    "alt": "A narrow cobblestone street lined with white buildings featuring green shutters leads towards a historic clock tower with a tall spire. Trees and a bicycle add life to the serene urban setting.",
+    "story": "A quiet, picturesque alleyway in a European town leads the eye towards a prominent clock tower with a striking spire. The scene is bathed in soft daylight, highlighting the charming architecture and quaint details like green shutters and street signs.",
+    "entities": [
+      "narrow street",
+      "white building",
+      "green shutters",
+      "street sign (weggen-gasse)",
+      "clock tower",
+      "spire",
+      "lamp post",
+      "tree",
+      "bicycle"
+    ],
+    "country": "che"
+  },
+  "media/portfolio/thailand.jpg": {
+    "theme": [
+      "architecture",
+      "religion",
+      "art"
+    ],
+    "caption": "Guardians of Tradition",
+    "alt": "Colorful statues with ornate details stand against a golden wall, representing mythological figures in traditional attire.",
+    "story": "The photo captures a vibrant display of traditional architecture, featuring intricately designed statues that appear to be mythological or cultural figures. The golden backdrop and detailed craftsmanship suggest a place of historical significance, possibly a temple or palace, showcasing the rich artistic heritage of the region.",
+    "entities": [
+      "statues",
+      "golden wall",
+      "ornate details",
+      "mythological figures"
+    ],
+    "country": "tha"
+  },
+  "media/portfolio/turkey.jpg": {
+    "theme": [
+      "aerial"
+    ],
+    "caption": "Balloon Over Whispering Rocks",
+    "alt": "An aerial photograph showing a blue-and-white striped hot air balloon soaring above a dramatic terrain of white rock formations interspersed with green patches of farmland. The scene is bathed in soft, natural light, highlighting the contrast between the rugged landscape and the smooth curves of the balloon.",
+    "story": "A serene aerial view captures a hot air balloon gracefully floating over a rugged landscape of white rock formations and patchy farmland, offering a breathtaking perspective of nature's textured beauty.",
+    "entities": [
+      "hot air balloon",
+      "rock formations",
+      "farmland",
+      "hills",
+      "greenery"
+    ],
+    "country": "tur"
+  },
+  "media/portfolio/uganda.jpg": {
+    "theme": [
+      "mammals"
+    ],
+    "caption": "The Gaze: A Chimpanzee's Introspection",
+    "alt": "A chimpanzee sitting on grass behind a fence, looking directly at the camera with bright eyes. The background is lush green vegetation.",
+    "story": "A chimpanzee sits behind a fence, gazing directly at the camera with an intense and curious expression. The scene captures a moment of connection between the animal and the viewer, highlighting the intelligence and emotion of primates in captivity.",
+    "entities": [
+      "chimpanzee",
+      "grass",
+      "fence"
+    ],
+    "species": "chimpanzee",
+    "featured": true,
+    "sort_order": 440
+  },
+  "media/portfolio/united-arab-emirates.jpg": {
+    "theme": [
+      "sky"
+    ],
+    "caption": "Urban Silhouette: Nature Frames the Skyline",
+    "alt": "A skyscraper partially obscured by tree branches and leaves against a clear blue sky.",
+    "story": "A serene view of a skyscraper peeking through the branches and leaves of trees, creating a juxtaposition between nature and urban architecture. The scene is bathed in soft light, suggesting either early morning or late afternoon, evoking a sense of calm and tranquility.",
+    "entities": [
+      "trees",
+      "leaves",
+      "skyscraper",
+      "blue sky"
+    ]
+  },
+  "media/portfolio/united-kingdom.jpg": {
+    "theme": [
+      "water",
+      "architecture"
+    ],
+    "caption": "London's Iconic Skyline",
+    "alt": "A panoramic view of Big Ben and Westminster Palace alongside the Thames River, with a riverboat passing by under a cloudy sky.",
+    "story": "The iconic Big Ben and Westminster Palace stand majestically along the Thames River, with a serene yet dynamic atmosphere as a riverboat glides past. The scene captures the timeless beauty of London's architectural landmarks against a dramatic sky.",
+    "entities": [
+      "big ben",
+      "westminster palace",
+      "thames river",
+      "riverboat",
+      "bridge",
+      "clouds"
+    ],
+    "country": "gbr"
+  },
+  "media/portfolio/united-states-of-america.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Wings of Innovation: Architectural Majesty",
+    "alt": "An indoor architectural space with towering blue arches, multiple levels with railings, and a central art installation shaped like wings. Potted plants line the balconies, and ceiling lights illuminate the area.",
+    "story": "The image captures the grandeur of a modern architectural marvel, featuring sweeping blue arches and multiple levels connected by balconies. A striking art installation resembling wings stands prominently in the center, adding an element of awe and creativity to the space.",
+    "entities": [
+      "indoor space",
+      "blue arches",
+      "balconies",
+      "railing",
+      "art installation (wings)",
+      "potted plants",
+      "ceiling lights"
+    ]
+  },
+  "media/portfolio/uruguay.jpg": {
+    "theme": [
+      "architecture",
+      "art"
+    ],
+    "caption": "Leaping statue on an ornate Montevideo balcony",
+    "alt": "A statue of a leaping man stands on an ornate balcony decorated with red bows and pink flowers on a historic building in Montevideo, Uruguay.",
+    "story": "A bronze figure frozen mid-leap adorns a balcony of a historic Montevideo building, the red bows and pink flowers adding a festive contrast to the carved stonework below.",
+    "entities": [
+      "statue",
+      "balcony",
+      "ornate building",
+      "red bows",
+      "pink flowers",
+      "carved stonework",
+      "historic facade"
+    ],
+    "country": "ury",
+    "city": "Montevideo"
+  },
+  "media/portfolio/vatican.jpg": {
+    "theme": [
+      "architecture"
+    ],
+    "caption": "Journey Through Time: Exploring the Vatican Museum",
+    "alt": "A group of tourists walks through a grand hallway adorned with elaborate mosaic walls, ornate ceilings, and historical art in what appears to be a museum setting. The space is characterized by its opulent design and cultural significance.",
+    "story": "A group of tourists meanders through the grand, ornately decorated hallways of a historic museum, marveling at the intricate mosaics and frescoes that line the walls. The atmosphere is one of quiet awe as visitors explore the rich cultural heritage preserved within these majestic corridors.",
+    "entities": [
+      "tourists",
+      "mosaic walls",
+      "ornate ceiling",
+      "vatican museum hallway",
+      "historical art",
+      "striped floor tiles"
+    ],
+    "country": "vat"
+  },
+  "media/sabbatical-travel/travel-02.jpeg": {
+    "theme": [
+      "art",
+      "light"
+    ],
+    "caption": "Team Labs Tokyo",
+    "alt": "A vibrant light installation at teamLab's digital art museum in Tokyo, featuring radiant beams extending outward from a glowing central core surrounded by starfield-like patterns.",
+    "story": "Inside teamLab's immersive space in Tokyo, a radiant light installation transforms the room into a cosmic tunnel, drawing visitors into its depths with layered beams and constellations of reflected light.",
+    "entities": [
+      "light installation",
+      "glowing core",
+      "light beams",
+      "starfield patterns",
+      "reflective floor",
+      "digital art",
+      "tunnel effect"
+    ],
+    "country": "jpn",
+    "sort_order": 350
+  },
+  "media/sabbatical-travel/travel-04.jpeg": {
+    "theme": [
+      "mammals",
+      "monochrome"
+    ],
+    "caption": "Lioness in the Rain, Masai Mara",
+    "alt": "A black-and-white photograph of a lioness standing alert in tall savanna grass under light rainfall, raindrops visible in the air. Taken in the Masai Mara, Kenya.",
+    "story": "A solitary lioness stands watchful in the Masai Mara rain, her gaze fixed on something beyond the frame. The monochrome rendering strips the scene to its essentials: wet grass, falling rain, and a predator fully at ease in the downpour.",
+    "entities": [
+      "lioness",
+      "grassland",
+      "raindrops",
+      "savanna"
+    ],
+    "country": "ken",
+    "species": "lion",
+    "sort_order": 310
+  },
+  "media/sabbatical-travel/travel-05.jpeg": {
+    "theme": [
+      "mammals",
+      "safari"
+    ],
+    "caption": "Zebras and Giraffe at Lake Nakuru",
+    "alt": "A group of zebras graze on open grassland at Lake Nakuru, Kenya, with a giraffe standing tall among acacia trees in the background.",
+    "story": "On the shores of Lake Nakuru, zebras graze undisturbed while a giraffe towers above the acacia line, a quiet scene from one of Kenya's great wildlife sanctuaries.",
+    "entities": [
+      "zebras",
+      "giraffe",
+      "grassland",
+      "acacia trees",
+      "savanna",
+      "Lake Nakuru"
+    ],
+    "country": "ken",
+    "sort_order": 270,
+    "dupeOf": "photo-20240804-dsc07927"
+  },
+  "media/sabbatical-travel/travel-06.jpeg": {
+    "theme": [
+      "water"
+    ],
+    "caption": "Solitude on Ice",
+    "alt": "A large iceberg floats in deep blue ocean waters under a dark sky, showcasing its rugged and icy surface. Smaller icebergs are scattered nearby, reflecting the serene yet powerful presence of nature's frozen creations.",
+    "story": "A majestic iceberg floats serenely in the vast ocean, its jagged edges and towering structure standing as a testament to nature's raw power. The dark waters below contrast sharply with the pristine white of the ice, creating a striking visual that speaks to the beauty and isolation of polar environments.",
+    "entities": [
+      "iceberg",
+      "ocean",
+      "dark sky",
+      "icy surface"
+    ],
+    "country": "ata",
+    "sort_order": 240,
+    "dupeOf": "photo-20241127-dsc05817-enhanced-nr"
+  },
+  "media/sabbatical-travel/travel-07.jpeg": {
+    "theme": [
+      "mammals",
+      "conservation"
+    ],
+    "caption": "Chimpanzee at Lake Victoria Sanctuary, Uganda",
+    "alt": "A chimpanzee sitting in a grassy enclosure behind a fence at a sanctuary on Lake Victoria, Uganda, looking directly at the camera with an attentive gaze.",
+    "story": "At a sanctuary on the shores of Lake Victoria, a chimpanzee peers through the fence with calm intensity. The sanctuary setting speaks to conservation efforts protecting these primates in Uganda.",
+    "entities": [
+      "chimpanzee",
+      "grass",
+      "fence",
+      "sanctuary enclosure"
+    ],
+    "country": "uga",
+    "species": "chimpanzee",
+    "sort_order": 330,
+    "dupeOf": "photo-20240722-dsc06136-enhanced-nr"
+  },
+  "media/sabbatical-travel/travel-08.jpeg": {
+    "theme": [
+      "mountains"
+    ],
+    "caption": "Llama Among Ruins",
+    "alt": "An alpaca stands on grassy terrain near stone walls of ancient ruins, with a person taking photos in the background against a backdrop of towering mountains.",
+    "story": "A serene moment unfolds at ancient Incan ruins, where a llama grazes peacefully in the foreground while a lone tourist captures the majestic mountain backdrop. The juxtaposition of nature and history creates a tranquil yet awe-inspiring scene.",
+    "entities": [
+      "llama",
+      "stone wall",
+      "ancient ruins",
+      "tourist",
+      "mountain range",
+      "grass"
+    ],
+    "country": "per",
+    "sort_order": 260,
+    "dupeOf": "photo-20240920-dsc01522"
+  },
+  "media/sabbatical-travel/travel-09.jpeg": {
+    "theme": [
+      "birds"
+    ],
+    "caption": "Emperor Penguins in Harmony",
+    "alt": "Two emperor penguins standing side by side on a snowy landscape, their distinctive black and white feathers and yellow accents visible against the bright background. The scene captures the serene and cold environment typical of Antarctica.",
+    "story": "Two emperor penguins stand close together in a serene, snow-covered environment, their striking black and white plumage contrasting sharply with the pristine whiteness of the ice. Their gaze suggests a moment of connection or communication, highlighting the resilience and beauty of these majestic birds in one of Earth's harshest environments.",
+    "entities": [
+      "emperor penguins",
+      "snow",
+      "antarctic landscape"
+    ],
+    "country": "ata",
+    "species": "emperor penguin",
+    "sort_order": 220,
+    "dupeOf": "photo-20241128-dsc06513"
+  },
+  "media/sabbatical-travel/travel-10.jpeg": {
+    "theme": [
+      "mammals"
+    ],
+    "caption": "Solitude in the Rain",
+    "alt": "A koala is perched on a tree branch, wrapped snugly in its fur during a rainy day. The background is blurred with green foliage, emphasizing the animal's solitary presence.",
+    "story": "A koala clings tightly to a tree branch, its small form huddled against the wet weather. The scene captures a moment of vulnerability and resilience in nature as rain falls gently around it.",
+    "entities": [
+      "koala",
+      "tree",
+      "rain"
+    ],
+    "country": "aus",
+    "species": "koala",
+    "sort_order": 320
+  },
+  "media/sabbatical-travel/travel-11.jpeg": {
+    "theme": [
+      "festival"
+    ],
+    "caption": "Amusement Park in Yerevan",
+    "alt": "A colorful cartoon-themed amusement park ride in the foreground with a large statue visible among trees under a bright blue sky with scattered clouds in Yerevan, Armenia.",
+    "story": "A festive amusement park in Yerevan sits beneath open skies, its cartoon-themed rides and bright decorations contrasting with a stately statue rising from the trees behind.",
+    "entities": [
+      "amusement park ride",
+      "statue",
+      "trees",
+      "flag",
+      "hot air balloon decoration",
+      "cartoon character",
+      "clouds",
+      "blue sky"
+    ],
+    "country": "arm",
+    "sort_order": 210,
+    "dupeOf": "photo-20240527-dsc00432"
+  },
+  "media/sabbatical-travel/travel-12.jpeg": {
+    "theme": [
+      "mountains",
+      "night"
+    ],
+    "caption": "Eternal Glory: Acropolis at Night",
+    "alt": "A nighttime view of the Acropolis of Athens, featuring the Parthenon lit up on a hillside overlooking a sprawling cityscape with illuminated buildings. The dark sky enhances the glow of the ruins and modern structures below.",
+    "story": "The ancient Acropolis of Athens stands majestically against the night sky, its iconic Parthenon glowing with warm light that contrasts sharply with the dark surroundings. The city below is a tapestry of illuminated streets and modern architecture, creating a striking juxtaposition between ancient history and contemporary urban life.",
+    "entities": [
+      "acropolis of athens",
+      "parthenon",
+      "ancient ruins",
+      "cityscape",
+      "illuminated buildings",
+      "hillside",
+      "dark sky"
+    ],
+    "country": "grc",
+    "sort_order": 340,
+    "dupeOf": "photo-20240619-dsc01399-enhanced-nr"
+  },
+  "media/sabbatical-travel/travel-13.jpeg": {
+    "theme": [
+      "mountains"
+    ],
+    "caption": "Frozen Majesty: A Mountain's Silent Solitude",
+    "alt": "A towering snow-covered mountain surrounded by icebergs and glaciers, set against a cold, barren landscape. The scene captures the serene yet powerful beauty of an icy wilderness.",
+    "story": "A majestic snow-capped mountain rises dramatically from a frozen, icy expanse. The rugged terrain and stark white peaks evoke a sense of isolation and the raw power of nature in one of Earth's most remote and pristine environments.",
+    "entities": [
+      "snow-covered mountain",
+      "iceberg",
+      "glacier",
+      "cold landscape"
+    ],
+    "country": "ata",
+    "sort_order": 290,
+    "dupeOf": "photo-20241202-dsc08677"
+  },
+  "media/sabbatical-travel/travel-14.jpeg": {
+    "theme": [
+      "mountains",
+      "night",
+      "astrophotography"
+    ],
+    "caption": "Night Sky over Cajón del Maipo",
+    "alt": "Star-filled night sky above rugged Andean mountains with silhouetted trees in the foreground, photographed in Cajón del Maipo, Chile.",
+    "story": "Under an impossibly clear Andean sky, the peaks of Cajón del Maipo recede into darkness while thousands of stars press close overhead. The photographer initially misidentified this as Argentina, but corrected to Chile — a reminder of how the border dissolves in terrain this vast.",
+    "entities": [
+      "stars",
+      "mountains",
+      "trees",
+      "night sky",
+      "Andean peaks",
+      "silhouettes"
+    ],
+    "country": "chl",
+    "city": "Cajón del Maipo",
+    "state": "Región Metropolitana",
+    "sort_order": 360
+  },
+  "media/sabbatical-travel/travel-15.jpeg": {
+    "theme": [
+      "minimalist",
+      "polar"
+    ],
+    "caption": "Lone Figure on Antarctic Ice",
+    "alt": "A person walks across a vast expanse of white Antarctic terrain, leaving a trail of footprints behind them.",
+    "story": "A lone figure crosses the Antarctic ice, their footprints the only mark on an otherwise untouched white expanse. The scale of the landscape dwarfs the traveler, underscoring the profound isolation of the continent.",
+    "entities": [
+      "person",
+      "footprints",
+      "ice",
+      "snow",
+      "Antarctic terrain"
+    ],
+    "country": "ata",
+    "sort_order": 250,
+    "dupeOf": "photo-20241203-dsc08974"
+  },
+  "media/sabbatical-travel/travel-16.jpeg": {
+    "theme": [
+      "monochrome",
+      "underground",
+      "religion"
+    ],
+    "caption": "Christmas Tree in Mammoth Cave",
+    "alt": "A black-and-white photograph of a brightly lit Christmas tree glowing inside Mammoth Cave, surrounded by rugged limestone rock formations in deep shadow.",
+    "story": "A decorated Christmas tree stands illuminated against the ancient limestone walls of Mammoth Cave, its warm glow cutting through the darkness of one of the world's longest cave systems in Kentucky.",
+    "entities": [
+      "christmas tree",
+      "limestone rock formations",
+      "cave ceiling",
+      "cave walls",
+      "darkness",
+      "light"
+    ],
+    "country": "usa",
+    "sort_order": 150
+  },
+  "media/sabbatical-travel/travel-17.jpeg": {
+    "theme": [
+      "birds"
+    ],
+    "caption": "Hummingbird at rest, Santiago",
+    "alt": "A hummingbird with brownish iridescent plumage perched on a thin, leafless branch against a blurred green forest backdrop, its long beak and small size clearly visible.",
+    "story": "A hummingbird pauses on a bare branch in the forests near Santiago, its iridescent feathers catching the diffuse light of the Chilean hillside.",
+    "entities": [
+      "hummingbird",
+      "bare branch",
+      "green foliage",
+      "forest background"
+    ],
+    "country": "chl",
+    "city": "Santiago",
+    "species": "hummingbird",
+    "sort_order": 370
+  },
+  "media/sabbatical-travel/travel-18.jpeg": {
+    "theme": [
+      "history"
+    ],
+    "caption": "Timeless Guardians: Temple Entrance at Abu Simbel",
+    "alt": "A grand ancient Egyptian temple entrance featuring large stone statues flanking an ornate doorway with hieroglyphics carved into the walls. A tourist stands near the entrance, emphasizing the scale and majesty of the structure.",
+    "story": "The grandeur of ancient Egyptian architecture is captured in this scene, showcasing a temple entrance adorned with colossal statues and intricate hieroglyphics. The warm desert sunlight bathes the sandstone structures, highlighting their historical significance and inviting visitors to explore the rich cultural heritage.",
+    "entities": [
+      "temple entrance",
+      "ancient statues",
+      "hieroglyphics",
+      "sandstone walls",
+      "tourist"
+    ],
+    "country": "egy",
+    "sort_order": 380
+  },
+  "media/sabbatical-travel/travel-19.jpeg": {
+    "theme": [
+      "street",
+      "night"
+    ],
+    "caption": "Neon Dreams: A Night in the City",
+    "alt": "A nighttime street scene packed with bright neon signs, colorful billboards, and hanging red lanterns. Wires and pipes crisscross overhead while raindrops glisten on every surface.",
+    "story": "The vibrant streets of a bustling Japanese city come alive at night, illuminated by dazzling neon lights and traditional lanterns. Raindrops catch the electric glow as signs advertising local businesses jostle for space with red lanterns overhead.",
+    "entities": [
+      "neon signs",
+      "red lanterns",
+      "pedestrian crossing sign",
+      "billboards",
+      "buildings",
+      "wires",
+      "raindrops",
+      "red pipes"
+    ],
+    "country": "jpn",
+    "sort_order": 300
+  },
+  "media/sabbatical-travel/travel-20.jpeg": {
+    "theme": [
+      "flora",
+      "urban"
+    ],
+    "caption": "Cherry blossoms against Kyoto skyline",
+    "alt": "Close-up of pink and white cherry blossom petals on a bare branch, with blurred modern buildings in the background. The scene captures spring blooming in an urban Kyoto setting.",
+    "story": "A cherry blossom branch catches the light against Kyoto's urban backdrop, the soft petals a reminder that spring arrives even amid the city's modern skyline.",
+    "entities": [
+      "cherry blossoms",
+      "blossom buds",
+      "tree branch",
+      "urban background",
+      "building",
+      "sky"
+    ],
+    "country": "jpn",
+    "sort_order": 100
+  },
+  "media/sabbatical-travel/travel-21.jpeg": {
+    "theme": [
+      "mammals"
+    ],
+    "caption": "Otters surfacing in Tambopata",
+    "alt": "Three river otters swimming at the surface of calm water in Tambopata National Park, Peru, with one otter's face clearly visible looking toward the camera.",
+    "story": "A family group of giant river otters surfaces in the still waters of Tambopata National Park, one turning its whiskered face toward the lens. The Peruvian Amazon's most charismatic residents move with an ease that belies their size.",
+    "entities": [
+      "otters",
+      "water",
+      "Amazon river",
+      "ripples",
+      "fur",
+      "whiskers"
+    ],
+    "country": "per",
+    "species": "giant river otter",
+    "sort_order": 390
+  },
+  "media/sabbatical-travel/travel-22.jpeg": {
+    "theme": [
+      "mammals"
+    ],
+    "caption": "Gorilla Portrait, Volcanoes National Park",
+    "alt": "Close-up portrait of a mountain gorilla partially obscured by green leaves in a forest setting, its dark eyes gazing directly at the camera.",
+    "story": "In Rwanda's Volcanoes National Park, a mountain gorilla peers through the dense forest foliage, its steady gaze offering a rare moment of connection between human and primate.",
+    "entities": [
+      "gorilla",
+      "leaves",
+      "forest",
+      "foliage"
+    ],
+    "country": "rwa",
+    "species": "mountain gorilla",
+    "sort_order": 280,
+    "dupeOf": "photo-20240708-dsc03164"
+  },
+  "media/sabbatical-travel/travel-23.jpeg": {
+    "theme": [
+      "mammals"
+    ],
+    "caption": "Young Gorilla in Volcanoes National Park",
+    "alt": "A young mountain gorilla peers through dense green foliage in Volcanoes National Park, Rwanda.",
+    "story": "A young mountain gorilla pauses amid the thick forest undergrowth of Volcanoes National Park, Rwanda. Its watchful eyes meet the camera through a curtain of leaves, offering a rare close encounter in one of the last wild habitats where these endangered primates survive.",
+    "entities": [
+      "gorilla",
+      "green leaves",
+      "forest foliage",
+      "Volcanoes National Park"
+    ],
+    "country": "rwa",
+    "species": "Mountain Gorilla",
+    "sort_order": 400
+  },
+  "media/sabbatical-travel/travel-24.jpeg": {
+    "theme": [
+      "water",
+      "architecture"
+    ],
+    "caption": "Harbor Reflections: Sydney's Iconic Beauty",
+    "alt": "The Sydney Opera House is captured from across the harbor, showcasing its distinctive white sails against a backdrop of water dotted with small waves. The foreground includes reflections on the wet docks and people walking along the pier, while sailboats are visible in the distance under a partly cloudy sky.",
+    "story": "The iconic Sydney Opera House stands majestically by the harbor, its white sails reflecting off the rippling water. The scene is lively yet serene, with people strolling along the docks and sailboats dotting the horizon under a partly cloudy sky.",
+    "entities": [
+      "sydney opera house",
+      "harbor water",
+      "docks",
+      "people walking",
+      "sailboats in distance",
+      "cloudy sky"
+    ],
+    "country": "aus",
+    "sort_order": 50
+  },
+  "media/sabbatical-travel/travel-25.jpeg": {
+    "theme": [
+      "birds",
+      "galapagos"
+    ],
+    "caption": "Small bird perched among yellow blooms, Galápagos",
+    "alt": "A small dark bird rests on a branch surrounded by green leaves and yellow flowers in the Galápagos Islands, Ecuador.",
+    "story": "A solitary bird perches among the flowering vegetation of the Galápagos Islands, its dark plumage set against delicate yellow blooms. The islands' unique flora frames the moment with quiet stillness.",
+    "entities": [
+      "bird",
+      "branch",
+      "yellow flowers",
+      "green leaves",
+      "foliage"
+    ],
+    "country": "ecu",
+    "sort_order": 410
+  },
+  "media/sabbatical-travel/travel-26.jpeg": {
+    "theme": [
+      "reptiles-amphibians"
+    ],
+    "caption": "Silent Sentinels: Marine Iguanas of the Galápagos",
+    "alt": "A cluster of marine iguanas rests on a rocky beach, surrounded by volcanic terrain. One iguana is prominently featured with its mouth open, showcasing their distinctive behavior and environment.",
+    "story": "A group of marine iguanas basks on a rocky beach, their rugged forms contrasting against the stark volcanic landscape. The central iguana stands out with its open mouth and alert posture, suggesting communication or thermoregulation in this unique Galápagos habitat.",
+    "entities": [
+      "marine iguanas",
+      "volcanic rocks",
+      "beach"
+    ],
+    "country": "ecu",
+    "species": "marine iguana",
+    "sort_order": 430
+  },
+  "media/sabbatical-travel/travel-27.jpeg": {
+    "theme": [
+      "water",
+      "sunset"
+    ],
+    "caption": "Golden Reflections on Salar de Uyuni",
+    "alt": "Bolivia's vast salt flat mirrors a sunset sky, golden light stretching across a perfectly still, flooded surface to a flat horizon.",
+    "story": "During the wet season, Salar de Uyuni becomes the world's largest natural mirror, the boundary between sky and earth dissolving into a single plane of gold.",
+    "entities": [
+      "salt flat",
+      "reflections",
+      "sunset",
+      "horizon",
+      "sky",
+      "clouds",
+      "shallow water"
+    ],
+    "country": "bol",
+    "sort_order": 230,
+    "dupeOf": "photo-20250115-dsc04248"
+  },
+  "media/sabbatical-travel/travel-28.jpeg": {
+    "theme": [
+      "sky",
+      "architecture"
+    ],
+    "caption": "Reaching for the Sky: Burj Khalifa",
+    "alt": "The Burj Khalifa's distinctive spire rises against a clear blue sky, framed by a lush palm tree with curved architectural elements in the foreground.",
+    "story": "The Burj Khalifa pierces a vibrant blue sky, its sleek spire a testament to human engineering and ambition. A palm tree and surrounding architecture frame the shot, capturing Dubai's characteristic layering of natural and built form.",
+    "entities": [
+      "burj khalifa",
+      "palm tree",
+      "clear sky",
+      "curved structure",
+      "architectural structure",
+      "spire",
+      "urban landscape"
+    ],
+    "country": "are",
+    "city": "Dubai",
+    "sort_order": 420
+  }
+}

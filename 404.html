@@ -77,16 +77,24 @@
     a:hover { border-bottom-color: var(--accent); }
   </style>
   <script>
-    // Smart redirect: any non-canonical URL slug → /long-form/.
+    // Smart redirect: legacy URL slugs → canonical pillar URL.
     // Comparison is case-insensitive and trailing-slash-insensitive
-    // so /Resume, /RESUME/, /About, /Work, etc. all funnel correctly.
+    // so /Long-Form, /RESUME/, /Photography all funnel correctly.
     // For any other 404, fall through to the static "page not found"
     // UI below.
     (function () {
       var slug = location.pathname.replace(/\/+$/, '').toLowerCase();
-      var aliases = ['/resume', '/dossier', '/about', '/work'];
-      if (aliases.indexOf(slug) !== -1) {
-        location.replace('/long-form/' + location.search + location.hash);
+      var legacyMap = {
+        '/long-form':   '/builder/',
+        '/resume':      '/builder/',
+        '/dossier':     '/builder/',
+        '/about':       '/builder/',
+        '/work':        '/builder/',
+        '/photography': '/photographer/'
+      };
+      var target = legacyMap[slug];
+      if (target) {
+        location.replace(target + location.search + location.hash);
       }
     })();
   </script>

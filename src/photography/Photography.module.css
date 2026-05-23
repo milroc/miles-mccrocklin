@@ -1,0 +1,71 @@
+/* Photography — root container for /photographer. The page lives on the
+   dark canvas mat (NOT the cream paper) — photos pop as bright surfaces
+   against the dark mat. Layout is a single-column flow: SiteNav, intro
+   fold, chip row, masonry wall, footer CTA.
+
+   The top nav is the shared <SiteNav /> component (src/layout/SiteNav),
+   so all nav styling lives there. This file only owns the page shell
+   and the footer CTA. */
+
+.app {
+  min-height: 100vh;
+  background: var(--canvas);
+  color: var(--canvas-fg);
+  font-family: var(--serif);
+  display: flex;
+  flex-direction: column;
+  padding: 24px clamp(16px, 4vw, 56px);
+  box-sizing: border-box;
+}
+
+/* Divider between SiteNav and the editorial top fold. SiteNav itself
+   has no self-applied bottom rule (so it doesn't double-up inside
+   explorer's frosted plate); this page owns the rule because the nav
+   sits bare on the canvas here. */
+.main {
+  flex: 1 1 auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--canvas-rule);
+  margin-top: 12px;
+}
+
+/* Footer CTA — mono eyebrow, right-aligned, generous vertical padding. */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 64px 0 24px;
+  border-top: 1px solid var(--canvas-rule);
+  margin-top: 48px;
+}
+.footerCta {
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--canvas-fg);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+.footerCta:hover,
+.footerCta:focus-visible {
+  color: var(--canvas-fg-strong);
+  border-color: var(--canvas-fg-strong);
+}
+.footerCta:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 16px 12px;
+  }
+  .footer {
+    justify-content: flex-start;
+    padding-top: 48px;
+    margin-top: 32px;
+  }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Photography OG — Variant D3 — Varied rhythm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+<style>
+  html, body { margin: 0; padding: 0; background: #1c1f1a; }
+  body { font-family: Georgia, "Times New Roman", Times, serif; -webkit-font-smoothing: antialiased; }
+  .og { width: 1200px; height: 630px; position: relative; overflow: hidden; background: #1c1f1a; color: #fdfdfb; }
+  .masonry { position: absolute; inset: 0; overflow: hidden; }
+  .row { display: flex; width: 100%; }
+  .row img { display: block; filter: grayscale(0.04) contrast(1.04) brightness(0.9); }
+  .veil {
+    position: absolute; inset: 0; z-index: 2;
+    background:
+      /* Concentrated dark plate behind the type for legibility. */
+      radial-gradient(ellipse 48% 40% at 50% 50%, rgba(20,22,18,0.78) 0%, rgba(20,22,18,0.55) 55%, rgba(20,22,18,0.18) 85%, rgba(20,22,18,0) 100%),
+      /* Global vignette that pulls corners into the mat. */
+      radial-gradient(ellipse 90% 110% at 50% 50%, rgba(28,31,26,0.30) 0%, rgba(28,31,26,0.55) 55%, rgba(28,31,26,0.82) 88%, rgba(28,31,26,0.94) 100%);
+  }
+  .content { position: relative; z-index: 3; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 56px; box-sizing: border-box; }
+  .eyebrow { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.36em; text-transform: uppercase; color: #ece9e2; text-shadow: 0 1px 3px rgba(0,0,0,0.95), 0 0 18px rgba(0,0,0,0.6); }
+  .name { margin-top: 22px; font-size: 96px; line-height: 0.96; letter-spacing: -0.015em; color: #fdfdfb; text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 0 22px rgba(0,0,0,0.75), 0 0 4px rgba(0,0,0,0.9); }
+  .name .first { font-style: italic; font-weight: 400; }
+  .mc-sup { font-size: 0.55em; vertical-align: 0.6em; margin-left: -0.12em; margin-right: 0.05em; }
+  .accent-rule { margin-top: 26px; width: 280px; height: 2px; background: linear-gradient(90deg, rgba(58,107,74,0) 0%, #3a6b4a 50%, rgba(58,107,74,0) 100%); box-shadow: 0 0 8px rgba(0,0,0,0.6); }
+  .tagline { margin-top: 24px; font-style: italic; font-size: 26px; line-height: 1.38; color: #fdfdfb; max-width: 720px; text-shadow: 0 1px 3px rgba(0,0,0,0.95), 0 0 16px rgba(0,0,0,0.7); }
+  .url { margin-top: 28px; font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; color: #ece9e2; letter-spacing: 0.02em; text-shadow: 0 1px 3px rgba(0,0,0,0.95), 0 0 12px rgba(0,0,0,0.6); }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="masonry" id="masonry"></div>
+  <div class="veil"></div>
+  <div class="content">
+    <div class="eyebrow">Photography</div>
+    <div class="name"><span class="first">Miles</span> <span class="last">M<span class="mc-sup">c</span>Crocklin</span></div>
+    <div class="accent-rule"></div>
+    <div class="tagline">Wildlife, landscape &amp; culture.</div>
+  </div>
+</div>
+<script>
+  // D3: varied row-height rhythm — alternating tall and short rows so
+  // some photos read clearly while others recede into texture.
+  const W = 1200, H = 630;
+  const GAP = 2;
+  // Cycle of row-height targets; loops as we pack rows.
+  const RH_CYCLE = [170, 70, 110, 55, 145, 90, 60, 130];
+  const MIN_ASPECT = 0.5, MAX_ASPECT = 2.4;
+  const clamp = a => !isFinite(a) || a <= 0 ? 1 : Math.min(MAX_ASPECT, Math.max(MIN_ASPECT, a));
+  function justify(cells, sum) { const innerW = W - GAP * (cells.length - 1); const h = innerW / sum; return { height: h, cells: cells.map(c => ({ src: c.src, w: c.aspect * h, h })) }; }
+  (async () => {
+    const photos = await (await fetch('/data/photography.json')).json();
+    let seed = 7777; const rand = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+    const items = photos.slice().sort(() => rand() - 0.5);
+    const rows = []; let buf = [], sum = 0; let rowIdx = 0;
+    let budget = W / RH_CYCLE[0];
+    for (const p of items) {
+      const a = clamp(p.aspect);
+      buf.push({ src: '/' + p.src, aspect: a }); sum += a;
+      if (sum >= budget) {
+        rows.push(justify(buf, sum));
+        buf = []; sum = 0; rowIdx++;
+        budget = W / RH_CYCLE[rowIdx % RH_CYCLE.length];
+      }
+    }
+    if (buf.length) rows.push(justify(buf, sum));
+    const c = document.getElementById('masonry'); let y = 0;
+    for (const r of rows) {
+      const d = document.createElement('div'); d.className = 'row'; d.style.gap = GAP + 'px'; d.style.marginBottom = GAP + 'px';
+      for (const cell of r.cells) { const i = document.createElement('img'); i.src = cell.src; i.width = cell.w; i.height = cell.h; i.loading = 'eager'; d.appendChild(i); }
+      c.appendChild(d); y += r.height + GAP; if (y > H + 200) break;
+    }
+    const visible = [...c.querySelectorAll('img')].slice(0, 100);
+    await Promise.all([document.fonts.ready, ...visible.map(i => i.complete ? null : new Promise(r => { i.onload = r; i.onerror = r; }))]);
+    document.documentElement.setAttribute('data-fonts', 'ready');
+  })();
+</script>
+</body>
+</html>

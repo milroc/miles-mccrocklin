@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>OG / Explorer / Variant A — Editorial split</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+<style>
+  html, body { margin: 0; padding: 0; background: #1c1f1a; }
+  body { font-family: Georgia, "Times New Roman", Times, serif; -webkit-font-smoothing: antialiased; }
+  .og {
+    width: 1200px; height: 630px; position: relative; overflow: hidden;
+    background: #1c1f1a;
+    color: #fdfdfb;
+  }
+  .hero {
+    position: absolute; inset: 0;
+    background-image: url('./globe-hero.png');
+    background-size: 1400px auto;
+    background-repeat: no-repeat;
+    background-position: 105% 50%;
+    background-color: #1c1f1a;
+  }
+  .veil {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, #1c1f1a 0%, #1c1f1a 28%, rgba(28,31,26,0.92) 38%, rgba(28,31,26,0.0) 60%);
+  }
+  .content {
+    position: relative; z-index: 2;
+    height: 100%;
+    padding: 64px 64px;
+    box-sizing: border-box;
+    display: flex; flex-direction: column; justify-content: center;
+    max-width: 640px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 500; font-size: 13px; letter-spacing: 0.36em;
+    color: #b8b5ad; text-transform: uppercase;
+    margin: 0 0 30px 0;
+  }
+  .display {
+    font-style: italic; font-weight: 400;
+    font-size: 92px; line-height: 0.96; letter-spacing: -0.012em;
+    margin: 0;
+    color: #fdfdfb;
+  }
+  .accent-rule {
+    margin-top: 28px;
+    width: 220px;
+    height: 2px;
+    background: linear-gradient(90deg, #3a6b4a 0%, rgba(58,107,74,0.55) 60%, rgba(58,107,74,0) 100%);
+  }
+  .tagline {
+    margin-top: 26px;
+    font-style: italic; font-size: 26px; line-height: 1.4;
+    color: #d6d3cc; max-width: 560px;
+  }
+  .metric {
+    margin-top: 30px;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 400; font-size: 14px; letter-spacing: 0.18em;
+    color: #b8b5ad; text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+  .metric .num { color: #fdfdfb; font-weight: 500; }
+  .metric .sep { color: #7a7770; margin: 0 14px; }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="hero"></div>
+  <div class="veil"></div>
+  <div class="content">
+    <p class="eyebrow">MILES.MCCROCKL.IN / EXPLORER</p>
+    <h1 class="display">Where<br />I've been</h1>
+    <div class="accent-rule"></div>
+    <p class="tagline">Every country I've been to, the routes I took, and some example photos for each.</p>
+    <p class="metric"><span class="num">59</span> COUNTRIES <span class="sep">·</span> <span class="num">6</span> CONTINENTS</p>
+  </div>
+</div>
+<script>
+  Promise.all([document.fonts.ready])
+    .then(() => document.documentElement.setAttribute('data-fonts','ready'));
+</script>
+</body>
+</html>
