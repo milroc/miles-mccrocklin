@@ -1,0 +1,253 @@
+/* MasonryWall — single packed wall of photo tiles. Sits on the dark
+   canvas mat (the page background), tiles pop as bright surfaces via
+   the DESIGN.md photography filter (grayscale rest, snap to color on
+   hover). No card chrome, no border-radius, sharp edges per the
+   editorial restraint of the rest of the site. */
+
+.root {
+  width: 100%;
+}
+
+/* Row of justified cells. Height is set inline from the layout
+   calculation; gap is the same as the masonry packing gap so the
+   horizontal + vertical rhythm matches. Filter transitions are a
+   full-wall opacity fade applied inline on .root — no per-tile
+   animation beyond the existing tile-enter keyframe on mount. */
+.row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* Tile + (optional) graphic-content overlay share this wrapper so the overlay
+   can absolutely-position over the image button. Width is set inline
+   from the layout calculation; height comes from the row. */
+.tileWrap {
+  position: relative;
+  height: 100%;
+  display: block;
+}
+
+/* Per-tile button container. */
+.tile {
+  appearance: none;
+  display: block;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  /* Staggered fade-in on filter change. The tick attr changes when the
+     filtered photo set changes; that flips the entry animation. */
+  animation: tile-enter 240ms ease both;
+  /* Drop-shadow lift on hover (pairs with the inner-img saturate + scale).
+     Rest state has no shadow so the lift reads as the tile physically
+     coming off the canvas mat when the cursor lands on it. */
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition: box-shadow 240ms ease;
+  /* prefers-reduced-motion: kill the entry animation. */
+}
+.tile:hover,
+.tile:focus-visible {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+.tile:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.tile img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  /* Override the sitewide grayscale-at-rest photo treatment for the
+     masonry only — gallery context, photos should read at full color
+     by default. Hover still bumps contrast + scale for the lift cue. */
+  filter: contrast(1.02);
+  transition: var(--photo-filter-trans);
+  /* The lift on the long-form figures uses transform scale 1.03; the wall
+     is denser so we keep the scale subtle to avoid neighbors clipping. */
+  transform: scale(1);
+  /* Anti-casual-save measures. Determined visitors with DevTools or a
+     screenshot defeat all of this — these only raise the bar against
+     right-click "Save image as", drag-to-desktop, and the iOS Safari
+     long-press menu. Same posture the lightbox already takes. */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  pointer-events: none; /* clicks pass through to the button wrapper */
+}
+.tile:hover img,
+.tile:focus-visible img {
+  /* Push saturation past natural so the photo visibly "lights up"
+     under the cursor — paired with the wrapping .tile's drop-shadow
+     lift, the hovered frame reads as energized vs the calm neighbors. */
+  filter: saturate(1.15) contrast(1.04);
+  transform: scale(1.02);
+}
+
+/* Hero-category hover preview: tiles whose `theme` doesn't include
+   the hovered hero (wildlife / landscape / street) fade back so the
+   matching photos pop. Opacity + desaturate together — opacity alone
+   feels like a loading state, desaturate alone reads as washed-out.
+   200ms transition matches the EditorialTopFold preview cadence. */
+.tileDimmed img {
+  opacity: 0.28;
+  filter: saturate(0.5) brightness(0.85) contrast(1.02);
+  transition: opacity 200ms ease, filter 200ms ease, transform 320ms ease;
+}
+/* Suppress the hover lift on dimmed tiles — they're being de-emphasized,
+   so saturating them on hover would fight the dim. */
+.tileDimmed:hover img,
+.tileDimmed:focus-visible img {
+  opacity: 0.28;
+  filter: saturate(0.5) brightness(0.85) contrast(1.02);
+  transform: scale(1);
+}
+.tileDimmed:hover,
+.tileDimmed:focus-visible {
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+@keyframes tile-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile {
+    animation: none;
+    transition: none;
+  }
+  .tile img {
+    transition: none;
+  }
+  .tile:hover img,
+  .tile:focus-visible img {
+    transform: none;
+  }
+}
+
+/* Gated graphic-content tile: the underlying image renders blurred +
+   slightly desaturated so it reads as "obscured content" rather than
+   "broken asset". Hover-color and scale are suppressed since the tile
+   is non-interactive until revealed. */
+.tileGated img {
+  filter: blur(36px) saturate(0.6) brightness(0.65);
+  transform: scale(1.06);
+}
+.tileGated:hover img,
+.tileGated:focus-visible img {
+  filter: blur(36px) saturate(0.6) brightness(0.65);
+  transform: scale(1.06);
+}
+.tileGated {
+  cursor: default;
+}
+
+/* Graphic-content reveal overlay. Sits over the blurred image,
+   captures the click, and renders the warning + CTA in the same
+   mono register as the rest of the page chrome. */
+.graphicOverlay {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.42);
+  border: 0;
+  color: var(--canvas-fg-strong);
+  font-family: var(--mono);
+  cursor: pointer;
+  padding: 16px;
+  text-align: center;
+  transition: background-color 160ms ease;
+}
+.graphicOverlay:hover,
+.graphicOverlay:focus-visible {
+  background: rgba(0, 0, 0, 0.55);
+}
+.graphicOverlay:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.graphicBadge {
+  font-size: var(--fs-eyebrow);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.graphicHint {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--canvas-fg-muted);
+  line-height: 1;
+}
+
+/* Empty state — visible when filter combination produces 0 results.
+   Mono register matches the page's chip/eyebrow voice. */
+.empty {
+  padding: 80px 0;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--canvas-fg);
+}
+
+/* Per-tile metadata panel. Only rendered when ?meta=1 is in the URL —
+   a curator review mode for spot-checking the classifier output. Lives
+   inside the tile wrapper, below the image button, in the same width
+   column. Mono register, generous padding, scrollable JSON dump. */
+.metaPanel {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border-left: 2px solid var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--canvas-fg-strong);
+  max-height: 240px;
+  overflow: auto;
+}
+.metaPanel pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.metaPanel .metaStory {
+  margin: 0 0 6px;
+  font-family: var(--serif, Georgia, serif);
+  font-size: 13px;
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--canvas-fg);
+}
+.metaPanel .metaTags {
+  margin: 0 0 4px;
+  letter-spacing: 0.04em;
+}
+.metaPanel .metaLabel {
+  color: var(--canvas-fg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 9px;
+  margin-right: 6px;
+}

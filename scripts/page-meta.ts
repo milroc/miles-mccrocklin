@@ -46,9 +46,10 @@ export type MeContext = {
 };
 
 // URL path segments (relative to the site root) that receive a Person
-// JSON-LD schema. /explorer/ is intentionally excluded — its primary
-// topic is the globe, not the person.
-export const PERSON_SCHEMA_PATHS = ['', 'long-form/'] as const;
+// JSON-LD schema. /explorer/ and /photographer/ are intentionally
+// excluded — their primary topic is the globe / the photography work,
+// not the person.
+export const PERSON_SCHEMA_PATHS = ['', 'builder/'] as const;
 export type PersonSchemaPath = (typeof PERSON_SCHEMA_PATHS)[number];
 
 export function loadMe(jsonPath = './data/me.json'): Me {

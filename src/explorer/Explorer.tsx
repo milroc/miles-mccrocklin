@@ -11,9 +11,15 @@ import {
   type GlobeControls,
 } from '../splash/Globe';
 import '../splash/splash-globals.css';
+import { SiteNav } from '../layout/SiteNav';
 import { CountryPanel } from './CountryPanel';
 import { LoadingGlobe } from './LoadingGlobe';
 import { Toolbar } from './Toolbar';
+
+// Idle delay (ms) before the SiteNav fades out. Matches the
+// MediaProvider lightbox chrome-hide cadence so the globe and the
+// lightbox share one motion vocabulary.
+const NAV_IDLE_MS = 3000;
 
 export function Explorer(): JSX.Element {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -23,6 +29,12 @@ export function Explorer(): JSX.Element {
   // When false, rotation stays off until the user re-enables it via the
   // toolbar button — clicks and drags will pause but never resume.
   const [rotationOn, setRotationOn] = useState(true);
+  // SiteNav idle-hide. Nav fades after NAV_IDLE_MS of cursor + keyboard
+  // stillness, comes back on any movement. Always visible while the
+  // CountryPanel is open (so the visitor doesn't lose nav while reading)
+  // and on initial paint (so the visitor sees the nav at least once).
+  const [navVisible, setNavVisible] = useState(true);
+  const navIdleTimerRef = useRef<number | null>(null);
 
   const closeModal = useCallback(() => {
     setSelected(null);
@@ -75,9 +87,64 @@ export function Explorer(): JSX.Element {
     controlsRef.current?.setRotationLocked(!rotationOn);
   }, [rotationOn]);
 
+  // Idle-hide for the SiteNav overlay. Any cursor or keyboard activity
+  // brings the nav back and re-arms a NAV_IDLE_MS countdown to hide it
+  // again. The CountryPanel-open path bypasses the timer (see below)
+  // so the visitor doesn't lose nav while reading a country detail.
+  useEffect(() => {
+    if (selected) {
+      // Country panel open — show nav unconditionally, no hide timer.
+      setNavVisible(true);
+      if (navIdleTimerRef.current != null) {
+        window.clearTimeout(navIdleTimerRef.current);
+        navIdleTimerRef.current = null;
+      }
+      return;
+    }
+    const arm = (): void => {
+      if (navIdleTimerRef.current != null) {
+        window.clearTimeout(navIdleTimerRef.current);
+      }
+      navIdleTimerRef.current = window.setTimeout(() => {
+        setNavVisible(false);
+      }, NAV_IDLE_MS);
+    };
+    const onActivity = (): void => {
+      setNavVisible(true);
+      arm();
+    };
+    window.addEventListener('mousemove', onActivity, { passive: true });
+    window.addEventListener('keydown', onActivity);
+    window.addEventListener('touchstart', onActivity, { passive: true });
+    arm();
+    return () => {
+      window.removeEventListener('mousemove', onActivity);
+      window.removeEventListener('keydown', onActivity);
+      window.removeEventListener('touchstart', onActivity);
+      if (navIdleTimerRef.current != null) {
+        window.clearTimeout(navIdleTimerRef.current);
+        navIdleTimerRef.current = null;
+      }
+    };
+  }, [selected]);
+
   return (
     <div className={s.root}>
-      <Toolbar rotationOn={rotationOn} onToggleRotation={toggleRotation} />
+      {/* Top nav floats over the globe in a frosted plate so the brand
+          + pillar links stay readable when a bright photo polygon
+          drifts under them. Same treatment as the bottom title plate
+          and the Toolbar buttons. */}
+      <div
+        className={`${s.siteNavOverlay} ${navVisible ? '' : s.siteNavOverlayHidden}`}
+        aria-hidden={!navVisible}
+      >
+        <SiteNav current="explorer" />
+      </div>
+      <Toolbar
+        rotationOn={rotationOn}
+        onToggleRotation={toggleRotation}
+        visible={navVisible}
+      />
       <div className={s.mount} ref={mountRef}>
         {/* Loading state — CSS 3D wireframe globe. mountGlobe fades
             the WebGL canvas in over this once polygons paint, then

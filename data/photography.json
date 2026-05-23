@@ -1,0 +1,3283 @@
+[
+  {
+    "id": "20130329-dsc01381",
+    "src": "media/photography/20130329-dsc01381.jpg",
+    "aspect": 1.505,
+    "caption": "Guardians of Tradition: A Chinese Gate in the City",
+    "alt": "A colorful traditional Chinese gate with intricate designs and red pillars stands prominently in an urban area, accompanied by stone lion statues and market stalls beneath it. The sky is partly cloudy, adding to the lively atmosphere.",
+    "country": "usa",
+    "theme": [
+      "street",
+      "architecture"
+    ],
+    "story": "A vibrant traditional Chinese gate stands as a cultural landmark in an urban setting, flanked by ornate stone lions and red lanterns. The scene captures the intersection of historical architecture and modern city life, evoking a sense of heritage and community.",
+    "entities": [
+      "traditional chinese gate",
+      "stone lion statue",
+      "red pillars",
+      "chinese lanterns",
+      "brick building",
+      "market stalls"
+    ]
+  },
+  {
+    "id": "20130903-dsc02084",
+    "src": "media/photography/20130903-dsc02084.jpg",
+    "aspect": 1.505,
+    "caption": "London's Iconic Skyline at Twilight",
+    "alt": "A panoramic view of London featuring Big Ben and the Palace of Westminster by the River Thames on a cloudy evening. Tour boats are visible on the water, highlighting the city's historic charm.",
+    "country": "gbr",
+    "theme": [
+      "water",
+      "architecture",
+      "history"
+    ],
+    "story": "The iconic skyline of London is captured under a dramatic sky, with the grandeur of Big Ben and the Palace of Westminster standing tall. The calm waters of the Thames reflect the historic architecture, while tour boats glide along the river, adding life to this timeless scene.",
+    "entities": [
+      "big ben",
+      "palace of westminster",
+      "thames river",
+      "bridge",
+      "tour boat",
+      "clouds"
+    ]
+  },
+  {
+    "id": "20130908-dsc02672",
+    "src": "media/photography/20130908-dsc02672.jpg",
+    "aspect": 1.505,
+    "caption": "Monument to the Age of Exploration, Lisbon",
+    "alt": "A detailed stone sculpture featuring several explorers in period attire, holding navigational instruments, mounted on an obelisk-like structure against a clear blue sky in Lisbon, Portugal.",
+    "country": "prt",
+    "theme": [
+      "architecture",
+      "history",
+      "art"
+    ],
+    "story": "Standing in Lisbon, this monument commemorates Portugal's Age of Exploration, depicting explorers posed with navigation tools that symbolize the courage of early seafarers who set out from this very shore.",
+    "entities": [
+      "statue",
+      "explorers",
+      "sailors",
+      "navigation instruments",
+      "obelisk",
+      "stone sculpture"
+    ],
+    "curator_notes": "so this photo was in Lisbon Portugal"
+  },
+  {
+    "id": "20130909-dsc02935",
+    "src": "media/photography/20130909-dsc02935.jpg",
+    "aspect": 1.4997,
+    "caption": "Exploring the Vibrant Walls",
+    "alt": "Two people standing in front of a striking yellow wall with arched openings, taking photos of the ocean view on a sunny day.",
+    "country": "prt",
+    "theme": [
+      "architecture",
+      "people"
+    ],
+    "story": "Two individuals are exploring a vibrant yellow architectural structure with circular arches, capturing the scenic view of the sea beyond. The bright colors and clear sky evoke a sense of adventure and discovery.",
+    "entities": [
+      "yellow wall",
+      "arches",
+      "pillars",
+      "people",
+      "tablet",
+      "handbag",
+      "sea"
+    ]
+  },
+  {
+    "id": "20130918-dsc03895",
+    "src": "media/photography/20130918-dsc03895.jpg",
+    "aspect": 0.6644,
+    "caption": "Contemplative Figure at Sagrada Família",
+    "alt": "A close-up view of a stone sculpture showing a religious figure dressed in an ornate robe, carved with intricate details. The background reveals part of a grand architectural structure under a clear blue sky.",
+    "country": "esp",
+    "theme": [
+      "architecture",
+      "history",
+      "art"
+    ],
+    "story": "A detailed stone sculpture depicts a solemn religious figure, possibly a saint or prophet, seated in contemplation. The intricate carving and textured robe suggest a deep spiritual significance, set against the backdrop of an architectural masterpiece.",
+    "entities": [
+      "stone sculpture",
+      "religious figure",
+      "ornate robe",
+      "carved stone",
+      "architectural detail"
+    ]
+  },
+  {
+    "id": "20140919-2014-09-19-06-34-07",
+    "src": "media/photography/20140919-2014-09-19-06-34-07.jpg",
+    "aspect": 1.4962,
+    "caption": "Surfers Riding the Eisbach Standing Wave, Munich",
+    "alt": "Wetsuit-clad surfers queue with colorful boards at the Eisbach's permanent standing wave in Munich's English Garden, spectators crowding the stone bridge above.",
+    "country": "deu",
+    "city": "Munich",
+    "state": "Bavaria",
+    "theme": [
+      "water",
+      "street",
+      "sport",
+      "people"
+    ],
+    "story": "The Eisbach river channel cuts through Munich's English Garden, generating a permanent standing wave that draws surfers year-round. Wetsuit-clad riders wait their turn while a crowd gathers on the bridge overhead, a ritual as familiar to Münchners as the beer gardens nearby.",
+    "entities": [
+      "surfers",
+      "surfboards",
+      "standing wave",
+      "river channel",
+      "stone bridge",
+      "wetsuits",
+      "spectators",
+      "English Garden",
+      "Eisbach",
+      "trees",
+      "artificial waves"
+    ],
+    "curator_notes": "Portugal this was in Munich Munich Germany it was actually the like famous place where people surf please look that up"
+  },
+  {
+    "id": "20140923-2014-09-23-11-59-50",
+    "src": "media/photography/20140923-2014-09-23-11-59-50.jpg",
+    "aspect": 1.505,
+    "caption": "Aurora Over Tromsø",
+    "alt": "A dark silhouette of a mountain peak set against a starry sky with vivid green auroras dancing above Tromsø, Norway.",
+    "country": "nor",
+    "city": "Tromsø",
+    "state": "Troms og Finnmark",
+    "theme": [
+      "night",
+      "sky",
+      "aurora"
+    ],
+    "story": "Standing over the fjords of northern Norway, a mountain ridge cuts a clean silhouette against the aurora borealis. The green curtains stretch across the sky above Tromsø, one of the world's prime aurora-watching destinations.",
+    "entities": [
+      "mountain silhouette",
+      "northern lights",
+      "starry sky",
+      "fjord",
+      "snow"
+    ],
+    "dupeOf": "atlas-norway",
+    "curator_notes": "tromso norway this is in Tromso Norway"
+  },
+  {
+    "id": "20140923-2014-09-23-12-07-14",
+    "src": "media/photography/20140923-2014-09-23-12-07-14.jpg",
+    "aspect": 1.505,
+    "caption": "Northern Lights Over Tromsø Peaks",
+    "alt": "Silhouetted mountain peaks beneath a star-filled night sky, with vibrant green northern lights glowing along the horizon in Tromsø, Norway.",
+    "country": "nor",
+    "theme": [
+      "sky",
+      "night",
+      "aurora"
+    ],
+    "story": "Above the jagged ridgelines outside Tromsø, the aurora borealis washes the horizon in green while stars and meteors crowd the sky overhead.",
+    "entities": [
+      "mountain silhouette",
+      "northern lights",
+      "star trails",
+      "meteors",
+      "night sky",
+      "peaks"
+    ],
+    "curator_notes": "tromso norway"
+  },
+  {
+    "id": "20150415-dsc00721",
+    "src": "media/photography/20150415-dsc00721.jpg",
+    "aspect": 1.505,
+    "caption": "Floating House on Lake Atitlán",
+    "alt": "A white floating structure with arched windows rests on the calm surface of Lake Atitlán, with volcanic peaks rising in the distance under an overcast sky.",
+    "country": "gtm",
+    "theme": [
+      "water",
+      "architecture"
+    ],
+    "story": "A solitary floating house drifts on Lake Atitlán, the volcanic skyline of Guatemala's highlands looming behind it. The still water and heavy clouds lend the scene a quiet, suspended quality.",
+    "entities": [
+      "floating house",
+      "lake",
+      "arched windows",
+      "volcanic peaks",
+      "buoys",
+      "overcast sky"
+    ],
+    "curator_notes": "Lake Atitlan (sp) Guatemala"
+  },
+  {
+    "id": "20150416-dsc00930",
+    "src": "media/photography/20150416-dsc00930.jpg",
+    "aspect": 1.505,
+    "caption": "Mountain Market, Guatemala",
+    "alt": "A woman in colorful traditional clothing prepares tortillas at an outdoor mountain market in Guatemala, surrounded by vibrant textiles and other vendors.",
+    "country": "gtm",
+    "theme": [
+      "street",
+      "food"
+    ],
+    "story": "High in the Guatemalan mountains, a woman works through the ritual of tortilla-making at a busy market, her vivid clothing blending into the surrounding textiles and commerce of her community.",
+    "entities": [
+      "woman",
+      "tortillas",
+      "market stall",
+      "colorful clothing",
+      "customers",
+      "plastic bags",
+      "table",
+      "chair",
+      "textiles"
+    ],
+    "curator_notes": "Guatemala at a market in the mountains"
+  },
+  {
+    "id": "20160106-dsc04844",
+    "src": "media/photography/20160106-dsc04844.jpg",
+    "aspect": 0.6644,
+    "caption": "Modern Meets Ancient: A Phone Among Prayer Flags",
+    "alt": "A mobile phone connected to a charging cable is entwined among colorful prayer flags tied to a statue of multiple hands. The scene blends modern technology with traditional religious elements, creating a visually striking composition.",
+    "country": "ind",
+    "theme": [
+      "religion",
+      "minimalist"
+    ],
+    "story": "A mobile phone is plugged into a charging cable, draped over the intricate network of red and yellow prayer flags tied to a statue of multiple hands. The juxtaposition of modern technology against traditional religious elements creates a striking contrast, symbolizing the blend of ancient practices with contemporary life.",
+    "entities": [
+      "mobile phone",
+      "charging cable",
+      "prayer flags",
+      "statue of hands",
+      "red and yellow threads"
+    ]
+  },
+  {
+    "id": "20160106-dsc04851",
+    "src": "media/photography/20160106-dsc04851.jpg",
+    "aspect": 1.505,
+    "caption": "Whispers at the Taj: A Moment of Reflection",
+    "alt": "Two men in formal attire are seen conversing through a detailed lattice window, set against the grandeur of the Taj Mahal's red sandstone architecture. The scene captures a peaceful interaction within the iconic monument's grounds.",
+    "country": "ind",
+    "theme": [
+      "people",
+      "street",
+      "architecture"
+    ],
+    "story": "Two men engage in a quiet discussion within the serene grounds of the Taj Mahal, their figures framed by the intricate lattice work that filters light and creates an intimate atmosphere. The iconic architecture serves as both backdrop and foreground, emphasizing the timeless beauty and cultural significance of this historic site.",
+    "entities": [
+      "taj mahal",
+      "lattice window",
+      "men in conversation",
+      "red sandstone building",
+      "formal attire",
+      "brick pavement"
+    ]
+  },
+  {
+    "id": "20160106-dsc05013",
+    "src": "media/photography/20160106-dsc05013.jpg",
+    "aspect": 0.6644,
+    "caption": "Dawn's Reflections at the Mosque",
+    "alt": "A mosque minaret stands tall in the background as the sun rises, casting golden light through an ornate archway. The wet pavement reflects the sunrise, while people walk towards the structure, creating a peaceful and spiritual atmosphere.",
+    "country": "ind",
+    "theme": [
+      "religion",
+      "reflection",
+      "sunrise",
+      "architecture",
+      "history"
+    ],
+    "story": "The image captures a serene sunrise at a mosque, with the golden light of dawn streaming through an ornate archway and reflecting off a wet courtyard. The silhouettes of people walking towards the minaret add a sense of movement and reverence to the tranquil scene.",
+    "entities": [
+      "mosque minaret",
+      "archway",
+      "ornate wall",
+      "people walking",
+      "wet pavement",
+      "morning sun"
+    ]
+  },
+  {
+    "id": "20160107-dsc05143-enhanced-nr",
+    "src": "media/photography/20160107-dsc05143-enhanced-nr.jpg",
+    "aspect": 1.505,
+    "caption": "The Palace of Winds: A Testament to Rajasthani Architecture",
+    "alt": "A close-up view of the Hawa Mahal in Jaipur, India, highlighting its detailed sandstone architecture with numerous small windows. The building's unique design and vibrant color are set against a bright blue sky.",
+    "country": "ind",
+    "theme": [
+      "architecture",
+      "history"
+    ],
+    "story": "The Hawa Mahal, also known as the Palace of Winds, stands majestically under a clear blue sky. Its intricate lattice work and ornate windows showcase the rich architectural heritage of Rajasthan, India.",
+    "entities": [
+      "hawa mahal",
+      "ornate windows",
+      "sandstone building",
+      "architectural details",
+      "blue sky"
+    ]
+  },
+  {
+    "id": "20160109-dsc05461",
+    "src": "media/photography/20160109-dsc05461.jpg",
+    "aspect": 1.505,
+    "caption": "Veiled Silhouettes: A Cultural Portrait",
+    "alt": "Two women wearing ornate red veils with intricate embroidery are shown in silhouette, their hands resting gently. The background features blurred city buildings bathed in warm sunlight.",
+    "country": "ind",
+    "theme": [
+      "people",
+      "silhouette"
+    ],
+    "story": "Two women, their identities partially concealed by vibrant red veils, are captured in a moment of quiet reflection. The interplay of light and shadow creates a sense of mystery and cultural richness, highlighting the beauty of traditional attire against an urban backdrop.",
+    "entities": [
+      "woman",
+      "veil",
+      "jewelry",
+      "hands",
+      "sunlight",
+      "background buildings"
+    ]
+  },
+  {
+    "id": "20160110-dsc05819",
+    "src": "media/photography/20160110-dsc05819.jpg",
+    "aspect": 1.505,
+    "caption": "Reflections in Time: Ancient Stepwell",
+    "alt": "An ancient stepwell with symmetrical staircases leading down to calm waters reflecting the surrounding brick architecture and domed building.",
+    "country": "ind",
+    "theme": [
+      "reflection",
+      "architecture",
+      "history",
+      "art"
+    ],
+    "story": "The image captures an ancient stepwell, a marvel of historical engineering and architecture. The symmetrical staircases descend into the still water below, creating a mesmerizing reflection that mirrors the intricate brickwork above. This serene scene evokes a sense of timelessness and cultural heritage.",
+    "entities": [
+      "stepwell",
+      "staircase",
+      "water",
+      "brick structure",
+      "domed building"
+    ]
+  },
+  {
+    "id": "20160110-dsc05833",
+    "src": "media/photography/20160110-dsc05833.jpg",
+    "aspect": 1.505,
+    "caption": "Puppies on the Steps",
+    "alt": "Two small puppies standing on weathered stone steps near a brick wall, with some food scraps visible nearby.",
+    "country": "ind",
+    "theme": [
+      "street",
+      "minimalist"
+    ],
+    "story": "Two puppies explore a quiet, ancient stone staircase, their curious eyes scanning the surroundings. The rustic architecture and scattered food suggest they are in an urban or historical setting, adding a touch of life to the otherwise still scene.",
+    "entities": [
+      "puppies",
+      "stone steps",
+      "brick wall",
+      "food scraps"
+    ]
+  },
+  {
+    "id": "20160110-dsc05905",
+    "src": "media/photography/20160110-dsc05905.jpg",
+    "aspect": 1.505,
+    "caption": "Reflections on History",
+    "alt": "A close-up portrait of a man with sunglasses standing near a stone wall staircase. His sunglasses reflect another individual, creating a layered visual effect.",
+    "country": "ind",
+    "theme": [
+      "people",
+      "street",
+      "reflection"
+    ],
+    "story": "A man wearing sunglasses stands in front of a historic stone structure, his expression serious and contemplative. The reflection in his glasses hints at another person nearby, adding an element of intrigue to the scene.",
+    "entities": [
+      "man",
+      "sunglasses",
+      "stone wall",
+      "staircase",
+      "red signboard"
+    ]
+  },
+  {
+    "id": "20160113-dsc06372-enhanced-nr",
+    "src": "media/photography/20160113-dsc06372-enhanced-nr.jpg",
+    "aspect": 1.7778,
+    "caption": "The Golden Temple at Night",
+    "alt": "Nighttime view of the Golden Temple, its gilded dome and intricate domes mirrored perfectly in the calm sarovar below, floodlit minarets and clock tower framing the scene.",
+    "country": "ind",
+    "city": "Amritsar",
+    "state": "Punjab",
+    "theme": [
+      "architecture",
+      "reflection",
+      "night",
+      "religion"
+    ],
+    "story": "The Golden Temple, Sikhism's holiest site, glows against the dark sky, its gilded facade and intricate domes mirrored perfectly in the calm sarovar below. Floodlit minarets and the clock tower frame the scene, the stillness of the water doubling every light into a seamless reflection.",
+    "entities": [
+      "Golden Temple",
+      "sarovar",
+      "golden dome",
+      "minarets",
+      "clock tower",
+      "bridge",
+      "temple complex",
+      "illuminated facade",
+      "light reflections",
+      "reflecting pool",
+      "domes",
+      "surrounding architecture"
+    ]
+  },
+  {
+    "id": "20160111-dsc05997",
+    "src": "media/photography/20160111-dsc05997.jpg",
+    "aspect": 0.6644,
+    "caption": "Ceremonial Motorcycle: A Celebration of Tradition",
+    "alt": "A motorcycle decorated with bright orange marigold garlands and red ribbons stands inside a metal structure. The number plate displays Hindi script, indicating a cultural or religious event in an urban environment.",
+    "country": "tha",
+    "theme": [
+      "street"
+    ],
+    "story": "A motorcycle is adorned with vibrant marigold garlands and red ribbons, suggesting a ceremonial or celebratory purpose. The scene takes place in an urban setting, possibly during a festival or ritual, highlighting the cultural significance of such decorations.",
+    "entities": [
+      "motorcycle",
+      "marigold garlands",
+      "red ribbons",
+      "number plate",
+      "hindi script",
+      "flowers on ground",
+      "metal structure"
+    ]
+  },
+  {
+    "id": "20160111-dsc06046",
+    "src": "media/photography/20160111-dsc06046.jpg",
+    "aspect": 1.505,
+    "caption": "Guardian of the Cab: A Dog's Relaxed Vigil",
+    "alt": "A dog rests on a towel-covered seat inside a truck, surrounded by steering wheel and dashboard details.",
+    "country": "tha",
+    "theme": [
+      "people",
+      "street"
+    ],
+    "story": "A dog lounges comfortably on a worn truck seat, exuding a sense of calm and ownership over its temporary domain. The scene captures the intersection of human activity and animal companionship in an urban setting.",
+    "entities": [
+      "dog",
+      "truck interior",
+      "steering wheel",
+      "seat",
+      "towel",
+      "dashboard"
+    ]
+  },
+  {
+    "id": "20160113-dsc06256",
+    "src": "media/photography/20160113-dsc06256.jpg",
+    "aspect": 1.505,
+    "caption": "Barber's Artistry on Display",
+    "alt": "A man is shaving another person's face with a razor while seated outdoors. The scene includes a brick wall, hanging towels, and a motorcycle in the background, suggesting an open market environment.",
+    "country": "tha",
+    "theme": [
+      "street"
+    ],
+    "story": "A barber skillfully shaves the face of a customer in an open-air market setting, capturing the essence of daily life and traditional craftsmanship.",
+    "entities": [
+      "barber",
+      "customer",
+      "razor",
+      "brick wall",
+      "towel",
+      "motorcycle",
+      "marketplace"
+    ]
+  },
+  {
+    "id": "20160116-dsc06746",
+    "src": "media/photography/20160116-dsc06746.jpg",
+    "aspect": 1.505,
+    "caption": "Tibetan Monastery Artwork, Himachal Pradesh",
+    "alt": "Decorative artwork inside a Tibetan Buddhist monastery in Himachal Pradesh, India.",
+    "country": "tha",
+    "state": "Himachal Pradesh",
+    "theme": [
+      "architecture",
+      "religion",
+      "travel",
+      "art"
+    ],
+    "story": "This piece of artwork adorns a Tibetan monastery in the mountain state of Himachal Pradesh, carrying the visual language of Vajrayana Buddhism into the high Indian Himalaya.",
+    "entities": [
+      "monastery",
+      "artwork",
+      "Tibetan painting",
+      "Buddhist iconography",
+      "wall decoration"
+    ],
+    "curator_notes": "this is artwork and a Tibetan Monastery in Himichal Pradesh India"
+  },
+  {
+    "id": "20160116-dsc06785",
+    "src": "media/photography/20160116-dsc06785.jpg",
+    "aspect": 1.505,
+    "country": "ind",
+    "theme": [
+      "religion"
+    ]
+  },
+  {
+    "id": "20160117-dsc06989",
+    "src": "media/photography/20160117-dsc06989.jpg",
+    "aspect": 1.505,
+    "caption": "Sacred Sanctuary: A Temple of Tradition",
+    "alt": "A majestic temple complex with ornate golden roofs, colorful stupas, and detailed decorations stands against a dark blue sky. The scene includes statues, flagpoles, and a bench in the foreground, showcasing rich cultural architecture.",
+    "country": "ind",
+    "theme": [
+      "religion",
+      "architecture"
+    ],
+    "story": "The grandeur of a traditional temple complex is captured under the vast, dark sky. The intricate details and vibrant colors of the architecture reflect a deep cultural and spiritual significance, inviting contemplation and reverence.",
+    "entities": [
+      "temple complex",
+      "stupas",
+      "ornate decorations",
+      "bench",
+      "flagpoles",
+      "statues",
+      "golden roofs"
+    ]
+  },
+  {
+    "id": "20160117-dsc07156-enhanced-nr",
+    "src": "media/photography/20160117-dsc07156-enhanced-nr.jpg",
+    "aspect": 1.505,
+    "caption": "Cultural Sanctuary: A Glimpse into Traditional Rituals",
+    "alt": "A beautifully decorated interior space with colorful walls, chandeliers, and intricate designs. People are seated around tables, participating in a cultural or ceremonial event within a richly adorned room.",
+    "country": "ind",
+    "theme": [
+      "architecture",
+      "religion"
+    ],
+    "story": "The image captures the vibrant interior of a traditional cultural space, adorned with intricate designs and rich colors. The room is filled with people engaged in what appears to be a communal or ceremonial gathering, surrounded by ornate decorations and religious statues, creating an atmosphere of reverence and tradition.",
+    "entities": [
+      "chandeliers",
+      "ornate decorations",
+      "statues",
+      "colorful walls",
+      "wooden floor",
+      "tables and chairs",
+      "people sitting"
+    ]
+  },
+  {
+    "id": "20160120-dsc07678-pano-edit",
+    "src": "media/photography/20160120-dsc07678-pano-edit.jpg",
+    "aspect": 1.1946,
+    "caption": "Sacred Sanctuary: A Glimpse of Architectural Majesty",
+    "alt": "A majestic mosque with a green dome and ornate facade, surrounded by people entering the premises on a clear day.",
+    "country": "ind",
+    "theme": [
+      "religion",
+      "architecture",
+      "history"
+    ],
+    "story": "The grand mosque stands as a testament to historical and religious significance, its intricate architecture drawing visitors who gather at the entrance. The vibrant colors and detailed craftsmanship reflect cultural heritage.",
+    "entities": [
+      "mosque",
+      "minaret",
+      "green dome",
+      "ornate facade",
+      "people",
+      "steps",
+      "trees",
+      "blue sky"
+    ]
+  },
+  {
+    "id": "20160121-dsc07829",
+    "src": "media/photography/20160121-dsc07829.jpg",
+    "aspect": 1.505,
+    "country": "ind",
+    "theme": [
+      "water"
+    ]
+  },
+  {
+    "id": "20160121-dsc07885",
+    "src": "media/photography/20160121-dsc07885.jpg",
+    "aspect": 1.505,
+    "country": "ind",
+    "theme": [
+      "street"
+    ]
+  },
+  {
+    "id": "20160716-dsc09724-enhanced-nr",
+    "src": "media/photography/20160716-dsc09724-enhanced-nr.jpg",
+    "aspect": 1.505,
+    "country": "col",
+    "theme": [
+      "religion",
+      "art"
+    ]
+  },
+  {
+    "id": "20170626-dsc00156",
+    "src": "media/photography/20170626-dsc00156.jpg",
+    "aspect": 1.505,
+    "country": "usa",
+    "theme": [
+      "sky"
+    ]
+  },
+  {
+    "id": "20180723-dsc01437",
+    "src": "media/photography/20180723-dsc01437.jpg",
+    "aspect": 1.505,
+    "country": "usa",
+    "theme": [
+      "people"
+    ]
+  },
+  {
+    "id": "20190120-dsc01762-enhanced-nr",
+    "src": "media/photography/20190120-dsc01762-enhanced-nr.jpg",
+    "aspect": 1.7778,
+    "country": "ind",
+    "theme": [
+      "cityscape"
+    ]
+  },
+  {
+    "id": "20190429-dsc01921",
+    "src": "media/photography/20190429-dsc01921.jpg",
+    "aspect": 1.505,
+    "country": "usa",
+    "theme": [
+      "landscape"
+    ]
+  },
+  {
+    "id": "20190429-dsc01952",
+    "src": "media/photography/20190429-dsc01952.jpg",
+    "aspect": 1.505,
+    "country": "usa",
+    "theme": [
+      "people"
+    ],
+    "featured": true,
+    "sort_order": 120
+  },
+  {
+    "id": "20190602-dsc00653",
+    "src": "media/photography/20190602-dsc00653.jpg",
+    "aspect": 1.4997,
+    "country": "usa",
+    "theme": [
+      "mammals"
+    ],
+    "curator_notes": "San Francisco Pier 39 California USA"
+  },
+  {
+    "id": "20190612-dsc01626-enhanced-nr",
+    "src": "media/photography/20190612-dsc01626-enhanced-nr.jpg",
+    "aspect": 1,
+    "country": "zaf",
+    "theme": [
+      "mammals"
+    ],
+    "curator_notes": "Sabi Sands near Kruger in South Africa"
+  },
+  {
+    "id": "20190612-dsc01745",
+    "src": "media/photography/20190612-dsc01745.jpg",
+    "aspect": 1,
+    "country": "zaf",
+    "theme": [
+      "mammals"
+    ],
+    "curator_notes": "sobby Sands near Kruger and South Africa"
+  },
+  {
+    "id": "20190614-dsc03772",
+    "src": "media/photography/20190614-dsc03772.jpg",
+    "aspect": 1.4997,
+    "country": "zaf",
+    "theme": [
+      "mammals"
+    ],
+    "featured": true,
+    "sort_order": 60,
+    "curator_notes": "Sabi Sands near Kruger in South Africa"
+  },
+  {
+    "id": "20190615-dsc04381",
+    "src": "media/photography/20190615-dsc04381.jpg",
+    "aspect": 1.4997,
+    "caption": "Leopard in the Canopy, Sabi Sands",
+    "alt": "A leopard's face peers directly at the camera from within tree branches in the Sabi Sands reserve, surrounded by lush greenery.",
+    "country": "zaf",
+    "city": "Sabi Sands",
+    "state": "Mpumalanga",
+    "theme": [
+      "mammals"
+    ],
+    "species": "leopard",
+    "story": "A leopard peers curiously from its perch in a tree, its piercing gaze fixed on the camera. The scene captures the wild beauty and alertness of this majestic predator in its natural habitat near Kruger.",
+    "entities": [
+      "leopard",
+      "tree",
+      "branch",
+      "forest",
+      "lush greenery",
+      "Sabi Sands",
+      "Kruger National Park"
+    ],
+    "curator_notes": "Sabi Sands near Kruger in South Africa"
+  },
+  {
+    "id": "20190615-dsc04451-enhanced-nr",
+    "src": "media/photography/20190615-dsc04451-enhanced-nr.jpg",
+    "aspect": 1,
+    "country": "zaf",
+    "theme": [
+      "mammals"
+    ],
+    "featured": true,
+    "sort_order": 30,
+    "curator_notes": "Tabby Sands near Kruger in South Africa"
+  },
+  {
+    "id": "20190618-dsc02083",
+    "src": "media/photography/20190618-dsc02083.jpg",
+    "aspect": 1.505,
+    "country": "zaf",
+    "theme": [
+      "birds"
+    ],
+    "curator_notes": "off the coast of Cape Town  I think it's called Cape Horn in South Africa"
+  },
+  {
+    "id": "20211119-dsc06661",
+    "src": "media/photography/20211119-dsc06661.jpg",
+    "aspect": 1.7765,
+    "country": "usa",
+    "theme": [
+      "cityscape"
+    ]
+  },
+  {
+    "id": "20211119-dsc06753",
+    "src": "media/photography/20211119-dsc06753.jpg",
+    "aspect": 0.6667,
+    "country": "usa",
+    "theme": [
+      "religion"
+    ]
+  },
+  {
+    "id": "20211119-dsc06773",
+    "src": "media/photography/20211119-dsc06773.jpg",
+    "aspect": 2,
+    "country": "usa",
+    "theme": [
+      "religion",
+      "art"
+    ]
+  },
+  {
+    "id": "20211124-dsc07062",
+    "src": "media/photography/20211124-dsc07062.jpg",
+    "aspect": 1,
+    "country": "usa",
+    "theme": [
+      "people"
+    ]
+  },
+  {
+    "id": "20211124-dsc07122",
+    "src": "media/photography/20211124-dsc07122.jpg",
+    "aspect": 1,
+    "country": "usa",
+    "theme": [
+      "people"
+    ],
+    "featured": true,
+    "sort_order": 450
+  },
+  {
+    "id": "20211124-dsc07150",
+    "src": "media/photography/20211124-dsc07150.jpg",
+    "aspect": 0.6667,
+    "country": "usa",
+    "theme": [
+      "people"
+    ]
+  },
+  {
+    "id": "20211124-dsc07310",
+    "src": "media/photography/20211124-dsc07310.jpg",
+    "aspect": 1.7765,
+    "country": "usa",
+    "theme": [
+      "people"
+    ]
+  },
+  {
+    "id": "20220121-dsc08145-enhanced-nr",
+    "src": "media/photography/20220121-dsc08145-enhanced-nr.jpg",
+    "aspect": 1.7765,
+    "country": "usa",
+    "theme": [
+      "sky"
+    ]
+  },
+  {
+    "id": "20220306-dsc08197",
+    "src": "media/photography/20220306-dsc08197.jpg",
+    "aspect": 1,
+    "country": "usa",
+    "theme": [
+      "insects"
+    ]
+  },
+  {
+    "id": "20220306-dsc08873",
+    "src": "media/photography/20220306-dsc08873.jpg",
+    "aspect": 1.4997,
+    "country": "usa",
+    "theme": [
+      "reptiles-amphibians"
+    ]
+  },
+  {
+    "id": "20220306-dsc08931",
+    "src": "media/photography/20220306-dsc08931.jpg",
+    "aspect": 1.7765,
+    "country": "usa",
+    "theme": [
+      "reptiles-amphibians"
+    ]
+  },
+  {
+    "id": "20221005-dsc09403",
+    "src": "media/photography/20221005-dsc09403.jpg",
+    "aspect": 1.7765,
+    "country": "tha",
+    "theme": [
+      "water"
+    ],
+    "curator_notes": "somewhere near Phuket I think this is called floating islands or not Phuket somewhere in Thailand"
+  },
+  {
+    "id": "20221010-dsc09441",
+    "src": "media/photography/20221010-dsc09441.jpg",
+    "aspect": 1.7765,
+    "country": "tha",
+    "theme": [
+      "religion",
+      "art"
+    ],
+    "curator_notes": "Bangkok Thailand"
+  },
+  {
+    "id": "20221013-dsc09482",
+    "src": "media/photography/20221013-dsc09482.jpg",
+    "aspect": 0.5626,
+    "country": "mys",
+    "theme": [
+      "architecture"
+    ],
+    "curator_notes": "Kuala Lumpur Malaysia"
+  },
+  {
+    "id": "20221013-dsc09565",
+    "src": "media/photography/20221013-dsc09565.jpg",
+    "aspect": 1.7778,
+    "country": "mys",
+    "theme": [
+      "people"
+    ],
+    "curator_notes": "Batu Caves, Kuala Lumpur, Malaysia"
+  },
+  {
+    "id": "20221013-dsc09572",
+    "src": "media/photography/20221013-dsc09572.jpg",
+    "aspect": 1.4997,
+    "country": "mys",
+    "theme": [
+      "religion"
+    ],
+    "curator_notes": "Batu Caves, Kuala Lumpur, Malaysia"
+  },
+  {
+    "id": "20221013-dsc09603",
+    "src": "media/photography/20221013-dsc09603.jpg",
+    "aspect": 1.7765,
+    "country": "mys",
+    "theme": [
+      "religion",
+      "art"
+    ],
+    "curator_notes": "Batu Caves, Kuala Lumpur, Malaysia"
+  },
+  {
+    "id": "20221016-dsc09624",
+    "src": "media/photography/20221016-dsc09624.jpg",
+    "aspect": 1.4997,
+    "caption": "Merlion Majesty: A Glimpse of Singapore’s Iconic Skyline",
+    "alt": "The Merlion statue in Marina Bay sprays water into the air, surrounded by a bustling cityscape with tall skyscrapers and green trees. People are sitting on steps nearby, enjoying the scenic view.",
+    "country": "sgp",
+    "theme": [
+      "water",
+      "architecture"
+    ],
+    "story": "The iconic Merlion statue stands proudly in Marina Bay, spouting water as a backdrop to Singapore's modern skyline. The vibrant cityscape is dotted with towering skyscrapers and lush greenery, capturing the essence of urban life alongside natural beauty.",
+    "entities": [
+      "merlion statue",
+      "fountain",
+      "skyscrapers",
+      "marina bay",
+      "trees",
+      "people sitting on steps",
+      "clouds"
+    ]
+  },
+  {
+    "id": "20221017-img-1187",
+    "src": "media/photography/20221017-img-1187.jpg",
+    "aspect": 0.7501,
+    "caption": "Little Vietnam, Singapore After Hours",
+    "alt": "A long covered market hallway in Singapore's Little Vietnam district, its closed roller shutters flanked by colorful neon signs whose glow reflects off the tiled floor below.",
+    "country": "sgp",
+    "theme": [
+      "street",
+      "night",
+      "urban"
+    ],
+    "story": "The market has closed for the night, but the neon signs lining the corridor keep burning, casting pooled color across the empty floor. The stillness feels less abandoned than suspended — a pause between the day's last vendor and tomorrow's first.",
+    "entities": [
+      "roller shutters",
+      "neon signs",
+      "tile floor",
+      "cashier counter",
+      "market hallway",
+      "fluorescent light",
+      "reflections"
+    ],
+    "curator_notes": "I think this is little Vietnam in Singapore"
+  },
+  {
+    "id": "20240101-dsc01289",
+    "src": "media/photography/20240101-dsc01289.jpg",
+    "aspect": 1.7765,
+    "caption": "Flock of Sandpipers at the Shore",
+    "alt": "A group of sandpipers walking on wet sand near the ocean, with gentle waves in the background.",
+    "country": "usa",
+    "theme": [
+      "birds"
+    ],
+    "species": "sandpiper",
+    "story": "A flock of sandpipers scurries along the wet shoreline, their delicate movements synchronized with the ebb and flow of the tide. The scene captures a moment of natural harmony between these small birds and their coastal habitat.",
+    "entities": [
+      "sandpipers",
+      "wet sand",
+      "ocean waves",
+      "shoreline"
+    ]
+  },
+  {
+    "id": "20240322-dsc02012-enhanced-sr",
+    "src": "media/photography/20240322-dsc02012-enhanced-sr.jpg",
+    "aspect": 1,
+    "caption": "Reflections of a Metropolis",
+    "alt": "A tall skyscraper with reflective glass windows is shown against a clear blue sky. In the reflection, the red and white Tokyo Tower and other urban structures are visible, capturing the essence of a bustling cityscape.",
+    "country": "jpn",
+    "theme": [
+      "reflection",
+      "architecture"
+    ],
+    "story": "A towering skyscraper dominates the foreground, its glass facade reflecting the vibrant cityscape behind it. The iconic Tokyo Tower stands prominently in the background, symbolizing the bustling energy and modernity of Japan's capital.",
+    "entities": [
+      "skyscraper",
+      "tokyo tower",
+      "construction crane",
+      "urban skyline"
+    ]
+  },
+  {
+    "id": "20240322-dsc02159-enhanced-nr",
+    "src": "media/photography/20240322-dsc02159-enhanced-nr.jpg",
+    "aspect": 0.6667,
+    "caption": "Team Labs Tokyo",
+    "alt": "A long corridor lined with rows of glowing red and yellow industrial light fixtures, creating an abstract tunnel of color at teamLab in Tokyo, Japan.",
+    "country": "jpn",
+    "theme": [
+      "abstract",
+      "art"
+    ],
+    "story": "Inside teamLab's Tokyo installation, rows of industrial light fixtures wash a corridor in deep reds and yellows, turning infrastructure into immersive art.",
+    "entities": [
+      "lights",
+      "corridor",
+      "pipes",
+      "metal structures",
+      "colored beams",
+      "reflections"
+    ],
+    "curator_notes": "team Labs Tokyo Japan"
+  },
+  {
+    "id": "20240325-dsc02184-enhanced-nr",
+    "src": "media/photography/20240325-dsc02184-enhanced-nr.jpg",
+    "aspect": 1.7778,
+    "caption": "Neon Dreams: A Night in the City",
+    "alt": "A nighttime street scene packed with bright neon signs, colorful billboards, and hanging red lanterns. Wires and pipes crisscross overhead while raindrops glisten on every surface.",
+    "country": "jpn",
+    "theme": [
+      "street",
+      "night"
+    ],
+    "story": "The vibrant streets of a bustling Japanese city come alive at night, illuminated by dazzling neon lights and traditional lanterns. Raindrops catch the electric glow as signs advertising local businesses jostle for space with red lanterns overhead.",
+    "entities": [
+      "neon signs",
+      "lanterns",
+      "pedestrian crossing sign",
+      "billboards",
+      "buildings",
+      "wires",
+      "raindrops",
+      "red pipes"
+    ],
+    "dupeOf": "me-travel-19"
+  },
+  {
+    "id": "20240406-dsc02735",
+    "src": "media/photography/20240406-dsc02735.jpg",
+    "aspect": 1,
+    "caption": "Cherry Blossoms Embrace Modernity",
+    "alt": "A person taking photos amidst blooming cherry blossom trees near a river, with the iconic Tokyo Skytree in the background and modern buildings visible across the water. The scene is lush with greenery and signs indicating park rules.",
+    "country": "jpn",
+    "theme": [
+      "culture",
+      "people",
+      "street"
+    ],
+    "story": "A photographer captures the serene beauty of cherry blossoms in full bloom, framed by the modern Tokyo Skytree and a tranquil river. The scene blends natural splendor with urban architecture, creating a harmonious contrast.",
+    "entities": [
+      "cherry blossom trees",
+      "photographer",
+      "tokyo skytree",
+      "river",
+      "boats",
+      "signage",
+      "grass",
+      "buildings"
+    ]
+  },
+  {
+    "id": "20240422-dsc02776",
+    "src": "media/photography/20240422-dsc02776.jpg",
+    "aspect": 1.4997,
+    "caption": "Ground Squirrel on the Move",
+    "alt": "A ground squirrel is seen walking along a dirt path with grass at the edge. The background consists of a sandy, arid landscape.",
+    "country": "usa",
+    "theme": [
+      "mammals"
+    ],
+    "species": "ground squirrel",
+    "story": "A ground squirrel scurries along a dirt path, its small form contrasting against the dry earth and patches of green grass. The scene captures a moment of quiet wildlife activity in a natural setting.",
+    "entities": [
+      "ground squirrel",
+      "grass",
+      "dirt path"
+    ]
+  },
+  {
+    "id": "20240422-dsc02793",
+    "src": "media/photography/20240422-dsc02793.jpg",
+    "aspect": 1.4997,
+    "caption": "Snow-Capped Peaks Amidst Evergreens",
+    "alt": "A dramatic landscape featuring a snow-covered mountain range with jagged peaks and rocky surfaces, surrounded by lush evergreen trees in the foreground.",
+    "country": "usa",
+    "theme": [
+      "mountains"
+    ],
+    "story": "The rugged majesty of a snow-dusted mountain range dominates the scene, with evergreen trees in the foreground framing the imposing rocky cliffs and peaks. The atmosphere is serene yet powerful, capturing the raw beauty of nature's grandeur.",
+    "entities": [
+      "snow-covered mountains",
+      "evergreen trees",
+      "rocky peaks"
+    ]
+  },
+  {
+    "id": "20240422-dsc02907-enhanced-sr",
+    "src": "media/photography/20240422-dsc02907-enhanced-sr.jpg",
+    "aspect": 1,
+    "caption": "Curious Deer in the Grasslands",
+    "alt": "A young deer stands amidst dry grassland, holding a piece of grass in its mouth and looking directly at the camera. The background is blurred, emphasizing the animal's alert expression and natural habitat.",
+    "country": "usa",
+    "theme": [
+      "mammals"
+    ],
+    "species": "deer",
+    "story": "A young deer stands in a dry, grassy field, its large ears perked up and alert. It holds a piece of grass in its mouth, suggesting it has been grazing. The close-up shot captures the animal's curious gaze directly at the camera, creating an intimate connection with the viewer.",
+    "entities": [
+      "deer",
+      "grass",
+      "dry grassland"
+    ]
+  },
+  {
+    "id": "20240504-dsc03184",
+    "src": "media/photography/20240504-dsc03184.jpg",
+    "aspect": 1.4997,
+    "caption": "Dog Statue on a New Orleans Porch",
+    "alt": "A German Shepherd statue wearing a pearl necklace sits on a porch in New Orleans, surrounded by a wrought iron gate and star decorations.",
+    "country": "usa",
+    "theme": [
+      "street",
+      "minimalist"
+    ],
+    "story": "A weathered German Shepherd statue, adorned with a pearl necklace, guards a porch in New Orleans. The wrought iron gate and star decorations reflect the city's signature blend of rustic architecture and eccentric personality.",
+    "entities": [
+      "statue of a dog",
+      "pearl necklace",
+      "porch",
+      "wrought iron gate",
+      "star decoration",
+      "potted plant",
+      "interior lighting"
+    ],
+    "curator_notes": "New Orleans USA"
+  },
+  {
+    "id": "20240520-dsc00114",
+    "src": "media/photography/20240520-dsc00114.jpg",
+    "aspect": 1.4997,
+    "caption": "Reaching for the Sky: Burj Khalifa",
+    "alt": "The Burj Khalifa's distinctive spire rises against a clear blue sky, framed by a lush palm tree with curved architectural elements in the foreground.",
+    "country": "are",
+    "theme": [
+      "sky",
+      "architecture"
+    ],
+    "story": "The Burj Khalifa pierces a vibrant blue sky, its sleek spire a testament to human engineering and ambition. A palm tree and surrounding architecture frame the shot, capturing Dubai's characteristic layering of natural and built form.",
+    "entities": [
+      "burj khalifa",
+      "palm tree",
+      "clear sky",
+      "curved structure",
+      "architectural structure",
+      "spire",
+      "urban landscape"
+    ],
+    "dupeOf": "me-travel-28"
+  },
+  {
+    "id": "20240521-dsc00185",
+    "src": "media/photography/20240521-dsc00185.jpg",
+    "aspect": 1,
+    "caption": "Red graffiti art on a Dubai wall",
+    "alt": "Bold red graffiti featuring Arabic script and the word 'ART' painted on a textured wall in Dubai, UAE.",
+    "country": "are",
+    "theme": [
+      "street",
+      "abstract",
+      "minimalist"
+    ],
+    "story": "A bold street art piece on a Dubai wall fuses Arabic script with the word 'ART' in stark red, blending cultural identity with urban expression.",
+    "entities": [
+      "graffiti",
+      "red paint",
+      "arabic script",
+      "text",
+      "wall"
+    ],
+    "curator_notes": "Dubai UAE"
+  },
+  {
+    "id": "20240522-dsc00208",
+    "src": "media/photography/20240522-dsc00208.jpg",
+    "aspect": 1,
+    "caption": "Window Washers on a Dubai Skyscraper",
+    "alt": "Three window washers in orange safety gear and hard hats are suspended on scaffolding while cleaning the glass facade of a tall building in Dubai, UAE.",
+    "country": "are",
+    "theme": [
+      "urban"
+    ],
+    "story": "High above Dubai, three workers in orange uniforms methodically clean a skyscraper's glass facade. Their scaffolding hangs against the sleek tower, a quiet reminder of the human labor behind the city's gleaming skyline.",
+    "entities": [
+      "window washers",
+      "scaffolding",
+      "glass facade",
+      "orange safety gear",
+      "hard hats",
+      "bucket",
+      "cleaning tools",
+      "skyscraper"
+    ],
+    "featured": true,
+    "sort_order": 130,
+    "curator_notes": "Dubai UAe"
+  },
+  {
+    "id": "20240527-dsc00432",
+    "src": "media/photography/20240527-dsc00432.jpg",
+    "aspect": 0.6667,
+    "caption": "Carnival rides and monument, Yerevan",
+    "alt": "A colorful cartoon-themed carousel with animal-shaped seats in the foreground of an amusement park, with a tall Soviet-era statue on a pedestal rising above the trees against a bright blue sky with scattered clouds in Yerevan, Armenia.",
+    "country": "arm",
+    "city": "Yerevan",
+    "theme": [
+      "travel",
+      "festival",
+      "architecture"
+    ],
+    "story": "A summer afternoon in Yerevan blends Soviet-era grandeur with fairground color — a monument looming over spinning carousel animals, cartoon-themed rides, and a floating character balloon.",
+    "entities": [
+      "carousel",
+      "amusement park ride",
+      "statue",
+      "pedestal",
+      "trees",
+      "hot-air balloon",
+      "cartoon character",
+      "flag",
+      "clouds",
+      "blue sky",
+      "playground equipment",
+      "fence"
+    ],
+    "featured": true,
+    "sort_order": 20,
+    "curator_notes": "Yerevan Armenia"
+  },
+  {
+    "id": "20240619-dsc01399-enhanced-nr",
+    "src": "media/photography/20240619-dsc01399-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Eternal Glory: Athens by Night",
+    "alt": "The illuminated Parthenon crowns the Acropolis atop its hillside, its ancient columns glowing warm against the night sky while the modern city spreads below in a tapestry of lights.",
+    "country": "grc",
+    "city": "Athens",
+    "theme": [
+      "mountains",
+      "architecture",
+      "night",
+      "history"
+    ],
+    "story": "The ancient Parthenon stands atop the Acropolis, its columns lit against the dark sky while the city below stretches in all directions, streets and modern buildings creating a sharp contrast between classical Greece and contemporary Athens. The warm artificial glow of the ruins sets them apart from the illuminated urban tapestry, a juxtaposition of millennia compressed into a single frame.",
+    "entities": [
+      "parthenon",
+      "acropolis of athens",
+      "ancient ruins",
+      "cityscape",
+      "illuminated buildings",
+      "hillside",
+      "urban skyline",
+      "classical greek architecture",
+      "dark sky",
+      "illuminated structures",
+      "mountainous terrain",
+      "buildings"
+    ]
+  },
+  {
+    "id": "20240629-dsc01868",
+    "src": "media/photography/20240629-dsc01868.jpg",
+    "aspect": 1.4997,
+    "caption": "Silent Reverence: Exploring Ancient Egypt",
+    "alt": "A person standing in a courtyard of an ancient Egyptian temple adorned with hieroglyphs and large stone columns, set against a clear blue sky.",
+    "country": "egy",
+    "theme": [
+      "architecture",
+      "history"
+    ],
+    "story": "A woman stands in awe, gazing at the grandeur of an ancient Egyptian temple with intricate carvings and towering columns under a vibrant blue sky.",
+    "entities": [
+      "temple",
+      "columns",
+      "hieroglyphs",
+      "courtyard",
+      "woman"
+    ]
+  },
+  {
+    "id": "20240630-dsc02186",
+    "src": "media/photography/20240630-dsc02186.jpg",
+    "aspect": 0.6667,
+    "caption": "Timeless Symbols: A Pharaoh's Cartouche",
+    "alt": "A detailed hieroglyphic carving on an ancient stone surface, featuring a cartouche with a pharaoh's name surrounded by symbolic elements. The design includes ornamental patterns and a stylized depiction of the sun or horizon.",
+    "country": "egy",
+    "theme": [
+      "architecture",
+      "history"
+    ],
+    "story": "This intricate hieroglyphic carving, likely from an ancient Egyptian temple or monument, depicts a symbolic representation of power and divinity. The cartouche encloses the name of a pharaoh, surrounded by ornate designs that reflect the rich cultural heritage and artistic traditions of Egypt's past.",
+    "entities": [
+      "hieroglyphic carving",
+      "ancient egyptian symbol",
+      "cartouche",
+      "pharaoh's name",
+      "ornamental design"
+    ]
+  },
+  {
+    "id": "20240703-dsc02523-enhanced-nr",
+    "src": "media/photography/20240703-dsc02523-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Pyramids of Giza: A Symbol of Timeless History",
+    "alt": "A close-up view of an Egyptian flag waving near a tent, with the majestic Pyramid of Khafre in the background under a clear sky. The image captures the essence of Egypt's ancient architectural marvels and its desert setting.",
+    "country": "egy",
+    "theme": [
+      "architecture",
+      "history"
+    ],
+    "story": "The iconic silhouette of a pyramid rises against a clear blue sky, with the Egyptian flag fluttering in the foreground. The scene evokes a sense of ancient history and cultural heritage, set amidst the vast desert landscape.",
+    "entities": [
+      "egyptian flag",
+      "pyramid",
+      "desert sand",
+      "tent"
+    ]
+  },
+  {
+    "id": "20240708-dsc02696",
+    "src": "media/photography/20240708-dsc02696.jpg",
+    "aspect": 1.4997,
+    "caption": "Chameleon at Volcanoes National Park",
+    "alt": "A small green chameleon rests on a branch surrounded by dense tropical foliage in Volcanoes National Park, Rwanda.",
+    "country": "rwa",
+    "theme": [
+      "macro",
+      "reptiles-amphibians"
+    ],
+    "species": "chameleon",
+    "story": "Perched among the lush vegetation of Volcanoes National Park, this chameleon blends into its rainforest home on the slopes of Rwanda's famous volcano range.",
+    "entities": [
+      "chameleon",
+      "branch",
+      "tropical foliage",
+      "rainforest"
+    ],
+    "curator_notes": "Volcanoes National Park Rwanda"
+  },
+  {
+    "id": "20240708-dsc03164",
+    "src": "media/photography/20240708-dsc03164.jpg",
+    "aspect": 1.4997,
+    "caption": "Mountain Gorilla at Volcanoes National Park",
+    "alt": "Close-up portrait of a mountain gorilla partially obscured by green leaves, its golden eyes gazing directly at the camera in Rwanda's Volcanoes National Park.",
+    "country": "rwa",
+    "theme": [
+      "mammals"
+    ],
+    "species": "mountain gorilla",
+    "story": "In Rwanda's Volcanoes National Park, a mountain gorilla peers through dense forest foliage, its golden eyes carrying a calm intensity that makes the closeness feel earned rather than imposed — a rare moment of connection between human and primate.",
+    "entities": [
+      "mountain gorilla",
+      "golden eyes",
+      "green leaves",
+      "forest foliage",
+      "fur",
+      "face",
+      "dense forest",
+      "primate",
+      "gorilla",
+      "leaves",
+      "forest",
+      "foliage"
+    ],
+    "curator_notes": "Volcanoes National Park Rwanda"
+  },
+  {
+    "id": "20240708-dsc03457",
+    "src": "media/photography/20240708-dsc03457.jpg",
+    "aspect": 1.4997,
+    "caption": "Gorilla Close-Up, Volcanoes National Park",
+    "alt": "A mountain gorilla with mouth open, revealing sharp teeth, framed by dense rainforest vegetation in Rwanda.",
+    "country": "rwa",
+    "theme": [
+      "mammals",
+      "macro"
+    ],
+    "species": "mountain gorilla",
+    "story": "Deep in the rainforest of Volcanoes National Park, a mountain gorilla opens its mouth in a raw display of power and presence. Rwanda's misty highland jungle frames the moment, underscoring how close and commanding these great apes can be.",
+    "entities": [
+      "gorilla",
+      "teeth",
+      "fern",
+      "forest vegetation",
+      "rainforest"
+    ],
+    "curator_notes": "Volcanoes National Park Rwanda"
+  },
+  {
+    "id": "20240710-dsc04323-enhanced-nr",
+    "src": "media/photography/20240710-dsc04323-enhanced-nr.jpg",
+    "aspect": 1.7778,
+    "caption": "Hippos at Rest on the Kazinga Channel",
+    "alt": "Two hippopotamuses rest partially submerged in the greenish waters of the Kazinga Channel, one lifting its head above the surface, surrounded by reeds and marshland vegetation.",
+    "country": "uga",
+    "theme": [
+      "mammals"
+    ],
+    "species": "hippopotamus",
+    "story": "On the Kazinga Channel in Queen Elizabeth National Park, Uganda, two hippos linger in the shallows—one surfacing briefly, the other still, both indifferent to the quiet world around them.",
+    "entities": [
+      "hippopotamus",
+      "Kazinga Channel",
+      "reeds",
+      "marshland",
+      "water"
+    ],
+    "curator_notes": "kazinga Channel in Victoria National Park Uganda"
+  },
+  {
+    "id": "20240710-dsc04699-enhanced-nr",
+    "src": "media/photography/20240710-dsc04699-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Eagle on the Kazinga Channel, Uganda",
+    "alt": "An eagle perches atop a cluster of cacti along the Kazinga Channel in Queen Elizabeth National Park, Uganda, surrounded by dense green vegetation under an overcast sky.",
+    "country": "uga",
+    "theme": [
+      "birds"
+    ],
+    "species": "eagle",
+    "story": "An eagle surveys the Kazinga Channel from a thorny perch in Queen Elizabeth National Park, Uganda. The channel connects Lakes George and Edward and is renowned for its abundant wildlife.",
+    "entities": [
+      "eagle",
+      "cacti",
+      "vegetation",
+      "Kazinga Channel"
+    ],
+    "curator_notes": "kazinga Channel in Victoria National Park Uganda"
+  },
+  {
+    "id": "20240711-dsc05344-enhanced-nr",
+    "src": "media/photography/20240711-dsc05344-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Chimpanzee in the Kalizu Forest",
+    "alt": "A chimpanzee sits on a moss-covered branch in the dense green canopy of Kalizu Forest, Uganda, gazing calmly outward.",
+    "country": "uga",
+    "theme": [
+      "mammals"
+    ],
+    "species": "chimpanzee",
+    "story": "In Uganda's Kalizu Forest, a chimpanzee rests on a mossy branch amid thick canopy. Its unhurried gaze outward hints at the quiet rhythms of life deep in the forest.",
+    "entities": [
+      "chimpanzee",
+      "moss",
+      "tree branch",
+      "foliage",
+      "canopy"
+    ],
+    "curator_notes": "Kalizu Forest Uganda"
+  },
+  {
+    "id": "20240721-dsc05690-enhanced-nr",
+    "src": "media/photography/20240721-dsc05690-enhanced-nr.jpg",
+    "aspect": 1.25,
+    "caption": "Shoebill on Lake Victoria",
+    "alt": "A shoebill stork stands alert among tall wetland grasses on the shores of Lake Victoria, Uganda, its massive bill prominent against lush green vegetation.",
+    "country": "uga",
+    "theme": [
+      "birds",
+      "wetlands"
+    ],
+    "species": "shoebill",
+    "story": "On the papyrus-fringed edges of Lake Victoria, a shoebill holds its ground, the vast lake invisible behind the dense reeds that define its territory.",
+    "entities": [
+      "shoebill stork",
+      "tall grasses",
+      "wetland vegetation",
+      "papyrus reeds",
+      "lake shore"
+    ],
+    "curator_notes": "Lake Victoria Uganda"
+  },
+  {
+    "id": "20240721-dsc05931-enhanced-nr",
+    "src": "media/photography/20240721-dsc05931-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Kingfisher Over Lake Victoria",
+    "alt": "A kingfisher flies low over the calm surface of Lake Victoria, green grassland stretching along the far shore.",
+    "country": "uga",
+    "theme": [
+      "birds"
+    ],
+    "species": "kingfisher",
+    "story": "A kingfisher skims the glassy surface of Lake Victoria, Uganda, hunting just above the waterline with wings outstretched.",
+    "entities": [
+      "kingfisher",
+      "lake",
+      "grassland",
+      "water",
+      "shoreline"
+    ],
+    "curator_notes": "Lake Victoria Uganda"
+  },
+  {
+    "id": "20240722-dsc06136-enhanced-nr",
+    "src": "media/photography/20240722-dsc06136-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Chimpanzee Sanctuary, Lake Victoria",
+    "alt": "A chimpanzee sits in a grassy enclosure behind a metal fence at a sanctuary on Lake Victoria, Uganda, looking directly at the camera with calm intensity.",
+    "country": "uga",
+    "theme": [
+      "mammals",
+      "conservation"
+    ],
+    "species": "chimpanzee",
+    "story": "At a sanctuary on the shores of Lake Victoria, this individual meets the camera with a calm, direct gaze. The fence marks the boundary of protection — a symbol of conservation efforts keeping these primates safe in Uganda.",
+    "entities": [
+      "chimpanzee",
+      "grass",
+      "metal fence",
+      "sanctuary enclosure",
+      "Lake Victoria"
+    ],
+    "featured": true,
+    "sort_order": 10,
+    "curator_notes": "Lake Victoria chimpanzee Sanctuary Uganda"
+  },
+  {
+    "id": "20240723-dsc06356-enhanced-nr",
+    "src": "media/photography/20240723-dsc06356-enhanced-nr.jpg",
+    "aspect": 1.25,
+    "caption": "Colobus Monkey in the Canopy, Entebbe",
+    "alt": "A colobus monkey sits on a tree branch amid dense green foliage in Entebbe, Uganda, its striking black and white fur and long tail clearly visible.",
+    "country": "uga",
+    "theme": [
+      "mammals"
+    ],
+    "species": "colobus monkey",
+    "story": "Perched in the canopy near Entebbe, this colobus monkey rests in dappled light filtering through dense tropical foliage.",
+    "entities": [
+      "colobus monkey",
+      "tree branch",
+      "green foliage",
+      "canopy"
+    ],
+    "curator_notes": "entebbe Uganda"
+  },
+  {
+    "id": "20240725-dsc06494-enhanced-nr",
+    "src": "media/photography/20240725-dsc06494-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Lemur Portrait, Andasibe-Analamazaotra",
+    "alt": "Close-up of a lemur with vivid orange eyes and black-and-white fur at Andasibe-Analamazaotra National Park, Madagascar. The blurred green background brings the animal's face into sharp focus.",
+    "country": "mdg",
+    "theme": [
+      "mammals"
+    ],
+    "species": "lemur",
+    "story": "At Andasibe-Analamazaotra National Park, a lemur holds its gaze steady, orange eyes burning against the soft forest background. Madagascar's endemic wildlife rarely allows this close a look.",
+    "entities": [
+      "lemur",
+      "orange eyes",
+      "black-and-white fur",
+      "forest",
+      "bokeh background"
+    ],
+    "featured": true,
+    "sort_order": 110,
+    "curator_notes": "andasibe analamazaotra national park madagascar https://milesmccrocklin.myportfolio.com/andasibe-analamazaotra-national-park"
+  },
+  {
+    "id": "20240727-dsc07106-enhanced-nr",
+    "src": "media/photography/20240727-dsc07106-enhanced-nr.jpg",
+    "aspect": 1.7778,
+    "caption": "Nocturnal Vigilance: The Fossa's Watchful Gaze",
+    "alt": "A fossa, a large carnivore with sharp teeth and glowing eyes, is illuminated in a dark forest setting at night. Its alert posture suggests it is actively hunting or communicating.",
+    "country": "mdg",
+    "theme": [
+      "night",
+      "silhouette",
+      "mammals"
+    ],
+    "species": "fossa",
+    "story": "A fossa, a large carnivorous mammal native to Madagascar, is captured in the dim light of night. Its piercing eyes and open mouth suggest it may be hunting or vocalizing, adding an element of mystery and intensity to the scene.",
+    "entities": [
+      "fossa",
+      "forest floor",
+      "dark foliage"
+    ]
+  },
+  {
+    "id": "20240730-dsc07235",
+    "src": "media/photography/20240730-dsc07235.jpg",
+    "aspect": 1.7778,
+    "caption": "Avenue of the Baobabs at Sunrise",
+    "alt": "Tall baobab trees line a dirt road at sunrise in Madagascar, with a pickup truck and people walking in the soft morning light.",
+    "country": "mdg",
+    "theme": [
+      "sunrise",
+      "travel"
+    ],
+    "story": "The Avenue of the Baobabs near Morondava catches the first light of day, the ancient trunks casting long shadows across the laterite road. A truck and a handful of figures give human scale to trees that have stood here for centuries.",
+    "entities": [
+      "baobab trees",
+      "dirt road",
+      "pickup truck",
+      "people",
+      "grassland",
+      "morning light",
+      "shadows"
+    ],
+    "curator_notes": "Avenue of the baobabs Madagascar"
+  },
+  {
+    "id": "20240801-dsc07310-enhanced-nr",
+    "src": "media/photography/20240801-dsc07310-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Snake at Zazamalala Wildlife Centre",
+    "alt": "A light-colored snake lies curled on dry sandy soil amid scattered leaves at Zazamalala Wildlife Centre, Madagascar.",
+    "country": "mdg",
+    "theme": [
+      "reptile",
+      "reptiles-amphibians"
+    ],
+    "story": "A pale snake rests coiled on sandy ground at Zazamalala Wildlife Centre, its scales catching the warm light in an arid corner of Madagascar.",
+    "entities": [
+      "snake",
+      "sand",
+      "dry leaves",
+      "soil"
+    ],
+    "curator_notes": "https://milesmccrocklin.myportfolio.com/zazamalala-wildlife-centre zazamalala, Madagascar"
+  },
+  {
+    "id": "20240801-dsc07351-enhanced-nr",
+    "src": "media/photography/20240801-dsc07351-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Lemur peering from behind a tree at Zazamalala",
+    "alt": "A lemur with bright yellow eyes peers cautiously from behind a tree trunk at Zazamalala Wildlife Centre, Madagascar, surrounded by blurred green forest foliage.",
+    "country": "mdg",
+    "theme": [
+      "mammals"
+    ],
+    "species": "crowned sifaka",
+    "story": "At Zazamalala Wildlife Centre, a sifaka pauses mid-curiosity, one eye catching the light as it holds close to the tree. The dense forest wraps around it, a reminder of how much of Madagascar's wildlife exists just out of plain sight.",
+    "entities": [
+      "lemur",
+      "tree trunk",
+      "green foliage",
+      "forest",
+      "eyes"
+    ],
+    "curator_notes": "zazamalala https://milesmccrocklin.myportfolio.com/zazamalala-wildlife-centre madagascar"
+  },
+  {
+    "id": "20240801-dsc07387-enhanced-nr",
+    "src": "media/photography/20240801-dsc07387-enhanced-nr.jpg",
+    "aspect": 1.25,
+    "caption": "Chameleon Close-Up, Zazamalala Wildlife Centre",
+    "alt": "Extreme close-up of a chameleon perched at Zazamalala Wildlife Centre in Madagascar, revealing intricate overlapping scales and a vivid, alert eye.",
+    "country": "mdg",
+    "theme": [
+      "macro",
+      "reptiles-amphibians"
+    ],
+    "species": "chameleon",
+    "story": "At Zazamalala Wildlife Centre in Madagascar, a chameleon holds still long enough for its scales and eye to fill the frame — a reminder of how much detail hides in plain sight on the island's endemic wildlife.",
+    "entities": [
+      "chameleon",
+      "eye",
+      "scales",
+      "branch"
+    ],
+    "curator_notes": "https://milesmccrocklin.myportfolio.com/zazamalala-wildlife-centre madagascar"
+  },
+  {
+    "id": "20240804-dsc07889",
+    "src": "media/photography/20240804-dsc07889.jpg",
+    "aspect": 1.4997,
+    "caption": "Lion at Rest, Lake Nakuru",
+    "alt": "A lion lies in the grass at Lake Nakuru, Kenya, its thick golden mane framing a calm, half-lidded gaze.",
+    "country": "ken",
+    "theme": [
+      "mammals"
+    ],
+    "species": "lion",
+    "story": "At Lake Nakuru, a lion rests in the savanna grass, unhurried and at ease in the afternoon quiet.",
+    "entities": [
+      "lion",
+      "mane",
+      "grassland",
+      "savanna"
+    ],
+    "graphic": true,
+    "curator_notes": "https://milesmccrocklin.myportfolio.com/lake-nakuru Lake nakuru Kenya"
+  },
+  {
+    "id": "20240804-dsc07927",
+    "src": "media/photography/20240804-dsc07927.jpg",
+    "aspect": 1.4997,
+    "caption": "Zebras and Giraffe at Lake Nakuru",
+    "alt": "A group of zebras grazing on open grassland at Lake Nakuru, Kenya, with a giraffe towering above the acacia line in the background.",
+    "country": "ken",
+    "city": "Lake Nakuru",
+    "state": "Nakuru County",
+    "theme": [
+      "mammals",
+      "safari"
+    ],
+    "story": "On the shores of Lake Nakuru, zebras graze undisturbed while a giraffe towers above the acacia line — a quiet scene from one of Kenya's great wildlife sanctuaries.",
+    "entities": [
+      "zebras",
+      "giraffe",
+      "grassland",
+      "acacia trees",
+      "savanna",
+      "Lake Nakuru",
+      "sky"
+    ],
+    "curator_notes": "Lake nakuru Kenya https://milesmccrocklin.myportfolio.com/lake-nakuru"
+  },
+  {
+    "id": "20240804-dsc07993",
+    "src": "media/photography/20240804-dsc07993.jpg",
+    "aspect": 1.4997,
+    "caption": "Giraffe Encounter at Lake Nakuru",
+    "alt": "A giraffe stands tall near acacia trees as a child on a safari vehicle watches closely in the grasslands of Lake Nakuru, Kenya.",
+    "country": "ken",
+    "theme": [
+      "mammals"
+    ],
+    "species": "giraffe",
+    "story": "At Lake Nakuru in Kenya, a young child on safari comes face to face with a giraffe grazing among acacia trees. The quiet grassland setting frames a rare moment of closeness between a curious child and wild Africa.",
+    "entities": [
+      "giraffe",
+      "acacia tree",
+      "safari vehicle",
+      "child",
+      "grassland",
+      "Lake Nakuru"
+    ],
+    "curator_notes": "https://milesmccrocklin.myportfolio.com/lake-nakuru Lake Nakuru Kenya"
+  },
+  {
+    "id": "20240807-dsc08646",
+    "src": "media/photography/20240807-dsc08646.jpg",
+    "aspect": 1.4997,
+    "caption": "Giraffe browsing at Lake Nakuru",
+    "alt": "A close-up of a giraffe delicately eating leaves from a shrub at Lake Nakuru, its distinctive brown and cream patterned coat and long eyelashes visible.",
+    "country": "ken",
+    "theme": [
+      "mammals"
+    ],
+    "species": "giraffe",
+    "story": "At Lake Nakuru, a giraffe pauses to browse on low shrubs, its spotted coat filling the frame in quiet intimacy.",
+    "entities": [
+      "giraffe",
+      "leaves",
+      "shrub",
+      "spotted coat",
+      "eyelashes"
+    ],
+    "curator_notes": "https://milesmccrocklin.myportfolio.com/lake-nakuru Lake Nakuru Kenya"
+  },
+  {
+    "id": "20240807-dsc08678",
+    "src": "media/photography/20240807-dsc08678.jpg",
+    "aspect": 1.4997,
+    "caption": "Jackal with prey, Nairobi National Park",
+    "alt": "A black-backed jackal carries a piece of prey across rocky, dusty terrain in Nairobi National Park, Kenya.",
+    "country": "ken",
+    "theme": [
+      "mammals"
+    ],
+    "species": "black-backed jackal",
+    "story": "A black-backed jackal makes its way across the scrubby terrain of Nairobi National Park, prey firmly in its jaws — one of the park's predators at work against the backdrop of the city's edge.",
+    "entities": [
+      "black-backed jackal",
+      "prey animal",
+      "rocky terrain",
+      "dirt path",
+      "scrub vegetation"
+    ],
+    "graphic": true,
+    "curator_notes": "https://milesmccrocklin.myportfolio.com/nairobi-national-park Nairobi National Park Kenya"
+  },
+  {
+    "id": "20240808-c0047t01",
+    "src": "media/photography/20240808-c0047t01.jpg",
+    "aspect": 1.7778,
+    "caption": "Ostriches Moving Through Nairobi National Park",
+    "alt": "Two ostriches walk away from the camera through tall savanna grass under a cloudy sky in Nairobi National Park, Kenya.",
+    "country": "ken",
+    "theme": [
+      "birds"
+    ],
+    "species": "ostrich",
+    "story": "A pair of ostriches move through the grassland of Nairobi National Park, their bodies partly swallowed by the tall grass. The overcast sky flattens the light, giving the scene a quiet, unhurried quality.",
+    "entities": [
+      "ostriches",
+      "grassland",
+      "tall grass",
+      "cloudy sky",
+      "savanna"
+    ],
+    "curator_notes": "Nairobi National Park Kenya https://milesmccrocklin.myportfolio.com/nairobi-national-park"
+  },
+  {
+    "id": "20240808-dsc09002-enhanced-nr",
+    "src": "media/photography/20240808-dsc09002-enhanced-nr.jpg",
+    "aspect": 1.7778,
+    "caption": "Impala Against Nairobi Skyline",
+    "alt": "An impala stands in golden grassland at Nairobi National Park, with the city's skyscrapers visible across a bridge in the background.",
+    "country": "ken",
+    "theme": [
+      "mammals"
+    ],
+    "species": "impala",
+    "story": "Inside Nairobi National Park, an impala grazes in open savanna while the city's skyline rises just beyond the park boundary — one of the few places on earth where megafauna and a capital city share the same horizon.",
+    "entities": [
+      "impala",
+      "grassland",
+      "skyscrapers",
+      "bridge",
+      "savanna",
+      "Nairobi skyline"
+    ],
+    "curator_notes": "Nairobi National Park Kenya https://milesmccrocklin.myportfolio.com/nairobi-national-park"
+  },
+  {
+    "id": "20240811-dsc00419",
+    "src": "media/photography/20240811-dsc00419.jpg",
+    "aspect": 1.4997,
+    "caption": "Lioness Feeding on Buffalo, Maasai Mara",
+    "alt": "A lioness with blood-stained jaws tears into a buffalo carcass in the thicket of the Maasai Mara, Kenya.",
+    "country": "ken",
+    "theme": [
+      "mammals"
+    ],
+    "species": "lion",
+    "story": "In the Maasai Mara, a lioness feeds on a buffalo she has brought down, the raw mechanics of predation laid bare against the dense thicket.",
+    "entities": [
+      "lioness",
+      "buffalo carcass",
+      "blood",
+      "thicket",
+      "grass"
+    ],
+    "graphic": true,
+    "curator_notes": "https://milesmccrocklin.myportfolio.com/graphic-lion-hunt-in-masai-mara\nMaasai Mara Kenya"
+  },
+  {
+    "id": "20240811-dsc00513",
+    "src": "media/photography/20240811-dsc00513.jpg",
+    "aspect": 1.4997,
+    "caption": "Lion Cub Resting After the Hunt, Masai Mara",
+    "alt": "A lion cub rests in dry grass among thorny bushes in the Masai Mara, its fur marked with blood from a recent hunt, eyes alert in the golden light.",
+    "country": "ken",
+    "theme": [
+      "mammals"
+    ],
+    "species": "lion",
+    "story": "After a hunt in the Masai Mara, a young lion cub settles into the dry grass, blood still visible on its coat. The fading light catches its watchful eyes, a portrait of the wild's unsparing rhythms.",
+    "entities": [
+      "lion cub",
+      "dry grass",
+      "thorn bush",
+      "blood",
+      "golden light"
+    ],
+    "graphic": true,
+    "curator_notes": "Masai Mara Kenya https://milesmccrocklin.myportfolio.com/graphic-lion-hunt-in-masai-mara"
+  },
+  {
+    "id": "20240920-dsc01522",
+    "src": "media/photography/20240920-dsc01522.jpg",
+    "aspect": 1.7778,
+    "caption": "Llama Among Ruins",
+    "alt": "A llama stands on grassy terrain beside ancient Incan stone walls, a lone tourist photographing the scene against a backdrop of towering mountains.",
+    "country": "per",
+    "theme": [
+      "history",
+      "mountains"
+    ],
+    "species": "llama",
+    "story": "A serene moment at ancient Incan ruins: a llama grazes in the foreground while a lone tourist captures the majestic mountain backdrop. The juxtaposition of living animal, dressed stone, and distant peaks collapses the distance between past and present.",
+    "entities": [
+      "llama",
+      "ancient ruins",
+      "stone wall",
+      "mountain range",
+      "grass",
+      "tourist"
+    ],
+    "featured": true,
+    "sort_order": 170
+  },
+  {
+    "id": "20240921-dsc01830",
+    "src": "media/photography/20240921-dsc01830.jpg",
+    "aspect": 1.4997,
+    "caption": "Ancient Terraced Landscape",
+    "alt": "A wide shot of an ancient archaeological site featuring circular terraces in a dry, hilly landscape with agave plants in the foreground.",
+    "country": "per",
+    "theme": [
+      "history"
+    ],
+    "story": "The image captures an ancient archaeological site with concentric circular terraces, likely used for agricultural or ceremonial purposes. The dry, arid surroundings and the presence of agave plants suggest a harsh yet historically significant environment.",
+    "entities": [
+      "circular terraces",
+      "agave plant",
+      "dry landscape",
+      "hills",
+      "sky"
+    ]
+  },
+  {
+    "id": "20240922-dsc01891",
+    "src": "media/photography/20240922-dsc01891.jpg",
+    "aspect": 1.4997,
+    "caption": "Cultural Parade in the City Square",
+    "alt": "A lively street scene showing a cultural parade with people in traditional attire marching through a crowded city square. Flags flutter above, including a rainbow flag, while historic buildings and mountains form the scenic background.",
+    "country": "per",
+    "theme": [
+      "street",
+      "festival"
+    ],
+    "story": "A vibrant cultural event unfolds in a bustling city square, with a parade of participants dressed in red and white costumes moving through the crowd. The backdrop features historic buildings and lush mountains under a partly cloudy sky, creating an atmosphere of celebration and community spirit.",
+    "entities": [
+      "people",
+      "flags",
+      "cityscape",
+      "mountains",
+      "crowd",
+      "parade",
+      "umbrellas",
+      "buildings"
+    ]
+  },
+  {
+    "id": "20240926-dsc02844-enhanced-nr",
+    "src": "media/photography/20240926-dsc02844-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Microcosm: Ant on a Twig",
+    "alt": "A detailed photograph of an ant walking along a thin twig, set against a dark background with lichen-covered logs below. The image emphasizes the texture and complexity of the ant's form and environment.",
+    "country": "per",
+    "theme": [
+      "macro",
+      "insects"
+    ],
+    "species": "ant",
+    "story": "A close-up of an ant navigating a delicate twig, highlighting the intricate details of its exoskeleton and movements against the stark contrast of a dark backdrop. The scene captures the resilience and precision of this tiny creature in its natural habitat.",
+    "entities": [
+      "ant",
+      "twig",
+      "lichen-covered log",
+      "dark background"
+    ]
+  },
+  {
+    "id": "20240926-dsc02882",
+    "src": "media/photography/20240926-dsc02882.jpg",
+    "aspect": 1.4997,
+    "caption": "Microcosm: Ants on the Forest Floor",
+    "alt": "A detailed macro photograph showing ants crawling over a bed of dried leaves and twigs on forest soil, with other small insects visible nearby.",
+    "country": "per",
+    "theme": [
+      "macro",
+      "insects"
+    ],
+    "species": "ants",
+    "story": "A close-up view captures a bustling ant colony navigating through a forest floor, surrounded by decaying leaves and twigs. The intricate details of their movements highlight the complexity of life in miniature ecosystems.",
+    "entities": [
+      "ants",
+      "leaves",
+      "twigs",
+      "soil",
+      "insects"
+    ]
+  },
+  {
+    "id": "20240926-dsc02901",
+    "src": "media/photography/20240926-dsc02901.jpg",
+    "aspect": 1.4997,
+    "caption": "Emergence: Tarantula at the Threshold",
+    "alt": "A close-up view of a tarantula positioned near an opening in the ground, surrounded by dry soil and scattered leaves.",
+    "country": "per",
+    "theme": [
+      "macro",
+      "insects"
+    ],
+    "species": "tarantula",
+    "story": "A tarantula emerges from a small hole in the ground, its dark silhouette contrasting sharply against the sandy terrain. The scene captures the quiet intensity of this arachnid as it ventures out into the open.",
+    "entities": [
+      "tarantula",
+      "soil",
+      "leaves",
+      "hole"
+    ]
+  },
+  {
+    "id": "20240928-dsc03309",
+    "src": "media/photography/20240928-dsc03309.jpg",
+    "aspect": 1.4997,
+    "caption": "Flight of Parrots Through the Canopy",
+    "alt": "A large group of colorful parrots soaring amidst tall trees with dense foliage in a tropical forest setting.",
+    "country": "per",
+    "theme": [
+      "birds"
+    ],
+    "species": "parrot",
+    "story": "A flock of vibrant parrots takes flight through a dense tropical forest, their bright plumage contrasting sharply against the lush greenery and bare branches. The scene captures the dynamic energy of wildlife in its natural habitat.",
+    "entities": [
+      "parrots",
+      "tropical trees",
+      "canopy",
+      "green foliage"
+    ]
+  },
+  {
+    "id": "20241001-dsc03471",
+    "src": "media/photography/20241001-dsc03471.jpg",
+    "aspect": 1.4997,
+    "caption": "Devotion at the Altar: Virgen de la Puerta",
+    "alt": "A religious altar featuring the Virgin of the Door surrounded by golden statues, flowers in vases, and ornate decorations. The scene is rich with religious iconography and craftsmanship.",
+    "country": "per",
+    "theme": [
+      "religion",
+      "architecture",
+      "art"
+    ],
+    "story": "The Virgin of the Door, a revered religious figure, is depicted in an ornate golden altar adorned with intricate details and floral arrangements. The scene exudes reverence and devotion, capturing the essence of sacred artistry within a place of worship.",
+    "entities": [
+      "virgen de la puerta",
+      "golden statues",
+      "ornate altar",
+      "flowers",
+      "vases",
+      "religious iconography"
+    ]
+  },
+  {
+    "id": "20241008-dsc03534",
+    "src": "media/photography/20241008-dsc03534.jpg",
+    "aspect": 1.4997,
+    "caption": "The Atomium, Brussels",
+    "alt": "Close-up of the Atomium's metallic spheres and steel lattice framework against a bright blue sky with scattered clouds, green trees at the base.",
+    "country": "bel",
+    "city": "Brussels",
+    "theme": [
+      "architecture",
+      "abstract"
+    ],
+    "story": "The Atomium rises against a clear blue sky, its interlocking spheres and steel lattice catching the light — a monument to postwar optimism rendered in industrial materials.",
+    "entities": [
+      "atomium structure",
+      "spherical domes",
+      "metal framework",
+      "steel beams",
+      "blue sky",
+      "white clouds",
+      "green trees"
+    ]
+  },
+  {
+    "id": "20241012-dsc03591",
+    "src": "media/photography/20241012-dsc03591.jpg",
+    "aspect": 1,
+    "caption": "Eagle's Reflection: Art Meets Architecture",
+    "alt": "A large metallic bird statue reflects the ornate glass ceiling and architectural details of Antwerp Central Station, with people walking in the background.",
+    "country": "bel",
+    "theme": [
+      "reflection",
+      "architecture"
+    ],
+    "story": "A striking metallic sculpture of a bird, possibly an eagle or hawk, stands prominently inside a grand train station. The reflective surface of the sculpture mirrors the intricate architecture and golden accents above, creating a mesmerizing interplay between art and environment. The setting exudes a sense of historical elegance and modern artistic expression.",
+    "entities": [
+      "statue of a bird",
+      "glass ceiling",
+      "architectural details",
+      "golden statue",
+      "text 'antwerpen'",
+      "people walking in the background"
+    ]
+  },
+  {
+    "id": "20241013-dsc03688",
+    "src": "media/photography/20241013-dsc03688.jpg",
+    "aspect": 1.4997,
+    "caption": "West Mall Abbey, Belgium",
+    "alt": "A person walks down a narrow path flanked by tall trimmed hedges leading toward a small chapel under an overcast sky at West Mall Abbey in Belgium.",
+    "country": "bel",
+    "theme": [
+      "minimalist",
+      "architecture",
+      "religion"
+    ],
+    "story": "A solitary figure makes their way along the hedge-lined corridor at West Mall Abbey, the clipped geometry of the garden drawing the eye toward the chapel beyond.",
+    "entities": [
+      "hedge path",
+      "chapel",
+      "overcast sky",
+      "person walking",
+      "trimmed hedges",
+      "garden"
+    ],
+    "curator_notes": "West Mall Abbey in Belgium"
+  },
+  {
+    "id": "20241016-dsc03748",
+    "src": "media/photography/20241016-dsc03748.jpg",
+    "aspect": 0.6667,
+    "caption": "Eiffel Tower: A Vertical Perspective",
+    "alt": "The Eiffel Tower is captured from a low angle, surrounded by historic Parisian buildings and lush green trees under a bright blue sky.",
+    "country": "fra",
+    "theme": [
+      "architecture"
+    ],
+    "story": "The Eiffel Tower stands tall and majestic against a clear blue sky, framed by the charming architecture of Parisian buildings. The perspective from below emphasizes its towering presence, while trees add a touch of green to the urban landscape.",
+    "entities": [
+      "eiffel tower",
+      "buildings",
+      "trees",
+      "balconies",
+      "windows",
+      "sky"
+    ]
+  },
+  {
+    "id": "20241016-dsc03794",
+    "src": "media/photography/20241016-dsc03794.jpg",
+    "aspect": 1.4997,
+    "caption": "Paris from the Eiffel Tower",
+    "alt": "Aerial view of Paris from the Eiffel Tower, the iron latticework framing a vast cityscape of grid-like boulevards, parks, and the River Seine, with the Arc de Triomphe visible in the distance under a bright blue sky.",
+    "country": "fra",
+    "city": "Paris",
+    "theme": [
+      "architecture",
+      "cityscape"
+    ],
+    "story": "Looking out from the Eiffel Tower, Paris unfolds in every direction: grid-like boulevards, the Arc de Triomphe, the green thread of parks, and the Seine cutting through it all. The tower's iron latticework frames the view, grounding the scale of the city below.",
+    "entities": [
+      "Eiffel Tower",
+      "Arc de Triomphe",
+      "River Seine",
+      "Paris cityscape",
+      "buildings",
+      "boulevards",
+      "parks",
+      "streets",
+      "green spaces"
+    ],
+    "featured": true,
+    "sort_order": 180
+  },
+  {
+    "id": "20241101-dsc04097",
+    "src": "media/photography/20241101-dsc04097.jpg",
+    "aspect": 1.4997,
+    "caption": "Crocodile in Cairns Aquarium",
+    "alt": "A crocodile with mouth open displaying sharp teeth and scaly skin inside a glass-enclosed aquarium exhibit. A visitor's hand is visible at the left edge of the frame.",
+    "country": "aus",
+    "city": "Cairns",
+    "state": "Queensland",
+    "theme": [
+      "reptiles-amphibians"
+    ],
+    "species": "crocodile",
+    "story": "At a Cairns aquarium, a crocodile holds its mouth agape behind glass, teeth on full display. A visitor's hand at the frame's edge hints at the close proximity between observer and animal.",
+    "entities": [
+      "crocodile",
+      "glass enclosure",
+      "teeth",
+      "scaly skin",
+      "visitor's hand",
+      "water",
+      "aquarium exhibit"
+    ],
+    "curator_notes": "Cairns, Australia"
+  },
+  {
+    "id": "20241101-dsc04117",
+    "src": "media/photography/20241101-dsc04117.jpg",
+    "aspect": 1.4997,
+    "caption": "Flying Foxes Roosting in Cairns",
+    "alt": "Several flying foxes hang upside down from tree branches against a bright blue sky, surrounded by green foliage. A large colony rests in daylight in tropical Australia.",
+    "country": "aus",
+    "city": "Cairns",
+    "state": "Queensland",
+    "theme": [
+      "mammals"
+    ],
+    "species": "flying fox",
+    "story": "A colony of flying foxes roosts in the trees of Cairns, hanging motionless through the day as is typical of these large fruit bats. The tropical north Queensland sky frames their dark silhouettes against vivid blue.",
+    "entities": [
+      "flying foxes",
+      "tree branches",
+      "leaves",
+      "blue sky",
+      "colony"
+    ],
+    "curator_notes": "Cairns, Australia"
+  },
+  {
+    "id": "20241101-dsc04138",
+    "src": "media/photography/20241101-dsc04138.jpg",
+    "aspect": 1.4997,
+    "caption": "Kangaroo near Cairns",
+    "alt": "A kangaroo stands on grass foraging, looking into the distance with trees visible behind it.",
+    "country": "aus",
+    "city": "Cairns",
+    "state": "Queensland",
+    "theme": [
+      "mammals"
+    ],
+    "species": "kangaroo",
+    "story": "A kangaroo pauses to forage near Cairns, its alert gaze scanning the surrounding greenery.",
+    "entities": [
+      "kangaroo",
+      "grass",
+      "trees"
+    ],
+    "curator_notes": "Cairns, Australia"
+  },
+  {
+    "id": "20241111-dsc04355",
+    "src": "media/photography/20241111-dsc04355.jpg",
+    "aspect": 1.4997,
+    "caption": "Suspension Bridge Over the Brisbane River",
+    "alt": "A modern suspension bridge spans the Brisbane River with a skyline of glass skyscrapers rising behind it under an overcast sky.",
+    "country": "aus",
+    "city": "Brisbane",
+    "state": "Queensland",
+    "theme": [
+      "architecture",
+      "urban",
+      "water"
+    ],
+    "story": "Brisbane's Story Bridge or a nearby crossing frames the city's skyline, the calm river surface mirroring the steel and glass towers above. Flat grey clouds diffuse the light evenly, lending the scene a quiet, contemplative weight.",
+    "entities": [
+      "suspension bridge",
+      "river",
+      "skyscrapers",
+      "suspension cables",
+      "urban skyline",
+      "overcast sky",
+      "riverbank",
+      "glass towers"
+    ],
+    "curator_notes": "Brisbane, Australia"
+  },
+  {
+    "id": "20241112-dsc04534",
+    "src": "media/photography/20241112-dsc04534.jpg",
+    "aspect": 1.4997,
+    "caption": "Crabs crossing mudflats on the Gold Coast",
+    "alt": "A group of small crabs moving across muddy wetland terrain surrounded by mangrove roots and burrows on the Gold Coast, Australia.",
+    "country": "aus",
+    "city": "Gold Coast",
+    "state": "Queensland",
+    "theme": [
+      "marine-life"
+    ],
+    "species": "crab",
+    "story": "On the Gold Coast's mangrove flats, crabs pick their way across the mud at low tide, weaving between root systems and burrows in a quietly teeming wetland ecosystem.",
+    "entities": [
+      "crabs",
+      "mudflats",
+      "mangrove roots",
+      "burrows",
+      "muddy ground"
+    ],
+    "curator_notes": "Gold Coast Australia"
+  },
+  {
+    "id": "20241112-dsc04547",
+    "src": "media/photography/20241112-dsc04547.jpg",
+    "aspect": 1.4997,
+    "caption": "Kangaroo and Joey, Gold Coast",
+    "alt": "A kangaroo stands in grassy bush habitat with a joey visible in its pouch, on the Gold Coast, Australia.",
+    "country": "aus",
+    "city": "Gold Coast",
+    "state": "Queensland",
+    "theme": [
+      "mammals"
+    ],
+    "species": "Eastern Grey Kangaroo",
+    "story": "On the Gold Coast, a mother kangaroo pauses in the bush scrub, her joey tucked snugly in the pouch. The scene captures the quiet intimacy of marsupial parenting in a familiar Australian setting.",
+    "entities": [
+      "kangaroo",
+      "joey",
+      "pouch",
+      "grass",
+      "forest floor",
+      "eucalyptus",
+      "bush scrub"
+    ],
+    "curator_notes": "Gold Coast Australia"
+  },
+  {
+    "id": "20241117-dsc05104",
+    "src": "media/photography/20241117-dsc05104.jpg",
+    "aspect": 0.8,
+    "caption": "Sydney Opera House from the harbour",
+    "alt": "The Sydney Opera House with its distinctive white sail-like roof shells reflected in the calm harbour water, foam bubbles drifting across the surface with the city skyline visible in the distance.",
+    "country": "aus",
+    "city": "Sydney",
+    "state": "New South Wales",
+    "theme": [
+      "architecture",
+      "reflection",
+      "water"
+    ],
+    "story": "Shot from the water's edge, the Opera House sails mirror themselves in the still harbour. Foam bubbles drift across the surface of the bay, adding unexpected texture to the scene. The city skyline completes the backdrop.",
+    "entities": [
+      "Sydney Opera House",
+      "harbour water",
+      "foam bubbles",
+      "city skyline",
+      "roof shells",
+      "docks",
+      "clouds",
+      "blue sky"
+    ],
+    "curator_notes": "Sydney Australia"
+  },
+  {
+    "id": "20241118-dsc05226",
+    "src": "media/photography/20241118-dsc05226.jpg",
+    "aspect": 1.4997,
+    "caption": "Koala in the Rain, Sydney",
+    "alt": "A koala clings to a tree branch in the rain, its fur damp and eyes half-closed, photographed in Sydney, Australia.",
+    "country": "aus",
+    "city": "Sydney",
+    "state": "New South Wales",
+    "theme": [
+      "mammals"
+    ],
+    "species": "koala",
+    "story": "Caught in a light downpour near Sydney, this koala holds tight to its perch, unbothered by the wet. Rain-soaked fur and a sleepy expression make for an intimate wildlife portrait.",
+    "entities": [
+      "koala",
+      "tree branch",
+      "rain",
+      "wet fur",
+      "eucalyptus"
+    ],
+    "curator_notes": "Sydney Australia"
+  },
+  {
+    "id": "20241118-dsc05274",
+    "src": "media/photography/20241118-dsc05274.jpg",
+    "aspect": 1.4997,
+    "caption": "Mama Koala Cradling Her Joey",
+    "alt": "A close-up of a mother koala holding a young joey, their soft gray fur filling the frame in an intimate portrait.",
+    "country": "aus",
+    "city": "Sydney",
+    "state": "New South Wales",
+    "theme": [
+      "macro",
+      "mammals"
+    ],
+    "species": "Koala",
+    "story": "A mother koala cradles her joey in a tight embrace, their thick gray-white fur merging into one soft mass. The macro framing strips away all context except the bond between the two animals.",
+    "entities": [
+      "koala",
+      "joey",
+      "fur",
+      "marsupial",
+      "paws"
+    ],
+    "curator_notes": "Sydney Australia this is actually not textured wool this is actually a photo of a mama koala holding a baby koala"
+  },
+  {
+    "id": "20241124-dsc05552",
+    "src": "media/photography/20241124-dsc05552.jpg",
+    "aspect": 1.7778,
+    "caption": "Buenos Aires Parrilla Fire",
+    "alt": "A butcher tends to pig carcasses cooking over an open fire at a traditional Argentine parrilla, surrounded by stacks of firewood.",
+    "country": "arg",
+    "city": "Buenos Aires",
+    "state": "Buenos Aires",
+    "theme": [
+      "street",
+      "food"
+    ],
+    "story": "At a Buenos Aires parrilla, a butcher works the fire where whole pig carcasses roast low and slow. The surrounding stacks of wood signal a day's worth of cooking ahead, a scene that plays out daily in the city's traditional barbecue spots.",
+    "entities": [
+      "pig carcasses",
+      "open fire",
+      "firewood stacks",
+      "butcher",
+      "parrilla",
+      "apron",
+      "smoke",
+      "outdoor cooking area"
+    ],
+    "curator_notes": "this is not a market this is a peria or a place like a barbecue spot in Argentina and Buenos Aires"
+  },
+  {
+    "id": "20241127-dsc05817-enhanced-nr",
+    "src": "media/photography/20241127-dsc05817-enhanced-nr.jpg",
+    "aspect": 0.6667,
+    "caption": "Solitude on Ice",
+    "alt": "An enormous jagged iceberg rises from deep blue ocean water, surrounded by smaller ice floes under a dark sky.",
+    "country": "ata",
+    "theme": [
+      "water"
+    ],
+    "story": "A massive iceberg floats on turbulent Antarctic waters, its rugged form standing in stark contrast to the dark churning sea. The scene evokes isolation and the raw beauty of nature's frozen landscapes.",
+    "entities": [
+      "iceberg",
+      "ocean",
+      "ice floes",
+      "dark sky",
+      "icy surface"
+    ],
+    "featured": true,
+    "sort_order": 90,
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241127-dsc05963",
+    "src": "media/photography/20241127-dsc05963.jpg",
+    "aspect": 2.9942,
+    "caption": "Icebergs and mountains across Antarctic waters",
+    "alt": "Black-and-white panorama of Antarctic icebergs floating on calm water with snow-covered mountains in the distance under a clear sky.",
+    "country": "ata",
+    "theme": [
+      "minimalist"
+    ],
+    "story": "A vast Antarctic scene unfolds in monochrome, icebergs drifting across still water with a mountain range rising beyond. The tonal restraint strips the landscape to its essentials: ice, water, and sky.",
+    "entities": [
+      "icebergs",
+      "mountains",
+      "snow",
+      "water",
+      "sky",
+      "barren terrain"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241128-dsc06165",
+    "src": "media/photography/20241128-dsc06165.jpg",
+    "aspect": 0.8,
+    "caption": "Emperor Penguin on Antarctic Snow",
+    "alt": "A close-up of an emperor penguin standing on a snowy slope in Antarctica, its black and white plumage stark against the white terrain.",
+    "country": "ata",
+    "theme": [
+      "birds"
+    ],
+    "species": "emperor penguin",
+    "story": "An emperor penguin stands resolutely on a snowy Antarctic slope, its striking plumage contrasting against the pristine white backdrop. The bird's alert posture speaks to the resilience required to thrive in one of Earth's most extreme environments.",
+    "entities": [
+      "emperor penguin",
+      "snow",
+      "ice",
+      "snowy slope"
+    ],
+    "featured": true,
+    "sort_order": 190,
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241128-dsc06462",
+    "src": "media/photography/20241128-dsc06462.jpg",
+    "aspect": 1,
+    "caption": "Emperor Penguin Portrait, Antarctica",
+    "alt": "Close-up of an emperor penguin's head and neck, showing striking black-and-white plumage and a vivid yellow patch against a blurred icy background.",
+    "country": "ata",
+    "theme": [
+      "minimalist",
+      "birds"
+    ],
+    "species": "emperor penguin",
+    "story": "A lone emperor penguin fills the frame against Antarctica's pale ice, its yellow cheek patch glowing against the monochrome cold. The tight crop strips away the vastness of the continent and leaves only the bird's quiet presence.",
+    "entities": [
+      "emperor penguin",
+      "black-and-white feathers",
+      "yellow cheek patch",
+      "icy background"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241128-dsc06509",
+    "src": "media/photography/20241128-dsc06509.jpg",
+    "aspect": 1.3333,
+    "caption": "Emperor Penguins Together on the Ice",
+    "alt": "Two emperor penguins stand side by side on Antarctic ice, their yellow-orange neck patches and black-and-white plumage vivid against the pale frozen backdrop.",
+    "country": "ata",
+    "theme": [
+      "birds"
+    ],
+    "species": "emperor penguin",
+    "story": "Two emperor penguins pause close together on the Antarctic ice, their vivid neck patches catching the flat polar light. The image captures a quiet moment of companionship at the edge of the world.",
+    "entities": [
+      "emperor penguins",
+      "ice",
+      "snow"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241128-dsc06513",
+    "src": "media/photography/20241128-dsc06513.jpg",
+    "aspect": 1.4997,
+    "caption": "Emperor Penguins on Antarctic Ice",
+    "alt": "Two emperor penguins stand side by side on snow-covered Antarctic ice, their black-and-white plumage and vivid yellow neck patches sharp against the vast white expanse.",
+    "country": "ata",
+    "theme": [
+      "birds"
+    ],
+    "species": "emperor penguin",
+    "story": "Two emperor penguins stand close together on the ice, their striking plumage contrasting with the pristine white around them. Their posture suggests a moment of quiet connection — resilience made visible in one of Earth's harshest places.",
+    "entities": [
+      "emperor penguins",
+      "snow",
+      "ice",
+      "open snowfield",
+      "antarctic landscape"
+    ],
+    "featured": true,
+    "sort_order": 0,
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241128-dsc06608",
+    "src": "media/photography/20241128-dsc06608.jpg",
+    "aspect": 1.4997,
+    "caption": "Penguin Trio on the Antarctic Shore",
+    "alt": "Three king penguins stand close together on a sandy beach near the water's edge in Antarctica, their distinctive black and white plumage and bright orange beaks vivid against the pale shore.",
+    "country": "ata",
+    "theme": [
+      "minimalist",
+      "birds"
+    ],
+    "species": "king penguin",
+    "story": "Three king penguins gather at the water's edge in Antarctica, their bold markings a stark contrast against the pale sand and quiet sea.",
+    "entities": [
+      "penguins",
+      "beach",
+      "water",
+      "sand",
+      "shoreline"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241129-dsc07279",
+    "src": "media/photography/20241129-dsc07279.jpg",
+    "aspect": 1.4997,
+    "caption": "Penguins Leaping from an Iceberg",
+    "alt": "A group of penguins perched on a large iceberg, with one diving into the icy Antarctic waters below.",
+    "country": "ata",
+    "theme": [
+      "birds"
+    ],
+    "species": "penguin",
+    "story": "Perched on a floating iceberg, these penguins pause before plunging into the frigid Southern Ocean. One bird launches into the water, capturing the effortless agility these creatures display in one of Earth's most extreme environments.",
+    "entities": [
+      "penguins",
+      "iceberg",
+      "Antarctic water",
+      "ice",
+      "Southern Ocean"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241129-dsc07312",
+    "src": "media/photography/20241129-dsc07312.jpg",
+    "aspect": 1.4997,
+    "caption": "Penguin Sentinel Over an Antarctic Shore",
+    "alt": "Tourists in orange jackets explore a rocky Antarctic beach while a penguin stands atop a boulder, with an iceberg visible in the background.",
+    "country": "ata",
+    "theme": [
+      "birds",
+      "travel"
+    ],
+    "species": "penguin",
+    "story": "A lone penguin surveys its icy domain from a rocky perch as orange-jacketed visitors explore the shore below, the scale of the Antarctic wilderness emphasized by the distant iceberg.",
+    "entities": [
+      "penguin",
+      "tourists",
+      "iceberg",
+      "snow-covered rocks",
+      "orange jackets",
+      "boulders",
+      "glacier",
+      "beach"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241129-dsc07527",
+    "src": "media/photography/20241129-dsc07527.jpg",
+    "aspect": 1.4997,
+    "caption": "Iceberg adrift in Antarctic waters",
+    "alt": "A large iceberg with jagged edges and deep blue crevices floats on calm, dark Antarctic waters. The ice surface shows intricate layering and glacial formations.",
+    "country": "ata",
+    "theme": [
+      "water",
+      "ice"
+    ],
+    "story": "A massive iceberg drifts through Antarctic waters, its blue crevices and sculpted edges the product of millennia of compression. The stillness of the scene belies the slow, relentless drift of polar ice.",
+    "entities": [
+      "iceberg",
+      "glacial ice",
+      "water",
+      "blue crevices",
+      "ice layers"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241130-dsc03464",
+    "src": "media/photography/20241130-dsc03464.jpg",
+    "aspect": 1.4997,
+    "caption": "Zodiac cruise among Antarctic icebergs",
+    "alt": "A group of travelers in orange jackets ride an inflatable zodiac boat through calm water, with large icebergs looming in the distance under an overcast sky.",
+    "country": "ata",
+    "theme": [
+      "water",
+      "travel",
+      "adventure",
+      "people"
+    ],
+    "story": "Bundled in expedition orange, a small group drifts through Antarctic waters past monumental icebergs. The flat light and stillness give the scene a hushed, otherworldly quality.",
+    "entities": [
+      "zodiac boat",
+      "orange jackets",
+      "icebergs",
+      "open water",
+      "overcast sky",
+      "expedition passengers"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241130-dsc07566",
+    "src": "media/photography/20241130-dsc07566.jpg",
+    "aspect": 1.4997,
+    "caption": "Skua Descends on Gentoo Penguin Colony",
+    "alt": "A skua with wings fully spread swoops low over a huddle of gentoo penguins standing on dark rocky terrain in Antarctica. The penguins cluster together, likely shielding nests or chicks from the aerial threat.",
+    "country": "ata",
+    "theme": [
+      "birds"
+    ],
+    "species": "skua",
+    "story": "On the rocky shores of Antarctica a skua makes a low pass over a tight group of gentoo penguins, testing their defenses. The penguins hold their ground, relying on collective proximity to discourage the attack. It is a routine confrontation in the breeding season, predator and prey locked in a contest that plays out daily across these colonies.",
+    "entities": [
+      "skua",
+      "gentoo penguins",
+      "dark rocks",
+      "outstretched wings",
+      "penguin colony",
+      "Antarctic coastline"
+    ],
+    "curator_notes": "Antarctica also put penguins in this"
+  },
+  {
+    "id": "20241130-dsc07673-enhanced-nr",
+    "src": "media/photography/20241130-dsc07673-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Blue seam through Antarctic ice",
+    "alt": "A close-up of a frozen surface with a vivid blue streak running through textured white ice and snow in Antarctica.",
+    "country": "ata",
+    "theme": [
+      "minimalist",
+      "water"
+    ],
+    "story": "Deep in Antarctica, a brilliant blue seam cuts through compressed ice, the color produced by millennia of pressure forcing out air bubbles and leaving only dense, light-absorbing glacial crystal.",
+    "entities": [
+      "frozen ice",
+      "blue streak",
+      "snow",
+      "glacial surface"
+    ],
+    "featured": true,
+    "sort_order": 200,
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241130-dsc07690",
+    "src": "media/photography/20241130-dsc07690.jpg",
+    "aspect": 1.4997,
+    "caption": "Penguins Trekking Across Antarctic Snow",
+    "alt": "A group of penguins walks across a snow-covered landscape, leaving tracks behind them, with rocky terrain visible under an overcast sky.",
+    "country": "ata",
+    "theme": [
+      "birds"
+    ],
+    "species": "penguin",
+    "story": "A colony of penguins crosses a vast snowfield in Antarctica, their footprints tracing a path through the white expanse. The overcast sky and rocky outcrops frame the scene, capturing the quiet endurance of life at the bottom of the world.",
+    "entities": [
+      "penguins",
+      "snow",
+      "tracks",
+      "rocky terrain",
+      "overcast sky"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241201-dsc07762-enhanced-nr",
+    "src": "media/photography/20241201-dsc07762-enhanced-nr.jpg",
+    "aspect": 0.6667,
+    "caption": "Humpback Whale Breach, Antarctica",
+    "alt": "A humpback whale breaches the surface near massive icebergs and snow-covered Antarctic mountains, its tail fluke lifted above the icy water.",
+    "country": "ata",
+    "theme": [
+      "water",
+      "mammals"
+    ],
+    "species": "humpback whale",
+    "story": "A humpback whale explodes from the icy Antarctic waters, tail fluke raised against a backdrop of towering glaciers and pristine snow-capped peaks. The scene distills the wild solitude of the white continent.",
+    "entities": [
+      "humpback whale",
+      "iceberg",
+      "glacier",
+      "snow-covered mountain",
+      "open water",
+      "tail fluke"
+    ],
+    "featured": true,
+    "sort_order": 160,
+    "curator_notes": "this is our Antarctica"
+  },
+  {
+    "id": "20241201-dsc08030",
+    "src": "media/photography/20241201-dsc08030.jpg",
+    "aspect": 1.4997,
+    "caption": "Cruising Through Antarctic Ice",
+    "alt": "A cruise ship with passengers on deck navigates a calm fjord surrounded by towering glaciers and icebergs in Antarctica.",
+    "country": "ata",
+    "theme": [
+      "water",
+      "travel"
+    ],
+    "story": "Passengers on deck take in the raw scale of Antarctica's glacial fjords, still water doubling the ice walls on either side of the ship.",
+    "entities": [
+      "cruise ship",
+      "glacier",
+      "icebergs",
+      "fjord",
+      "tourists",
+      "snow",
+      "mountains",
+      "calm water"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241202-dsc08560",
+    "src": "media/photography/20241202-dsc08560.jpg",
+    "aspect": 1.7778,
+    "caption": "Penguins Swimming Past Antarctic Ice",
+    "alt": "A group of penguins swimming together across calm water, with floating icebergs and a massive glacier visible in the background.",
+    "country": "ata",
+    "theme": [
+      "birds"
+    ],
+    "species": "Adélie penguin",
+    "story": "A group of penguins cuts through calm Antarctic waters, their synchronized movement leaving gentle ripples across the surface. Towering icebergs and a distant glacier frame the scene in stark, pristine white.",
+    "entities": [
+      "penguins",
+      "icebergs",
+      "water",
+      "glacier"
+    ],
+    "curator_notes": "Antarctica Antarctica"
+  },
+  {
+    "id": "20241202-dsc08663",
+    "src": "media/photography/20241202-dsc08663.jpg",
+    "aspect": 0.6667,
+    "caption": "Kayaking Among Icebergs in Antarctica",
+    "alt": "A group of kayakers in a bright yellow kayak paddles through open water dotted with small ice floes, surrounded by towering icebergs in Antarctica. A seagull flies overhead against the vast icy expanse.",
+    "country": "ata",
+    "theme": [
+      "water",
+      "adventure"
+    ],
+    "story": "A group of kayakers navigates the pristine waters of Antarctica, their bright yellow kayak a vivid contrast against the towering icebergs and floating ice. The seagull overhead reinforces the remote, wild character of this rarely visited continent.",
+    "entities": [
+      "iceberg",
+      "kayakers",
+      "yellow kayak",
+      "ice floes",
+      "seagull",
+      "open water"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241202-dsc08677",
+    "src": "media/photography/20241202-dsc08677.jpg",
+    "aspect": 1.4997,
+    "caption": "Iceberg Sentinel in Antarctica",
+    "alt": "A towering iceberg with a jagged peak rises from icy waters, framed by snow-covered mountains and glacial formations under a clear Antarctic sky.",
+    "country": "ata",
+    "theme": [
+      "mountains",
+      "sky",
+      "monochrome"
+    ],
+    "story": "A majestic iceberg rises sharply from the icy waters, its jagged peak cutting through the crisp Antarctic air. Snow-capped mountains and glacial formations stretch behind it, the monochromatic palette underscoring the stark, otherworldly isolation of one of Earth's most remote and pristine wildernesses.",
+    "entities": [
+      "iceberg",
+      "glacier",
+      "snow-covered mountains",
+      "frozen landscape",
+      "glacial formations",
+      "icy waters",
+      "jagged peak",
+      "cold landscape"
+    ],
+    "featured": true,
+    "sort_order": 70,
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241203-dsc08974",
+    "src": "media/photography/20241203-dsc08974.jpg",
+    "aspect": 1.4997,
+    "caption": "Lone Penguin on Antarctic Ice",
+    "alt": "A single emperor penguin stands on a vast expanse of white Antarctic terrain, its small dark form the only mark on an otherwise untouched snowfield, a winding trail of footprints stretching behind it.",
+    "country": "ata",
+    "theme": [
+      "minimalist",
+      "birds",
+      "polar"
+    ],
+    "species": "emperor penguin",
+    "story": "A lone penguin crosses the Antarctic ice, its small dark form the only mark on an otherwise untouched white expanse. The winding trail of footprints behind it tells of a solitary journey through one of Earth's most remote wilderness regions — the scale of the landscape underscoring the profound isolation of the continent.",
+    "entities": [
+      "emperor penguin",
+      "footprints",
+      "snow",
+      "ice",
+      "Antarctic terrain"
+    ],
+    "featured": true,
+    "sort_order": 40,
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241203-dsc09002",
+    "src": "media/photography/20241203-dsc09002.jpg",
+    "aspect": 1.25,
+    "caption": "Gentoo Penguins Face to Face in Antarctica",
+    "alt": "Two gentoo penguins stand facing each other on snowy terrain with ice in the background, their orange beaks and black-and-white plumage vivid against the white landscape.",
+    "country": "ata",
+    "theme": [
+      "birds"
+    ],
+    "species": "gentoo penguin",
+    "story": "Two gentoo penguins pause in close proximity on the Antarctic ice, their bright orange beaks nearly touching in what appears to be a social exchange. The stark white expanse behind them underscores the remoteness of this frozen continent.",
+    "entities": [
+      "gentoo penguins",
+      "snow",
+      "ice",
+      "orange beaks",
+      "black-and-white plumage"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241204-dsc03842",
+    "src": "media/photography/20241204-dsc03842.jpg",
+    "aspect": 1.4997,
+    "caption": "Gentoo Penguin on an Antarctic Shore",
+    "alt": "A lone gentoo penguin stands on a misty beach with wet sand in Antarctica, wings slightly outstretched against a hazy, grey sky.",
+    "country": "ata",
+    "theme": [
+      "minimalist",
+      "birds"
+    ],
+    "species": "gentoo penguin",
+    "story": "A lone gentoo penguin stands on a mist-covered Antarctic beach, wings slightly outstretched for balance. The ethereal fog creates a serene, isolated atmosphere that captures the stillness of the continent's remote coastline.",
+    "entities": [
+      "gentoo penguin",
+      "misty beach",
+      "wet sand",
+      "fog",
+      "grey sky"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241204-dsc09213",
+    "src": "media/photography/20241204-dsc09213.jpg",
+    "aspect": 1.4997,
+    "caption": "Ice Crystals, Antarctica",
+    "alt": "Macro photograph of clustered ice crystals with sparkling reflections against a black background, revealing intricate frozen structures.",
+    "country": "ata",
+    "theme": [
+      "macro",
+      "minimalist",
+      "reflection"
+    ],
+    "story": "In Antarctica's extreme cold, ice crystals form with startling intricacy. Shot against darkness, their shimmering surfaces reveal geometry only visible this close.",
+    "entities": [
+      "ice crystals",
+      "reflections",
+      "black background"
+    ],
+    "curator_notes": "Antarctica"
+  },
+  {
+    "id": "20241209-dsc09602",
+    "src": "media/photography/20241209-dsc09602.jpg",
+    "aspect": 1.4997,
+    "caption": "Classical Statues on an Ornate Montevideo Balcony",
+    "alt": "Ornate classical statues stand on a balcony decorated with potted plants and red bows on an intricately detailed building facade in Montevideo, Uruguay. A photographer is visible capturing the scene from above.",
+    "country": "ury",
+    "city": "Montevideo",
+    "state": "Montevideo",
+    "theme": [
+      "street",
+      "architecture"
+    ],
+    "story": "A balcony in Montevideo frames classical statues amid flowering plants and festive red bows, the layered facade revealing the city's richly ornamented European-influenced architecture. A photographer above catches the same moment, folding documentation into the scene itself.",
+    "entities": [
+      "statues",
+      "balcony",
+      "potted plants",
+      "red bows",
+      "ornate facade",
+      "flowering bush",
+      "photographer",
+      "wrought iron railing",
+      "building columns"
+    ],
+    "curator_notes": "Montevideo, Uruguay"
+  },
+  {
+    "id": "20241231-dsc00222-enhanced-nr",
+    "src": "media/photography/20241231-dsc00222-enhanced-nr.jpg",
+    "aspect": 1.4997,
+    "caption": "Celestial Show: Fireworks Light Up the Beach",
+    "alt": "A nighttime view of fireworks exploding over the ocean, with waves crashing onto a beach where a large crowd has gathered. High-rise buildings line the shore, their windows glowing in the darkness as they reflect the colorful display.",
+    "country": "chl",
+    "theme": [
+      "night",
+      "water",
+      "people",
+      "festival"
+    ],
+    "story": "A vibrant fireworks display illuminates the night sky above a bustling beach, drawing a large crowd of spectators who gather to watch the dazzling spectacle. The colorful bursts reflect off the water, creating a mesmerizing scene against the backdrop of modern high-rise buildings.",
+    "entities": [
+      "fireworks",
+      "ocean",
+      "high-rise buildings",
+      "crowd",
+      "beach",
+      "waves"
+    ]
+  },
+  {
+    "id": "20241231-dsc09715",
+    "src": "media/photography/20241231-dsc09715.jpg",
+    "aspect": 1.25,
+    "caption": "Muraled Staircase in Valparaíso",
+    "alt": "A staircase covered in a vivid mural depicting two figures climbing the steps, flanked by potted plants and graffiti-covered walls in Valparaíso, Chile.",
+    "country": "chl",
+    "city": "Valparaíso",
+    "state": "Valparaíso",
+    "theme": [
+      "street"
+    ],
+    "story": "A vivid mural transforms an ordinary staircase into a lively piece of public art, with painted figures climbing alongside real potted plants. Valparaíso's hillside neighborhoods are famous for this kind of open-air creativity.",
+    "entities": [
+      "staircase",
+      "mural",
+      "potted plants",
+      "graffiti",
+      "buildings",
+      "child figure",
+      "adult figure"
+    ],
+    "curator_notes": "valparaiso, chile"
+  },
+  {
+    "id": "20250104-dsc00290",
+    "src": "media/photography/20250104-dsc00290.jpg",
+    "aspect": 2,
+    "caption": "Urban Dreamscape: Pastel Vibes on the Street",
+    "alt": "A colorful graffiti mural of a woman with exaggerated features, painted in vibrant pastel shades against the backdrop of a blue building with metal bars. The artwork includes smoke effects and bold accessories, creating a striking visual contrast.",
+    "country": "chl",
+    "theme": [
+      "street"
+    ],
+    "story": "A vibrant graffiti mural depicts a stylized woman with bold, pastel-colored features and accessories. The urban setting adds an edgy contrast to the soft, dreamy aesthetic of the artwork.",
+    "entities": [
+      "graffiti mural",
+      "woman portrait",
+      "pastel colors",
+      "urban building",
+      "metal bars",
+      "smoke effect"
+    ]
+  },
+  {
+    "id": "20250104-dsc00413",
+    "src": "media/photography/20250104-dsc00413.jpg",
+    "aspect": 1.4997,
+    "caption": "Urban Canvas: Nature's Embrace",
+    "alt": "A colorful graffiti mural on a building wall depicts a woman surrounded by lush foliage, butterflies, and flowers, set against a backdrop of trees in a city environment.",
+    "country": "chl",
+    "theme": [
+      "street"
+    ],
+    "story": "A vibrant graffiti mural transforms an urban wall into a lush, fantastical scene. The central figure of a woman surrounded by nature elements like butterflies and flowers creates a striking contrast against the stark backdrop of the building. This piece of street art brings life and creativity to an otherwise ordinary cityscape.",
+    "entities": [
+      "graffiti mural",
+      "woman figure",
+      "butterfly",
+      "flowers",
+      "trees",
+      "building facade"
+    ]
+  },
+  {
+    "id": "20250104-dsc00438",
+    "src": "media/photography/20250104-dsc00438.jpg",
+    "aspect": 0.6667,
+    "caption": "Compassion on Canvas: A Mural Honoring Healthcare Workers",
+    "alt": "A large mural painted on a brick wall shows a nurse wearing medical gloves and a face mask holding the hand of another person. The scene is set against an urban street with trees and buildings in the background.",
+    "country": "chl",
+    "theme": [
+      "street"
+    ],
+    "story": "A poignant mural depicts a nurse tenderly holding the hand of another person, symbolizing care and connection during challenging times. The artwork is set against an urban backdrop, highlighting themes of compassion and resilience in public spaces.",
+    "entities": [
+      "mural",
+      "nurse",
+      "medical gloves",
+      "face mask",
+      "brick wall",
+      "plaque",
+      "sidewalk",
+      "trees",
+      "buildings"
+    ]
+  },
+  {
+    "id": "20250106-dsc00776-pano",
+    "src": "media/photography/20250106-dsc00776-pano.jpg",
+    "aspect": 2.9493,
+    "caption": "Dawn's Embrace on the Snowy Peaks",
+    "alt": "A stunning view of a snow-capped mountain during sunrise, with warm orange light illuminating its slopes. The surrounding rocky terrain and valley are silhouetted against the colorful sky, creating a breathtaking landscape.",
+    "country": "chl",
+    "theme": [
+      "mountains",
+      "sunrise"
+    ],
+    "story": "The majestic snow-covered peak of a mountain bathes in the warm glow of sunrise, casting an ethereal orange hue over its rugged slopes. The surrounding valley and rocky landscape are silhouetted against the vibrant sky, creating a serene and awe-inspiring natural scene.",
+    "entities": [
+      "snow-capped mountain",
+      "rocky terrain",
+      "valley",
+      "dawn light"
+    ]
+  },
+  {
+    "id": "20250106-dsc00784",
+    "src": "media/photography/20250106-dsc00784.jpg",
+    "aspect": 1.4997,
+    "caption": "Starry Night Over the Peaks",
+    "alt": "A breathtaking view of a mountainous landscape under a clear night sky filled with stars. Pine trees line the foreground, while snow-capped peaks rise in the distance.",
+    "country": "bol",
+    "theme": [
+      "night",
+      "mountains"
+    ],
+    "story": "The image captures a serene night scene in the mountains, where the vast expanse of the starry sky dominates the frame. The rugged mountain peaks and valleys are illuminated by the soft glow of moonlight, creating a tranquil and awe-inspiring atmosphere.",
+    "entities": [
+      "stars",
+      "constellations",
+      "mountain range",
+      "pine trees",
+      "snow-capped peak"
+    ],
+    "dupeOf": "atlas-chile"
+  },
+  {
+    "id": "20250108-dsc00974",
+    "src": "media/photography/20250108-dsc00974.jpg",
+    "aspect": 1.4997,
+    "caption": "Solitary Hummingbird Resting",
+    "alt": "A hummingbird with brownish plumage is perched on a thin, leafless branch against a blurred green backdrop. Its long beak and small size are clearly visible.",
+    "country": "chl",
+    "theme": [
+      "birds"
+    ],
+    "story": "A hummingbird perches delicately on a bare branch, its iridescent feathers catching the light. The soft focus of the background highlights the bird's intricate details and graceful presence in nature.",
+    "entities": [
+      "hummingbird",
+      "bare branch",
+      "green foliage"
+    ],
+    "dupeOf": "me-travel-17"
+  },
+  {
+    "id": "20250112-dsc02480-pano",
+    "src": "media/photography/20250112-dsc02480-pano.jpg",
+    "aspect": 2.5247,
+    "caption": "Desert Dawn: A Silent Journey Through Time",
+    "alt": "A panoramic view of a desert landscape at sunrise, featuring rocky formations, dry riverbeds, sand dunes, and a clear sky with the sun creating a bright flare. The scene captures the serene beauty of an arid environment.",
+    "country": "chl",
+    "theme": [
+      "sunrise"
+    ],
+    "story": "The vast expanse of a desert landscape unfolds under the warm glow of a rising sun, casting long shadows and highlighting the rugged textures of the terrain. The scene evokes a sense of solitude and timeless beauty as nature's raw elements are bathed in golden light.",
+    "entities": [
+      "rock formations",
+      "dry riverbed",
+      "sand dunes",
+      "clear sky",
+      "sun flare"
+    ]
+  },
+  {
+    "id": "20250113-dsc02916",
+    "src": "media/photography/20250113-dsc02916.jpg",
+    "aspect": 1.7778,
+    "caption": "Solitude on the Salt Flat",
+    "alt": "A single flamingo walks across a expansive salt flat with vivid red algae patterns in the background. The scene is serene and minimalistic, showcasing the natural beauty of the landscape.",
+    "country": "bol",
+    "theme": [
+      "minimalist",
+      "birds"
+    ],
+    "species": "flamingo",
+    "story": "A lone flamingo stands in stark contrast against the vast, colorful salt flats. The vibrant reds and earthy tones of the landscape create a striking backdrop, emphasizing the isolation and beauty of nature.",
+    "entities": [
+      "flamingo",
+      "salt flat",
+      "red algae",
+      "water"
+    ]
+  },
+  {
+    "id": "20250114-dsc03825",
+    "src": "media/photography/20250114-dsc03825.jpg",
+    "aspect": 1.4997,
+    "caption": "Solitary Llama Amidst Endless Grasslands",
+    "alt": "A black llama stands on a dirt path in an expansive grassland, surrounded by rolling hills and open fields.",
+    "country": "bol",
+    "theme": [
+      "mammals"
+    ],
+    "species": "llama",
+    "story": "A llama stands alert in a vast grassy field, its dark coat contrasting sharply with the bright green landscape. The animal's posture suggests curiosity or vigilance as it surveys its surroundings.",
+    "entities": [
+      "llama",
+      "grassland",
+      "dirt path"
+    ]
+  },
+  {
+    "id": "20250115-dsc04193-pano",
+    "src": "media/photography/20250115-dsc04193-pano.jpg",
+    "aspect": 1.8605,
+    "caption": "Solitude at Dawn",
+    "alt": "A person standing on calm waters reflects in perfect symmetry during a serene sunrise, with a small boat visible in the distance.",
+    "country": "bol",
+    "theme": [
+      "minimalist",
+      "reflection",
+      "sunrise"
+    ],
+    "story": "A solitary figure stands on a reflective water surface, gazing at the sunrise as it casts vibrant hues across the horizon. The stillness of the scene emphasizes a profound sense of solitude and connection with nature.",
+    "entities": [
+      "person",
+      "water",
+      "boat",
+      "sky",
+      "horizon"
+    ]
+  },
+  {
+    "id": "20250115-dsc04248",
+    "src": "media/photography/20250115-dsc04248.jpg",
+    "aspect": 1.4997,
+    "caption": "Dawn Reflects Over Calm Waters",
+    "alt": "A peaceful landscape showing a sunrise over a vast body of water with clear reflections and a gradient sky.",
+    "country": "bol",
+    "theme": [
+      "water",
+      "sunrise"
+    ],
+    "story": "The tranquil beauty of a sunrise over a calm lake is captured in this serene image, where the golden hues of dawn reflect perfectly on the still water's surface.",
+    "entities": [
+      "lake",
+      "reflection",
+      "sky",
+      "horizon"
+    ],
+    "dupeOf": "atlas-bolivia"
+  },
+  {
+    "id": "20250115-dsc04610",
+    "src": "media/photography/20250115-dsc04610.jpg",
+    "aspect": 1.4997,
+    "caption": "Flags on the Salt Flat",
+    "alt": "A Japanese flag and an Australian flag stand prominently against a vast salt flat under a clear blue sky, symbolizing international presence in a minimalist landscape.",
+    "country": "bol",
+    "theme": [
+      "minimalist"
+    ],
+    "story": "A serene and expansive salt flat stretches under a clear blue sky, marked by the presence of international flags fluttering in the breeze. The stark white landscape contrasts sharply with the vibrant colors of the flags, creating a sense of quiet adventure and global connection.",
+    "entities": [
+      "japanese flag",
+      "australian flag",
+      "pole",
+      "salt flat",
+      "clear sky"
+    ]
+  },
+  {
+    "id": "20250117-dsc04912",
+    "src": "media/photography/20250117-dsc04912.jpg",
+    "aspect": 1.4997,
+    "caption": "Urban Tapestry Against the Mountain",
+    "alt": "A panoramic view of a city with numerous red-roofed houses spread across a mountainous terrain, connected by electric cables and featuring visible antennas against a clear blue sky.",
+    "country": "bol",
+    "theme": [
+      "cityscape"
+    ],
+    "story": "The image captures a sprawling cityscape nestled against the backdrop of a rugged mountain. The dense cluster of red-roofed houses cascades down the hillside, creating a vibrant tapestry of urban life intertwined with nature. The electric cables and antennas suggest modern infrastructure woven into this rural setting.",
+    "entities": [
+      "houses",
+      "mountain",
+      "electric cables",
+      "antennas"
+    ]
+  },
+  {
+    "id": "20250117-dsc04991-pano",
+    "src": "media/photography/20250117-dsc04991-pano.jpg",
+    "aspect": 3.9445,
+    "caption": "Cityscape Against the Hills",
+    "alt": "A panoramic view of a bustling city with numerous buildings spread across hilly terrain, under a partly cloudy sky.",
+    "country": "bol",
+    "theme": [
+      "mountains"
+    ],
+    "story": "The image captures a sprawling city nestled against a backdrop of rolling hills and mountains, showcasing the dense urban development that climbs up the slopes. The scene evokes a sense of growth and expansion as the city blends seamlessly with the natural landscape.",
+    "entities": [
+      "buildings",
+      "residential areas",
+      "hills",
+      "clouds",
+      "skyline"
+    ]
+  }
+]

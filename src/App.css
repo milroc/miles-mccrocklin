@@ -52,15 +52,30 @@
   justify-content: center;
 }
 
-/* Toolbar — sits ON the canvas (above the paper). All its color tokens
-   come from the canvas-fg family so the chrome reads correctly on the
-   dark mat. Single-row toolbar at all sizes. The label `auto`-margins to
-   the left so the buttons hug the right; on narrow viewports the label
-   is hidden (it duplicates the H1 right below the toolbar) so the four
-   mode buttons fit on one line down to ~340px wide. */
-.toolbar {
+/* Canvas-context top row — sits ON the canvas mat above the floating
+   paper. Holds the shared SiteNav (brand + pillar links) on the left,
+   and the .toolbar (mode buttons + Print) on the right. Together they
+   match the paper's width so the row reads as the document's frame. */
+.toolbar-row {
   width: var(--page-width);
   max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 8px;
+}
+/* SiteNav stretches to fill the available space; its internal
+   justify-between pushes brand to the left edge and pillars to where
+   the mode buttons cluster begins. */
+.toolbar-row > :first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Toolbar — the mode-button cluster only. Color tokens come from the
+   canvas-fg family so the chrome reads correctly on the dark mat. */
+.toolbar {
+  flex: 0 0 auto;
   display: flex;
   flex-wrap: nowrap;
   gap: 8px;
@@ -68,18 +83,6 @@
   font-family: var(--mono);
   font-size: var(--fs-tag);
   color: var(--canvas-fg-muted);
-  padding: 0 8px;
-}
-.toolbar .label {
-  /* Mono already has uniform advance widths — 0.12em on top of mono made
-     the wordmark feel like spaced-out signage. 0.04em keeps the editorial
-     register without breaking the letterforms apart. */
-  letter-spacing: 0.04em;
-  margin-right: auto;
-  /* Lift the label off the muted-on-canvas register: at 11px / wide
-     letter-spacing, muted clears AA but reads weak. canvas-fg gives ~8.5:1
-     and matches the unhovered button labels visually. */
-  color: var(--canvas-fg);
 }
 .toolbar button {
   font-family: var(--mono);
@@ -97,24 +100,6 @@
   border-radius: 2px;
   transition: all 120ms ease;
 }
-/* Back-to-splash link. Same mono / canvas-fg register as the buttons but
-   borderless to read as navigation rather than a mode toggle. Sits to the
-   left of the wordmark; on mobile the wordmark hides but back stays. */
-.toolbar .back-link {
-  font-family: var(--mono);
-  font-size: var(--fs-tag);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--canvas-fg-muted);
-  text-decoration: none;
-  padding: 6px 8px 6px 0;
-  transition: color 120ms ease;
-}
-.toolbar .back-link:hover,
-.toolbar .back-link:focus-visible {
-  color: var(--canvas-fg-strong);
-  outline: none;
-}
 .toolbar button:hover {
   border-color: var(--canvas-fg-strong);
   color: var(--canvas-fg-strong);
@@ -127,10 +112,21 @@
 
 @media (min-width: 600px) {
   .app { padding-left: 20px; padding-right: 20px; }
-  .toolbar { padding: 0; }
+  .toolbar-row { padding: 0; }
+}
+@media (max-width: 720px) {
+  /* Below ~720px the SiteNav + 4 mode buttons fight for one row.
+     Wrap to two rows so neither group has to truncate. */
+  .toolbar-row {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  .toolbar {
+    width: 100%;
+    justify-content: flex-end;
+  }
 }
 @media (max-width: 520px) {
-  .toolbar .label { display: none; }
   .toolbar { gap: 6px; }
   .toolbar button { padding: 6px 10px; letter-spacing: 0.04em; }
 }
@@ -181,14 +177,14 @@ body.printing .page.mode-1pager {
   max-width: none;
 }
 body.printing .app { padding-left: 0; padding-right: 0; }
-body.printing .toolbar { display: none; }
+body.printing .toolbar-row { display: none; }
 
 /* Print-time shell hides. Page geometry/font rules for the printed PDF
    live in `.page.mode-1pager` (above) — they apply because the
    beforeprint listener switches to 1-pager mode before snapshot. */
 @media print {
   .app { padding: 0; }
-  .toolbar, .skip-link { display: none !important; }
+  .toolbar-row, .skip-link { display: none !important; }
   .page { width: 100%; max-width: 100%; margin: 0; }
 }
 

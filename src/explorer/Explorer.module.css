@@ -20,6 +20,47 @@
   justify-content: center;
 }
 
+/* SiteNav frosted overlay — same plate treatment as the title and
+   Toolbar buttons. Spans the top of the viewport over the globe.
+
+   Idle-hide: after NAV_IDLE_MS of cursor + keyboard stillness the
+   .siteNavOverlayHidden modifier is added by Explorer.tsx, which
+   fades and lifts the plate up. Any mouse/keyboard activity brings
+   it back. CountryPanel-open pins it visible. */
+/* Inset to 24px on all edges to match the bottom title plate. The
+   Toolbar (rotate button) uses the same left inset so the three
+   chrome plates (nav, rotate, title) all share one vertical axis. */
+.siteNavOverlay {
+  position: absolute;
+  top: max(24px, env(safe-area-inset-top, 0px) + 16px);
+  left: max(24px, env(safe-area-inset-left, 0px) + 16px);
+  right: max(24px, env(safe-area-inset-right, 0px) + 16px);
+  z-index: 11;
+  padding: 10px 14px;
+  background: rgba(28, 31, 26, 0.55);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid var(--splash-canvas-rule);
+  border-radius: 2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+.siteNavOverlayHidden {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .siteNavOverlay {
+    transition: none;
+  }
+  .siteNavOverlayHidden {
+    transform: none;
+  }
+}
+
 .title {
   position: absolute;
   bottom: max(24px, env(safe-area-inset-bottom, 0px) + 16px);

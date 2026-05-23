@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { Header } from './layout/Header';
 import { Section } from './layout/Section';
+import { SiteNav } from './layout/SiteNav';
 import { TerminalDock } from './layout/TerminalDock';
 import { ExperienceEntry } from './entries/ExperienceEntry';
 import { EduEntry } from './entries/EduEntry';
@@ -16,7 +17,6 @@ import { SummaryGallery } from './media/SummaryGallery';
 import { MediaProvider } from './media/MediaProvider';
 import { ModeContext, PrintContext, visible, isArchived as isArchivedItem } from './utils/mode';
 import { EDIT_ENABLED, EditToolbar, HighLevelFeedback, useEdit } from './edit';
-import { WORDMARK } from './me';
 import ME from '../data/me.json' with { type: 'json' };
 import type { Mode, Resume } from './types';
 import './App.css';
@@ -126,42 +126,50 @@ export function App() {
     <MediaProvider>
     <div className={`app mode-${mode}`}>
       <a href="#resume-content" className="skip-link">Skip to resume</a>
-      <nav className="toolbar" aria-label="Resume controls">
-        <a className="back-link" href="/" aria-label="Back to home">← back</a>
-        <span className="label">{WORDMARK}</span>
-        <button
-          className={mode === 'interactive' ? 'active' : ''}
-          aria-pressed={mode === 'interactive'}
-          onClick={() => setMode('interactive')}
-          disabled={editActive}
-          title={editActive
-            ? 'Mode is locked to "Text only" while editing'
-            : 'Full media — photos, videos, UIs, reviews, all detail'}
-        >
-          Interactive
-        </button>
-        <button
-          className={mode === 'text' ? 'active' : ''}
-          aria-pressed={mode === 'text'}
-          onClick={() => setMode('text')}
-          disabled={editActive}
-          title="Terse text — deliverables only, no media"
-        >
-          Text only
-        </button>
-        <button
-          className={mode === '1pager' ? 'active' : ''}
-          aria-pressed={mode === '1pager'}
-          onClick={() => setMode('1pager')}
-          disabled={editActive}
-          title={editActive
-            ? 'Mode is locked to "Text only" while editing'
-            : 'Single-page resume — must-have items only, used automatically when printing'}
-        >
-          1-Pager
-        </button>
-        <button onClick={() => window.print()} disabled={editActive}>Print / PDF</button>
-      </nav>
+      <div className="toolbar-row">
+        {/* Shared cross-page nav (favicon + name on the left,
+            builder · photographer · explorer on the right). The
+            previous back-link + WORDMARK lived in the toolbar below;
+            SiteNav.brand replaces back, the spelled-out name
+            replaces WORDMARK, and the right-hand pillar links wire
+            this page into the three-pillar story consistently with
+            /photographer and /explorer. */}
+        <SiteNav current="builder" />
+        <nav className="toolbar" aria-label="Resume controls">
+          <button
+            className={mode === 'interactive' ? 'active' : ''}
+            aria-pressed={mode === 'interactive'}
+            onClick={() => setMode('interactive')}
+            disabled={editActive}
+            title={editActive
+              ? 'Mode is locked to "Text only" while editing'
+              : 'Full media — photos, videos, UIs, reviews, all detail'}
+          >
+            Interactive
+          </button>
+          <button
+            className={mode === 'text' ? 'active' : ''}
+            aria-pressed={mode === 'text'}
+            onClick={() => setMode('text')}
+            disabled={editActive}
+            title="Terse text — deliverables only, no media"
+          >
+            Text only
+          </button>
+          <button
+            className={mode === '1pager' ? 'active' : ''}
+            aria-pressed={mode === '1pager'}
+            onClick={() => setMode('1pager')}
+            disabled={editActive}
+            title={editActive
+              ? 'Mode is locked to "Text only" while editing'
+              : 'Single-page resume — must-have items only, used automatically when printing'}
+          >
+            1-Pager
+          </button>
+          <button onClick={() => window.print()} disabled={editActive}>Print / PDF</button>
+        </nav>
+      </div>
 
       <main id="resume-content">
       <article className={pageClass}>

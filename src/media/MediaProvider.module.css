@@ -40,6 +40,7 @@
 .track::-webkit-scrollbar { display: none; }
 
 .slide {
+  position: relative;
   flex: 0 0 100vw;
   height: 100dvh;
   scroll-snap-align: center;
@@ -73,6 +74,76 @@
    to navigate to that slide. */
 .slide[aria-hidden="true"] {
   cursor: pointer;
+}
+
+/* Graphic-content gate: matches the masonry tile treatment (blurred +
+   slightly desaturated underlay) and overlays a centered "Tap to
+   reveal" affordance. The image stays in the DOM so the layout doesn't
+   reflow when the viewer reveals it.
+   .mediaBox wraps the img/video for gated slides — it's aspect-ratio
+   constrained so it matches the actual displayed photo bounds, not the
+   full 100vw × 100dvh slide. The overlay then anchors to the photo's
+   visible rectangle instead of the letterboxed slide. overflow:hidden
+   keeps the blur halo inside the photo's frame. */
+.mediaBox {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mediaBox img,
+.mediaBox video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slideGated .mediaBox img,
+.slideGated .mediaBox video {
+  filter: blur(48px) saturate(0.55) brightness(0.6);
+  transform: scale(1.06);
+}
+.graphicOverlay {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.42);
+  border: 0;
+  color: var(--canvas-fg-strong, #ece9e2);
+  font-family: var(--mono);
+  cursor: pointer;
+  padding: 20px;
+  text-align: center;
+  transition: background-color 160ms ease;
+}
+.graphicOverlay:hover,
+.graphicOverlay:focus-visible {
+  background: rgba(0, 0, 0, 0.55);
+}
+.graphicOverlay:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+}
+.graphicBadge {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.graphicHint {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--canvas-fg-muted, rgba(236, 233, 226, 0.65));
+  line-height: 1;
 }
 
 /* ---------- Top bar: close (left, thumb-zone) + counter (right) -------- */
@@ -166,6 +237,29 @@
   letter-spacing: 0.12em;
   color: #b0b0b0;
   text-transform: uppercase;
+}
+
+/* "View full album →" outbound CTA. The caption block is pointer-events:
+   none so taps pass through to toggle chrome, so the CTA has to re-enable
+   pointer events on itself. Mono register matches captionTag; underline
+   on hover makes the affordance explicit. */
+.albumCta {
+  pointer-events: auto;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e8e8e8;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232, 232, 232, 0.4);
+  padding-bottom: 1px;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.albumCta:hover,
+.albumCta:focus-visible {
+  color: #ffffff;
+  border-color: #ffffff;
 }
 @media (min-width: 721px) {
   .caption {

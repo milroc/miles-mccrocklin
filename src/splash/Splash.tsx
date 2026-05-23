@@ -26,7 +26,6 @@ import {
 } from 'react-icons/fa6';
 import { SYL, SMALLCAP_PREFIX_RE } from '../me';
 import { Masonry, type MasonryItem } from '../media/Masonry';
-import {PORTFOLIO} from '../me';
 import './splash-globals.css';
 import s from './Splash.module.css';
 
@@ -308,7 +307,7 @@ export function Splash(): JSX.Element {
         <a
           className={s.tile}
           data-id="builder"
-          href="/long-form/"
+          href="/builder/"
           aria-label="Builder — view resume"
         >
           <div className={s.tileVisual}>
@@ -324,8 +323,8 @@ export function Splash(): JSX.Element {
         <a
           className={s.tile}
           data-id="photographer"
-          href={PORTFOLIO}
-          aria-label="Photographer — view resume"
+          href="/photographer/"
+          aria-label="Photographer — view the gallery"
         >
           <div className={s.tileVisual}>
             <Masonry items={PHOTOGRAPHER_GRID} imageClassName={s.photo} />
@@ -388,7 +387,7 @@ export function Splash(): JSX.Element {
         ))}
       </nav>
 
-      <a className={s.cta} href="/long-form/">
+      <a className={s.cta} href="/builder/">
         learn more →
       </a>
     </div>

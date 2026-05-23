@@ -7,19 +7,19 @@
 //
 // Routes match the production build's HTML outputs:
 //
-//   /              → splash      (./index.html, mounts splash-entry.tsx)
-//   /long-form     → long-form   (./long-form/index.html, mounts main.tsx)
-//   /long-form/    → long-form   (same)
-//   /explorer      → explorer    (./explorer/index.html, mounts explorer-entry.tsx)
-//   /explorer/     → explorer    (same)
+//   /                  → splash       (./index.html, mounts splash-entry.tsx)
+//   /builder           → builder      (./builder/index.html, mounts main.tsx)
+//   /builder/          → builder      (same)
+//   /explorer          → explorer     (./explorer/index.html, mounts explorer-entry.tsx)
+//   /explorer/         → explorer     (same)
+//   /photographer      → photographer (./photographer/index.html, mounts photography-entry.tsx)
+//   /photographer/     → photographer (same)
 //
-// Legacy + alternative URL slugs all 302 to /long-form/. Production
-// handles the same redirects via 404.html.
+// Legacy + alternative URL slugs 302 to their canonical pillar.
+// Production handles the same redirects via 404.html.
 //
-//   /resume, /resume/      → /long-form/  (original legacy slug)
-//   /dossier, /dossier/    → /long-form/  (intermediate rename)
-//   /about,   /about/      → /long-form/  (alternative)
-//   /work,    /work/       → /long-form/  (alternative)
+//   /long-form, /resume, /dossier, /about, /work  → /builder/
+//   /photography                                  → /photographer/
 //
 // The fetch fallback serves the project's static asset folders (media/,
 // data/) directly from disk so JSON-referenced image/video URLs resolve
@@ -34,23 +34,46 @@
 
 import { serve } from "bun";
 import splash from "./index.html";
-import longForm from "./long-form/index.html";
+import builder from "./builder/index.html";
 import explorer from "./explorer/index.html";
+import photographer from "./photographer/index.html";
+import { buildPhotographyManifest } from "./scripts/build-photography-manifest";
+
+// Build the photography manifest on dev-server boot so /photographer
+// has data to read. The page falls back to fetching
+// /data/photography-manifest.json in dev (no inline injection), so this
+// primes that file. Sharp variants also build into
+// media/portfolio/derived/ on this same call.
+//
+// Re-runs of `bun run dev` are fast: sharp's mtime cache skips
+// already-generated variants. Editing me.json / photography.json /
+// photo-atlas.json mid-session requires a dev-server restart for the
+// manifest to refresh (acceptable trade-off — these change rarely).
+console.log("  building photography manifest...");
+await buildPhotographyManifest();
 
 const PORT = Number(process.env.PORT ?? 4317);
 // Default to localhost. Set HOST=0.0.0.0 to expose on the LAN for mobile
 // testing (then visit http://<your-mac-ip>:<port> from the phone).
 const HOST = process.env.HOST ?? "127.0.0.1";
 
-const longFormRedirect = (): Response =>
-  Response.redirect("/long-form/", 302);
-
-// All non-canonical URL slugs that should funnel to /long-form/.
-const LEGACY_SLUGS = ['resume', 'dossier', 'about', 'work'] as const;
+// Legacy slug map: each non-canonical URL fragment redirects to its
+// canonical pillar. /long-form is in here too — the page is now
+// /builder, /long-form is kept for any inbound links from before the
+// rename.
+const LEGACY_TO_CANONICAL: Record<string, string> = {
+  '/long-form':   '/builder/',
+  '/resume':      '/builder/',
+  '/dossier':     '/builder/',
+  '/about':       '/builder/',
+  '/work':        '/builder/',
+  '/photography': '/photographer/',
+};
 const legacyRouteMap: Record<string, () => Response> = {};
-for (const slug of LEGACY_SLUGS) {
-  legacyRouteMap[`/${slug}`] = longFormRedirect;
-  legacyRouteMap[`/${slug}/`] = longFormRedirect;
+for (const [slug, target] of Object.entries(LEGACY_TO_CANONICAL)) {
+  const redirect = (): Response => Response.redirect(target, 302);
+  legacyRouteMap[slug] = redirect;
+  legacyRouteMap[`${slug}/`] = redirect;
 }
 
 const server = serve({
@@ -58,10 +81,12 @@ const server = serve({
   hostname: HOST,
   routes: {
     "/": splash,
-    "/long-form": longForm,
-    "/long-form/": longForm,
+    "/builder": builder,
+    "/builder/": builder,
     "/explorer": explorer,
     "/explorer/": explorer,
+    "/photographer": photographer,
+    "/photographer/": photographer,
     ...legacyRouteMap,
   },
   development: {
@@ -87,7 +112,9 @@ const server = serve({
 
 // Print the splash URL last on purpose: tools like Conductor scan
 // stdout and grab the last URL they see for their "Open" button.
-console.log(`  long-form  → ${server.url}long-form/`);
-console.log(`  explorer   → ${server.url}explorer/`);
-console.log(`  legacy     → /resume, /dossier, /about, /work all 302 → /long-form/`);
+console.log(`  builder       → ${server.url}builder/`);
+console.log(`  explorer      → ${server.url}explorer/`);
+console.log(`  photographer  → ${server.url}photographer/`);
+console.log(`  legacy        → /long-form, /resume, /dossier, /about, /work → /builder/`);
+console.log(`  legacy        → /photography → /photographer/`);
 console.log(`dev server → ${server.url}`);

@@ -1,0 +1,92 @@
+/* EditorialTopFold — Georgia italic intro with inline hero categories.
+   The intro sits above the chip row and gets the warmer editorial type
+   register; the hero categories themselves switch to the mono eyebrow
+   register so they read as actionable. */
+
+.root {
+  padding: 24px 0 12px;
+}
+
+.intro {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--canvas-fg);
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 720px;
+}
+@media (min-width: 768px) {
+  .intro {
+    font-size: 20px;
+  }
+}
+
+/* Hero category inline button — switches into mono register inside the
+   italic prose so it reads as a control, not as continuing text. Sized
+   to ~70% of the surrounding intro so it visually belongs in the
+   sentence rather than reading as a footnote shoved into a headline.
+   Letter-spacing eased back from the eyebrow default since the chip
+   sits inline with prose, not in a toolbar. */
+.hero {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--canvas-rule);
+  color: var(--canvas-fg-strong);
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 6px;
+  margin: 0 2px;
+  cursor: pointer;
+  vertical-align: 1px;
+  transition: color 140ms ease, border-color 140ms ease, background-color 140ms ease;
+}
+/* Hover highlight is desktop-only. On touch, iOS Safari latches the
+   :hover state until the next tap elsewhere, which makes the button
+   read as "still active" after the filter has been applied —
+   confusing. Gate behind (hover: hover) so only true cursors trigger
+   the color/border bump. Keyboard-driven :focus-visible still fires
+   the same visual on every device. */
+@media (hover: hover) {
+  .hero:hover {
+    color: var(--canvas-fg-strong);
+    border-color: var(--canvas-fg-strong);
+  }
+}
+.hero:focus-visible {
+  color: var(--canvas-fg-strong);
+  border-color: var(--canvas-fg-strong);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.heroActive {
+  background: var(--accent-soft);
+  border-color: var(--canvas-fg-strong);
+}
+
+/* Mobile: reduce the hero button vertical-align so the eyebrow
+   doesn't sit awkwardly against the italic prose. */
+@media (max-width: 480px) {
+  .intro {
+    font-size: 17px;
+  }
+  .hero {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    vertical-align: 0;
+    padding: 3px 5px;
+    margin: 0 1px;
+  }
+}
+
+/* Glue the trailing period to the last hero button on the same line —
+   used inline around `<button>culture</button>.` to prevent the
+   browser breaking after the button on narrow widths. */
+.noWrap {
+  white-space: nowrap;
+}

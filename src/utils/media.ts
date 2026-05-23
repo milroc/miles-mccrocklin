@@ -26,8 +26,8 @@ export function isUiItem(p: MediaItem | null | undefined): boolean {
 //
 // me.json was authored when / WAS the long-form page, so paths
 // look like "media/foo/bar.jpg" (no leading slash). After the splash
-// redesign the long-form lives at /long-form/, where a browser would
-// resolve the same relative path to /long-form/media/... and 404.
+// redesign the long-form lives at /builder/, where a browser would
+// resolve the same relative path to /builder/media/... and 404.
 // Absolutize at the render boundary so the data file stays untouched.
 //
 // Pass-through for already-absolute paths (http(s)://, //, /, data:,
