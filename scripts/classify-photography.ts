@@ -490,7 +490,7 @@ async function main(): Promise<void> {
     }
     const startedAt = Date.now();
     try {
-      const dataUrl = await imageToDataUrl(absSrc);
+      const { dataUrl } = await imageToDataUrl(absSrc);
       const result = await classifyOne(opts.endpoint, model, dataUrl);
 
       if (!opts.dryRun) {
