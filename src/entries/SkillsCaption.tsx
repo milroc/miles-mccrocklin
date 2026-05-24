@@ -5,7 +5,7 @@ import s from './SkillsCaption.module.css';
 
 /**
  * Editorial caption that frames the Skills list. Sets up the contrast
- * the TerminalDock then demonstrates: stacks rotate, the taste doesn't,
+ * the TerminalDock then demonstrates: stacks rotate, the craft doesn't,
  * and the cost of picking up a new one has collapsed.
  *
  * In interactive mode "almost free" is a button — clicking it summons
@@ -35,7 +35,7 @@ export function SkillsCaption(): JSX.Element {
 
   return (
     <p className={s.caption}>
-      Stacks rotate. The taste doesn&rsquo;t. I used to change stacks with
+      Stacks rotate. The craft doesn&rsquo;t. I used to change stacks with
       ease; now it&rsquo;s {tail}.
     </p>
   );
