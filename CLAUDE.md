@@ -98,3 +98,27 @@ The applies to text fields the user authored *and* to anything you draft
 inline (project descriptions, image captions, summary lines). It does
 NOT apply to structured fields (dates, urls, paths, tags) or to media
 filenames.
+
+## Labels pipeline data
+
+The photography labels pipeline is event-sourced. Authoritative state
+lives in:
+
+- `data/photography-labels/{ingest,ai,human,refined}/*.jsonl` — append-only
+  event log. `human/` events are curator inputs that cannot be regenerated.
+  `refined/` events are cached LLM outputs keyed by a fingerprint of their
+  inputs; throwing them away forces a re-run (slow + costs tokens).
+- `data/photography.json` + `data/photo-classifications.json` — deterministic
+  outputs of `scripts/merge-labels.ts` applied to the event log above.
+
+**Rule: any commit that touches the labels pipeline must include every
+modified or new file under `data/photography-labels/` AND the regenerated
+`data/photography.json` / `data/photo-classifications.json`.** Never leave
+JSONL events untracked because they look like build artifacts — they are
+the source of truth. Never commit a code change to the merge/manifest
+scripts without also committing the regenerated JSON, so a fresh
+checkout's render matches what the author saw.
+
+This is intentionally crude (a git-tracked event log inside the app repo).
+The plan is to move this to a more reliable storage layer later; until
+then, the working tree IS the database.
