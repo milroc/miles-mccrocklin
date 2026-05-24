@@ -1,20 +1,37 @@
 // Shared LM Studio client. Used by:
 //   - classify-photography.ts (raw structured-label generation per photo)
+//   - photography-crit.ts     (per-photo critique scores + notes)
 //   - merge-labels.ts          (notes → refined-labels prompt at merge time)
 //
 // Both invoke an OpenAI-compatible chat-completions endpoint with a
 // single vision-input message and parse the JSON the model returns out
 // of the response text. The domain-specific bits (which prompt, which
 // fields to validate, country-slug constraints) stay in the caller.
+//
+// PRIVACY INVARIANT: vision calls are local-only. chatVision asserts
+// the endpoint is a loopback address before sending any image bytes,
+// so raw photo content never reaches a third-party lab where it could
+// be retained or used for training. Text-only calls (chatText) may use
+// the Claude CLI; vision calls may not.
 
 import { spawn, spawnSync } from 'node:child_process';
 import sharp from 'sharp';
 
-// Thumbnail size sent to the model. 768px on the long edge is enough
-// for any vision model to identify subjects + setting without burning
-// VRAM on giant inputs. Keeps a single base64 payload under ~150 KB.
-export const VISION_THUMB_WIDTH = 768;
-export const VISION_THUMB_QUALITY = 80;
+// Maximum long-edge size (px) sent to the model. 1280 is the largest
+// thumbnail that changes Qwen2.5-VL's behavior — anything larger gets
+// downsampled internally by the model's image processor (max_pixels
+// default ≈ 1,003,520, which corresponds to ~1000×1000). Some squares
+// at 1280×1280 will be gently downsampled by the processor; non-square
+// shapes (the majority of photos) stay under the cap and benefit from
+// the extra resolution for technical-quality judgments (sharpness,
+// noise, oversharpening halos). Both dimensions are bounded — see
+// imageToDataUrl below — so portrait photos don't blow past the cap.
+export const VISION_THUMB_MAX = 1280;
+// JPEG quality. 90 preserves fine detail (grain, sharpness halos,
+// catchlight texture) the model can actually use at this resolution.
+// At smaller thumbnails 80 was fine; at 1280 long-edge quality 80 leaves
+// visible blocking the model could read as a flaw it would penalize.
+export const VISION_THUMB_QUALITY = 90;
 
 // Per-photo network timeout. Local models can stall on first load;
 // 5 minutes is generous for a cold-cache 32B model on Apple Silicon.
@@ -22,13 +39,85 @@ export const REQUEST_TIMEOUT_MS = 5 * 60 * 1000;
 
 export const DEFAULT_ENDPOINT = 'http://localhost:1234/v1';
 
-export async function imageToDataUrl(absPath: string): Promise<string> {
-  const buf = await sharp(absPath)
+// Context length requested every time we (re)load a model via `lms`.
+// Picked to be safely above what we actually use — vision prompts at
+// 1280 px are ~1500 prompt tokens + ~600 completion + image tokens, so
+// the practical floor is ~6K. Default 32768 covers Qwen2.5-VL (32K
+// native) and gives Qwen2.5 / Llama-3 text models comfortable headroom
+// for chain-of-thought + long curator notes. LM Studio clamps to the
+// model's actual ceiling if asked for more, so over-requesting is
+// safe; the only cost is KV cache memory (~5GB at 16K, ~10GB at 32K
+// for a 72B model). Override via LMS_CONTEXT_LENGTH if you need to
+// tune for tight VRAM.
+export const MAX_CONTEXT_LENGTH = Number(process.env.LMS_CONTEXT_LENGTH ?? 32768);
+
+// Guard for any code path that sends raw image bytes. Throws unless the
+// endpoint host is loopback (localhost / 127.0.0.1 / [::1]). Called from
+// chatVision so every vision caller — current and future — inherits the
+// "photos stay on this machine" invariant. Deleting this assertion to
+// route vision traffic somewhere else must be a conscious, reviewable
+// change.
+export function assertLocalEndpoint(endpoint: string, callsite: string): void {
+  let host: string;
+  try {
+    host = new URL(endpoint).hostname.toLowerCase();
+  } catch {
+    throw new Error(
+      `${callsite}: refusing to send images to malformed endpoint "${endpoint}". ` +
+      `Vision calls must target a local LM Studio server (http://localhost:1234/v1).`,
+    );
+  }
+  const isLocal =
+    host === 'localhost' ||
+    host === '127.0.0.1' ||
+    host === '::1' ||
+    host === '[::1]';
+  if (!isLocal) {
+    throw new Error(
+      `${callsite}: refusing to send images to non-local endpoint "${endpoint}" ` +
+      `(host=${host}). Vision calls are local-only by policy — photo bytes ` +
+      `must not leave this machine. Use http://localhost:1234/v1 (LM Studio).`,
+    );
+  }
+}
+
+// Returns the data URL together with the post-resize dimensions, so
+// callers that care about diagnostics (correlating per-photo timing
+// with input size) don't need a second sharp pass to read them back.
+// Width/height are the actual pixel dims of the JPEG that gets sent
+// to the model — after `fit: 'inside'` capping and any EXIF rotation.
+export interface ImageEncoded {
+  dataUrl: string;
+  width: number;
+  height: number;
+}
+
+export async function imageToDataUrl(
+  absPath: string,
+  maxLongEdge: number = VISION_THUMB_MAX,
+  quality: number = VISION_THUMB_QUALITY,
+): Promise<ImageEncoded> {
+  // fit: 'inside' bounds BOTH dimensions, so the long edge is always
+  // ≤ maxLongEdge regardless of orientation. The previous code bounded
+  // width only, which silently inflated portrait photos (a 4000×6000
+  // source became 768×1152 — long edge 1152, not 768 — and pushed tall
+  // portraits past Qwen2.5-VL's image-processor cap, triggering a
+  // second internal downsample on every such photo).
+  const { data, info } = await sharp(absPath)
     .rotate()
-    .resize({ width: VISION_THUMB_WIDTH, withoutEnlargement: true })
-    .jpeg({ quality: VISION_THUMB_QUALITY, mozjpeg: true })
-    .toBuffer();
-  return `data:image/jpeg;base64,${buf.toString('base64')}`;
+    .resize({
+      width: maxLongEdge,
+      height: maxLongEdge,
+      fit: 'inside',
+      withoutEnlargement: true,
+    })
+    .jpeg({ quality, mozjpeg: true })
+    .toBuffer({ resolveWithObject: true });
+  return {
+    dataUrl: `data:image/jpeg;base64,${data.toString('base64')}`,
+    width: info.width,
+    height: info.height,
+  };
 }
 
 // Regex matching model ids that hint at vision capability. Used by
@@ -152,17 +241,153 @@ async function fetchLoadedModelIds(endpoint: string): Promise<string[]> {
   return (body.data ?? []).map((m) => m.id);
 }
 
-// Ensure a model satisfying `predicate` is loaded in LM Studio. If one
-// already shows in /v1/models, return its id. Otherwise try
-// `lms load <preferred>`, falling back to whatever installed model
-// `lms ls` reports as a match. Returns the loaded id or null.
+// Match a "preferred" model id against the loaded set. Accepts either
+// an exact match or a fully-qualified id whose tail matches the
+// preferred bare id. Lets callers pass either "qwen2.5-vl-72b-instruct"
+// or "lmstudio-community/qwen2.5-vl-72b-instruct" and have either
+// resolve when the other is what LM Studio reports.
+function loadedMatchesPreferred(ids: string[], preferred: string): string | null {
+  const exact = ids.find((id) => id === preferred);
+  if (exact) return exact;
+  const tail = ids.find((id) => id.endsWith('/' + preferred));
+  return tail ?? null;
+}
+
+// Unload every loaded model, then load `modelId` with the maximum
+// reasonable context length. This is the ONE place we shell out to
+// `lms load`, so every model-load path (vision, text, upgrade) gets the
+// same context-length treatment.
+//
+// Why unload-all first: LM Studio's OpenAI-compatible /v1/models
+// endpoint reports whichever model happens to be loaded, and the
+// previous behavior silently used that — so a script asking for the
+// 72B model could end up running against a leftover 32B from a prior
+// session. Unloading guarantees the caller's preferred model is the
+// one that ends up serving requests.
+//
+// Why --context-length on every load: LM Studio's load-time defaults
+// can be conservatively small (we've seen 4K and 8K), which trips the
+// "Context size has been exceeded" error on vision prompts that include
+// ~1500 image tokens + a long structured prompt. Setting it explicitly
+// on every load makes the behavior predictable.
+async function forceLoadModel(
+  modelId: string,
+  contextLength: number,
+  parallel?: number,
+): Promise<boolean> {
+  console.log(`lm-client: unloading all models...`);
+  const unload = spawnSync('lms', ['unload', '--all'], { stdio: 'inherit' });
+  if (unload.status !== 0) {
+    // Non-fatal: maybe nothing was loaded, or maybe the CLI version
+    // doesn't support --all. The subsequent load will succeed either
+    // way; we just won't have freed unrelated state.
+    console.warn('lm-client: `lms unload --all` exited non-zero (continuing)');
+  }
+  // Build the load args:
+  //   -y                    auto-approve (skip the "multiple matches" prompt)
+  //   --context-length N    pin the context window so we don't inherit
+  //                         LM Studio's small default (often 4K)
+  //   --parallel N          configure the model's server-side concurrent
+  //                         prediction slots. Without this, client-side
+  //                         concurrency just queues at the LM Studio
+  //                         server (single slot is the default), which is
+  //                         the root cause of "GPU at 60% with same RAM
+  //                         at concurrency=4" — the GPU has headroom but
+  //                         the server isn't batching.
+  const args = [
+    'load', modelId, '-y',
+    '--context-length', String(contextLength),
+  ];
+  if (parallel != null && parallel > 0) {
+    args.push('--parallel', String(parallel));
+  }
+  const desc = `--context-length ${contextLength}` +
+    (parallel != null && parallel > 0 ? ` --parallel ${parallel}` : '');
+  console.log(`lm-client: loading "${modelId}" (${desc})...`);
+  const load = spawnSync('lms', args, { stdio: 'inherit' });
+  if (load.status === 0) return true;
+  // Older `lms` builds may not recognize --context-length or --parallel.
+  // Retry with the bare model id so we degrade to load-time defaults
+  // rather than hard-failing.
+  console.warn(
+    `lm-client: \`lms ${args.join(' ')}\` failed; retrying with bare \`lms load ${modelId} -y\` ` +
+    `(lms CLI may be old).`,
+  );
+  const fallback = spawnSync('lms', ['load', modelId, '-y'], { stdio: 'inherit' });
+  if (fallback.status !== 0) {
+    console.warn(`lm-client: \`lms load ${modelId}\` failed with status ${fallback.status}`);
+    return false;
+  }
+  return true;
+}
+
+// Ensure a model satisfying `predicate` is loaded in LM Studio.
+//
+// Two paths:
+//
+//   1. preferredModel SET (caller asked for a specific model):
+//      authoritative — if the preferred model is exactly loaded, use
+//      it; otherwise unload everything and load it. The previous
+//      behavior silently used whichever model happened to be in
+//      memory, which let stale state from prior sessions sneak in.
+//      Now the caller's intent wins.
+//
+//   2. preferredModel NULL (auto-detect):
+//      respect whatever is already loaded if it matches the predicate;
+//      only touch state if nothing matches or only an avoid-listed
+//      model is loaded.
+//
+// Every model load goes through forceLoadModel (unload --all + load
+// --context-length MAX) so context length is consistent and predictable.
 async function ensureModelLoadedMatching(
   endpoint: string,
   predicate: (id: string) => boolean,
   preferredModel: string | null,
   kindLabel: 'vision' | 'text',
+  parallel?: number,
 ): Promise<string | null> {
   let ids = await fetchLoadedModelIds(endpoint);
+
+  // ── Path 1: preferred model specified — it wins, and we ALWAYS
+  // reload it.
+  //
+  // The "model is already loaded" shortcut is unsafe because LM Studio
+  // remembers a model's previously-loaded *context length* across
+  // server restarts. A manual `lms load qwen2.5-vl-72b-instruct` (no
+  // --context-length) leaves the model in memory with whatever default
+  // LM Studio picked (we've seen 4K) — and the OpenAI-compat
+  // /v1/models endpoint doesn't surface that, so we can't tell from
+  // outside whether the loaded state matches our intent. Forcing a
+  // reload guarantees the context length is exactly what we asked for.
+  //
+  // The cost is ~30-90s per script invocation for a 72B model. The
+  // mitigation is to leave the UI server running between iterations
+  // (it holds the loaded state) rather than restarting the script
+  // every time you want to look at results.
+  if (preferredModel) {
+    const alreadyLoaded = loadedMatchesPreferred(ids, preferredModel);
+    if (alreadyLoaded) {
+      console.log(
+        `lm-client: preferred ${kindLabel} model "${preferredModel}" appears loaded, ` +
+        `but reloading to guarantee context length = ${MAX_CONTEXT_LENGTH.toLocaleString()}.`,
+      );
+    } else {
+      console.log(
+        `lm-client: preferred ${kindLabel} model "${preferredModel}" is not loaded; ` +
+        `switching models.`,
+      );
+    }
+    const ok = await forceLoadModel(preferredModel, MAX_CONTEXT_LENGTH, parallel);
+    if (!ok) return null;
+    ids = await fetchLoadedModelIds(endpoint);
+    return loadedMatchesPreferred(ids, preferredModel)
+      ?? (kindLabel === 'text'
+        ? pickByPreference(ids, predicate)
+        : (ids.find((id) => predicate(id)) ?? null));
+  }
+
+  // ── Path 2: auto-detect — respect existing state when reasonable.
+  //
   // For text models, walk the preference order so we don't pick a
   // brittle one (Gemma) when a known-good one (Qwen / DeepSeek) is
   // already in memory. Vision uses straight predicate match — there's
@@ -181,8 +406,8 @@ async function ensureModelLoadedMatching(
         `lm-client: upgrading text model from "${pickExisting}" to "${upgrade}" ` +
         `(loaded model returns brittle structured output)…`,
       );
-      const load = spawnSync('lms', ['load', upgrade], { stdio: 'inherit' });
-      if (load.status === 0) {
+      const ok = await forceLoadModel(upgrade, MAX_CONTEXT_LENGTH, parallel);
+      if (ok) {
         ids = await fetchLoadedModelIds(endpoint);
         const next = pickByPreference(ids, predicate);
         if (next) return next;
@@ -191,7 +416,8 @@ async function ensureModelLoadedMatching(
   }
   if (pickExisting) return pickExisting;
 
-  const target = preferredModel ?? findInstalledModel(predicate, kindLabel === 'text');
+  // Nothing matching loaded — scan installed and load the first match.
+  const target = findInstalledModel(predicate, kindLabel === 'text');
   if (!target) {
     console.warn(
       `lm-client: no ${kindLabel} model loaded and none found locally. ` +
@@ -199,12 +425,8 @@ async function ensureModelLoadedMatching(
     );
     return null;
   }
-  console.log(`lm-client: loading ${kindLabel} model "${target}" via \`lms load\`…`);
-  const load = spawnSync('lms', ['load', target], { stdio: 'inherit' });
-  if (load.status !== 0) {
-    console.warn(`lm-client: \`lms load ${target}\` exited non-zero`);
-    return null;
-  }
+  const ok = await forceLoadModel(target, MAX_CONTEXT_LENGTH, parallel);
+  if (!ok) return null;
   ids = await fetchLoadedModelIds(endpoint);
   return kindLabel === 'text'
     ? pickByPreference(ids, predicate)
@@ -215,12 +437,14 @@ async function ensureModelLoadedMatching(
 export async function ensureVisionModelLoaded(
   endpoint: string = DEFAULT_ENDPOINT,
   preferredModel: string | null = null,
+  parallel?: number,
 ): Promise<string | null> {
   return ensureModelLoadedMatching(
     endpoint,
     (id) => VISION_HINTS_RE.test(id),
     preferredModel,
     'vision',
+    parallel,
   );
 }
 
@@ -231,12 +455,14 @@ export async function ensureVisionModelLoaded(
 export async function ensureTextModelLoaded(
   endpoint: string = DEFAULT_ENDPOINT,
   preferredModel: string | null = null,
+  parallel?: number,
 ): Promise<string | null> {
   return ensureModelLoadedMatching(
     endpoint,
     (id) => !VISION_HINTS_RE.test(id),
     preferredModel,
     'text',
+    parallel,
   );
 }
 
@@ -273,17 +499,51 @@ export interface ChatVisionOptions {
   temperature?: number;
   maxTokens?: number;
   timeoutMs?: number;
+  // Streaming callback. When set, the request runs in SSE mode and
+  // every content delta is forwarded as it arrives. Used by
+  // photography-crit to relay generation progress to the live UI and
+  // to keep the socket busy so Bun's HTTP idle timeout doesn't fire
+  // during long 72B completions. The accumulated content is still
+  // returned synchronously in ChatVisionResult.content.
+  onDelta?: (chunk: string) => void;
 }
 
-// Single chat-completions call with one user message containing the
-// prompt text + 1..N images. Returns the raw assistant content string —
-// callers parse JSON / extract fields themselves.
-export async function chatVision(opts: ChatVisionOptions): Promise<string> {
+// Token-usage shape LM Studio (and any OpenAI-compatible server) returns
+// alongside the completion. May be absent on servers that don't surface
+// it; callers should treat as optional.
+export interface ChatVisionUsage {
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
+}
+
+// Detailed result of a vision call. Carries the assistant content plus
+// per-request diagnostics callers can log to correlate latency with
+// input size, output size, etc. `requestMs` is wall-clock from fetch
+// kickoff through JSON-body parse — i.e. the same window the
+// AbortController is guarding. This is the right number to compare
+// against the configured timeout when debugging.
+export interface ChatVisionResult {
+  content: string;
+  usage?: ChatVisionUsage;
+  requestMs: number;
+}
+
+// Detailed variant of chatVision. Returns the full result shape with
+// timing + token usage. Use this when you want diagnostics; the
+// classic `chatVision` (below) delegates here and discards the extras
+// for callers that only want the content string.
+export async function chatVisionDetailed(opts: ChatVisionOptions): Promise<ChatVisionResult> {
   const {
     endpoint, model, prompt, imageUrl, imageUrls,
     temperature = 0.2, maxTokens,
     timeoutMs = REQUEST_TIMEOUT_MS,
+    onDelta,
   } = opts;
+  // PRIVACY: photo bytes never leave this machine. Enforced here so
+  // every vision caller (classify, crit, dupe-merge, future) inherits
+  // the guarantee without having to remember it.
+  assertLocalEndpoint(endpoint, 'chatVision');
   const urls = imageUrls && imageUrls.length > 0
     ? imageUrls
     : (imageUrl ? [imageUrl] : []);
@@ -298,10 +558,18 @@ export async function chatVision(opts: ChatVisionOptions): Promise<string> {
     model,
     temperature,
     messages: [{ role: 'user', content }],
+    // Always stream. SSE deltas keep the socket flushing every
+    // ~100ms during long completions, which prevents Bun's HTTP
+    // idle-read timeout (~5min) from firing on 72B vision passes
+    // and lets onDelta callers relay progress to a UI. Token usage
+    // arrives in the final chunk via stream_options.include_usage.
+    stream: true,
+    stream_options: { include_usage: true },
   };
   if (typeof maxTokens === 'number' && maxTokens > 0) body.max_tokens = maxTokens;
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), timeoutMs);
+  const startedAt = performance.now();
   let res: Response;
   try {
     res = await fetch(`${endpoint}/chat/completions`, {
@@ -310,15 +578,84 @@ export async function chatVision(opts: ChatVisionOptions): Promise<string> {
       signal: ctl.signal,
       body: JSON.stringify(body),
     });
-  } finally {
+  } catch (e) {
     clearTimeout(t);
+    throw e;
   }
   if (!res.ok) {
+    clearTimeout(t);
     const detail = await res.text().catch(() => '');
     throw new Error(`Vision request failed: HTTP ${res.status} ${detail.slice(0, 200)}`);
   }
-  const parsed = await res.json() as { choices?: Array<{ message?: { content?: string } }> };
-  return parsed.choices?.[0]?.message?.content ?? '';
+  if (!res.body) {
+    clearTimeout(t);
+    throw new Error('Vision request returned no body (stream mode requires a readable body)');
+  }
+  // Consume the SSE stream. Each event is one or more lines starting
+  // with "data: <json>"; events are separated by a blank line. We
+  // buffer across chunks so an event split mid-line still parses.
+  // Final "data: [DONE]" terminates the stream. Usage (when the
+  // server obeys include_usage) lands on the very last chunk before
+  // [DONE], with delta.content empty.
+  let content_acc = '';
+  let usage: ChatVisionUsage | undefined;
+  let buf = '';
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      // Process complete lines from the buffer; leave a trailing
+      // partial line for the next chunk to complete.
+      let idx: number;
+      while ((idx = buf.indexOf('\n')) >= 0) {
+        const line = buf.slice(0, idx).replace(/\r$/, '');
+        buf = buf.slice(idx + 1);
+        if (!line.startsWith('data:')) continue;
+        const payload = line.slice(5).trim();
+        if (payload === '[DONE]') continue;
+        if (!payload) continue;
+        try {
+          const evt = JSON.parse(payload) as {
+            choices?: Array<{ delta?: { content?: string } }>;
+            usage?: ChatVisionUsage;
+          };
+          const chunk = evt.choices?.[0]?.delta?.content;
+          if (typeof chunk === 'string' && chunk.length > 0) {
+            content_acc += chunk;
+            if (onDelta) {
+              // Don't let a misbehaving callback kill the stream.
+              try { onDelta(chunk); } catch { /* swallow */ }
+            }
+          }
+          if (evt.usage) usage = evt.usage;
+        } catch {
+          // Drop malformed lines silently — LM Studio occasionally
+          // emits keepalive comments or empty events.
+        }
+      }
+    }
+  } finally {
+    clearTimeout(t);
+    try { reader.releaseLock(); } catch { /* */ }
+  }
+  const requestMs = Math.round(performance.now() - startedAt);
+  return {
+    content: content_acc,
+    ...(usage && { usage }),
+    requestMs,
+  };
+}
+
+// Single chat-completions call with one user message containing the
+// prompt text + 1..N images. Returns the raw assistant content string —
+// callers parse JSON / extract fields themselves. For diagnostics
+// (timing, token usage), use chatVisionDetailed directly.
+export async function chatVision(opts: ChatVisionOptions): Promise<string> {
+  const result = await chatVisionDetailed(opts);
+  return result.content;
 }
 
 // Default Claude model used by the Claude-CLI backend. Sonnet is the

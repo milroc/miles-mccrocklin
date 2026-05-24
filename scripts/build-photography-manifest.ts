@@ -109,6 +109,18 @@ interface PhotographyJsonEntry {
   story?: string;
   dupeOf?: string;
   sort_order?: number;
+  crit_score?: number;
+  crit_composition?: number;
+  crit_lighting?: number;
+  crit_subject?: number;
+  crit_emotion?: number;
+  crit_technical?: number;
+  crit_composition_notes?: string;
+  crit_lighting_notes?: string;
+  crit_subject_notes?: string;
+  crit_emotion_notes?: string;
+  crit_technical_notes?: string;
+  crit_notes?: string;
 }
 
 // Country codes are stored as ISO-3166-1 alpha-3 (lowercase: usa, deu,
@@ -253,6 +265,18 @@ interface SideClassification {
   graphic?: boolean;
   dupeOf?: string;
   sort_order?: number;
+  crit_score?: number;
+  crit_composition?: number;
+  crit_lighting?: number;
+  crit_subject?: number;
+  crit_emotion?: number;
+  crit_technical?: number;
+  crit_composition_notes?: string;
+  crit_lighting_notes?: string;
+  crit_subject_notes?: string;
+  crit_emotion_notes?: string;
+  crit_technical_notes?: string;
+  crit_notes?: string;
 }
 
 function loadClassificationSideTable(): Record<string, SideClassification> {
@@ -329,6 +353,18 @@ export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
       graphic: sc.graphic,
       dupeOf: sc.dupeOf,
       sort_order: sc.sort_order,
+      crit_score: sc.crit_score,
+      crit_composition: sc.crit_composition,
+      crit_lighting: sc.crit_lighting,
+      crit_subject: sc.crit_subject,
+      crit_emotion: sc.crit_emotion,
+      crit_technical: sc.crit_technical,
+      crit_composition_notes: sc.crit_composition_notes,
+      crit_lighting_notes: sc.crit_lighting_notes,
+      crit_subject_notes: sc.crit_subject_notes,
+      crit_emotion_notes: sc.crit_emotion_notes,
+      crit_technical_notes: sc.crit_technical_notes,
+      crit_notes: sc.crit_notes,
     });
     if (country && item.tag) {
       // Display name from the last comma-separated chunk of the tag, preserving original case.
@@ -380,6 +416,18 @@ export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
       graphic: e.graphic,
       dupeOf: e.dupeOf,
       sort_order: e.sort_order,
+      crit_score: e.crit_score,
+      crit_composition: e.crit_composition,
+      crit_lighting: e.crit_lighting,
+      crit_subject: e.crit_subject,
+      crit_emotion: e.crit_emotion,
+      crit_technical: e.crit_technical,
+      crit_composition_notes: e.crit_composition_notes,
+      crit_lighting_notes: e.crit_lighting_notes,
+      crit_subject_notes: e.crit_subject_notes,
+      crit_emotion_notes: e.crit_emotion_notes,
+      crit_technical_notes: e.crit_technical_notes,
+      crit_notes: e.crit_notes,
     });
     (e.theme ?? []).forEach((t) => themeCounts.set(t, (themeCounts.get(t) ?? 0) + 1));
     if (e.species) {
@@ -434,6 +482,18 @@ export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
       graphic: sc.graphic,
       dupeOf: sc.dupeOf,
       sort_order: sc.sort_order,
+      crit_score: sc.crit_score,
+      crit_composition: sc.crit_composition,
+      crit_lighting: sc.crit_lighting,
+      crit_subject: sc.crit_subject,
+      crit_emotion: sc.crit_emotion,
+      crit_technical: sc.crit_technical,
+      crit_composition_notes: sc.crit_composition_notes,
+      crit_lighting_notes: sc.crit_lighting_notes,
+      crit_subject_notes: sc.crit_subject_notes,
+      crit_emotion_notes: sc.crit_emotion_notes,
+      crit_technical_notes: sc.crit_technical_notes,
+      crit_notes: sc.crit_notes,
     });
     countryNames.set(atlasCode, a.country);
     for (const t of themeArr) themeCounts.set(t, (themeCounts.get(t) ?? 0) + 1);

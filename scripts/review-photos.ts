@@ -659,12 +659,18 @@ function html(themes: string[]): string {
       min-height: 100vh;
     }
     a { color: var(--canvas-fg-strong); text-decoration: none; border-bottom: 1px dotted var(--canvas-rule); }
+    /* Chrome buttons + inputs share one register, mirroring the main-site
+       TreeDropdown / SearchBox trigger so the review tool reads as part
+       of the same family: mono, eyebrow size, 800-weight, 0.18em tracking,
+       uppercase, 1px rule, no radius, padding 8px 10px. */
     button {
       appearance: none; background: transparent;
       border: 1px solid var(--canvas-rule); color: var(--canvas-fg);
-      font-family: var(--mono); font-size: 12px;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 10px 16px; cursor: pointer; border-radius: 2px;
+      font-family: var(--mono); font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 8px 10px; cursor: pointer; border-radius: 0;
+      line-height: 1;
       transition: all 120ms ease;
     }
     button:hover, button:focus-visible { color: var(--canvas-fg-strong); border-color: var(--canvas-fg-strong); outline: none; }
@@ -672,7 +678,6 @@ function html(themes: string[]): string {
     button.primary:hover { background: #fff; border-color: #fff; }
     button.danger { color: #c97b6e; border-color: rgba(176,58,46,0.4); }
     button.danger:hover { color: #fff; background: var(--danger); border-color: var(--danger); }
-    button.ghost { padding: 6px 10px; font-size: 11px; letter-spacing: 0.06em; }
 
     header.bar {
       display: flex; align-items: center; gap: 14px;
@@ -690,9 +695,11 @@ function html(themes: string[]): string {
     }
     .bar select, .bar input {
       background: transparent; color: var(--canvas-fg-strong);
-      border: 1px solid var(--canvas-rule); border-radius: 2px;
-      font-family: var(--mono); font-size: 12px; padding: 8px 12px;
-      letter-spacing: 0.08em;
+      border: 1px solid var(--canvas-rule); border-radius: 0;
+      font-family: var(--mono); font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 8px 10px; line-height: 1;
     }
     .progress { margin-left: auto; color: var(--canvas-fg-muted); font-variant-numeric: tabular-nums; font-size: 12px; }
     .progress strong { color: var(--canvas-fg-strong); }
@@ -859,12 +866,14 @@ function html(themes: string[]): string {
     }
     .mic-btn {
       display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--mono); font-size: 11px;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      padding: 8px 14px;
+      font-family: var(--mono); font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 8px 10px;
       border: 1px solid var(--canvas-rule);
       background: transparent; color: var(--canvas-fg);
-      border-radius: 2px; cursor: pointer;
+      border-radius: 0; cursor: pointer;
+      line-height: 1;
       transition: all 120ms ease;
     }
     .mic-btn:hover, .mic-btn:focus-visible { color: var(--canvas-fg-strong); border-color: var(--canvas-fg-strong); outline: none; }
@@ -893,7 +902,7 @@ function html(themes: string[]): string {
     .notes-block textarea {
       background: transparent; color: var(--canvas-fg-strong);
       border: 1px solid var(--canvas-rule-strong);
-      border-radius: 2px;
+      border-radius: 0;
       font-family: var(--serif); font-size: 16px; line-height: 1.6;
       padding: 14px 16px;
       width: 100%; min-height: 280px;
@@ -919,11 +928,14 @@ function html(themes: string[]): string {
     .triage-omit:has(input:checked) { color: #c97b6e; }
     .triage-omit input { accent-color: var(--danger); }
     .toggles .dupe-input { display: flex; flex-direction: column; gap: 4px; font-size: 10px; letter-spacing: 0.18em; color: var(--canvas-fg-muted); }
-    .toggles .dupe-input input[type=text] {
+    .toggles .dupe-input input[type=text],
+    .toggles .dupe-input input[type=number] {
       background: transparent; color: var(--canvas-fg-strong);
-      border: 1px solid var(--canvas-rule); border-radius: 2px;
-      font-family: var(--mono); font-size: 12px; padding: 6px 10px;
-      width: 240px;
+      border: 1px solid var(--canvas-rule); border-radius: 0;
+      font-family: var(--mono); font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 8px 10px; line-height: 1; width: 240px;
     }
 
     /* Structured-override panel — collapsed by default. Lets the curator
@@ -959,7 +971,7 @@ function html(themes: string[]): string {
     .structured textarea,
     .structured select {
       background: transparent; color: var(--canvas-fg-strong);
-      border: 1px solid var(--canvas-rule); border-radius: 2px;
+      border: 1px solid var(--canvas-rule); border-radius: 0;
       font-family: var(--serif); font-size: 15px; padding: 10px 12px;
       width: 100%; resize: vertical;
     }
@@ -1148,7 +1160,6 @@ function html(themes: string[]): string {
     .notes-card .nc-meta .country { color: var(--canvas-fg-strong); text-transform: uppercase; letter-spacing: 0.18em; font-size: 10px; }
     .notes-card .nc-notes { font-family: var(--serif); font-size: 15px; line-height: 1.55; color: var(--canvas-fg-strong); white-space: pre-wrap; margin: 0; }
     .notes-card .nc-actions { margin-top: 4px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-    .notes-card .nc-actions button { padding: 6px 12px; font-size: 10px; }
     .notes-card .nc-status {
       font-family: var(--mono); font-size: 10px;
       letter-spacing: 0.14em; text-transform: uppercase;
@@ -1203,7 +1214,6 @@ function html(themes: string[]): string {
     .nc-diff-actions {
       display: flex; gap: 6px; padding-top: 6px;
     }
-    .nc-diff-actions button { padding: 5px 10px; font-size: 10px; }
 
     /* List view — grid of filtered photos with checkboxes, paired with
        a sticky bulk-action bar at the top. Bulk operations run the same
@@ -1237,12 +1247,13 @@ function html(themes: string[]): string {
     .bulk-control select,
     .bulk-control input {
       background: transparent; color: var(--canvas-fg-strong);
-      border: 1px solid var(--canvas-rule); border-radius: 2px;
-      font-family: var(--mono); font-size: 12px; padding: 6px 10px;
-      letter-spacing: 0.06em;
+      border: 1px solid var(--canvas-rule); border-radius: 0;
+      font-family: var(--mono); font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 8px 10px; line-height: 1;
     }
-    .bulk-control input { width: 160px; }
-    .bulk-control button.ghost { padding: 6px 10px; font-size: 10px; }
+    .bulk-control input { width: 220px; }
 
     .list-grid {
       flex: 1; overflow-y: auto;
@@ -1614,7 +1625,7 @@ function html(themes: string[]): string {
        source/country/category dropdowns first, then bulk-edit. -->
   <section class="list-view" id="list-view" style="display:none">
     <div class="list-actions">
-      <label class="list-select-all" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--canvas-fg);">
+      <label class="list-select-all" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-family:var(--mono);font-size:10.5px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--canvas-fg);">
         <input id="list-select-all" type="checkbox" />
         Select all visible
       </label>
@@ -1669,6 +1680,13 @@ function html(themes: string[]): string {
         <span class="bulk-label">Featured</span>
         <button id="bulk-featured-mark" type="button" title="Mark selected as featured (eligible to rank in sort mode)">Mark</button>
         <button id="bulk-featured-unmark" class="ghost" type="button" title="Unmark selected as featured">Unmark</button>
+      </div>
+
+      <span class="bar-divider bulk-only"></span>
+      <div class="bulk-control bulk-only">
+        <span class="bulk-label">Omit</span>
+        <button id="bulk-omit-mark" class="danger" type="button" title="Mark selected as omitted (dropped from merged output)">Mark</button>
+        <button id="bulk-omit-unmark" class="ghost" type="button" title="Unmark omit on selected">Unmark</button>
       </div>
 
       <span class="bar-divider bulk-only"></span>
@@ -3335,6 +3353,17 @@ function html(themes: string[]): string {
       // merger writes false on the entry, which the builder then ships
       // verbatim (and the sort path treats falsy as not-featured).
       bulkApply((e) => (e.featured ? { featured: false } : null), 'unmark featured');
+    });
+
+    // Omit = drop from the merged output entirely. Destructive enough to
+    // warrant a confirm before marking, but unmark stays one-click since
+    // it just restores normal visibility.
+    $('bulk-omit-mark').addEventListener('click', () => {
+      if (!confirm('Mark ' + selectedIds.size + ' photo(s) as omitted? They will be dropped from the merged output.')) return;
+      bulkApply((e) => (e.omit ? null : { omit: true }), 'mark omit');
+    });
+    $('bulk-omit-unmark').addEventListener('click', () => {
+      bulkApply((e) => (e.omit ? { omit: '' } : null), 'unmark omit');
     });
 
     // Toggle sort mode. Entering sort mode resets the filter dropdowns

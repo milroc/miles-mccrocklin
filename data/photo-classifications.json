@@ -21,20 +21,44 @@
       "street",
       "food"
     ],
-    "caption": "Priya Grilling in Buenos Aires",
-    "alt": "A woman tends large cuts of meat over an open fire pit at a bustling open-air market in Buenos Aires, surrounded by stacked wood and market activity.",
-    "story": "Priya works the grill at a lively Buenos Aires market, tending large cuts of meat over an open fire the traditional way. Stacks of wood frame the scene as the market buzzes around her.",
+    "caption": "Priya Grilling at a Buenos Aires Market",
+    "alt": "A person named Priya grills large cuts of meat over an open fire pit at an outdoor market in Buenos Aires, surrounded by stacked wood and bustling activity. The scene captures traditional open-fire cooking in an authentic market setting.",
+    "story": "Priya tends a fire pit stacked with wood while large cuts of meat roast over open flame in a busy Buenos Aires market. The diagonal roof beams frame the scene and draw the eye toward the fire and cook. It's a candid document of traditional street-food preparation in the city.",
     "entities": [
-      "woman",
+      "Priya",
       "fire pit",
       "grilled meat",
       "wood pile",
       "market stall",
+      "roof beams",
       "open-air market",
       "people"
     ],
     "country": "arg",
-    "city": "Buenos Aires"
+    "city": "Buenos Aires",
+    "state": "Buenos Aires",
+    "crit_score": 69,
+    "crit_composition": 73,
+    "crit_composition_notes": "The diagonal line of the roof beams guides the eye toward the central figure and the fire.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Natural light from outside creates contrast but also casts harsh shadows on some subjects, reducing detail in those areas.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The roasting meats are clearly the focal point and their texture is well-captured; however, the background activity competes for attention without adding context.",
+    "crit_emotion": 62,
+    "crit_emotion_notes": "The scene captures a moment of culinary preparation but lacks emotional depth or narrative implication in the subjects' expressions or gestures.",
+    "crit_technical": 78,
+    "crit_technical_notes": "Sharpness is maintained across most elements, with no visible processing artifacts at this resolution; exposure balances light and shadow effectively.",
+    "crit_notes": "The photograph documents a food preparation scene with clear focus on the roasting meats. It does not convey a deeper emotional or narrative layer beyond the moment captured.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 and lift shadows +5 to balance contrast in the harshly lit areas."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out some of the background activity to reduce distraction and focus more on the central figure and roasting meats."
+      }
+    ]
   },
   "media/portfolio/armenia.jpg": {
     "theme": [
@@ -57,20 +81,47 @@
     "theme": [
       "water"
     ],
-    "caption": "Foam and Reflections at Sydney Opera House",
-    "alt": "The Sydney Opera House with its distinctive white sails is surrounded by harbor water dotted with foam bubbles, set against a backdrop of blue sky and scattered clouds. The city skyline is visible in the distance.",
-    "story": "The iconic Sydney Opera House stands majestically by the harbor, its white sails reflecting on the rippling water below. Foam bubbles dance across the surface of the bay, adding a dynamic texture to the serene scene. The city skyline in the background completes this picturesque view of one of Australia's most recognizable landmarks.",
+    "caption": "Sydney Opera House from the Harbour",
+    "alt": "The Sydney Opera House with its distinctive white sail-like roof shells reflected in the calm harbour water, foam bubbles drifting across the surface with the city skyline, sailboats, and people strolling the docks visible in the distance under a partly cloudy sky.",
+    "story": "Shot from the water's edge, the Opera House sails mirror themselves in the still harbour. Foam bubbles drift across the surface of the bay, adding unexpected texture to the scene. People stroll along the docks while sailboats dot the horizon under a partly cloudy sky, the city skyline completing the backdrop.",
     "entities": [
-      "sydney opera house",
-      "harbor water",
+      "Sydney Opera House",
+      "harbour water",
       "foam bubbles",
+      "city skyline",
+      "roof shells",
       "docks",
-      "skyline buildings",
-      "blue sky",
-      "clouds"
+      "sailboats",
+      "people walking",
+      "clouds",
+      "blue sky"
     ],
     "country": "aus",
-    "dupeOf": "photo-20241117-dsc05104"
+    "city": "Sydney",
+    "state": "New South Wales",
+    "crit_score": 80,
+    "crit_composition": 79,
+    "crit_composition_notes": "The diagonal line of the wall leads from foreground to background, framing the Opera House effectively.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light highlights the texture of the water spray and the building's surface, enhancing depth.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The Sydney Opera House is clearly identifiable but competes with the dynamic foreground water for attention.",
+    "crit_emotion": 86,
+    "crit_emotion_notes": "The splashing water conveys a sense of energy and movement, adding an atmospheric mood to the scene.",
+    "crit_technical": 73,
+    "crit_technical_notes": "Sharpness is good overall but some areas in the spray appear slightly soft due to motion blur.",
+    "crit_notes": "The photograph captures a dynamic moment with water splashing against the iconic Opera House. The foreground activity competes for focus, slightly overshadowing the building's presence.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Sharpen the areas of water spray to enhance detail and crispness."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter on the Opera House to reduce competition from the foreground elements."
+      }
+    ],
+    "featured": true
   },
   "media/portfolio/austria.jpg": {
     "theme": [
@@ -88,7 +139,29 @@
       "street lamps",
       "city square"
     ],
-    "country": "aut"
+    "country": "aut",
+    "crit_score": 69,
+    "crit_composition": 73,
+    "crit_composition_notes": "The juxtaposition of historic and modern architecture creates visual tension, but the crowd competes for attention.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Evening light softens shadows on buildings; the reflective glass adds depth but also some glare.",
+    "crit_subject": 70,
+    "crit_subject_notes": "The image clearly captures a city square with distinct architectural styles, though people distract from the focus on structures.",
+    "crit_emotion": 65,
+    "crit_emotion_notes": "The scene conveys urban activity but lacks a strong sense of space or time due to the crowd's dominance.",
+    "crit_technical": 72,
+    "crit_technical_notes": "Focus is sharp on buildings; slight underexposure in shadow areas, but no major artifacts are visible.",
+    "crit_notes": "The photograph captures a city square with contrasting architecture. The crowd's presence detracts from the architectural focus and emotional weight of space.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Lift shadows +10 in post to reveal more detail in darker areas."
+      },
+      {
+        "type": "composition-shoot",
+        "action": "Recompose with fewer people or during a less busy time to emphasize the architecture."
+      }
+    ]
   },
   "media/portfolio/belgium.jpg": {
     "theme": [
@@ -122,6 +195,28 @@
       "blue sky",
       "distant horizon",
       "fishing boat"
+    ],
+    "crit_score": 73,
+    "crit_composition": 74,
+    "crit_composition_notes": "The broken dock leads into the frame but stops short of a clear destination, leaving the composition unresolved.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "The light is even and soft, preserving detail in both water and sky without harsh shadows or blown highlights.",
+    "crit_subject": 65,
+    "crit_subject_notes": "The subject of decayed infrastructure against the sea is clear but lacks a focal point to anchor the viewer's attention.",
+    "crit_emotion": 70,
+    "crit_emotion_notes": "The image conveys a sense of abandonment and time passing, though the emotion feels muted rather than profound.",
+    "crit_technical": 85,
+    "crit_technical_notes": "Sharpness is consistent across the frame; no visible noise or processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures a scene of decayed docks against calm water, but it lacks a strong focal point. The lighting and technical execution are solid, yet the emotional impact remains subdued.",
+    "crit_feedback": [
+      {
+        "type": "crop",
+        "action": "Crop tighter on the broken dock to create a stronger leading line that draws more attention."
+      },
+      {
+        "type": "edit",
+        "action": "Increase contrast slightly in post-processing to enhance the separation between the dock and water."
+      }
     ]
   },
   "media/portfolio/bolivia.jpg": {
@@ -145,6 +240,28 @@
       "sun"
     ],
     "country": "bol",
+    "crit_score": 79,
+    "crit_composition": 79,
+    "crit_composition_notes": "The horizon line sits slightly above center, creating a balanced division between sky and water.",
+    "crit_lighting": 85,
+    "crit_lighting_notes": "The sunset light casts warm tones across the scene, enhancing the reflective quality of the water.",
+    "crit_subject": 62,
+    "crit_subject_notes": "The subject is minimalistic, with no distinct focal point other than the sun and its reflection on the water.",
+    "crit_emotion": 87,
+    "crit_emotion_notes": "The image evokes a sense of calm and solitude through the vastness of the landscape and the soft light.",
+    "crit_technical": 80,
+    "crit_technical_notes": "The exposure is well-managed, with no visible noise or artifacts at this resolution.",
+    "crit_notes": "The photograph captures a serene sunset over water with balanced composition and warm lighting. The minimalistic approach leaves the subject open to interpretation.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Recover some detail in the darker areas of the water for added depth."
+      },
+      {
+        "type": "crop",
+        "action": "Crop slightly tighter on the sun and its reflection to emphasize these elements as focal points."
+      }
+    ],
     "featured": true,
     "sort_order": 80
   },
@@ -164,7 +281,29 @@
       "trees",
       "islands"
     ],
-    "country": "bra"
+    "country": "bra",
+    "crit_score": 80,
+    "crit_composition": 79,
+    "crit_composition_notes": "The city sprawls across the frame with Sugarloaf Mountain as a natural anchor, creating visual balance.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light from above highlights the textures of the mountains and buildings while casting subtle shadows that add depth.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The image clearly communicates Rio de Janeiro's urban landscape juxtaposed with its natural features, though the subject is broad rather than specific.",
+    "crit_emotion": 84,
+    "crit_emotion_notes": "The photograph conveys a sense of grandeur and scale through the interplay of cityscape and water under a vast sky.",
+    "crit_technical": 76,
+    "crit_technical_notes": "Sharpness is consistent across the frame, with no visible artifacts or processing errors at this resolution.",
+    "crit_notes": "The photograph captures Rio de Janeiro's iconic landscape and its relationship to water. The image does not isolate a particular moment within the scene.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Recover highlights in the brightest areas of the city by -10 to preserve detail."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out the bottom edge slightly to remove distracting foreground elements and tighten focus on Sugarloaf Mountain."
+      }
+    ]
   },
   "media/portfolio/canada.jpg": {
     "theme": [
@@ -180,7 +319,29 @@
       "river",
       "cloudy sky"
     ],
-    "country": "can"
+    "country": "can",
+    "crit_score": 73,
+    "crit_composition": 74,
+    "crit_composition_notes": "The boat sits off-center but the vast expanse of water and mist overwhelms it, weakening its role as a focal point.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Overcast light softens the scene; the waterfall lacks contrast against the sky due to even lighting.",
+    "crit_subject": 70,
+    "crit_subject_notes": "The boat provides scale but competes with the overwhelming presence of the waterfall and mist.",
+    "crit_emotion": 82,
+    "crit_emotion_notes": "The mist conveys a sense of grandeur and isolation, evoking an atmospheric mood despite the human element.",
+    "crit_technical": 76,
+    "crit_technical_notes": "Details in the water are sharp; no visible artifacts at this resolution.",
+    "crit_notes": "The photograph captures the scale of Niagara Falls with a boat for reference, but the overcast light and composition struggle to balance human presence against natural grandeur. The mist effectively conveys an atmospheric mood despite these challenges.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -20 on the waterfall to increase contrast against the sky."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter around the boat and waterfall to emphasize their relationship as focal points."
+      }
+    ]
   },
   "media/portfolio/chile.jpg": {
     "theme": [
@@ -200,7 +361,29 @@
       "mountains",
       "trees"
     ],
-    "country": "chl"
+    "country": "chl",
+    "crit_score": 78,
+    "crit_composition": 79,
+    "crit_composition_notes": "The frame uses the rule of thirds effectively; the mountains and trees anchor the lower third while the starry sky dominates above.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "The night sky is well-exposed, capturing a vibrant array of stars without overexposure. The foreground lighting highlights texture in the rocks and trees subtly.",
+    "crit_subject": 65,
+    "crit_subject_notes": "The mountains are clear but lack sharp detail; the image reads as a general landscape rather than a specific place.",
+    "crit_emotion": 87,
+    "crit_emotion_notes": "The vastness of the night sky conveys a strong sense of isolation and grandeur, evoking an emotional response to nature's scale.",
+    "crit_technical": 73,
+    "crit_technical_notes": "Some noise is visible in the darker areas but does not detract significantly from the overall image quality at this resolution.",
+    "crit_notes": "The photograph captures a striking night scene with an emphasis on atmospheric mood. The mountains lack sharp detail, which slightly undermines their presence as a focal point.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Sharpen the mountain details in post-processing to enhance texture and clarity."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out some of the lower foreground trees to emphasize the mountains more prominently."
+      }
+    ]
   },
   "media/portfolio/colombia.jpg": {
     "theme": [
@@ -216,6 +399,28 @@
       "clouds",
       "small house",
       "fence"
+    ],
+    "crit_score": 75,
+    "crit_composition": 74,
+    "crit_composition_notes": "The diagonal line of palm trees leads from bottom-left to center, creating a natural flow through the frame.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Diffused light softens shadows but lacks contrast; details in the foliage are slightly muted.",
+    "crit_subject": 72,
+    "crit_subject_notes": "The image clearly communicates a lush, mountainous landscape with distinct vegetation patterns.",
+    "crit_emotion": 80,
+    "crit_emotion_notes": "The expansive view evokes a sense of tranquility and grandeur in the natural setting.",
+    "crit_technical": 76,
+    "crit_technical_notes": "Sharpness is consistent across the frame, with no visible artifacts at this resolution.",
+    "crit_notes": "The photograph captures a serene mountain landscape with clear visual hierarchy. The diffused light softens details but maintains an atmospheric mood.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Increase contrast by +10 to enhance the definition in foliage and terrain."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out the bottom-left corner vegetation to focus more on the palm tree line leading into the hills."
+      }
     ]
   },
   "media/portfolio/croatia.jpg": {
@@ -234,7 +439,29 @@
       "trees",
       "cliffs"
     ],
-    "country": "hrv"
+    "country": "hrv",
+    "crit_score": 76,
+    "crit_composition": 79,
+    "crit_composition_notes": "The winding boardwalk creates a natural S-curve leading through the frame.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Even light across the scene flattens some depth but preserves color saturation in the water and foliage.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The turquoise lakes and cascading waterfalls are clearly defined against the greenery, establishing a clear focal point.",
+    "crit_emotion": 82,
+    "crit_emotion_notes": "The vibrant colors and lush environment evoke a sense of tranquility and natural beauty.",
+    "crit_technical": 73,
+    "crit_technical_notes": "Sharpness is consistent throughout, with no visible artifacts at this resolution.",
+    "crit_notes": "The photograph captures the vibrant colors of the lakes and waterfalls. The even lighting slightly flattens depth but maintains color integrity.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 to deepen the turquoise tones in the water."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out the bottom-right corner foliage to eliminate distraction and tighten focus on the lakes."
+      }
+    ]
   },
   "media/portfolio/czechia.jpg": {
     "theme": [
@@ -250,7 +477,33 @@
       "fence",
       "cityscape"
     ],
-    "country": "cze"
+    "country": "cze",
+    "crit_score": 69,
+    "crit_composition": 73,
+    "crit_composition_notes": "The twin spires dominate but the foreground buildings compete for attention without clear hierarchy.",
+    "crit_lighting": 65,
+    "crit_lighting_notes": "Diffuse light flattens details on the architecture; a directional source would have modeled textures better.",
+    "crit_subject": 80,
+    "crit_subject_notes": "The church is clearly the subject, with its spires and facade standing out against the sky.",
+    "crit_emotion": 62,
+    "crit_emotion_notes": "The sense of space is present but the flat light and competing foreground reduce atmospheric depth.",
+    "crit_technical": 78,
+    "crit_technical_notes": "Sharpness holds at thumbnail resolution; no visible processing flaws or noise.",
+    "crit_notes": "The photograph captures a recognizable architectural subject but the flat light and competing foreground elements dilute its impact. The church is clear, yet the scene lacks atmospheric tension.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -20 to deepen the spires against the sky."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter on the church to remove competing foreground buildings and focus attention on the architecture."
+      },
+      {
+        "type": "time-of-day",
+        "action": "Return at golden hour for directional light that models architectural details."
+      }
+    ]
   },
   "media/portfolio/denmark.jpg": {
     "theme": [
@@ -269,7 +522,29 @@
       "signage",
       "trees"
     ],
-    "country": "dnk"
+    "country": "dnk",
+    "crit_score": 73,
+    "crit_composition": 74,
+    "crit_composition_notes": "The archway dominates the frame but the people at the bottom compete for attention without adding to the structure's presence.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light from above highlights the architectural details and casts subtle shadows that enhance texture.",
+    "crit_subject": 65,
+    "crit_subject_notes": "The archway is clear but the people in front obscure parts of it, making the subject less distinct than intended.",
+    "crit_emotion": 70,
+    "crit_emotion_notes": "The photograph conveys a sense of space and grandeur but the presence of people dilutes the architectural focus.",
+    "crit_technical": 85,
+    "crit_technical_notes": "Sharpness is consistent, colors are accurate, and there are no visible processing artifacts at this resolution.",
+    "crit_notes": "The archway is well-lit and detailed but the people in front partially obscure it. The photograph captures a moment of activity rather than focusing solely on architecture.",
+    "crit_feedback": [
+      {
+        "type": "crop",
+        "action": "Crop out the lower third to remove the people and focus entirely on the architectural details."
+      },
+      {
+        "type": "edit",
+        "action": "Lift shadows +10 in post to enhance detail under the archway where light is less direct."
+      }
+    ]
   },
   "media/portfolio/ecuador.jpg": {
     "theme": [
@@ -285,7 +560,33 @@
       "galápagos islands"
     ],
     "country": "ecu",
-    "species": "marine iguana"
+    "species": "marine iguana",
+    "crit_score": 75,
+    "crit_composition": 74,
+    "crit_composition_notes": "The central iguana is positioned slightly off-center, creating a balanced composition that draws attention to its raised head.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The lighting is even but somewhat flat; it fails to highlight the texture and depth of the iguanas' scales.",
+    "crit_subject": 82,
+    "crit_subject_notes": "The central iguana's raised head and direct gaze create a clear focal point, while the surrounding iguanas provide context without distracting.",
+    "crit_emotion": 76,
+    "crit_emotion_notes": "The photograph captures the presence of the iguanas but lacks the atmospheric tension that could have been achieved with more dynamic lighting or angle.",
+    "crit_technical": 80,
+    "crit_technical_notes": "Sharp focus on the central subject, with a smooth transition to softer background elements; no visible processing artifacts at this resolution.",
+    "crit_notes": "The photograph clearly communicates its subject — a group of iguanas in their natural habitat. The flat lighting and even composition prevent it from achieving greater emotional depth.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -20 to recover detail in the brighter areas of the iguanas' scales."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter around the central iguana to eliminate some of the surrounding rocks and emphasize its raised head."
+      },
+      {
+        "type": "in-moment-craft",
+        "action": "Next encounter: position yourself lower to shoot at eye level with the iguanas for a more immersive perspective."
+      }
+    ]
   },
   "media/portfolio/egypt.jpg": {
     "theme": [
@@ -303,7 +604,29 @@
       "red railing",
       "tourists"
     ],
-    "country": "egy"
+    "country": "egy",
+    "crit_score": 69,
+    "crit_composition": 79,
+    "crit_composition_notes": "The receding staircase creates depth and draws the eye into the space.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Artificial light illuminates the hieroglyphs but casts harsh shadows that disrupt the sense of space.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The ancient Egyptian carvings and inscriptions are clearly visible, communicating historical significance.",
+    "crit_emotion": 62,
+    "crit_emotion_notes": "The image conveys a sense of history but the artificial lighting detracts from an immersive atmosphere.",
+    "crit_technical": 73,
+    "crit_technical_notes": "Sharp focus on the carvings, with no visible processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures a historical space with clear visibility of ancient inscriptions. The artificial lighting disrupts the natural ambiance and sense of timelessness.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Dodge the shadows on the walls to reduce harsh contrasts and enhance texture details."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out the modern railing at the bottom to emphasize the ancient architecture more fully."
+      }
+    ]
   },
   "media/portfolio/el-salvador.jpg": {
     "theme": [
@@ -320,6 +643,28 @@
       "modern architecture",
       "flower crown",
       "dark alleyway"
+    ],
+    "crit_score": 76,
+    "crit_composition": 79,
+    "crit_composition_notes": "The statue on the left balances against the colorful stained glass panels, creating a visual dialogue between figure and architecture.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Light from the stained glass casts vibrant colors into the space but the overall exposure is slightly dark, muting some details in the interior.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The statue and its floral crown are clear focal points, while the architecture provides a rich context for the subject.",
+    "crit_emotion": 82,
+    "crit_emotion_notes": "The interplay of light through stained glass evokes a sense of spiritual depth and reverence within the space.",
+    "crit_technical": 70,
+    "crit_technical_notes": "Some areas show slight noise, but overall sharpness is maintained; no major processing artifacts are visible at this resolution.",
+    "crit_notes": "The photograph captures a dialogue between the statue and the architectural elements. The lighting could be more dynamic to enhance the vibrancy of the space.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Lift shadows +15 in post-processing to reveal more detail in darker areas."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out distracting elements at the bottom edge to focus attention on the statue and stained glass."
+      }
     ]
   },
   "media/portfolio/france.jpg": {
@@ -376,7 +721,29 @@
       "airport terminal",
       "mountain"
     ],
-    "country": "gib"
+    "country": "gib",
+    "crit_score": 69,
+    "crit_composition": 73,
+    "crit_composition_notes": "The crowd in the foreground frames the plane and mountain, creating a layered composition.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Even lighting across the scene; shadows are minimal but details on people's hair could be sharper.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The plane is clearly the focal point, with the mountain providing context and scale.",
+    "crit_emotion": 62,
+    "crit_emotion_notes": "The scene captures a moment of pause but lacks deeper emotional resonance or tension.",
+    "crit_technical": 78,
+    "crit_technical_notes": "Focus is sharp on both the crowd and plane, with no visible noise at this resolution.",
+    "crit_notes": "The photograph captures a moment of people waiting for an aircraft against a mountain backdrop. It does not convey a strong narrative or emotional depth beyond the literal scene.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 on the plane to enhance detail and contrast."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter around the crowd and plane to remove excess negative space at the edges."
+      }
+    ]
   },
   "media/portfolio/greece.jpg": {
     "theme": [
@@ -414,6 +781,28 @@
       "green grass",
       "trees",
       "statues"
+    ],
+    "crit_score": 69,
+    "crit_composition": 73,
+    "crit_composition_notes": "The pyramid sits slightly off-center, creating a balanced asymmetry that draws attention to its structure.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The light is even and bright but lacks directional quality; shadows are minimal which flattens the texture of the stone.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The pyramid is clearly the focal point, with its scale emphasized against the surrounding greenery.",
+    "crit_emotion": 62,
+    "crit_emotion_notes": "The sense of space and history is present but the flat light reduces atmospheric depth and emotional weight.",
+    "crit_technical": 80,
+    "crit_technical_notes": "Sharpness is consistent across the frame, with no visible artifacts or noise at this resolution.",
+    "crit_notes": "The pyramid dominates the composition effectively but the even lighting limits its emotional impact. The photograph captures a clear subject without deep atmospheric tension.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -20 and lift shadows +15 to enhance texture contrast on the stone."
+      },
+      {
+        "type": "time-of-day",
+        "action": "Return in the early morning or late afternoon for directional light that models the pyramid's structure."
+      }
     ]
   },
   "media/portfolio/india.jpg": {
@@ -453,7 +842,29 @@
       "rock formations",
       "seaweed"
     ],
-    "country": "irl"
+    "country": "irl",
+    "crit_score": 74,
+    "crit_composition": 73,
+    "crit_composition_notes": "The cliffs form a natural leading line from left to right, guiding the eye across the frame.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The light is directional but creates lens flare that distracts from the scene's clarity.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The cliffs and ocean clearly communicate a coastal landscape, with no competing elements.",
+    "crit_emotion": 82,
+    "crit_emotion_notes": "The vastness of the sea against the imposing cliffs evokes a sense of grandeur and isolation.",
+    "crit_technical": 70,
+    "crit_technical_notes": "Sharp details in the foreground grass, but some areas show slight overexposure near the horizon.",
+    "crit_notes": "The photograph captures a coastal scene with clear intent and atmospheric mood. The lens flare slightly disrupts the visual flow.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Reduce the lens flare intensity by -20 in post-processing to minimize distraction."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out the bottom-right corner grass to emphasize the cliffs and ocean more prominently."
+      }
+    ]
   },
   "media/portfolio/italy.jpg": {
     "theme": [
@@ -471,7 +882,29 @@
       "sunlight reflection",
       "water"
     ],
-    "country": "ita"
+    "country": "ita",
+    "crit_score": 80,
+    "crit_composition": 79,
+    "crit_composition_notes": "The canal leads the eye into the frame, balanced by the buildings on either side and the bridge in the mid-ground.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "The low sun creates a warm glow that highlights the textures of the buildings and water, enhancing the atmospheric mood.",
+    "crit_subject": 65,
+    "crit_subject_notes": "The boats are scattered along the canal but lack a clear focal point to anchor the viewer's attention.",
+    "crit_emotion": 87,
+    "crit_emotion_notes": "The interplay of light and water evokes a sense of tranquility and timelessness, capturing the essence of Venice at sunset.",
+    "crit_technical": 74,
+    "crit_technical_notes": "Sharpness is good overall, but some areas show slight over-processing in contrast and saturation.",
+    "crit_notes": "The photograph captures a serene moment on the canal with warm lighting. The scattered boats do not provide a clear focal point for the viewer.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Reduce contrast and saturation slightly to restore natural tonality."
+      },
+      {
+        "type": "composition-shoot",
+        "action": "Position one boat closer to the foreground as a stronger anchor point."
+      }
+    ]
   },
   "media/portfolio/japan.jpg": {
     "theme": [
@@ -489,7 +922,29 @@
       "posters",
       "japanese text"
     ],
-    "country": "jpn"
+    "country": "jpn",
+    "crit_score": 75,
+    "crit_composition": 74,
+    "crit_composition_notes": "The neon sign anchors the frame but competing elements like the red lanterns and Bruce Lee poster distract from a clear visual hierarchy.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "The green neon sign pops against the darker surroundings, creating intentional contrast; the red lanterns add warmth without overpowering the scene.",
+    "crit_subject": 65,
+    "crit_subject_notes": "The photograph captures a slice of street life but lacks a clear focal point beyond the neon sign — the subject is somewhat ambiguous.",
+    "crit_emotion": 78,
+    "crit_emotion_notes": "The image conveys an urban nightlife atmosphere, with the neon and lanterns evoking a sense of place and time; however, it doesn't fully capture a decisive moment or expression.",
+    "crit_technical": 80,
+    "crit_technical_notes": "Sharpness is maintained in key areas like the sign and lanterns, with no visible processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures a vibrant street scene but struggles to focus on a single narrative element. The lighting works well within the urban night setting but doesn't fully resolve into an emotional or decisive moment.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 from the neon sign and lanterns to balance their brightness against the darker areas."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out distracting elements like the Bruce Lee poster to tighten focus on the neon sign as the primary subject."
+      }
+    ]
   },
   "media/portfolio/kenya.jpg": {
     "theme": [
@@ -505,7 +960,29 @@
       "skyscrapers",
       "bridge"
     ],
-    "species": "antelope"
+    "species": "antelope",
+    "crit_score": 70,
+    "crit_composition": 74,
+    "crit_composition_notes": "The antelope sits slightly off-center, creating a balanced composition that includes both subject and urban backdrop.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Diffuse light softens the scene but lacks contrast; shadows are minimal and highlights are not pronounced.",
+    "crit_subject": 79,
+    "crit_subject_notes": "The antelope is in focus, with its features clearly visible against the grassy field.",
+    "crit_emotion": 65,
+    "crit_emotion_notes": "The juxtaposition of wildlife and urban environment evokes a sense of intrusion but lacks emotional depth due to flat lighting.",
+    "crit_technical": 72,
+    "crit_technical_notes": "Sharpness is adequate, with no visible noise or processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures the antelope in a natural pose against an urban skyline. The flat lighting and lack of contrast prevent it from fully realizing its potential emotional impact.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Increase contrast by +15 to enhance separation between subject and background."
+      },
+      {
+        "type": "crop",
+        "action": "Crop the left side slightly to remove excess negative space and tighten focus on the antelope."
+      }
+    ]
   },
   "media/portfolio/liechtenstein.jpg": {
     "theme": [
@@ -524,7 +1001,29 @@
       "fence",
       "road"
     ],
-    "country": "lie"
+    "country": "lie",
+    "crit_score": 75,
+    "crit_composition": 79,
+    "crit_composition_notes": "The reflection creates layered depth but the alignment of real and reflected elements is slightly off-center, weakening balance.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light on the building highlights architectural details; reflections are clear without overwhelming the scene.",
+    "crit_subject": 65,
+    "crit_subject_notes": "The subject is a blend of architecture and reflection, but the focus between real and reflected elements feels ambiguous.",
+    "crit_emotion": 74,
+    "crit_emotion_notes": "The interplay of light and reflection evokes curiosity about space, though the emotion lacks full resolution due to ambiguity.",
+    "crit_technical": 80,
+    "crit_technical_notes": "Sharpness is consistent across elements; no visible artifacts or technical flaws at this resolution.",
+    "crit_notes": "The photograph captures a layered architectural scene with intentional reflections. The focus between real and reflected elements remains unclear, weakening the subject's clarity.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Mask out distracting parts of the reflection to clarify the relationship between real and reflected architecture."
+      },
+      {
+        "type": "composition-shoot",
+        "action": "Recompose with a slight shift in angle to better align the real building with its reflection for stronger visual balance."
+      }
+    ]
   },
   "media/portfolio/madagascar.jpg": {
     "theme": [
@@ -539,7 +1038,29 @@
       "fur",
       "animal"
     ],
-    "species": "black-and-white ruffed lemur"
+    "species": "black-and-white ruffed lemur",
+    "crit_score": 81,
+    "crit_composition": 79,
+    "crit_composition_notes": "The lemur's face is positioned slightly off-center, creating a dynamic balance within the frame.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The light highlights the lemur's fur texture but creates some harsh shadows on its face.",
+    "crit_subject": 92,
+    "crit_subject_notes": "The lemur is in sharp focus, with clear separation from the blurred background emphasizing its features.",
+    "crit_emotion": 85,
+    "crit_emotion_notes": "The lemur's direct gaze and expressive eyes convey a sense of presence and connection.",
+    "crit_technical": 76,
+    "crit_technical_notes": "Sharp focus on the subject with no visible processing artifacts at this resolution, though some noise is present in darker areas.",
+    "crit_notes": "The photograph captures a vivid close-up of the lemur's face and expression. The lighting creates some harsh shadows that detract from the overall impact.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -20 to soften the contrast on the lemur's fur."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter around the lemur's face to eliminate distracting background elements."
+      }
+    ]
   },
   "media/portfolio/malaysia.jpg": {
     "theme": [
@@ -554,6 +1075,28 @@
       "mountain backdrop",
       "greenery",
       "steps and railings"
+    ],
+    "crit_score": 79,
+    "crit_composition": 79,
+    "crit_composition_notes": "The statue dominates the frame but leaves enough space for the background to provide context.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light highlights the statue's details and creates a warm, inviting glow against the cooler background.",
+    "crit_subject": 85,
+    "crit_subject_notes": "The golden statue is clear and detailed, standing out sharply against the natural backdrop.",
+    "crit_emotion": 76,
+    "crit_emotion_notes": "The scale of the human figure against the massive statue conveys a sense of awe but lacks deeper atmospheric tension.",
+    "crit_technical": 80,
+    "crit_technical_notes": "Sharp focus on the statue with no visible processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures the grandeur of the statue and its surroundings. It does not fully explore the emotional depth possible in architecture photography.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Recover shadows -20 to reveal more detail in the darker areas behind the statue."
+      },
+      {
+        "type": "composition-shoot",
+        "action": "Position a human figure closer to the base of the statue for enhanced scale contrast."
+      }
     ]
   },
   "media/portfolio/mexico.jpg": {
@@ -571,6 +1114,28 @@
       "mountains",
       "trees",
       "buildings"
+    ],
+    "crit_score": 76,
+    "crit_composition": 73,
+    "crit_composition_notes": "The cityscape converges toward the setting sun, creating a natural focal point.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "The warm sunset light bathes the buildings and sky in rich tones, enhancing the mood of transition.",
+    "crit_subject": 65,
+    "crit_subject_notes": "The cityscape is clear but lacks a specific focal point within the urban environment to anchor the viewer's attention.",
+    "crit_emotion": 80,
+    "crit_emotion_notes": "The sunset evokes a sense of closure and reflection, with the light creating an atmospheric mood.",
+    "crit_technical": 75,
+    "crit_technical_notes": "The image is sharp at thumbnail resolution; no visible artifacts or technical flaws are present.",
+    "crit_notes": "The photograph captures a sunset over the city with warm lighting and converging lines. It does not have a specific urban focal point to enhance its narrative.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Recover highlights in the sun area by -20 to preserve detail without losing impact."
+      },
+      {
+        "type": "composition-shoot",
+        "action": "Position a distinctive building or structure closer to the foreground for added depth and focus."
+      }
     ]
   },
   "media/portfolio/morocco.jpg": {
@@ -589,7 +1154,29 @@
       "stucco walls",
       "pillars"
     ],
-    "country": "mar"
+    "country": "mar",
+    "crit_score": 79,
+    "crit_composition": 87,
+    "crit_composition_notes": "The central arch draws the eye into the depth of the courtyard, balanced by the columns on either side.",
+    "crit_lighting": 65,
+    "crit_lighting_notes": "Harsh midday light creates deep shadows in the arches and flattens some details; softer directional light would have enhanced textures.",
+    "crit_subject": 80,
+    "crit_subject_notes": "The architectural details are clear, with intricate patterns on the walls and columns that communicate the building's cultural significance.",
+    "crit_emotion": 75,
+    "crit_emotion_notes": "The sense of space is conveyed through the depth leading to the darkened archway, but the flat light reduces atmospheric tension.",
+    "crit_technical": 82,
+    "crit_technical_notes": "Sharp focus throughout; no visible noise or processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures detailed architectural elements and a clear sense of space. The harsh lighting flattens some textures, reducing emotional depth.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -20 to recover detail in the bright areas and lift shadows +15 to reveal texture in the arches."
+      },
+      {
+        "type": "time-of-day",
+        "action": "Return during golden hour for warmer, directional light that enhances architectural textures."
+      }
+    ]
   },
   "media/portfolio/netherlands.jpg": {
     "theme": [
@@ -606,7 +1193,33 @@
       "signpost",
       "construction crane"
     ],
-    "country": "nld"
+    "country": "nld",
+    "crit_score": 69,
+    "crit_composition": 73,
+    "crit_composition_notes": "The central building dominates but the lamp post and tree in the foreground compete for attention.",
+    "crit_lighting": 60,
+    "crit_lighting_notes": "Overcast light flattens the textures of the brickwork; directional light would have modeled the facade better.",
+    "crit_subject": 82,
+    "crit_subject_notes": "The architecture is clearly defined with clean lines and distinct features that communicate its style.",
+    "crit_emotion": 65,
+    "crit_emotion_notes": "The sense of space is present but the flat light and competing foreground elements dilute the emotional weight.",
+    "crit_technical": 78,
+    "crit_technical_notes": "Sharpness holds across the frame; no visible processing flaws at this resolution.",
+    "crit_notes": "The central building is the photograph's focal point but the overcast light and foreground elements detract from its impact. The image captures a clear subject but lacks atmospheric depth.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -20 to deepen the brick tones and lift shadows +15 on the facade details."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out the lamp post and tree from the foreground to focus attention on the architecture."
+      },
+      {
+        "type": "time-of-day",
+        "action": "Return in the late afternoon for side-light that enhances the texture of the brickwork."
+      }
+    ]
   },
   "media/portfolio/norway.jpg": {
     "theme": [
@@ -630,7 +1243,29 @@
     ],
     "country": "nor",
     "city": "Tromsø",
-    "state": "Troms og Finnmark"
+    "state": "Troms og Finnmark",
+    "crit_score": 80,
+    "crit_composition": 79,
+    "crit_composition_notes": "The mountain silhouette anchors the lower third, creating a strong visual anchor against the aurora.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "The aurora's green glow illuminates the sky with a natural gradient that enhances the night scene.",
+    "crit_subject": 65,
+    "crit_subject_notes": "The silhouette of the mountain is clear but lacks detail, which could have added more context to the landscape.",
+    "crit_emotion": 87,
+    "crit_emotion_notes": "The aurora conveys a sense of wonder and isolation, evoking an atmospheric mood that resonates with the viewer.",
+    "crit_technical": 73,
+    "crit_technical_notes": "The image is sharp where it counts, but some areas show slight noise in darker regions due to low light conditions.",
+    "crit_notes": "The photograph captures a striking aurora over the mountain silhouette. The lack of detail in the mountain's texture limits its impact as a subject.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Recover some shadow details in the mountain to add more context and depth."
+      },
+      {
+        "type": "settings",
+        "action": "Use a lower ISO setting next time to reduce noise in low-light conditions."
+      }
+    ]
   },
   "media/portfolio/panama.jpg": {
     "theme": [
@@ -647,6 +1282,28 @@
       "blue sky",
       "clouds",
       "greenery"
+    ],
+    "crit_score": 69,
+    "crit_composition": 70,
+    "crit_composition_notes": "The ship dominates the frame but the foreground tracks and grass compete for attention without adding to the subject.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The light is even, with no strong directionality; it preserves detail but lacks drama or atmosphere.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The ship's name and scale are clear, communicating the subject effectively.",
+    "crit_emotion": 60,
+    "crit_emotion_notes": "The image captures a moment of industrial activity but does not evoke much beyond documentation.",
+    "crit_technical": 82,
+    "crit_technical_notes": "Sharpness and exposure are well-handled; no visible artifacts at this resolution.",
+    "crit_notes": "The photograph documents the ship in a port setting. The foreground elements do not contribute to the emotional weight of the image.",
+    "crit_feedback": [
+      {
+        "type": "crop",
+        "action": "Crop out the lower third to remove the distracting tracks and grass, tightening focus on the ship."
+      },
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 in post to deepen the blue of the sky and hull for more impact."
+      }
     ]
   },
   "media/portfolio/paraguay.jpg": {
@@ -664,6 +1321,28 @@
       "clouds",
       "reflection",
       "people"
+    ],
+    "crit_score": 76,
+    "crit_composition": 74,
+    "crit_composition_notes": "The boat sits slightly off-center, creating a balanced composition that leads the eye along the water's reflection.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light from above casts soft shadows and enhances the texture of the foliage while preserving detail in both highlights and shadows.",
+    "crit_subject": 67,
+    "crit_subject_notes": "The figures are small relative to the landscape, which diminishes their presence as focal points but fits the scene's scale.",
+    "crit_emotion": 80,
+    "crit_emotion_notes": "The calm water reflects the sky and trees, creating a serene atmosphere that evokes tranquility and isolation.",
+    "crit_technical": 79,
+    "crit_technical_notes": "Sharpness is consistent across the frame; no visible noise or processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures a tranquil moment on the water with balanced composition and atmospheric lighting. The small figures blend into the landscape, reducing their impact as subjects.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Lift shadows +10 in post to enhance detail in the darker areas of the foliage."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter on the boat and figures to increase their prominence within the frame."
+      }
     ]
   },
   "media/portfolio/peru.jpg": {
@@ -682,7 +1361,30 @@
       "mountain range",
       "grass field"
     ],
-    "country": "per"
+    "country": "per",
+    "crit_score": 74,
+    "crit_composition": 78,
+    "crit_composition_notes": "The stone wall and ruins create a strong horizontal line that anchors the composition, while the figure and llama add vertical interest.",
+    "crit_lighting": 65,
+    "crit_lighting_notes": "The light is even but lacks directionality; shadows are soft and fail to model the texture of the stones or mountains effectively.",
+    "crit_subject": 72,
+    "crit_subject_notes": "The ruins communicate a sense of history, while the figure and llama provide scale and life, though their placement feels incidental rather than intentional.",
+    "crit_emotion": 80,
+    "crit_emotion_notes": "The image evokes a sense of timelessness with the ancient ruins against the backdrop of misty mountains; however, the human element is too small to carry emotional weight.",
+    "crit_technical": 75,
+    "crit_technical_notes": "Sharpness and exposure are well-managed at this resolution, though some areas appear slightly over-processed with enhanced contrast.",
+    "crit_notes": "The photograph captures the grandeur of Machu Picchu's ruins against a mountainous backdrop. The human figure and llama add life but do not fully integrate into the scene's emotional narrative.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 to recover detail in the brighter areas of the stone wall."
+      },
+      {
+        "type": "composition-shoot",
+        "action": "Recompose with the figure and llama closer to the center or foreground for stronger visual connection."
+      }
+    ],
+    "featured": true
   },
   "media/portfolio/portugal.jpg": {
     "theme": [
@@ -696,6 +1398,28 @@
       "historical figures",
       "monument",
       "blue sky"
+    ],
+    "crit_score": 75,
+    "crit_composition": 79,
+    "crit_composition_notes": "The diagonal line of the statue base leads to the figures, creating a dynamic visual flow.",
+    "crit_lighting": 85,
+    "crit_lighting_notes": "Golden hour light accentuates the textures and details on the statues while casting long shadows that add depth.",
+    "crit_subject": 72,
+    "crit_subject_notes": "The group of figures is clearly defined, but their individual expressions are not fully captured due to lighting angle.",
+    "crit_emotion": 68,
+    "crit_emotion_notes": "The sense of space and scale is present, but the emotional weight could be stronger with more emphasis on facial details.",
+    "crit_technical": 74,
+    "crit_technical_notes": "Sharp focus on the statues; no visible noise or processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures a clear architectural subject with good use of lighting. The emotional impact is somewhat limited by the lack of facial detail in the figures.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Dodge and burn to enhance contrast on the statues' faces for more expressive detail."
+      },
+      {
+        "type": "crop",
+        "action": "Tighten the crop slightly to bring the figures closer into the frame, reducing empty sky space."
+      }
     ]
   },
   "media/portfolio/rwanda.jpg": {
@@ -711,6 +1435,28 @@
       "forest foliage"
     ],
     "species": "gorilla",
+    "crit_score": 84,
+    "crit_composition": 79,
+    "crit_composition_notes": "The gorilla's face is positioned slightly off-center, creating a balanced composition that draws attention to its eyes.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Diffused light softens the details on the gorilla's fur but lacks contrast between the subject and background.",
+    "crit_subject": 92,
+    "crit_subject_notes": "The focus is sharp on the gorilla's face, capturing fine details in its eyes and fur texture.",
+    "crit_emotion": 87,
+    "crit_emotion_notes": "The gorilla's gaze conveys a sense of calm presence, connecting with the viewer emotionally.",
+    "crit_technical": 83,
+    "crit_technical_notes": "No visible noise or artifacts; exposure is well-managed to retain detail in both highlights and shadows.",
+    "crit_notes": "The photograph captures a close-up of the gorilla with sharp focus on its face. The diffused lighting softens details but does not create strong contrast against the background.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Increase contrast slightly to enhance separation between the gorilla and the green background."
+      },
+      {
+        "type": "crop",
+        "action": "Tighten the crop around the gorilla's face to eliminate distracting elements in the background."
+      }
+    ],
     "featured": true,
     "sort_order": 140
   },
@@ -728,6 +1474,28 @@
       "mountains in distance",
       "sky",
       "clouds"
+    ],
+    "crit_score": 80,
+    "crit_composition": 79,
+    "crit_composition_notes": "The framing uses the stone walls to create a natural border, directing attention toward the distant castle.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light from above enhances texture on the stones and casts subtle shadows that add depth without overpowering the scene.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The distant castle is clear but lacks sharp detail, making it less impactful as a focal point.",
+    "crit_emotion": 84,
+    "crit_emotion_notes": "The expansive view and bright sky evoke a sense of grandeur and openness, enhancing the photograph's emotional weight.",
+    "crit_technical": 76,
+    "crit_technical_notes": "Sharpness is good overall but could be improved in distant elements; no visible processing artifacts at this resolution.",
+    "crit_notes": "The composition effectively uses foreground elements to frame the distant castle. The lighting and emotional impact are strong, while subject clarity is slightly weaker.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Sharpen the distant castle by +15 in post-processing to enhance its presence as a focal point."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out the bottom-right corner of the stone wall slightly to balance the composition and reduce visual weight on that side."
+      }
     ]
   },
   "media/portfolio/singapore.jpg": {
@@ -748,7 +1516,29 @@
       "trees",
       "cloudy sky"
     ],
-    "country": "sgp"
+    "country": "sgp",
+    "crit_score": 79,
+    "crit_composition": 79,
+    "crit_composition_notes": "The Merlion statue anchors the right third while leading lines from the steps guide the eye toward it.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light from above creates a dynamic interplay of shadows and highlights on buildings, enhancing their texture.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The Merlion statue is the clear focal point, but its scale against the skyscrapers feels slightly diminished.",
+    "crit_emotion": 80,
+    "crit_emotion_notes": "The photograph conveys a sense of grandeur and modernity through the juxtaposition of water, architecture, and sky.",
+    "crit_technical": 78,
+    "crit_technical_notes": "Sharpness is consistent across the frame with no visible artifacts at this resolution; exposure is well-managed.",
+    "crit_notes": "The photograph captures a clear view of Singapore's skyline and Merlion statue. The emotional weight leans on the city's modernity rather than a human focal point or narrative depth.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Recover highlights in the sky by -10 to preserve cloud detail."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out the bottom edge of the water to elevate the Merlion statue further within the frame."
+      }
+    ]
   },
   "media/portfolio/south-africa.jpg": {
     "theme": [
@@ -780,7 +1570,29 @@
       "light patterns",
       "religious art"
     ],
-    "country": "esp"
+    "country": "esp",
+    "crit_score": 84,
+    "crit_composition": 87,
+    "crit_composition_notes": "The stained glass windows form a natural grid that guides the eye through the complex architecture.",
+    "crit_lighting": 92,
+    "crit_lighting_notes": "Light filters through the stained glass, creating vibrant colors and dynamic contrasts within the space.",
+    "crit_subject": 80,
+    "crit_subject_notes": "The architectural details are clear and well-defined, showcasing the intricate design of the interior.",
+    "crit_emotion": 75,
+    "crit_emotion_notes": "The interplay of light and color evokes a sense of awe but lacks depth in conveying human scale against the built environment.",
+    "crit_technical": 83,
+    "crit_technical_notes": "Sharpness is maintained across the frame, with no visible artifacts or processing errors at this resolution.",
+    "crit_notes": "The photograph captures the vibrant light and detailed architecture of the interior. It does not fully convey a sense of human presence within the space.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Recover shadows in the darker areas to reveal more architectural details."
+      },
+      {
+        "type": "composition-shoot",
+        "action": "Include elements that provide scale, such as people or furniture, to enhance the sense of space."
+      }
+    ]
   },
   "media/portfolio/sweden.jpg": {
     "theme": [
@@ -794,6 +1606,28 @@
       "sunglasses",
       "beret",
       "hand gesture"
+    ],
+    "crit_score": 76,
+    "crit_composition": 73,
+    "crit_composition_notes": "The statue's hand partially obscures the face, creating a dynamic but potentially distracting composition.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The lighting is even and reveals texture details on the bronze surface, though it lacks directional drama.",
+    "crit_subject": 82,
+    "crit_subject_notes": "The statue's expressive pose and detailed features clearly communicate its character as a subject.",
+    "crit_emotion": 75,
+    "crit_emotion_notes": "The gesture of the hand to the face conveys a sense of thoughtfulness or introspection, resonating with viewers.",
+    "crit_technical": 80,
+    "crit_technical_notes": "Sharp details are preserved in the bronze texture and there are no visible processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures a detailed and expressive statue with clear focus on its features. The even lighting does not enhance the emotional depth of the subject's gesture.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Dodge the shadowed areas under the hand to balance the exposure across the face."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter around the statue's head and shoulders to eliminate distracting background elements."
+      }
     ]
   },
   "media/portfolio/switzerland.jpg": {
@@ -814,7 +1648,29 @@
       "tree",
       "bicycle"
     ],
-    "country": "che"
+    "country": "che",
+    "crit_score": 71,
+    "crit_composition": 79,
+    "crit_composition_notes": "The converging lines of the alley lead to the clock tower, creating a sense of depth and perspective.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The light is even but lacks contrast; shadows could deepen to enhance texture on the buildings.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The image clearly communicates an urban scene with architectural details and a focal point in the clock tower.",
+    "crit_emotion": 62,
+    "crit_emotion_notes": "The sense of space is present but the even light dampens atmospheric mood; more shadow play would add tension.",
+    "crit_technical": 80,
+    "crit_technical_notes": "Sharpness and exposure are well-managed with no visible artifacts at this resolution.",
+    "crit_notes": "The photograph captures an urban scene with clear architectural focus. The even lighting limits emotional depth but does not detract from the subject clarity.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Deepen shadows by -20 to add texture and contrast on building facades."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out the bottom third of the image to emphasize the converging lines leading to the clock tower."
+      }
+    ]
   },
   "media/portfolio/thailand.jpg": {
     "theme": [
@@ -831,7 +1687,29 @@
       "ornate details",
       "mythological figures"
     ],
-    "country": "tha"
+    "country": "tha",
+    "crit_score": 73,
+    "crit_composition": 74,
+    "crit_composition_notes": "The central figure dominates but the framing cuts off parts of the side figures, weakening visual balance.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Golden light enhances the texture and color of the statues; shadows are minimal yet intentional to highlight details.",
+    "crit_subject": 79,
+    "crit_subject_notes": "The central figure is clear and detailed, but the partial view of side figures creates ambiguity in subject hierarchy.",
+    "crit_emotion": 68,
+    "crit_emotion_notes": "The sense of space is conveyed through scale against the wall, but the emotion feels static due to symmetrical framing.",
+    "crit_technical": 75,
+    "crit_technical_notes": "Sharp details on the central figure; no visible processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures intricate details of the central statue against a golden backdrop. The partial view of side figures and symmetrical framing limit emotional depth.",
+    "crit_feedback": [
+      {
+        "type": "crop",
+        "action": "Crop to include full bodies of all statues for balanced composition."
+      },
+      {
+        "type": "edit",
+        "action": "Slightly darken the background to enhance contrast with the brightly colored statues."
+      }
+    ]
   },
   "media/portfolio/turkey.jpg": {
     "theme": [
@@ -847,7 +1725,29 @@
       "hills",
       "greenery"
     ],
-    "country": "tur"
+    "country": "tur",
+    "crit_score": 80,
+    "crit_composition": 79,
+    "crit_composition_notes": "The balloon sits off-center but its placement against the undulating terrain creates a dynamic visual anchor.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light from above casts subtle shadows that enhance the texture of the landscape and the balloon's form.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The balloon is clearly defined against the textured terrain, but its placement could be more intentional to avoid competing elements in the frame.",
+    "crit_emotion": 84,
+    "crit_emotion_notes": "The image conveys a sense of adventure and scale; the vastness of the landscape juxtaposed with the solitary balloon evokes solitude.",
+    "crit_technical": 76,
+    "crit_technical_notes": "Sharp details in both the balloon and terrain are preserved, though some areas show slight overexposure on highlights.",
+    "crit_notes": "The photograph captures a moment of aerial exploration with clear intent. The lighting enhances texture but competing elements slightly detract from focus.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Recover the overexposed highlights on the balloon's fabric to preserve detail."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter around the balloon and terrain to eliminate distracting edge elements."
+      }
+    ]
   },
   "media/portfolio/uganda.jpg": {
     "theme": [
@@ -863,7 +1763,8 @@
     ],
     "species": "chimpanzee",
     "featured": true,
-    "sort_order": 440
+    "sort_order": 440,
+    "dupeOf": "photo-20240722-dsc06136-enhanced-nr"
   },
   "media/portfolio/united-arab-emirates.jpg": {
     "theme": [
@@ -877,6 +1778,28 @@
       "leaves",
       "skyscraper",
       "blue sky"
+    ],
+    "crit_score": 67,
+    "crit_composition": 73,
+    "crit_composition_notes": "The Burj Khalifa is framed through a dense layer of leaves, creating an intentional visual barrier.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The lighting is even but lacks contrast between the building and foliage; shadows in the leaves are too deep to reveal detail.",
+    "crit_subject": 59,
+    "crit_subject_notes": "The Burj Khalifa is recognizable but partially obscured by the leaves, weakening its presence as a subject.",
+    "crit_emotion": 70,
+    "crit_emotion_notes": "The photograph conveys a sense of urban nature contrast, though the dense foliage slightly mutes this effect.",
+    "crit_technical": 65,
+    "crit_technical_notes": "Focus is soft on both the building and leaves; some noise is visible in shadowed areas at thumbnail resolution.",
+    "crit_notes": "The photograph uses foliage to frame a city icon, but the dense leaves obscure details of the Burj Khalifa. The lighting does not create enough separation between subject and foreground.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Sharpen the image slightly in post-processing to improve detail on both the building and foliage."
+      },
+      {
+        "type": "composition-shoot",
+        "action": "Recompose with fewer leaves at the bottom of the frame to give more space to the Burj Khalifa's base."
+      }
     ]
   },
   "media/portfolio/united-kingdom.jpg": {
@@ -895,7 +1818,29 @@
       "bridge",
       "clouds"
     ],
-    "country": "gbr"
+    "country": "gbr",
+    "crit_score": 80,
+    "crit_composition": 79,
+    "crit_composition_notes": "The bridge and river create a natural horizontal line that anchors the composition, but the boat slightly disrupts the balance.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light from the right side casts shadows on the building's facade, enhancing texture and depth.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The iconic architecture is clearly recognizable, but the boat adds an unintended focal point that competes with the main subject.",
+    "crit_emotion": 84,
+    "crit_emotion_notes": "The interplay of light and shadow on the building conveys a sense of grandeur and timelessness.",
+    "crit_technical": 78,
+    "crit_technical_notes": "Sharpness is consistent across the frame, with no visible noise or artifacts at this resolution.",
+    "crit_notes": "The photograph captures the iconic architecture with a strong sense of place. The boat introduces an unintended element that slightly detracts from the architectural focus.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Dodge and burn to enhance contrast on the building's facade for greater visual impact."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out the boat or reposition it in post-processing to minimize its distraction from the main subject."
+      }
+    ]
   },
   "media/portfolio/united-states-of-america.jpg": {
     "theme": [
@@ -912,6 +1857,28 @@
       "art installation (wings)",
       "potted plants",
       "ceiling lights"
+    ],
+    "crit_score": 75,
+    "crit_composition": 87,
+    "crit_composition_notes": "The converging lines of the ceiling draw attention to the central sculpture, creating a strong visual hierarchy.",
+    "crit_lighting": 65,
+    "crit_lighting_notes": "The lighting is even but lacks contrast; shadows could add depth to the architectural details and sculpture.",
+    "crit_subject": 78,
+    "crit_subject_notes": "The sculpture serves as an effective focal point, though its placement against a busy background slightly dilutes impact.",
+    "crit_emotion": 62,
+    "crit_emotion_notes": "The space feels grand but the lighting and composition do not fully convey a sense of time or transience.",
+    "crit_technical": 80,
+    "crit_technical_notes": "Sharpness is consistent, with no visible artifacts; exposure is balanced across the frame.",
+    "crit_notes": "The photograph captures an architectural space with a clear focal point. The lighting and composition do not fully realize the potential emotional weight of the scene.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 to deepen shadows in the architecture for more contrast."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out some of the lower foreground to emphasize the verticality and central sculpture."
+      }
     ]
   },
   "media/portfolio/uruguay.jpg": {
@@ -919,20 +1886,43 @@
       "architecture",
       "art"
     ],
-    "caption": "Leaping statue on an ornate Montevideo balcony",
-    "alt": "A statue of a leaping man stands on an ornate balcony decorated with red bows and pink flowers on a historic building in Montevideo, Uruguay.",
-    "story": "A bronze figure frozen mid-leap adorns a balcony of a historic Montevideo building, the red bows and pink flowers adding a festive contrast to the carved stonework below.",
+    "caption": "Leaping Statue on Ornate Montevideo Balcony",
+    "alt": "A bronze statue of a leaping man stands on an ornate balcony decorated with red bows and pink flowers, framed by the historic architecture of Montevideo. A photographer documents the scene from an elevated vantage point.",
+    "story": "A bronze figure frozen mid-leap adorns a flower-dressed balcony in historic Montevideo. The festive red bows and pink blooms contrast with the stone facade, hinting at a civic celebration or local tradition. A second photographer in frame signals this corner of the city draws eyes beyond just tourists.",
     "entities": [
       "statue",
       "balcony",
       "ornate building",
       "red bows",
       "pink flowers",
-      "carved stonework",
-      "historic facade"
+      "photographer",
+      "stone facade",
+      "railing"
     ],
     "country": "ury",
-    "city": "Montevideo"
+    "city": "Montevideo",
+    "crit_score": 71,
+    "crit_composition": 79,
+    "crit_composition_notes": "The diagonal lines of the railing and statue create a dynamic visual flow leading to the architectural details.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The light is even but lacks directionality, resulting in flatness on the statues and building textures.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The statues are clear focal points with good separation from the background; however, their poses feel staged rather than natural.",
+    "crit_emotion": 62,
+    "crit_emotion_notes": "The sense of space is present but the flat lighting and static composition limit emotional depth.",
+    "crit_technical": 80,
+    "crit_technical_notes": "Sharpness holds across the frame, with no visible processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures architectural details and statues clearly. The flat lighting and static composition limit its emotional impact.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -20 to add depth to the building's textures."
+      },
+      {
+        "type": "composition-shoot",
+        "action": "Recompose at a lower angle to emphasize the verticality of the architecture and create more dynamic perspective."
+      }
+    ]
   },
   "media/portfolio/vatican.jpg": {
     "theme": [
@@ -949,26 +1939,72 @@
       "historical art",
       "striped floor tiles"
     ],
-    "country": "vat"
+    "country": "vat",
+    "crit_score": 71,
+    "crit_composition": 79,
+    "crit_composition_notes": "The converging lines of the ceiling and floor tiles create a strong sense of depth, leading the eye towards the far end.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The light is even but lacks contrast; the ceiling details are slightly washed out by the ambient illumination.",
+    "crit_subject": 72,
+    "crit_subject_notes": "The photograph captures a clear sense of place, with the ornate ceiling and walls as the primary focus.",
+    "crit_emotion": 65,
+    "crit_emotion_notes": "The image conveys a sense of grandeur but the presence of people diminishes the feeling of scale and space.",
+    "crit_technical": 74,
+    "crit_technical_notes": "Sharpness is adequate, with no visible artifacts; exposure is balanced across the frame.",
+    "crit_notes": "The photograph captures a detailed view of an ornate interior space. The presence of people adds context but detracts from the sense of architectural scale.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Increase contrast in post-processing to enhance the details on the ceiling."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out some of the foreground figures to emphasize the depth and grandeur of the space."
+      }
+    ]
   },
   "media/sabbatical-travel/travel-02.jpeg": {
     "theme": [
       "art",
       "light"
     ],
-    "caption": "Team Labs Tokyo",
-    "alt": "A vibrant light installation at teamLab's digital art museum in Tokyo, featuring radiant beams extending outward from a glowing central core surrounded by starfield-like patterns.",
-    "story": "Inside teamLab's immersive space in Tokyo, a radiant light installation transforms the room into a cosmic tunnel, drawing visitors into its depths with layered beams and constellations of reflected light.",
+    "caption": "teamLab Immersive Light Vortex, Tokyo",
+    "alt": "A tunnel-like room fills with converging laser beams radiating from a central vortex, creating an otherworldly atmosphere at a teamLab installation in Tokyo. Rows of seating frame the luminous corridor against a deep, star-scattered background.",
+    "story": "Inside a teamLab venue in Tokyo, laser beams converge toward a glowing central point, enveloping visitors in an immersive tunnel of light. The installation blurs the line between the physical room and a simulated cosmos, a signature move of the collective's sensory environments.",
     "entities": [
-      "light installation",
-      "glowing core",
-      "light beams",
-      "starfield patterns",
-      "reflective floor",
-      "digital art",
-      "tunnel effect"
+      "laser beams",
+      "light vortex",
+      "seating",
+      "tunnel",
+      "projected stars",
+      "ceiling lights",
+      "dark room"
     ],
     "country": "jpn",
+    "city": "Tokyo",
+    "state": "Tokyo",
+    "crit_score": 85,
+    "crit_composition": 87,
+    "crit_composition_notes": "The converging lines of light and seating guide the eye directly to the central vortex, creating a strong visual hierarchy.",
+    "crit_lighting": 92,
+    "crit_lighting_notes": "The laser beams create dynamic directional light that enhances depth and draws attention to the focal point with vivid color contrasts.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The central vortex is clear but the surrounding elements are slightly busy, competing for attention without adding context.",
+    "crit_emotion": 89,
+    "crit_emotion_notes": "The image evokes a sense of awe and immersion through its use of light and perspective, creating an atmospheric mood that feels otherworldly.",
+    "crit_technical": 78,
+    "crit_technical_notes": "Sharpness is maintained in key areas; some minor noise appears in darker regions but does not detract significantly from the overall impact.",
+    "crit_notes": "The photograph captures a vivid light show with strong composition and emotional weight. The surrounding elements are slightly distracting, but do not undermine the central focus.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Mask out some of the less relevant background lights to reduce distraction."
+      },
+      {
+        "type": "crop",
+        "action": "Tighten the crop around the vortex and seating area to eliminate extraneous edges."
+      }
+    ],
     "sort_order": 350
   },
   "media/sabbatical-travel/travel-04.jpeg": {
@@ -977,16 +2013,39 @@
       "monochrome"
     ],
     "caption": "Lioness in the Rain, Masai Mara",
-    "alt": "A black-and-white photograph of a lioness standing alert in tall savanna grass under light rainfall, raindrops visible in the air. Taken in the Masai Mara, Kenya.",
-    "story": "A solitary lioness stands watchful in the Masai Mara rain, her gaze fixed on something beyond the frame. The monochrome rendering strips the scene to its essentials: wet grass, falling rain, and a predator fully at ease in the downpour.",
+    "alt": "A black-and-white photograph of a lioness standing alert in tall grass during light rainfall in the Masai Mara, Kenya, with raindrops visible in the air.",
+    "story": "A solitary lioness stands watchful in the Masai Mara grasslands as rain falls softly around her. The monochromatic treatment strips away color to reveal the raw tension in her posture and gaze.",
     "entities": [
       "lioness",
       "grassland",
       "raindrops",
-      "savanna"
+      "tall grass"
     ],
     "country": "ken",
+    "state": "Masai Mara",
     "species": "lion",
+    "crit_score": 68,
+    "crit_composition": 70,
+    "crit_composition_notes": "The lioness sits slightly off-center, creating a balanced frame but leaving too much empty space around her.",
+    "crit_lighting": 65,
+    "crit_lighting_notes": "The monochrome treatment flattens the scene; contrast between the subject and background is minimal.",
+    "crit_subject": 80,
+    "crit_subject_notes": "The lioness is clearly defined, but her gaze does not engage with the viewer or any specific point in the frame.",
+    "crit_emotion": 62,
+    "crit_emotion_notes": "The mood of solitude and wildness is present but muted by the lack of strong visual cues from the subject's behavior.",
+    "crit_technical": 75,
+    "crit_technical_notes": "Grain is visible, consistent with film photography; focus on the lioness is sharp at thumbnail resolution.",
+    "crit_notes": "The photograph captures a moment of quiet presence in nature. The monochrome palette and grain add texture but do not enhance the subject's impact.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Increase contrast between the lioness and the grass to make her stand out more clearly."
+      },
+      {
+        "type": "crop",
+        "action": "Tighten the frame around the lioness, removing excess negative space from the top and sides."
+      }
+    ],
     "sort_order": 310
   },
   "media/sabbatical-travel/travel-05.jpeg": {
@@ -1050,19 +2109,41 @@
       "mountains"
     ],
     "caption": "Llama Among Ruins",
-    "alt": "An alpaca stands on grassy terrain near stone walls of ancient ruins, with a person taking photos in the background against a backdrop of towering mountains.",
-    "story": "A serene moment unfolds at ancient Incan ruins, where a llama grazes peacefully in the foreground while a lone tourist captures the majestic mountain backdrop. The juxtaposition of nature and history creates a tranquil yet awe-inspiring scene.",
+    "alt": "A llama stands on grassy terrain beside ancient Incan stone walls, a lone tourist photographing the scene against a backdrop of towering mountains.",
+    "story": "A serene moment at ancient Incan ruins: a llama grazes in the foreground while a lone tourist captures the majestic mountain backdrop. The juxtaposition of living animal, dressed stone, and distant peaks collapses the distance between past and present.",
     "entities": [
       "llama",
-      "stone wall",
       "ancient ruins",
-      "tourist",
+      "stone wall",
       "mountain range",
-      "grass"
+      "grass",
+      "tourist"
     ],
     "country": "per",
-    "sort_order": 260,
-    "dupeOf": "photo-20240920-dsc01522"
+    "species": "llama",
+    "crit_score": 75,
+    "crit_composition": 79,
+    "crit_composition_notes": "The stone wall leads the eye across the frame to the human figure and llama, creating a visual connection between foreground and background.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The light is even but lacks directionality; shadows are soft and fail to add depth or texture to the stonework.",
+    "crit_subject": 72,
+    "crit_subject_notes": "The human figure provides scale against the ruins, while the llama adds a cultural element, though both feel slightly incidental rather than central.",
+    "crit_emotion": 83,
+    "crit_emotion_notes": "The photograph conveys a sense of historical grandeur and isolation through the vastness of the mountains and the ancient stonework.",
+    "crit_technical": 76,
+    "crit_technical_notes": "Sharp focus on both the ruins and figures, with no visible noise or processing artifacts at this resolution.",
+    "crit_notes": "The image captures a clear sense of place through its composition and subject matter. The lighting is even but fails to enhance the texture of the scene.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -20 in the sky to deepen the blue and add contrast against the mountains."
+      },
+      {
+        "type": "composition-shoot",
+        "action": "Recompose with a lower angle to emphasize the height of the ruins and create more dramatic leading lines."
+      }
+    ],
+    "sort_order": 260
   },
   "media/sabbatical-travel/travel-09.jpeg": {
     "theme": [
@@ -1085,16 +2166,42 @@
     "theme": [
       "mammals"
     ],
-    "caption": "Solitude in the Rain",
-    "alt": "A koala is perched on a tree branch, wrapped snugly in its fur during a rainy day. The background is blurred with green foliage, emphasizing the animal's solitary presence.",
-    "story": "A koala clings tightly to a tree branch, its small form huddled against the wet weather. The scene captures a moment of vulnerability and resilience in nature as rain falls gently around it.",
+    "caption": "Koala in the Rain, Sydney",
+    "alt": "A koala clings to a tree branch in the rain, its fur damp and eyes half-closed, photographed in Sydney, Australia.",
+    "story": "Caught in a light downpour near Sydney, this koala holds tight to its perch, unbothered by the wet. Rain-soaked fur and a sleepy expression make for an intimate wildlife portrait.",
     "entities": [
       "koala",
-      "tree",
-      "rain"
+      "tree branch",
+      "rain",
+      "wet fur",
+      "eucalyptus"
     ],
     "country": "aus",
+    "city": "Sydney",
+    "state": "New South Wales",
     "species": "koala",
+    "crit_score": 76,
+    "crit_composition": 74,
+    "crit_composition_notes": "The koala sits slightly off-center along a diagonal branch, creating visual interest.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Diffused light softens the scene but lacks contrast to highlight the subject's texture against the background.",
+    "crit_subject": 85,
+    "crit_subject_notes": "The koala is in sharp focus, with clear separation from the blurred background, emphasizing its presence.",
+    "crit_emotion": 79,
+    "crit_emotion_notes": "The curled posture of the koala conveys a sense of vulnerability and introspection, resonating emotionally.",
+    "crit_technical": 82,
+    "crit_technical_notes": "No visible artifacts; focus is sharp on the subject with smooth gradients in the background blur.",
+    "crit_notes": "The photograph captures a quiet moment of the koala, emphasizing its form and posture. The diffused light softens details but maintains an emotional connection to the subject.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Increase contrast slightly in post-processing to enhance texture on the koala's fur."
+      },
+      {
+        "type": "crop",
+        "action": "Tighten the crop around the koala, removing excess negative space from the top and bottom of the frame."
+      }
+    ],
     "sort_order": 320
   },
   "media/sabbatical-travel/travel-11.jpeg": {
@@ -1162,20 +2269,41 @@
       "night",
       "astrophotography"
     ],
-    "caption": "Night Sky over Cajón del Maipo",
-    "alt": "Star-filled night sky above rugged Andean mountains with silhouetted trees in the foreground, photographed in Cajón del Maipo, Chile.",
-    "story": "Under an impossibly clear Andean sky, the peaks of Cajón del Maipo recede into darkness while thousands of stars press close overhead. The photographer initially misidentified this as Argentina, but corrected to Chile — a reminder of how the border dissolves in terrain this vast.",
+    "caption": "Starry night over Cajón del Maipo",
+    "alt": "A star-filled night sky arches over rugged mountain peaks with silhouetted trees in Cajón del Maipo, Chile.",
+    "story": "High in the Chilean Andes, the Cajón del Maipo canyon opens beneath a dense canopy of stars, the mountain walls framing the sky in quiet grandeur.",
     "entities": [
       "stars",
       "mountains",
       "trees",
-      "night sky",
-      "Andean peaks",
-      "silhouettes"
+      "sky",
+      "canyon"
     ],
     "country": "chl",
     "city": "Cajón del Maipo",
     "state": "Región Metropolitana",
+    "crit_score": 78,
+    "crit_composition": 79,
+    "crit_composition_notes": "The frame balances the mountain mass on both sides against the open sky, creating a sense of symmetry.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "The gradient from deep blue to lighter tones in the sky suggests intentional exposure control for night photography.",
+    "crit_subject": 65,
+    "crit_subject_notes": "The mountains and trees are clear but lack a distinct focal point that draws immediate attention.",
+    "crit_emotion": 87,
+    "crit_emotion_notes": "The starry sky evokes a sense of vastness and tranquility, enhancing the atmospheric mood.",
+    "crit_technical": 73,
+    "crit_technical_notes": "Stars are sharp but some areas show slight noise typical for low-light conditions at this resolution.",
+    "crit_notes": "The photograph captures a serene night scene with balanced composition and atmospheric lighting. The subject lacks a clear focal point to anchor the viewer's gaze.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Recover shadow details in the mountain textures using Lightroom sliders."
+      },
+      {
+        "type": "crop",
+        "action": "Crop out some of the lower trees to emphasize the mountains and sky more prominently."
+      }
+    ],
     "sort_order": 360
   },
   "media/sabbatical-travel/travel-15.jpeg": {
@@ -1204,35 +2332,79 @@
       "religion"
     ],
     "caption": "Christmas Tree in Mammoth Cave",
-    "alt": "A black-and-white photograph of a brightly lit Christmas tree glowing inside Mammoth Cave, surrounded by rugged limestone rock formations in deep shadow.",
-    "story": "A decorated Christmas tree stands illuminated against the ancient limestone walls of Mammoth Cave, its warm glow cutting through the darkness of one of the world's longest cave systems in Kentucky.",
+    "alt": "A brightly lit Christmas tree glows against the dark walls of a cave, with rugged rock formations visible in the shadowy background. The black-and-white image emphasizes the contrast between the illuminated tree and the surrounding cavern.",
+    "story": "A solitary Christmas tree stands illuminated inside Mammoth Cave, one of the world's longest cave systems. The stark contrast between the festive, glowing tree and the ancient rock formations creates an atmosphere of quiet celebration in an unexpected underground setting.",
     "entities": [
       "christmas tree",
-      "limestone rock formations",
-      "cave ceiling",
+      "rock formations",
       "cave walls",
-      "darkness",
-      "light"
+      "cavern ceiling",
+      "shadows"
     ],
     "country": "usa",
+    "state": "Kentucky",
+    "crit_score": 76,
+    "crit_composition": 79,
+    "crit_composition_notes": "The Christmas tree sits at the center of the frame, creating a focal point against the dark cave walls.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Directional light from above highlights the tree and surrounding rock textures while leaving other areas in shadow for contrast.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The illuminated Christmas tree stands out clearly against the dark cave, but its placement feels slightly static without additional context or movement.",
+    "crit_emotion": 80,
+    "crit_emotion_notes": "The juxtaposition of a festive tree in an underground setting evokes a sense of isolation and unexpectedness.",
+    "crit_technical": 78,
+    "crit_technical_notes": "Sharp focus on the tree with no visible noise or processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures an unusual scene of a Christmas tree in a cave, creating visual interest. The static composition and lack of additional elements limit its emotional depth.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Dodge the area around the base of the tree to add more context and ground it within the space."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter on the tree to remove some of the empty dark areas at the edges, focusing attention on the subject."
+      }
+    ],
     "sort_order": 150
   },
   "media/sabbatical-travel/travel-17.jpeg": {
     "theme": [
       "birds"
     ],
-    "caption": "Hummingbird at rest, Santiago",
-    "alt": "A hummingbird with brownish iridescent plumage perched on a thin, leafless branch against a blurred green forest backdrop, its long beak and small size clearly visible.",
-    "story": "A hummingbird pauses on a bare branch in the forests near Santiago, its iridescent feathers catching the diffuse light of the Chilean hillside.",
+    "caption": "Hummingbird perched in Santiago forest",
+    "alt": "A hummingbird rests on a thin bare branch against a soft green forest background in Santiago, Chile.",
+    "story": "A solitary hummingbird pauses on a bare branch in a Santiago forest, its iridescent plumage catching soft diffused light. The blurred green backdrop isolates the bird, lending the image a quiet, contemplative mood.",
     "entities": [
       "hummingbird",
-      "bare branch",
-      "green foliage",
+      "branch",
       "forest background"
     ],
     "country": "chl",
     "city": "Santiago",
+    "state": "Región Metropolitana",
     "species": "hummingbird",
+    "crit_score": 76,
+    "crit_composition": 74,
+    "crit_composition_notes": "The bird sits slightly off-center on a diagonal branch, creating visual interest but leaving empty space to the right.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The light is even and soft, which flattens some details in the bird's feathers; harsher side-light would have added texture.",
+    "crit_subject": 82,
+    "crit_subject_notes": "Focus is sharp on the bird, with clean separation from the blurred background that keeps attention on it.",
+    "crit_emotion": 70,
+    "crit_emotion_notes": "The bird's posture conveys a sense of calm presence but lacks dynamic action or interaction to deepen the emotional weight.",
+    "crit_technical": 85,
+    "crit_technical_notes": "No visible noise, sharp focus on the subject, and smooth gradients in the background blur indicate good technical control.",
+    "crit_notes": "The photograph captures a clear image of the bird with intentional composition. It does not convey a decisive moment or dynamic behavior.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 and lift shadows +5 to enhance feather texture in post-processing."
+      },
+      {
+        "type": "in-moment-craft",
+        "action": "Anticipate the bird's movement for a more dynamic pose or interaction with its environment next time."
+      }
+    ],
     "sort_order": 370
   },
   "media/sabbatical-travel/travel-18.jpeg": {
@@ -1250,6 +2422,28 @@
       "tourist"
     ],
     "country": "egy",
+    "crit_score": 71,
+    "crit_composition": 74,
+    "crit_composition_notes": "The frame centers on the temple entrance but leaves too much empty space at the bottom, weakening the sense of scale.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Harsh midday light casts deep shadows in the recesses; the photographer could not control this lighting angle.",
+    "crit_subject": 82,
+    "crit_subject_notes": "The temple's carvings and statues are clear, communicating their historical significance effectively.",
+    "crit_emotion": 65,
+    "crit_emotion_notes": "The image conveys a sense of history but the flat light reduces atmospheric depth; the scene feels static rather than timeless.",
+    "crit_technical": 80,
+    "crit_technical_notes": "Sharp details on the carvings, no visible noise or processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures the temple's historical detail but the midday light and composition choices leave it feeling less immersive. The empty foreground space detracts from the monument's grandeur.",
+    "crit_feedback": [
+      {
+        "type": "crop",
+        "action": "Crop out the bottom third to emphasize the temple entrance and reduce empty space."
+      },
+      {
+        "type": "edit",
+        "action": "Recover shadow details in post-processing to reveal more of the carvings' texture."
+      }
+    ],
     "sort_order": 380
   },
   "media/sabbatical-travel/travel-19.jpeg": {
@@ -1271,6 +2465,28 @@
       "red pipes"
     ],
     "country": "jpn",
+    "crit_score": 75,
+    "crit_composition": 74,
+    "crit_composition_notes": "The vertical lines of the buildings and signs create a strong sense of depth, leading the eye down the alley.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "Neon lights provide vibrant illumination that contrasts sharply with the dark sky, enhancing the urban atmosphere.",
+    "crit_subject": 65,
+    "crit_subject_notes": "The subject is a street scene at night; however, there's no clear focal point to draw attention within the busy environment.",
+    "crit_emotion": 80,
+    "crit_emotion_notes": "The photograph captures the energy and vibrancy of urban nightlife through its use of color and light.",
+    "crit_technical": 76,
+    "crit_technical_notes": "Sharpness is maintained in key areas, with no visible processing artifacts affecting the image quality.",
+    "crit_notes": "The photograph captures a lively urban street scene at night. It lacks a clear focal point to anchor the viewer's attention within the busy composition.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Dodge and burn specific areas of the image to enhance contrast between the neon lights and darker regions."
+      },
+      {
+        "type": "crop",
+        "action": "Crop the top portion slightly to remove excess sky, tightening the composition around the street scene."
+      }
+    ],
     "sort_order": 300
   },
   "media/sabbatical-travel/travel-20.jpeg": {
@@ -1278,37 +2494,84 @@
       "flora",
       "urban"
     ],
-    "caption": "Cherry blossoms against Kyoto skyline",
-    "alt": "Close-up of pink and white cherry blossom petals on a bare branch, with blurred modern buildings in the background. The scene captures spring blooming in an urban Kyoto setting.",
-    "story": "A cherry blossom branch catches the light against Kyoto's urban backdrop, the soft petals a reminder that spring arrives even amid the city's modern skyline.",
+    "caption": "Cherry Blossoms Against Kyoto Skyline",
+    "alt": "Close-up of pink and white cherry blossom petals on a bare branch, with blurred modern buildings in the background. The delicate blooms stand out against the muted urban backdrop.",
+    "story": "A cherry blossom branch catches the soft spring light in Kyoto, its delicate petals contrasting with the city's modern buildings behind. The scene evokes the Japanese tradition of hanami, pausing to appreciate the fleeting beauty of sakura season.",
     "entities": [
       "cherry blossoms",
       "blossom buds",
       "tree branch",
-      "urban background",
-      "building",
-      "sky"
+      "urban buildings",
+      "bare branches"
     ],
     "country": "jpn",
+    "city": "Kyoto",
+    "crit_score": 74,
+    "crit_composition": 73,
+    "crit_composition_notes": "The blossoms are positioned off-center but the branches lead to empty space rather than a focal point.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Diffuse light softens details; the blossoms lack contrast against the muted background.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The blossoms are clear and detailed, but the buds remain unopened, reducing visual interest.",
+    "crit_emotion": 82,
+    "crit_emotion_notes": "The misty atmosphere conveys a sense of quiet solitude, enhancing the emotional weight.",
+    "crit_technical": 70,
+    "crit_technical_notes": "Focus is sharp on the blossoms; slight softness in the background suggests intentional depth control.",
+    "crit_notes": "The photograph captures a tranquil urban flora scene with atmospheric mood. The blossoms are detailed but lack contrast against the subdued backdrop.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Increase contrast in the blossoms by +10 to separate them from the background."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter around the blossoms and buds to eliminate distracting empty space."
+      }
+    ],
     "sort_order": 100
   },
   "media/sabbatical-travel/travel-21.jpeg": {
     "theme": [
       "mammals"
     ],
-    "caption": "Otters surfacing in Tambopata",
-    "alt": "Three river otters swimming at the surface of calm water in Tambopata National Park, Peru, with one otter's face clearly visible looking toward the camera.",
-    "story": "A family group of giant river otters surfaces in the still waters of Tambopata National Park, one turning its whiskered face toward the lens. The Peruvian Amazon's most charismatic residents move with an ease that belies their size.",
+    "caption": "Giant River Otters, Tambopata National Reserve",
+    "alt": "Three giant river otters swimming in calm water at Tambopata National Reserve, with one otter's face clearly visible above the surface.",
+    "story": "Giant river otters surface and interact in the calm waters of Tambopata National Reserve, one of the last strongholds for this endangered Amazonian predator. The group dynamic hints at the tight family bonds these social animals maintain.",
     "entities": [
       "otters",
       "water",
-      "Amazon river",
       "ripples",
-      "fur",
-      "whiskers"
+      "fur"
     ],
     "country": "per",
+    "state": "Madre de Dios",
     "species": "giant river otter",
+    "crit_score": 73,
+    "crit_composition": 70,
+    "crit_composition_notes": "The otters are positioned off-center but the vast expanse of water around them feels empty.",
+    "crit_lighting": 65,
+    "crit_lighting_notes": "Diffuse light softens details on the otters; harsher contrast would have modeled their features more clearly.",
+    "crit_subject": 80,
+    "crit_subject_notes": "The otter with its prey is in focus and reads as wild, but the second otter's head is less distinct.",
+    "crit_emotion": 75,
+    "crit_emotion_notes": "The moment captures a natural behavior, yet the subdued light dampens the emotional impact of the scene.",
+    "crit_technical": 82,
+    "crit_technical_notes": "Sharp on the primary subject with no visible processing artifacts at this resolution; motion blur is minimal.",
+    "crit_notes": "The photograph captures a moment in nature, but the vast negative space and subdued lighting detract from its impact. The otter's behavior is clear, yet the image lacks visual tension.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 to recover detail on the otters' fur."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter around the otters to reduce empty water space and increase subject prominence."
+      },
+      {
+        "type": "in-moment-craft",
+        "action": "Next encounter: position for side light to enhance texture and depth on the subjects."
+      }
+    ],
     "sort_order": 390
   },
   "media/sabbatical-travel/travel-22.jpeg": {
@@ -1333,17 +2596,42 @@
     "theme": [
       "mammals"
     ],
-    "caption": "Young Gorilla in Volcanoes National Park",
-    "alt": "A young mountain gorilla peers through dense green foliage in Volcanoes National Park, Rwanda.",
-    "story": "A young mountain gorilla pauses amid the thick forest undergrowth of Volcanoes National Park, Rwanda. Its watchful eyes meet the camera through a curtain of leaves, offering a rare close encounter in one of the last wild habitats where these endangered primates survive.",
+    "caption": "Young Gorilla, Volcanoes National Park",
+    "alt": "A young mountain gorilla peers through dense green foliage in Volcanoes National Park, Rwanda, its eyes meeting the camera directly.",
+    "story": "In the montane forest of Volcanoes National Park, a young mountain gorilla pauses amid the undergrowth, holding a calm, direct gaze. The dense canopy filters soft light across its face, giving a rare sense of closeness with one of the world's most endangered great apes.",
     "entities": [
       "gorilla",
       "green leaves",
       "forest foliage",
-      "Volcanoes National Park"
+      "fur",
+      "eyes"
     ],
     "country": "rwa",
+    "city": "Musanze",
+    "state": "Northern Province",
     "species": "Mountain Gorilla",
+    "crit_score": 84,
+    "crit_composition": 79,
+    "crit_composition_notes": "The gorilla's face is framed by leaves that create a natural border, drawing attention to its eyes.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "The light on the gorilla's face is even but lacks directionality; details in the fur could be more pronounced with side lighting.",
+    "crit_subject": 92,
+    "crit_subject_notes": "Focus is sharp on the eyes, and the subject stands out clearly against the blurred green background.",
+    "crit_emotion": 87,
+    "crit_emotion_notes": "The gorilla's gaze conveys a sense of curiosity and connection with the viewer through direct eye contact.",
+    "crit_technical": 83,
+    "crit_technical_notes": "No visible noise or artifacts; exposure is well-managed, preserving detail in both highlights and shadows.",
+    "crit_notes": "The photograph captures the gorilla's expression with clarity and emotion. The lighting could be more dynamic to enhance texture details.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 in Lightroom to reveal more detail in the fur."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter around the gorilla's face to eliminate distracting leaves at the edges."
+      }
+    ],
     "sort_order": 400
   },
   "media/sabbatical-travel/travel-24.jpeg": {
@@ -1363,16 +2651,17 @@
       "cloudy sky"
     ],
     "country": "aus",
-    "sort_order": 50
+    "sort_order": 50,
+    "dupeOf": "atlas-australia"
   },
   "media/sabbatical-travel/travel-25.jpeg": {
     "theme": [
       "birds",
       "galapagos"
     ],
-    "caption": "Small bird perched among yellow blooms, Galápagos",
-    "alt": "A small dark bird rests on a branch surrounded by green leaves and yellow flowers in the Galápagos Islands, Ecuador.",
-    "story": "A solitary bird perches among the flowering vegetation of the Galápagos Islands, its dark plumage set against delicate yellow blooms. The islands' unique flora frames the moment with quiet stillness.",
+    "caption": "Galapagos Bird Among Yellow Blooms",
+    "alt": "A small dark bird perches on a branch surrounded by lush green leaves and yellow flowers in the Galápagos Islands, Ecuador.",
+    "story": "A small bird rests among flowering vegetation in the Galápagos Islands, one of the world's most celebrated wildlife sanctuaries. The surrounding blooms and dense foliage frame the bird in its undisturbed island habitat.",
     "entities": [
       "bird",
       "branch",
@@ -1381,6 +2670,30 @@
       "foliage"
     ],
     "country": "ecu",
+    "state": "Galápagos",
+    "crit_score": 74,
+    "crit_composition": 74,
+    "crit_composition_notes": "The bird sits slightly off-center but the surrounding foliage competes for attention.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Diffused light softens details; harsher contrast would have modeled the bird's form more clearly.",
+    "crit_subject": 82,
+    "crit_subject_notes": "The bird is in focus and its behavior of perching on a branch with food is clear.",
+    "crit_emotion": 70,
+    "crit_emotion_notes": "The bird's presence is captured, but the diffused light and competing foliage weaken the emotional impact.",
+    "crit_technical": 85,
+    "crit_technical_notes": "Sharp focus on the bird with no visible processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures a clear moment of a bird in its natural habitat. The diffused light and competing foliage slightly undermine the emotional weight.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Pull highlights -10 to deepen contrast on the bird's form."
+      },
+      {
+        "type": "crop",
+        "action": "Crop tighter around the bird to minimize competing foliage in the background."
+      }
+    ],
+    "featured": false,
     "sort_order": 410
   },
   "media/sabbatical-travel/travel-26.jpeg": {
@@ -1397,6 +2710,28 @@
     ],
     "country": "ecu",
     "species": "marine iguana",
+    "crit_score": 76,
+    "crit_composition": 74,
+    "crit_composition_notes": "The central iguana is positioned slightly off-center, creating a visual anchor but leaving empty space on the right.",
+    "crit_lighting": 68,
+    "crit_lighting_notes": "Diffuse light softens textures and reduces contrast; shadows are minimal which flattens depth perception.",
+    "crit_subject": 82,
+    "crit_subject_notes": "The central iguana is in sharp focus with clear detail, while the background subjects blur appropriately to avoid distraction.",
+    "crit_emotion": 70,
+    "crit_emotion_notes": "The posture of the central iguana conveys a sense of alertness but lacks the intensity that would elevate the emotional weight.",
+    "crit_technical": 85,
+    "crit_technical_notes": "Sharp focus on the main subject, no visible noise or processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures a group of iguanas with clear detail on the central figure. The diffuse lighting and composition leave some emotional impact unexplored.",
+    "crit_feedback": [
+      {
+        "type": "edit",
+        "action": "Increase contrast in post to enhance texture details and depth."
+      },
+      {
+        "type": "crop",
+        "action": "Tighten the frame slightly on the right side to balance the empty space."
+      }
+    ],
     "sort_order": 430
   },
   "media/sabbatical-travel/travel-27.jpeg": {
@@ -1439,6 +2774,28 @@
     ],
     "country": "are",
     "city": "Dubai",
+    "crit_score": 76,
+    "crit_composition": 79,
+    "crit_composition_notes": "The palm fronds in the top-left corner frame the Burj Khalifa, creating a natural leading line to the building.",
+    "crit_lighting": 82,
+    "crit_lighting_notes": "The lighting highlights the tower's structure against the gradient blue sky, emphasizing its height and detail.",
+    "crit_subject": 75,
+    "crit_subject_notes": "The Burj Khalifa is clearly the focal point, but the surrounding elements do not add significant context or depth.",
+    "crit_emotion": 68,
+    "crit_emotion_notes": "The photograph conveys a sense of scale and grandeur, though it lacks an emotional layer that could deepen its impact.",
+    "crit_technical": 85,
+    "crit_technical_notes": "Sharp focus on the building with no visible noise or processing artifacts at this resolution.",
+    "crit_notes": "The photograph captures the Burj Khalifa's imposing presence against a clear sky. It does not fully explore the surrounding environment to enhance its narrative.",
+    "crit_feedback": [
+      {
+        "type": "composition-shoot",
+        "action": "Recompose to include more of the base and surroundings for context."
+      },
+      {
+        "type": "edit",
+        "action": "Slightly darken the foreground elements to increase contrast with the tower."
+      }
+    ],
     "sort_order": 420
   }
 }

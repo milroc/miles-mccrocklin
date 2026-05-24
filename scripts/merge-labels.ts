@@ -94,6 +94,20 @@ const LABEL_FIELDS = new Set([
   'caption', 'alt', 'country', 'city', 'state', 'theme', 'species', 'story',
   'entities', 'album_url', 'featured', 'graphic', 'curator_notes',
   'dupeOf',
+  // Per-photo critique scores (0-100) + a short notes string. Written
+  // by scripts/photography-crit.ts as a second vision pass independent
+  // of classify-photography. Excluded from REFINED_FIELDS — the
+  // note-refinement and dupe-merge prompts don't second-guess scores;
+  // crit fields are pure AI judgement.
+  'crit_score', 'crit_composition', 'crit_lighting', 'crit_subject',
+  'crit_emotion', 'crit_technical', 'crit_notes',
+  'crit_composition_notes', 'crit_lighting_notes', 'crit_subject_notes',
+  'crit_emotion_notes', 'crit_technical_notes',
+  // Array of { type, action } prescriptions emitted by the new crit
+  // prompt. Carried through verbatim — the merger doesn't merge or
+  // dedupe across runs; latest-wins replaces the whole array, same
+  // as any other AI-tier field.
+  'crit_feedback',
   // Curator-assigned global ranking. Lower wins (sort ascending = best
   // first). Set in batches via the review tool's list-view drag-and-
   // drop "Save order" button. The manifest builder sorts the photos
@@ -1004,6 +1018,12 @@ function toPhotographyOutput(entry: MergedEntry): Record<string, unknown> {
   const labelOrder = [
     'caption', 'alt', 'country', 'city', 'state',
     'theme', 'species', 'story', 'entities',
+    'crit_score', 'crit_composition', 'crit_composition_notes',
+    'crit_lighting', 'crit_lighting_notes',
+    'crit_subject', 'crit_subject_notes',
+    'crit_emotion', 'crit_emotion_notes',
+    'crit_technical', 'crit_technical_notes',
+    'crit_notes', 'crit_feedback',
     'album_url', 'featured', 'graphic', 'sort_order',
     'dupeOf', 'curator_notes',
   ];
@@ -1024,6 +1044,12 @@ function toClassificationFields(entry: MergedEntry): Record<string, unknown> {
   for (const k of [
     'theme', 'caption', 'alt', 'story', 'entities',
     'country', 'city', 'state', 'species',
+    'crit_score', 'crit_composition', 'crit_composition_notes',
+    'crit_lighting', 'crit_lighting_notes',
+    'crit_subject', 'crit_subject_notes',
+    'crit_emotion', 'crit_emotion_notes',
+    'crit_technical', 'crit_technical_notes',
+    'crit_notes', 'crit_feedback',
     'album_url', 'featured', 'graphic', 'sort_order', 'dupeOf',
   ]) {
     if (entry[k] != null) out[k] = entry[k];

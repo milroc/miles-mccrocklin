@@ -134,6 +134,26 @@ export interface PhotographyEntry {
   // curator hasn't ranked — those keep their original source-file order
   // relative to each other and fall to the end behind ranked photos.
   sort_order?: number;
+  // Per-photo critique scores produced by scripts/photography-crit.ts.
+  // Five sub-dimensions plus a holistic 0-100 overall score plus a
+  // 1-3 sentence critique. The overall is the model's holistic call,
+  // not a mean of the sub-scores.
+  crit_score?: number;
+  crit_composition?: number;
+  crit_lighting?: number;
+  crit_subject?: number;
+  crit_emotion?: number;
+  crit_technical?: number;
+  // Per-dimension notes — one sentence each, written by the same
+  // crit pass. Pair with the matching score above for display.
+  crit_composition_notes?: string;
+  crit_lighting_notes?: string;
+  crit_subject_notes?: string;
+  crit_emotion_notes?: string;
+  crit_technical_notes?: string;
+  // Synthesis across all dimensions: 2-3 sentences ending with a
+  // concrete suggested change.
+  crit_notes?: string;
 }
 
 export interface PhotographyManifest {
