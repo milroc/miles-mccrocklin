@@ -25,6 +25,20 @@ export type MediaLayout = 'stack' | 'strip' | 'carousel' | 'grid';
 // existing bottom gradient caption overlay. Opt-in via me.json.
 export type MediaSubtype = 'photo' | 'ui';
 
+// Per-prose-field provenance. Only present when a prose value was
+// written (or rewritten) by the LLM in the labels pipeline:
+//   'ai'      — raw classifier output
+//   'refined' — LLM rewrite informed by the curator's freeform notes
+// Absence of an entry means the value is human-authored (curator
+// override, me.json item.caption, atlas album title) or structural.
+// The lightbox keys off this to render a "by AI" badge next to AI prose.
+export type ProseProvenanceTier = 'ai' | 'refined';
+export interface ProseProvenance {
+  caption?: ProseProvenanceTier;
+  alt?: ProseProvenanceTier;
+  story?: ProseProvenanceTier;
+}
+
 export interface MediaItem {
   id: string;
   type: MediaType;
@@ -49,6 +63,9 @@ export interface MediaItem {
   // for photos the viewer already revealed there, so the lightbox only
   // re-gates photos the viewer hasn't seen yet.
   graphic?: boolean;
+  // See ProseProvenance above — populated on photography-page items so
+  // the lightbox can tag AI-written captions.
+  prose_provenance?: ProseProvenance;
 }
 
 export interface MediaGroup {
@@ -154,6 +171,8 @@ export interface PhotographyEntry {
   // Synthesis across all dimensions: 2-3 sentences ending with a
   // concrete suggested change.
   crit_notes?: string;
+  // Per-prose-field provenance — see ProseProvenance for semantics.
+  prose_provenance?: ProseProvenance;
 }
 
 export interface PhotographyManifest {

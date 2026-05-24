@@ -19,6 +19,11 @@
       "brick building",
       "market stalls"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 74,
     "crit_composition": 79,
     "crit_composition_notes": "The lion statue anchors the lower third while leading lines in the arch draw attention upward.",
@@ -63,6 +68,11 @@
       "tour boat",
       "clouds"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 85,
     "crit_composition": 87,
     "crit_composition_notes": "The bridge and river lead the eye naturally to Big Ben, creating a strong visual hierarchy.",
@@ -110,6 +120,11 @@
       "stone monument",
       "pedestal"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 81,
     "crit_composition": 79,
     "crit_composition_notes": "The statues are positioned off-center to the right, creating a strong visual hierarchy against the expansive sky.",
@@ -155,6 +170,11 @@
       "handbag",
       "sea"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 71,
     "crit_composition": 78,
     "crit_composition_notes": "The arches and columns create a strong visual rhythm that frames the subjects naturally.",
@@ -198,6 +218,11 @@
       "carved stone",
       "architectural detail"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The statue fills the frame but the angle cuts off part of its base, leaving an incomplete sense of scale.",
@@ -247,6 +272,11 @@
       "spectators",
       "stone arch"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The bridge arches frame the surfer in action, but the left side is cluttered with spectators and surfers waiting.",
@@ -292,6 +322,11 @@
       "starry sky",
       "night sky"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 85,
     "crit_composition": 85,
     "crit_lighting": 90,
@@ -325,6 +360,11 @@
       "night sky",
       "peaks"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The silhouette of the mountain anchors the lower third, creating a strong contrast against the starry sky.",
@@ -369,6 +409,11 @@
       "buoys",
       "overcast sky"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The building sits off-center but the negative space around it feels unbalanced, leaving empty water to dominate.",
@@ -416,6 +461,11 @@
       "chair",
       "griddle"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The cook's position on the left-third creates a natural balance against the group of people to her right.",
@@ -459,6 +509,11 @@
       "statue of hands",
       "red and yellow threads"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The phone and its cable create a visual anchor against the textured background, but the composition lacks balance.",
@@ -503,6 +558,11 @@
       "formal attire",
       "brick pavement"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The latticework frames the subjects and architecture, creating a layered visual hierarchy.",
@@ -549,6 +609,11 @@
       "wet pavement",
       "morning sun"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 79,
     "crit_composition": 87,
     "crit_composition_notes": "The arch frames the minaret perfectly, creating a strong visual hierarchy and leading lines to the vanishing point.",
@@ -591,6 +656,11 @@
       "architectural details",
       "blue sky"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 79,
     "crit_composition": 87,
     "crit_composition_notes": "The repeating arches create a strong visual rhythm that draws the eye across the frame.",
@@ -634,6 +704,11 @@
       "sunlight",
       "background buildings"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The two figures are positioned to create a visual dialogue, but the background elements distract from this interaction.",
@@ -678,6 +753,11 @@
       "brick structure",
       "domed building"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 71,
     "crit_composition": 79,
     "crit_composition_notes": "The diagonal lines of the steps create a strong visual flow leading to the water's surface.",
@@ -719,6 +799,11 @@
       "brick wall",
       "food scraps"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 73,
     "crit_composition": 74,
     "crit_composition_notes": "The puppies are positioned off-center but the foreground rock competes for attention without adding to the story.",
@@ -762,6 +847,11 @@
       "staircase",
       "red signboard"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 73,
     "crit_composition_notes": "The subject's face occupies the right third of the frame, leaving negative space on the left that feels intentional.",
@@ -790,7 +880,7 @@
     "src": "media/photography/20160113-dsc06372-enhanced-nr.jpg",
     "aspect": 1.7778,
     "caption": "The Golden Temple at Night",
-    "alt": "Nighttime view of the Golden Temple, its gilded dome and intricate architecture mirrored perfectly in the calm sarovar below, floodlit minarets and clock tower framing the scene.",
+    "alt": "Nighttime view of the Golden Temple, Sikhism's holiest site, its gilded dome and intricate architecture mirrored perfectly in the calm sarovar below, floodlit minarets and clock tower framing the scene.",
     "country": "ind",
     "city": "Amritsar",
     "state": "Punjab",
@@ -800,7 +890,7 @@
       "night",
       "religion"
     ],
-    "story": "The Golden Temple, Sikhism's holiest site, glows against the dark sky, its gilded facade and intricate domes mirrored perfectly in the calm sarovar below. Floodlit minarets and the clock tower frame the scene, the stillness of the water doubling every light into a seamless reflection.",
+    "story": "The Golden Temple glows against the dark sky, its gilded facade and intricate domes mirrored perfectly in the calm sarovar below. Floodlit minarets and the clock tower frame the scene, the stillness of the water doubling every light into a seamless reflection.",
     "entities": [
       "Golden Temple",
       "sarovar",
@@ -815,6 +905,11 @@
       "domes",
       "surrounding architecture"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The temple sits slightly off-center, balanced by the surrounding structures and reflections.",
@@ -858,6 +953,11 @@
       "flowers on ground",
       "metal structure"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 73,
     "crit_composition": 74,
     "crit_composition_notes": "The marigold garlands dominate the frame but the background elements compete without adding context.",
@@ -901,6 +1001,11 @@
       "towel",
       "dashboard"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 73,
     "crit_composition_notes": "The dog sits off-center but the steering wheel and dashboard compete for attention without adding to the subject.",
@@ -944,6 +1049,11 @@
       "motorcycle",
       "marketplace"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 73,
     "crit_composition_notes": "The barber and client are positioned off-center but the background elements compete for attention.",
@@ -991,6 +1101,11 @@
       "symmetrical composition",
       "ritual symbols"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 89,
     "crit_composition": 90,
     "crit_composition_notes": "The central figure dominates the frame, balanced by symmetrical elements on either side.",
@@ -1063,6 +1178,11 @@
       "statues",
       "golden roofs"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 73,
     "crit_composition": 74,
     "crit_composition_notes": "The stupa and temple are centered but the foreground rocks add visual weight, balancing the composition.",
@@ -1107,6 +1227,11 @@
       "tables and chairs",
       "people sitting"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 74,
     "crit_composition": 79,
     "crit_composition_notes": "The leading lines of the columns and chandeliers guide the eye towards the back wall, creating a sense of depth.",
@@ -1153,6 +1278,11 @@
       "trees",
       "blue sky"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 70,
     "crit_composition": 74,
     "crit_composition_notes": "The building fills the frame but the foreground space feels empty and unanchored.",
@@ -1452,6 +1582,11 @@
       "dock",
       "neighboring sea lions"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 78,
     "crit_composition": 73,
     "crit_composition_notes": "The seal's face is centered but the surrounding bodies create a natural frame that draws attention inward.",
@@ -1498,6 +1633,11 @@
       "ears",
       "mane"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 84,
     "crit_composition": 79,
     "crit_composition_notes": "The lion's face fills the frame, creating a strong visual hierarchy that draws attention to its features.",
@@ -1538,6 +1678,11 @@
       "blurred background",
       "golden light"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 86,
     "crit_composition": 79,
     "crit_composition_notes": "The lion's head occupies the right third of the frame, leaving negative space that carries its gaze.",
@@ -1585,6 +1730,11 @@
       "branches",
       "foliage"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 74,
     "crit_composition_notes": "The leopard's head rests against a tree trunk that anchors the left side, creating balance.",
@@ -1632,6 +1782,11 @@
       "eyes",
       "coat pattern"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 82,
     "crit_composition": 79,
     "crit_composition_notes": "The leopard's head is framed by tree branches that create a natural border, drawing focus to its face.",
@@ -1677,6 +1832,11 @@
       "claws",
       "backlighting"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 81,
     "crit_composition": 74,
     "crit_composition_notes": "The paws are positioned at the center of the frame, drawing attention to their texture and detail.",
@@ -1724,6 +1884,11 @@
       "fynbos",
       "coastal landscape"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The ostrich occupies the right third of the frame, leaving negative space that suggests movement.",
@@ -2111,6 +2276,11 @@
       "limestone islands",
       "overcast sky"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The floating soccer field creates a strong visual anchor but competes with the karst formations in the background.",
@@ -2157,6 +2327,11 @@
       "ceremonial robes",
       "crown headpieces"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The statues are evenly spaced but the central figure's open mouth draws more attention than intended.",
@@ -2201,6 +2376,11 @@
       "shadows",
       "buildings"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 84,
     "crit_composition": 87,
     "crit_composition_notes": "The skyscraper's sharp lines lead upward, dominating the frame and creating a strong visual hierarchy.",
@@ -2245,6 +2425,11 @@
       "sky",
       "railing"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 71,
     "crit_composition": 74,
     "crit_composition_notes": "The subjects are positioned on the left third, leaving empty space that could have been filled by more interaction with the colorful steps.",
@@ -2292,6 +2477,11 @@
       "karst formation",
       "sky"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 83,
     "crit_composition": 79,
     "crit_composition_notes": "The statue dominates the frame but leaves enough negative space to include the temple and natural backdrop.",
@@ -2338,6 +2528,11 @@
       "offerings",
       "temple decoration"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The central figure of Ganesha is framed by symmetrical elements, creating a balanced and harmonious composition.",
@@ -2383,6 +2578,11 @@
       "people sitting on steps",
       "clouds"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 71,
     "crit_composition": 74,
     "crit_composition_notes": "The Merlion statue anchors the right third while leading lines from the water and steps guide the eye toward it.",
@@ -2429,6 +2629,11 @@
       "cashier counter",
       "vanishing point"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The converging lines of the shutters and floor tiles create a strong vanishing point, drawing attention to the illuminated signs.",
@@ -2471,6 +2676,11 @@
       "ocean waves",
       "shoreline"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The birds cluster in the lower two-thirds of the frame, leaving negative space above that feels intentional.",
@@ -2512,6 +2722,11 @@
       "construction crane",
       "urban skyline"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The building's curve creates a natural frame for the reflection of the tower, but the bottom edge cuts off too abruptly.",
@@ -2557,6 +2772,11 @@
       "corridor",
       "reflective floor"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 86,
     "crit_composition": 87,
     "crit_composition_notes": "The converging lines of light fixtures create a strong vanishing point that draws the eye into the depth.",
@@ -2603,6 +2823,11 @@
       "raindrops",
       "red pipes"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "dupeOf": "me-travel-19"
   },
   {
@@ -2628,6 +2853,11 @@
       "grass",
       "buildings"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The photographer frames between two cherry blossom trees, creating a natural border that leads to the Tokyo Skytree.",
@@ -2668,6 +2898,11 @@
       "grass",
       "dirt path"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 70,
     "crit_composition_notes": "The animal sits slightly off-center but the foreground grass competes for attention without adding context.",
@@ -2707,6 +2942,11 @@
       "evergreen trees",
       "rocky peaks"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The evergreen trees frame the bottom edge and lead to the mountain peaks, creating a sense of depth.",
@@ -2747,6 +2987,11 @@
       "grass",
       "dry grassland"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The deer's head fills the frame but the bottom third is empty space that doesn't contribute.",
@@ -2793,6 +3038,11 @@
       "potted plant",
       "interior lighting"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 71,
     "crit_composition": 73,
     "crit_composition_notes": "The statue sits slightly off-center, creating a visual anchor but leaving empty space on one side.",
@@ -2838,6 +3088,11 @@
       "spire",
       "urban landscape"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "dupeOf": "me-travel-28"
   },
   {
@@ -2861,6 +3116,11 @@
       "wall",
       "text"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The graffiti elements are centered but the negative space around them feels intentional.",
@@ -2907,6 +3167,11 @@
       "cleaning tools",
       "glass facade"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 72,
     "crit_composition": 73,
     "crit_composition_notes": "The vertical lines of the building and workers create a strong visual hierarchy, but the left side is underpopulated.",
@@ -2956,6 +3221,11 @@
       "flag",
       "clouds"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The hot air balloon and carousel frame the statue in a layered composition, but the left edge tree distracts from the flow.",
@@ -3011,6 +3281,11 @@
       "mountainous terrain",
       "buildings"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The Acropolis sits slightly off-center, creating a dynamic balance between ancient ruins and modern cityscape.",
@@ -3053,6 +3328,11 @@
       "courtyard",
       "woman"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The central doorway draws the eye but the human figure in the foreground competes without adding context.",
@@ -3095,6 +3375,11 @@
       "pharaoh's name",
       "ornamental design"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 71,
     "crit_composition": 74,
     "crit_composition_notes": "The hieroglyphs are centered but the vertical lines on either side create a sense of framing.",
@@ -3136,6 +3421,11 @@
       "desert sand",
       "tent"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The flag in the foreground creates a visual anchor that draws attention away from the pyramid.",
@@ -3184,6 +3474,11 @@
       "foliage",
       "bark"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 72,
     "crit_composition": 74,
     "crit_composition_notes": "The chameleon sits slightly off-center on a diagonal branch, creating visual interest but leaving empty space that doesn't contribute.",
@@ -3228,6 +3523,11 @@
       "eyes",
       "foliage"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 79,
     "crit_composition": 74,
     "crit_composition_notes": "The gorilla's face fills the frame but a single leaf in the foreground draws attention away from its eyes.",
@@ -3273,6 +3573,11 @@
       "forest vegetation",
       "rainforest"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 74,
     "crit_composition": 70,
     "crit_composition_notes": "The open mouth dominates the frame but the surrounding foliage competes for attention without clear hierarchy.",
@@ -3317,6 +3622,11 @@
       "marshland",
       "channel"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The hippos are clustered in the lower-right third, leaving negative space that feels unbalanced.",
@@ -3360,6 +3670,11 @@
       "overcast sky",
       "channel"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 68,
     "crit_composition": 70,
     "crit_composition_notes": "The bird perches slightly off-center but blends into the dense cactus field, weakening visual hierarchy.",
@@ -3407,6 +3722,11 @@
       "foliage",
       "canopy"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The monkey sits slightly off-center but the surrounding foliage competes for attention.",
@@ -3451,6 +3771,11 @@
       "lake",
       "reeds"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The bird sits slightly off-center but the leading lines of the grass draw attention away from its head.",
@@ -3495,6 +3820,11 @@
       "water surface",
       "wings"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The bird is positioned off-center but the negative space below feels empty and unbalanced.",
@@ -3523,8 +3853,8 @@
     "id": "20240722-dsc06136-enhanced-nr",
     "src": "media/photography/20240722-dsc06136-enhanced-nr.jpg",
     "aspect": 1.4997,
-    "caption": "Chimpanzee at Lake Victoria Sanctuary",
-    "alt": "A chimpanzee sits in a grassy enclosure at a sanctuary near Lake Victoria, Uganda, gazing directly at the camera through a metal fence.",
+    "caption": "Chimpanzee at Lake Victoria Sanctuary, Uganda",
+    "alt": "A chimpanzee sits on grass behind a metal fence at a sanctuary near Lake Victoria, Uganda, gazing directly at the camera with bright, searching eyes.",
     "country": "uga",
     "theme": [
       "mammals",
@@ -3540,6 +3870,11 @@
       "lush vegetation",
       "primate"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 72,
     "crit_composition": 70,
     "crit_composition_notes": "The chimpanzee sits slightly off-center but the wire mesh divides the frame, disrupting visual flow.",
@@ -3586,6 +3921,11 @@
       "green foliage",
       "canopy"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The monkey sits on the right third of the frame, balanced by the diagonal line of the branch leading to it.",
@@ -3630,6 +3970,11 @@
       "black-and-white fur",
       "blurred foliage"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 74,
     "crit_composition_notes": "The lemur's face is positioned slightly off-center, creating a dynamic balance within the frame.",
@@ -3675,6 +4020,11 @@
       "forest floor",
       "dark foliage"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The animal's face occupies the right third of the frame, creating a strong visual anchor against the dark background.",
@@ -3719,6 +4069,11 @@
       "shadows",
       "sky"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The baobab trees are evenly spaced along a central path, creating a strong visual rhythm.",
@@ -3761,6 +4116,11 @@
       "dry leaves",
       "wildlife centre"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The snake's head sits slightly off-center, creating a visual hierarchy that draws attention to its gaze.",
@@ -3803,6 +4163,11 @@
       "green foliage",
       "forest"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 74,
     "crit_composition_notes": "The lemur's face is positioned at the intersection of thirds, creating a balanced composition.",
@@ -3845,6 +4210,11 @@
       "eye",
       "scale pattern"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 74,
     "crit_composition": 73,
     "crit_composition_notes": "The lizard's head occupies the left third of the frame, leaving negative space that feels intentional.",
@@ -3890,6 +4260,11 @@
       "mane",
       "flies"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 81,
     "crit_composition": 74,
     "crit_composition_notes": "The lion's head occupies the left third of the frame, leaving negative space that feels intentional.",
@@ -3937,6 +4312,11 @@
       "sky",
       "Lake Nakuru"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 70,
     "crit_composition_notes": "The giraffe's legs in the foreground create a natural frame, but they partially obscure the zebras and compete for attention.",
@@ -3988,6 +4368,11 @@
       "Lake Nakuru",
       "National Park"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 68,
     "crit_composition": 70,
     "crit_composition_notes": "The giraffe occupies the left third while the vehicle and person anchor the right, creating a balanced but static frame.",
@@ -4033,6 +4418,11 @@
       "coat pattern",
       "eyelashes"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 73,
     "crit_composition_notes": "The giraffe's head is positioned slightly off-center, creating a balanced frame that draws attention to its features.",
@@ -4078,6 +4468,11 @@
       "dirt path",
       "scrubland"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The jackal occupies the right third of the frame, leaving negative space that balances its movement.",
@@ -4124,6 +4519,11 @@
       "grassland",
       "feathers"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 70,
     "crit_composition_notes": "The birds are positioned off-center but the vast expanse of grass competes for attention without adding context.",
@@ -4174,6 +4574,11 @@
       "Nairobi skyline",
       "open plain"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The antelope sits slightly off-center, creating a sense of space but also leaving empty foreground.",
@@ -4219,6 +4624,11 @@
       "fur",
       "teeth"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 79,
     "crit_composition": 74,
     "crit_composition_notes": "The lioness's head is positioned off-center but the prey occupies too much space, unbalancing the frame.",
@@ -4265,6 +4675,11 @@
       "savanna",
       "branches"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The lioness occupies the right third of the frame, but the branches partially obscure her face and body.",
@@ -4311,9 +4726,13 @@
       "grass",
       "tourist"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "featured": true,
-    "sort_order": 170,
-    "dupeOf": "me-travel-08"
+    "sort_order": 170
   },
   {
     "id": "20240921-dsc01830",
@@ -4333,6 +4752,11 @@
       "hills",
       "sky"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 71,
     "crit_composition": 79,
     "crit_composition_notes": "The circular terraces lead the eye inward, creating a strong visual hierarchy against the hillside.",
@@ -4378,6 +4802,11 @@
       "umbrellas",
       "buildings"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The dancers in red form a diagonal leading line that draws attention from foreground to midground.",
@@ -4424,6 +4853,11 @@
       "lichen-covered log",
       "dark background"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The ant is positioned slightly off-center on a diagonal branch, creating visual interest.",
@@ -4465,6 +4899,11 @@
       "canopy",
       "green foliage"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 70,
     "crit_composition": 74,
     "crit_composition_notes": "The birds are scattered across the frame without a clear focal point, creating a sense of chaotic movement.",
@@ -4513,6 +4952,11 @@
       "vases",
       "religious iconography"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The central figure of the Virgin is framed symmetrically, balanced by flanking statues and floral arrangements.",
@@ -4558,6 +5002,11 @@
       "white clouds",
       "green trees"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The low-angle view emphasizes the structure's verticality and scale against the sky.",
@@ -4601,6 +5050,11 @@
       "text 'antwerpen'",
       "people walking in the background"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 71,
     "crit_composition": 79,
     "crit_composition_notes": "The reflective sculpture dominates the foreground, creating a visual hierarchy that draws attention to its distorted reflections.",
@@ -4647,6 +5101,11 @@
       "overcast sky",
       "topiary walls"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The converging lines of the hedge rows lead to the chapel, creating a strong visual path.",
@@ -4690,6 +5149,11 @@
       "windows",
       "sky"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The Eiffel Tower is centered but framed by buildings and trees, creating a natural border that draws the eye upward.",
@@ -4737,6 +5201,11 @@
       "streets",
       "green spaces"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 73,
     "crit_composition_notes": "The diagonal lines from the foreground structure create a strong visual frame, directing attention into the cityscape.",
@@ -4784,6 +5253,11 @@
       "teeth",
       "scales"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 68,
     "crit_composition": 70,
     "crit_composition_notes": "The crocodile's head is positioned off-center but the human hand in the foreground competes for attention.",
@@ -4828,6 +5302,11 @@
       "leaves",
       "blue sky"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 68,
     "crit_composition": 70,
     "crit_composition_notes": "The bats are scattered across the frame without a clear focal point, weakening visual hierarchy.",
@@ -4875,6 +5354,11 @@
       "grass",
       "trees"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The kangaroo's head and front paws are positioned off-center, creating a dynamic visual flow.",
@@ -4922,6 +5406,11 @@
       "modern buildings",
       "urban skyline"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 72,
     "crit_composition": 79,
     "crit_composition_notes": "The bridge's diagonal lines lead to the city skyline, creating a dynamic visual flow.",
@@ -4967,6 +5456,11 @@
       "water",
       "mounds of dirt"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The crabs are scattered across the frame without a clear focal point, creating a sense of natural chaos.",
@@ -5011,6 +5505,11 @@
       "grass",
       "forest floor"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 74,
     "crit_composition": 70,
     "crit_composition_notes": "The kangaroo's head is positioned slightly off-center, creating a natural focal point.",
@@ -5060,6 +5559,11 @@
       "clouds",
       "blue sky"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "dupeOf": "atlas-australia",
     "curator_notes": "Sydney Australia"
   },
@@ -5084,6 +5588,11 @@
       "wet fur",
       "eucalyptus"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "dupeOf": "me-travel-10",
     "curator_notes": "Sydney Australia"
   },
@@ -5108,6 +5617,11 @@
       "koala fur",
       "mammal"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 70,
     "crit_composition_notes": "The frame centers on the fur texture but lacks a clear focal point to anchor the viewer.",
@@ -5156,6 +5670,11 @@
       "flames",
       "people in background"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The man stands off-center but the foreground logs and fire compete for attention without a clear hierarchy.",
@@ -5202,6 +5721,11 @@
       "dark sky",
       "sea water"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The smaller iceberg in the foreground creates a visual anchor that leads to the larger, more complex formation behind it.",
@@ -5246,6 +5770,11 @@
       "water",
       "barren terrain"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The ice formations create a natural leading line from the foreground to the midground, guiding the eye through the scene.",
@@ -5287,6 +5816,11 @@
       "snow",
       "ice"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The penguin sits slightly off-center, creating a sense of space but leaving empty snow to the right.",
@@ -5333,6 +5867,11 @@
       "ice",
       "second penguin"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 74,
     "crit_composition": 74,
     "crit_composition_notes": "The penguin's head is positioned off-center but the second bird competes for attention without adding to the frame.",
@@ -5375,6 +5914,11 @@
       "feathers",
       "yellow beaks"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The penguins are positioned off-center but their alignment feels slightly crowded, leaving no clear negative space.",
@@ -5419,6 +5963,11 @@
       "black plumage",
       "white belly"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The penguins are positioned to create a visual dialogue, but the right edge is slightly cut off.",
@@ -5465,6 +6014,11 @@
       "black-and-white plumage",
       "orange beaks"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 73,
     "crit_composition_notes": "The penguins are grouped in a triangular formation that creates visual interest.",
@@ -5508,6 +6062,11 @@
       "water",
       "Antarctic sea"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The penguins are positioned on a natural diagonal leading from the water to the ice, creating visual flow.",
@@ -5555,6 +6114,11 @@
       "volcanic rock",
       "orange jackets"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The penguin perched on a rock draws attention, but the group of people in orange jackets competes for focus.",
@@ -5598,6 +6162,11 @@
       "calm water",
       "ice crevices"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The diagonal lines of ice create a dynamic visual flow leading to the central blue cavity.",
@@ -5643,6 +6212,11 @@
       "open water",
       "overcast sky"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 70,
     "crit_composition_notes": "The boat sits slightly off-center, creating a balanced composition that includes open water and icebergs.",
@@ -5685,6 +6259,11 @@
       "rocks",
       "nesting material"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The bird's wings lead to the penguins below, creating a dynamic diagonal that anchors the frame.",
@@ -5728,6 +6307,11 @@
       "snow",
       "meltwater"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 79,
     "crit_composition_notes": "The diagonal line of blue water creates a strong visual path across the frame.",
@@ -5772,6 +6356,11 @@
       "rocky terrain",
       "footprints"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The penguins are scattered across the frame in a way that creates visual interest but lacks a clear focal point.",
@@ -5816,6 +6405,11 @@
       "open water",
       "glacial ice"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 73,
     "crit_composition_notes": "The whale's tail is positioned off-center but the negative space feels unbalanced against the icebergs.",
@@ -5865,6 +6459,11 @@
       "reflection",
       "calm water"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The ship's railing leads the eye into the frame, balancing the human element against the vast landscape.",
@@ -5907,6 +6506,11 @@
       "water",
       "glacier"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 83,
     "crit_composition": 79,
     "crit_composition_notes": "The penguins are arranged in a dynamic line across the frame, creating movement and leading the eye through the image.",
@@ -5951,6 +6555,11 @@
       "open water",
       "seagull"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The kayakers are positioned at the bottom third, providing a sense of scale against the massive iceberg.",
@@ -5995,6 +6604,11 @@
       "frozen landscape",
       "sky"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The central peak anchors the frame; foreground ice leads the eye inward.",
@@ -6040,6 +6654,11 @@
       "snow",
       "footprints"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The penguin sits at the left-third intersection, creating a sense of balance against the vast white space.",
@@ -6085,6 +6704,11 @@
       "orange beaks",
       "black-and-white plumage"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The penguins are positioned off-center but the negative space feels empty rather than intentional.",
@@ -6128,6 +6752,11 @@
       "wet sand",
       "hazy sky"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The penguin sits slightly off-center, creating a sense of movement and space around it.",
@@ -6173,6 +6802,11 @@
       "frost",
       "faceted surfaces"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 72,
     "crit_composition": 74,
     "crit_composition_notes": "The ice crystals fill the frame but lack a clear focal point, creating visual noise.",
@@ -6221,6 +6855,11 @@
       "photographer",
       "wrought iron railing"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The statues are positioned to create a dynamic diagonal line across the frame, drawing attention from bottom-right to top-left.",
@@ -6267,6 +6906,11 @@
       "beach",
       "waves"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 78,
     "crit_composition": 79,
     "crit_composition_notes": "The fireworks anchor the left side while the buildings balance on the right, creating a visual tension between natural and urban elements.",
@@ -6312,6 +6956,11 @@
       "child figure",
       "adult figure"
     ],
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The stairs lead the eye up to the mural, creating a strong visual path.",
@@ -6355,6 +7004,11 @@
       "metal bars",
       "smoke effect"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The mural fills the frame but the subject's head is slightly off-center, creating a dynamic visual flow.",
@@ -6397,6 +7051,11 @@
       "trees",
       "building facade"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 83,
     "crit_composition": 79,
     "crit_composition_notes": "The mural fills the frame but the tree branches intrude at the edges, distracting from the artwork.",
@@ -6442,6 +7101,11 @@
       "trees",
       "buildings"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The mural fills most of the frame but leaves a distracting gap at the top where the wall meets the sky.",
@@ -6483,6 +7147,11 @@
       "valley",
       "dawn light"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The central mountain peak anchors the frame; foreground elements lead naturally to it.",
@@ -6525,6 +7194,11 @@
       "pine trees",
       "snow-capped peak"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "atlas-chile"
   },
   {
@@ -6543,6 +7217,11 @@
       "bare branch",
       "green foliage"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "me-travel-17"
   },
   {
@@ -6563,6 +7242,11 @@
       "clear sky",
       "sun flare"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 74,
     "crit_composition_notes": "The sun sits too close to the right edge, creating imbalance; the foreground rocks lack a clear connection to the midground.",
@@ -6609,6 +7293,11 @@
       "red algae",
       "water"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 83,
     "crit_composition": 87,
     "crit_composition_notes": "The bird sits at the intersection of thirds, balanced against vast expanses of color and texture.",
@@ -6649,6 +7338,11 @@
       "grassland",
       "dirt path"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 70,
     "crit_composition_notes": "The llama occupies the center of the frame, which lacks tension but provides clear focus on the subject.",
@@ -6692,6 +7386,11 @@
       "sky",
       "horizon"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 74,
     "crit_composition": 79,
     "crit_composition_notes": "The horizon line divides the frame into equal halves, creating a balanced but static composition.",
@@ -6733,6 +7432,11 @@
       "sky",
       "horizon"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "atlas-bolivia"
   },
   {
@@ -6753,6 +7457,11 @@
       "salt flat",
       "clear sky"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 74,
     "crit_composition": 73,
     "crit_composition_notes": "The Japanese flag occupies the central third of the frame, creating a visual anchor against the expansive background.",
@@ -6793,6 +7502,11 @@
       "electric cables",
       "antennas"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The cable cars create diagonal lines that lead the eye across the frame, connecting the cityscape to the hillside.",
@@ -6834,6 +7548,11 @@
       "clouds",
       "skyline"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 71,
     "crit_composition": 73,
     "crit_composition_notes": "The city sprawls across the frame without a clear focal point, weakening visual hierarchy.",

@@ -139,6 +139,14 @@ const REFINED_FIELDS = new Set([
   'story', 'entities',
 ]);
 
+// Prose fields the UI shows verbatim. Tracked through applyTier so the
+// merged output carries a `prose_provenance` map recording which tier
+// supplied the final value — used downstream to render a "by AI" badge
+// when the prose was written (or rewritten) by the LLM. Only ai/refined
+// tiers populate the map; human + ingest leave the field unmarked, so
+// absence in the map = human-authored or structural.
+const PROSE_FIELDS = new Set(['caption', 'alt', 'story']);
+
 // Country values are stored as ISO-3166-1 alpha-3 codes (USA, DEU,
 // GBR, ATA, ...). Anything else gets normalized via the locations
 // table (kebab-case legacy slugs, alpha-2 codes, display names,
@@ -430,6 +438,7 @@ function applyTier(
       if (isEmpty) {
         if (tier === 'human') {
           delete entry[k];
+          clearProseProvenance(entry, k);
           stats.cleared += 1;
         }
         // ai / ingest / refined: empty = no-op
@@ -473,10 +482,39 @@ function applyTier(
         continue;
       }
       entry[k] = v;
+      if (PROSE_FIELDS.has(k)) setProseProvenance(entry, k, tier);
       stats.applied += 1;
     }
   }
   return stats;
+}
+
+// Record the tier that supplied a prose field's final value on the
+// merged entry. Only ai / refined are tracked — human + ingest writes
+// clear any prior mark so absence in the map means "human-authored or
+// structural", which is what the downstream UI keys off when deciding
+// whether to render a "by AI" badge.
+function setProseProvenance(entry: MergedEntry, field: string, tier: Tier): void {
+  if (tier === 'ai' || tier === 'refined') {
+    let map = entry.prose_provenance as Record<string, string> | undefined;
+    if (!map) {
+      map = {};
+      entry.prose_provenance = map;
+    }
+    map[field] = tier;
+    return;
+  }
+  // human / ingest: clear any previous AI mark — the latest write isn't
+  // AI prose anymore.
+  clearProseProvenance(entry, field);
+}
+
+function clearProseProvenance(entry: MergedEntry, field: string): void {
+  const map = entry.prose_provenance as Record<string, string> | undefined;
+  if (!map) return;
+  if (!(field in map)) return;
+  delete map[field];
+  if (Object.keys(map).length === 0) delete entry.prose_provenance;
 }
 
 // ─── Refinement (generative tier) ─────────────────────────────────────
@@ -1018,6 +1056,7 @@ function toPhotographyOutput(entry: MergedEntry): Record<string, unknown> {
   const labelOrder = [
     'caption', 'alt', 'country', 'city', 'state',
     'theme', 'species', 'story', 'entities',
+    'prose_provenance',
     'crit_score', 'crit_composition', 'crit_composition_notes',
     'crit_lighting', 'crit_lighting_notes',
     'crit_subject', 'crit_subject_notes',
@@ -1044,6 +1083,7 @@ function toClassificationFields(entry: MergedEntry): Record<string, unknown> {
   for (const k of [
     'theme', 'caption', 'alt', 'story', 'entities',
     'country', 'city', 'state', 'species',
+    'prose_provenance',
     'crit_score', 'crit_composition', 'crit_composition_notes',
     'crit_lighting', 'crit_lighting_notes',
     'crit_subject', 'crit_subject_notes',

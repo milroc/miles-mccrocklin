@@ -69,6 +69,7 @@ function toMediaItem(p: PhotographyEntry, revealed: Set<string>): MediaItem {
     aspect: p.aspect,
     album_url: p.album_url,
     graphic: p.graphic && !revealed.has(p.id),
+    prose_provenance: p.prose_provenance,
   };
 }
 

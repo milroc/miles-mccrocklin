@@ -14,6 +14,11 @@
       "glacial formations"
     ],
     "country": "ata",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "photo-20241202-dsc08677"
   },
   "media/portfolio/argentina.jpg": {
@@ -37,6 +42,11 @@
     "country": "arg",
     "city": "Buenos Aires",
     "state": "Buenos Aires",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The diagonal line of the roof beams guides the eye toward the central figure and the fire.",
@@ -75,6 +85,11 @@
       "clouds",
       "fence"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "photo-20240527-dsc00432"
   },
   "media/portfolio/australia.jpg": {
@@ -94,11 +109,18 @@
       "sailboats",
       "people walking",
       "clouds",
-      "blue sky"
+      "blue sky",
+      "white sails",
+      "wet docks"
     ],
     "country": "aus",
     "city": "Sydney",
     "state": "New South Wales",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The diagonal line of the wall leads from foreground to background, framing the Opera House effectively.",
@@ -140,6 +162,11 @@
       "city square"
     ],
     "country": "aut",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The juxtaposition of historic and modern architecture creates visual tension, but the crowd competes for attention.",
@@ -179,6 +206,11 @@
       "green trees"
     ],
     "country": "bel",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "photo-20241008-dsc03534"
   },
   "media/portfolio/belize.jpg": {
@@ -196,6 +228,11 @@
       "distant horizon",
       "fishing boat"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 73,
     "crit_composition": 74,
     "crit_composition_notes": "The broken dock leads into the frame but stops short of a clear destination, leaving the composition unresolved.",
@@ -240,6 +277,11 @@
       "sun"
     ],
     "country": "bol",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 79,
     "crit_composition": 79,
     "crit_composition_notes": "The horizon line sits slightly above center, creating a balanced division between sky and water.",
@@ -282,6 +324,11 @@
       "islands"
     ],
     "country": "bra",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The city sprawls across the frame with Sugarloaf Mountain as a natural anchor, creating visual balance.",
@@ -320,6 +367,11 @@
       "cloudy sky"
     ],
     "country": "can",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 73,
     "crit_composition": 74,
     "crit_composition_notes": "The boat sits off-center but the vast expanse of water and mist overwhelms it, weakening its role as a focal point.",
@@ -362,6 +414,11 @@
       "trees"
     ],
     "country": "chl",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 78,
     "crit_composition": 79,
     "crit_composition_notes": "The frame uses the rule of thirds effectively; the mountains and trees anchor the lower third while the starry sky dominates above.",
@@ -400,6 +457,11 @@
       "small house",
       "fence"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The diagonal line of palm trees leads from bottom-left to center, creating a natural flow through the frame.",
@@ -440,6 +502,11 @@
       "cliffs"
     ],
     "country": "hrv",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The winding boardwalk creates a natural S-curve leading through the frame.",
@@ -478,6 +545,11 @@
       "cityscape"
     ],
     "country": "cze",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The twin spires dominate but the foreground buildings compete for attention without clear hierarchy.",
@@ -523,6 +595,11 @@
       "trees"
     ],
     "country": "dnk",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 73,
     "crit_composition": 74,
     "crit_composition_notes": "The archway dominates the frame but the people at the bottom compete for attention without adding to the structure's presence.",
@@ -561,6 +638,11 @@
     ],
     "country": "ecu",
     "species": "marine iguana",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The central iguana is positioned slightly off-center, creating a balanced composition that draws attention to its raised head.",
@@ -605,6 +687,11 @@
       "tourists"
     ],
     "country": "egy",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 79,
     "crit_composition_notes": "The receding staircase creates depth and draws the eye into the space.",
@@ -644,6 +731,11 @@
       "flower crown",
       "dark alleyway"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The statue on the left balances against the colorful stained glass panels, creating a visual dialogue between figure and architecture.",
@@ -683,6 +775,11 @@
       "river seine"
     ],
     "country": "fra",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "photo-20241016-dsc03794"
   },
   "media/portfolio/germany.jpg": {
@@ -703,6 +800,11 @@
       "spectators",
       "wetsuit"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "photo-20140919-2014-09-19-06-34-07"
   },
   "media/portfolio/gibraltar.jpg": {
@@ -722,6 +824,11 @@
       "mountain"
     ],
     "country": "gib",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The crowd in the foreground frames the plane and mountain, creating a layered composition.",
@@ -764,6 +871,11 @@
       "hillside"
     ],
     "country": "grc",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "photo-20240619-dsc01399-enhanced-nr"
   },
   "media/portfolio/guatemala.jpg": {
@@ -782,6 +894,11 @@
       "trees",
       "statues"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The pyramid sits slightly off-center, creating a balanced asymmetry that draws attention to its structure.",
@@ -826,6 +943,11 @@
       "bridge"
     ],
     "country": "ind",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "photo-20160113-dsc06372-enhanced-nr"
   },
   "media/portfolio/ireland.jpg": {
@@ -843,6 +965,11 @@
       "seaweed"
     ],
     "country": "irl",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 74,
     "crit_composition": 73,
     "crit_composition_notes": "The cliffs form a natural leading line from left to right, guiding the eye across the frame.",
@@ -883,6 +1010,11 @@
       "water"
     ],
     "country": "ita",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The canal leads the eye into the frame, balanced by the buildings on either side and the bridge in the mid-ground.",
@@ -923,6 +1055,11 @@
       "japanese text"
     ],
     "country": "jpn",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The neon sign anchors the frame but competing elements like the red lanterns and Bruce Lee poster distract from a clear visual hierarchy.",
@@ -961,6 +1098,11 @@
       "bridge"
     ],
     "species": "antelope",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 70,
     "crit_composition": 74,
     "crit_composition_notes": "The antelope sits slightly off-center, creating a balanced composition that includes both subject and urban backdrop.",
@@ -1002,6 +1144,11 @@
       "road"
     ],
     "country": "lie",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 79,
     "crit_composition_notes": "The reflection creates layered depth but the alignment of real and reflected elements is slightly off-center, weakening balance.",
@@ -1039,6 +1186,11 @@
       "animal"
     ],
     "species": "black-and-white ruffed lemur",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 81,
     "crit_composition": 79,
     "crit_composition_notes": "The lemur's face is positioned slightly off-center, creating a dynamic balance within the frame.",
@@ -1076,6 +1228,11 @@
       "greenery",
       "steps and railings"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 79,
     "crit_composition": 79,
     "crit_composition_notes": "The statue dominates the frame but leaves enough space for the background to provide context.",
@@ -1115,6 +1272,11 @@
       "trees",
       "buildings"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 73,
     "crit_composition_notes": "The cityscape converges toward the setting sun, creating a natural focal point.",
@@ -1155,6 +1317,11 @@
       "pillars"
     ],
     "country": "mar",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 79,
     "crit_composition": 87,
     "crit_composition_notes": "The central arch draws the eye into the depth of the courtyard, balanced by the columns on either side.",
@@ -1194,6 +1361,11 @@
       "construction crane"
     ],
     "country": "nld",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 73,
     "crit_composition_notes": "The central building dominates but the lamp post and tree in the foreground compete for attention.",
@@ -1244,6 +1416,11 @@
     "country": "nor",
     "city": "Tromsø",
     "state": "Troms og Finnmark",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The mountain silhouette anchors the lower third, creating a strong visual anchor against the aurora.",
@@ -1283,6 +1460,11 @@
       "clouds",
       "greenery"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 69,
     "crit_composition": 70,
     "crit_composition_notes": "The ship dominates the frame but the foreground tracks and grass compete for attention without adding to the subject.",
@@ -1322,6 +1504,11 @@
       "reflection",
       "people"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The boat sits slightly off-center, creating a balanced composition that leads the eye along the water's reflection.",
@@ -1362,6 +1549,11 @@
       "grass field"
     ],
     "country": "per",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 74,
     "crit_composition": 78,
     "crit_composition_notes": "The stone wall and ruins create a strong horizontal line that anchors the composition, while the figure and llama add vertical interest.",
@@ -1399,6 +1591,11 @@
       "monument",
       "blue sky"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 79,
     "crit_composition_notes": "The diagonal line of the statue base leads to the figures, creating a dynamic visual flow.",
@@ -1435,6 +1632,11 @@
       "forest foliage"
     ],
     "species": "gorilla",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 84,
     "crit_composition": 79,
     "crit_composition_notes": "The gorilla's face is positioned slightly off-center, creating a balanced composition that draws attention to its eyes.",
@@ -1475,6 +1677,11 @@
       "sky",
       "clouds"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The framing uses the stone walls to create a natural border, directing attention toward the distant castle.",
@@ -1517,6 +1724,11 @@
       "cloudy sky"
     ],
     "country": "sgp",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 79,
     "crit_composition": 79,
     "crit_composition_notes": "The Merlion statue anchors the right third while leading lines from the steps guide the eye toward it.",
@@ -1554,6 +1766,11 @@
       "forest"
     ],
     "species": "leopard",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "dupeOf": "photo-20190615-dsc04381"
   },
   "media/portfolio/spain.jpg": {
@@ -1571,6 +1788,11 @@
       "religious art"
     ],
     "country": "esp",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 84,
     "crit_composition": 87,
     "crit_composition_notes": "The stained glass windows form a natural grid that guides the eye through the complex architecture.",
@@ -1607,6 +1829,11 @@
       "beret",
       "hand gesture"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 73,
     "crit_composition_notes": "The statue's hand partially obscures the face, creating a dynamic but potentially distracting composition.",
@@ -1649,6 +1876,11 @@
       "bicycle"
     ],
     "country": "che",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 71,
     "crit_composition": 79,
     "crit_composition_notes": "The converging lines of the alley lead to the clock tower, creating a sense of depth and perspective.",
@@ -1688,6 +1920,11 @@
       "mythological figures"
     ],
     "country": "tha",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 73,
     "crit_composition": 74,
     "crit_composition_notes": "The central figure dominates but the framing cuts off parts of the side figures, weakening visual balance.",
@@ -1726,6 +1963,11 @@
       "greenery"
     ],
     "country": "tur",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The balloon sits off-center but its placement against the undulating terrain creates a dynamic visual anchor.",
@@ -1762,6 +2004,11 @@
       "fence"
     ],
     "species": "chimpanzee",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "featured": true,
     "sort_order": 440,
     "dupeOf": "photo-20240722-dsc06136-enhanced-nr"
@@ -1779,6 +2026,11 @@
       "skyscraper",
       "blue sky"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 67,
     "crit_composition": 73,
     "crit_composition_notes": "The Burj Khalifa is framed through a dense layer of leaves, creating an intentional visual barrier.",
@@ -1819,6 +2071,11 @@
       "clouds"
     ],
     "country": "gbr",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 80,
     "crit_composition": 79,
     "crit_composition_notes": "The bridge and river create a natural horizontal line that anchors the composition, but the boat slightly disrupts the balance.",
@@ -1858,6 +2115,11 @@
       "potted plants",
       "ceiling lights"
     ],
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 75,
     "crit_composition": 87,
     "crit_composition_notes": "The converging lines of the ceiling draw attention to the central sculpture, creating a strong visual hierarchy.",
@@ -1901,6 +2163,11 @@
     ],
     "country": "ury",
     "city": "Montevideo",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 71,
     "crit_composition": 79,
     "crit_composition_notes": "The diagonal lines of the railing and statue create a dynamic visual flow leading to the architectural details.",
@@ -1940,6 +2207,11 @@
       "striped floor tiles"
     ],
     "country": "vat",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 71,
     "crit_composition": 79,
     "crit_composition_notes": "The converging lines of the ceiling and floor tiles create a strong sense of depth, leading the eye towards the far end.",
@@ -1983,6 +2255,11 @@
     "country": "jpn",
     "city": "Tokyo",
     "state": "Tokyo",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 85,
     "crit_composition": 87,
     "crit_composition_notes": "The converging lines of light and seating guide the eye directly to the central vortex, creating a strong visual hierarchy.",
@@ -2024,6 +2301,11 @@
     "country": "ken",
     "state": "Masai Mara",
     "species": "lion",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 68,
     "crit_composition": 70,
     "crit_composition_notes": "The lioness sits slightly off-center, creating a balanced frame but leaving too much empty space around her.",
@@ -2065,6 +2347,11 @@
       "Lake Nakuru"
     ],
     "country": "ken",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "sort_order": 270,
     "dupeOf": "photo-20240804-dsc07927"
   },
@@ -2082,6 +2369,11 @@
       "icy surface"
     ],
     "country": "ata",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "sort_order": 240,
     "dupeOf": "photo-20241127-dsc05817-enhanced-nr"
   },
@@ -2101,6 +2393,11 @@
     ],
     "country": "uga",
     "species": "chimpanzee",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "sort_order": 330,
     "dupeOf": "photo-20240722-dsc06136-enhanced-nr"
   },
@@ -2121,6 +2418,11 @@
     ],
     "country": "per",
     "species": "llama",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 79,
     "crit_composition_notes": "The stone wall leads the eye across the frame to the human figure and llama, creating a visual connection between foreground and background.",
@@ -2143,7 +2445,8 @@
         "action": "Recompose with a lower angle to emphasize the height of the ruins and create more dramatic leading lines."
       }
     ],
-    "sort_order": 260
+    "sort_order": 260,
+    "dupeOf": "photo-20240920-dsc01522"
   },
   "media/sabbatical-travel/travel-09.jpeg": {
     "theme": [
@@ -2159,6 +2462,11 @@
     ],
     "country": "ata",
     "species": "emperor penguin",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "sort_order": 220,
     "dupeOf": "photo-20241128-dsc06513"
   },
@@ -2167,19 +2475,25 @@
       "mammals"
     ],
     "caption": "Koala in the Rain, Sydney",
-    "alt": "A koala clings to a tree branch in the rain, its fur damp and eyes half-closed, photographed in Sydney, Australia.",
+    "alt": "A koala clings to a eucalyptus branch in light rain, fur damp and eyes half-closed, photographed in Sydney, Australia.",
     "story": "Caught in a light downpour near Sydney, this koala holds tight to its perch, unbothered by the wet. Rain-soaked fur and a sleepy expression make for an intimate wildlife portrait.",
     "entities": [
       "koala",
-      "tree branch",
+      "eucalyptus branch",
       "rain",
       "wet fur",
-      "eucalyptus"
+      "eucalyptus",
+      "tree branch"
     ],
     "country": "aus",
     "city": "Sydney",
     "state": "New South Wales",
     "species": "koala",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The koala sits slightly off-center along a diagonal branch, creating visual interest.",
@@ -2222,6 +2536,11 @@
       "blue sky"
     ],
     "country": "arm",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "sort_order": 210,
     "dupeOf": "photo-20240527-dsc00432"
   },
@@ -2243,6 +2562,11 @@
       "dark sky"
     ],
     "country": "grc",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "sort_order": 340,
     "dupeOf": "photo-20240619-dsc01399-enhanced-nr"
   },
@@ -2260,6 +2584,11 @@
       "cold landscape"
     ],
     "country": "ata",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "sort_order": 290,
     "dupeOf": "photo-20241202-dsc08677"
   },
@@ -2282,6 +2611,11 @@
     "country": "chl",
     "city": "Cajón del Maipo",
     "state": "Región Metropolitana",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 78,
     "crit_composition": 79,
     "crit_composition_notes": "The frame balances the mountain mass on both sides against the open sky, creating a sense of symmetry.",
@@ -2322,6 +2656,11 @@
       "Antarctic terrain"
     ],
     "country": "ata",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "sort_order": 250,
     "dupeOf": "photo-20241203-dsc08974"
   },
@@ -2343,6 +2682,11 @@
     ],
     "country": "usa",
     "state": "Kentucky",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The Christmas tree sits at the center of the frame, creating a focal point against the dark cave walls.",
@@ -2383,6 +2727,11 @@
     "city": "Santiago",
     "state": "Región Metropolitana",
     "species": "hummingbird",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The bird sits slightly off-center on a diagonal branch, creating visual interest but leaving empty space to the right.",
@@ -2422,6 +2771,11 @@
       "tourist"
     ],
     "country": "egy",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 71,
     "crit_composition": 74,
     "crit_composition_notes": "The frame centers on the temple entrance but leaves too much empty space at the bottom, weakening the sense of scale.",
@@ -2465,6 +2819,11 @@
       "red pipes"
     ],
     "country": "jpn",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 75,
     "crit_composition": 74,
     "crit_composition_notes": "The vertical lines of the buildings and signs create a strong sense of depth, leading the eye down the alley.",
@@ -2506,6 +2865,11 @@
     ],
     "country": "jpn",
     "city": "Kyoto",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 74,
     "crit_composition": 73,
     "crit_composition_notes": "The blossoms are positioned off-center but the branches lead to empty space rather than a focal point.",
@@ -2546,6 +2910,11 @@
     "country": "per",
     "state": "Madre de Dios",
     "species": "giant river otter",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 73,
     "crit_composition": 70,
     "crit_composition_notes": "The otters are positioned off-center but the vast expanse of water around them feels empty.",
@@ -2589,6 +2958,11 @@
     ],
     "country": "rwa",
     "species": "mountain gorilla",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "sort_order": 280,
     "dupeOf": "photo-20240708-dsc03164"
   },
@@ -2610,6 +2984,11 @@
     "city": "Musanze",
     "state": "Northern Province",
     "species": "Mountain Gorilla",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 84,
     "crit_composition": 79,
     "crit_composition_notes": "The gorilla's face is framed by leaves that create a natural border, drawing attention to its eyes.",
@@ -2651,6 +3030,11 @@
       "cloudy sky"
     ],
     "country": "aus",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "sort_order": 50,
     "dupeOf": "atlas-australia"
   },
@@ -2671,6 +3055,11 @@
     ],
     "country": "ecu",
     "state": "Galápagos",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 74,
     "crit_composition": 74,
     "crit_composition_notes": "The bird sits slightly off-center but the surrounding foliage competes for attention.",
@@ -2710,6 +3099,11 @@
     ],
     "country": "ecu",
     "species": "marine iguana",
+    "prose_provenance": {
+      "caption": "ai",
+      "alt": "ai",
+      "story": "ai"
+    },
     "crit_score": 76,
     "crit_composition": 74,
     "crit_composition_notes": "The central iguana is positioned slightly off-center, creating a visual anchor but leaving empty space on the right.",
@@ -2752,6 +3146,11 @@
       "shallow water"
     ],
     "country": "bol",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "sort_order": 230,
     "dupeOf": "photo-20250115-dsc04248"
   },
@@ -2774,6 +3173,11 @@
     ],
     "country": "are",
     "city": "Dubai",
+    "prose_provenance": {
+      "caption": "refined",
+      "alt": "refined",
+      "story": "refined"
+    },
     "crit_score": 76,
     "crit_composition": 79,
     "crit_composition_notes": "The palm fronds in the top-left corner frame the Burj Khalifa, creating a natural leading line to the building.",
