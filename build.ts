@@ -1,17 +1,20 @@
 // Production build.
 //
-// Builds four HTML entries and emits them at GH-Pages-friendly paths:
+// Builds five HTML entries and emits them at GH-Pages-friendly paths:
 //
 //   ./index.html              → dist/index.html              (splash)
-//   ./builder/index.html      → dist/builder/index.html      (long-form / resume)
+//   ./builder/index.html      → dist/builder/index.html      (public-facing builder page)
+//   ./resume/index.html       → dist/resume/index.html       (detailed resume — noindex, deep-link only)
 //   ./explorer/index.html     → dist/explorer/index.html     (globe)
 //   ./photographer/index.html → dist/photographer/index.html (photo gallery)
 //
 // The three pillar URLs (/builder/, /photographer/, /explorer/) match
-// the splash tile names. Legacy slugs — /long-form, /photography,
-// /resume, /dossier, /about, /work — 404 in prod and the static
-// 404.html runs a small redirect script that funnels each to its
-// canonical pillar.
+// the splash tile names. /resume/ is the detailed resume that
+// /builder/ used to be; it's noindex and not linked from anywhere on
+// the site. Legacy slugs — /long-form, /photography, /dossier, /about,
+// /work — 404 in prod and the static 404.html runs a small redirect
+// script that funnels each to its canonical pillar. (/resume is no
+// longer in that legacy map — it's now a real route.)
 //
 // Splash gets an SSR pass: src/splash/Splash.tsx is renderToString()'d
 // and the resulting markup is injected into dist/index.html so crawlers
@@ -43,6 +46,7 @@ const result = await Bun.build({
   entrypoints: [
     './index.html',
     './builder/index.html',
+    './resume/index.html',
     './explorer/index.html',
     './photographer/index.html',
   ],
@@ -158,6 +162,7 @@ if (gaId) {
   const htmlPaths = [
     './dist/index.html',
     './dist/builder/index.html',
+    './dist/resume/index.html',
     './dist/explorer/index.html',
     './dist/photographer/index.html',
   ];

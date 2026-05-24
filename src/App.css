@@ -46,7 +46,8 @@
 /* <main> is the flex child that holds the .page article. Constrain its
    width here so the flex centering on .app operates on the right
    element. */
-#resume-content {
+#resume-content,
+#builder-content {
   width: min(var(--page-width), 100%);
   display: flex;
   justify-content: center;

@@ -284,6 +284,10 @@ export interface Era {
   achievements?: Achievement[];
   // Inline media for this era (e.g., Forecast UIs, Pro Mode hero).
   media?: MediaGroup;
+  // Single-paragraph description used on the generic /builder/ page in
+  // place of the bulleted achievements. When absent, EraGeneric falls
+  // back to the first achievement's text. Never shown on /resume/.
+  builder_tagline?: string;
 }
 
 export interface Job {
@@ -301,6 +305,10 @@ export interface Job {
   inline?: boolean;
   // Inline media at the job level (e.g., Bluenose UIs).
   media?: MediaGroup;
+  // Hide this job entirely from the generic /builder/ page (Builder.tsx).
+  // /resume/ still renders it. Use for short / older roles you don't
+  // want on the public-facing intro.
+  hide_on_builder?: boolean;
 }
 
 export interface School {

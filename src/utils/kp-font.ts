@@ -18,6 +18,20 @@ export const KP_BULLET_FONT: Record<Mode, KPFontCfg> = {
 // Canonical bullet column width when the resume is being printed.
 export const KP_PRINT_BULLET_WIDTH = 725;
 
+// Body-register font config — used when KPText runs inside an
+// `.entry-summary` block (job/era descriptions on /builder/). Matches
+// `--fs-body: 13.5px` from globals.css. KP measures via canvas, so a
+// mismatched cfg here vs. the rendered CSS picks line breaks that
+// fit at the wrong size and overflow at the right one.
+//
+// Keep the sizes in sync with `.entry-summary` font-size in
+// globals.css if either ever moves.
+export const KP_BODY_FONT: Record<Mode, KPFontCfg> = {
+  interactive: { font: `italic 13.5px ${KP_BULLET_FONT_BASE}`, boldFont: `italic bold 13.5px ${KP_BULLET_FONT_BASE}` },
+  text:        { font: `italic 13.5px ${KP_BULLET_FONT_BASE}`, boldFont: `italic bold 13.5px ${KP_BULLET_FONT_BASE}` },
+  '1pager':    { font: `italic 13.5px ${KP_BULLET_FONT_BASE}`, boldFont: `italic bold 13.5px ${KP_BULLET_FONT_BASE}` },
+};
+
 type Weight = 'bold' | 'normal';
 export type PrefixPart = readonly [text: string, weight: Weight];
 
