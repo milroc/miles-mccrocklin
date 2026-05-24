@@ -3,21 +3,11 @@
 // Hydrates (prod) or fresh-renders (dev) the Splash chrome. The reveal
 // effects are kicked off from inside Splash via useEffect, so they run
 // after React commits the DOM in both modes.
-//
-// Hash redirect: legacy links like miles.mccrockl.in/#experience
-// historically pointed to the resume page (when / was the resume).
-// After the redesign, / is the splash and the long-form page is at
-// /builder/. Preserve those links by redirecting any non-empty hash
-// on / to /builder/#hash on first load.
 
 import { hydrateRoot, createRoot } from 'react-dom/client';
 import { Splash } from './Splash';
 
-if (window.location.hash && window.location.hash !== '#') {
-  window.location.replace('/builder/' + window.location.hash);
-} else {
-  bootSplash();
-}
+bootSplash();
 
 function bootSplash(): void {
   const rootEl = document.getElementById('root');

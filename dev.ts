@@ -8,8 +8,10 @@
 // Routes match the production build's HTML outputs:
 //
 //   /                  → splash       (./index.html, mounts splash-entry.tsx)
-//   /builder           → builder      (./builder/index.html, mounts main.tsx)
+//   /builder           → builder      (./builder/index.html, mounts builder-entry.tsx)
 //   /builder/          → builder      (same)
+//   /resume            → resume       (./resume/index.html, mounts main.tsx — the detailed resume)
+//   /resume/           → resume       (same)
 //   /explorer          → explorer     (./explorer/index.html, mounts explorer-entry.tsx)
 //   /explorer/         → explorer     (same)
 //   /photographer      → photographer (./photographer/index.html, mounts photography-entry.tsx)
@@ -18,8 +20,11 @@
 // Legacy + alternative URL slugs 302 to their canonical pillar.
 // Production handles the same redirects via 404.html.
 //
-//   /long-form, /resume, /dossier, /about, /work  → /builder/
-//   /photography                                  → /photographer/
+//   /long-form, /dossier, /about, /work  → /builder/
+//   /photography                         → /photographer/
+//
+// /resume USED to be a legacy redirect to /builder/; now it's a real
+// route serving the detailed resume.
 //
 // The fetch fallback serves the project's static asset folders (media/,
 // data/) directly from disk so JSON-referenced image/video URLs resolve
@@ -35,6 +40,7 @@
 import { serve } from "bun";
 import splash from "./index.html";
 import builder from "./builder/index.html";
+import resume from "./resume/index.html";
 import explorer from "./explorer/index.html";
 import photographer from "./photographer/index.html";
 import { buildPhotographyManifest } from "./scripts/build-photography-manifest";
@@ -63,7 +69,6 @@ const HOST = process.env.HOST ?? "127.0.0.1";
 // rename.
 const LEGACY_TO_CANONICAL: Record<string, string> = {
   '/long-form':   '/builder/',
-  '/resume':      '/builder/',
   '/dossier':     '/builder/',
   '/about':       '/builder/',
   '/work':        '/builder/',
@@ -83,6 +88,8 @@ const server = serve({
     "/": splash,
     "/builder": builder,
     "/builder/": builder,
+    "/resume": resume,
+    "/resume/": resume,
     "/explorer": explorer,
     "/explorer/": explorer,
     "/photographer": photographer,
@@ -113,8 +120,9 @@ const server = serve({
 // Print the splash URL last on purpose: tools like Conductor scan
 // stdout and grab the last URL they see for their "Open" button.
 console.log(`  builder       → ${server.url}builder/`);
+console.log(`  resume        → ${server.url}resume/ (deep link, noindex)`);
 console.log(`  explorer      → ${server.url}explorer/`);
 console.log(`  photographer  → ${server.url}photographer/`);
-console.log(`  legacy        → /long-form, /resume, /dossier, /about, /work → /builder/`);
+console.log(`  legacy        → /long-form, /dossier, /about, /work → /builder/`);
 console.log(`  legacy        → /photography → /photographer/`);
 console.log(`dev server → ${server.url}`);

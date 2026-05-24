@@ -20,9 +20,13 @@ interface SabbaticalEntryProps {
   job: Job;
   path?: string;
   archived?: boolean;
+  // When true, no track renders inline as the primary anchor — every
+  // track sits behind the "Learn more" toggle. Used by the public
+  // /builder/ page where the sabbatical is a side-note, not the lede.
+  collapseAll?: boolean;
 }
 
-export function SabbaticalEntry({ job, path, archived }: SabbaticalEntryProps) {
+export function SabbaticalEntry({ job, path, archived, collapseAll }: SabbaticalEntryProps) {
   const mode = useContext(ModeContext);
   const edit = useEdit();
   const editActive = EDIT_ENABLED && edit.active;
@@ -59,7 +63,8 @@ export function SabbaticalEntry({ job, path, archived }: SabbaticalEntryProps) {
   // track renders inline so the user can re-classify without hunting
   // for a hidden affordance.
   const visibleTracks = (job.tracks || []).filter(trackRenderable);
-  const [primary, ...rest] = visibleTracks;
+  const primary = collapseAll ? undefined : visibleTracks[0];
+  const rest = collapseAll ? visibleTracks : visibleTracks.slice(1);
   const hasMore = rest.length > 0 && !editActive;
 
   const [expanded, setExpanded] = useState(false);
@@ -111,7 +116,7 @@ export function SabbaticalEntry({ job, path, archived }: SabbaticalEntryProps) {
       )}
       {showRest && (
         <div id="sabbatical-more">
-          {rest.map((t, i) => renderTrack(t, i, 1))}
+          {rest.map((t, i) => renderTrack(t, i, collapseAll ? 0 : 1))}
         </div>
       )}
       {hasMore && showRest && !editActive && (

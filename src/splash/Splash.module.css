@@ -582,20 +582,13 @@
 }
 
 /* ============================================================
-   Print: useful single line, splash chrome hidden
+   Print: hide splash chrome. Nothing else to surface here —
+   /resume/ is a deep-link, need-to-know URL and shouldn't be
+   advertised on the printed splash.
    ============================================================ */
 @media print {
   .wordmark, .tiles {
     display: none !important;
-  }
-  .root::before {
-    content: 'View resume at miles.mccrockl.in/resume/';
-    display: block;
-    text-align: center;
-    color: black;
-    font-family: Georgia, serif;
-    font-size: 14pt;
-    margin-top: 4in;
   }
 }
 

@@ -30,7 +30,8 @@ import { layoutParagraph, measureText } from '../utils/kp';
 import { hyphenate as hyphenateText } from '../utils/hyphenate';
 import { useElementWidth } from '../utils/hooks';
 import { ModeContext, PrintContext } from '../utils/mode';
-import { KP_BULLET_FONT, KP_PRINT_BULLET_WIDTH } from '../utils/kp-font';
+import { KP_BULLET_FONT, KP_PRINT_BULLET_WIDTH, type KPFontCfg } from '../utils/kp-font';
+import type { Mode } from '../types';
 import './KPText.css';
 
 const REDACTED_TOOLTIP =
@@ -41,12 +42,19 @@ interface KPTextProps {
   prefix?: string;
   prefixNode?: ReactNode;
   firstLineIndent?: number;
+  // Override the default bullet-font measurement config. Pass a mode→
+  // cfg table (e.g. KP_BODY_FONT from utils/kp-font) when KP is
+  // running over text rendered at a different size/family than the
+  // resume bullets. Defaults to KP_BULLET_FONT so existing callers
+  // (Bullets) keep working.
+  font?: Record<Mode, KPFontCfg>;
 }
 
-export function KPText({ text, prefix, prefixNode, firstLineIndent }: KPTextProps) {
+export function KPText({ text, prefix, prefixNode, firstLineIndent, font }: KPTextProps) {
   const mode = useContext(ModeContext);
   const printing = useContext(PrintContext);
-  const cfg = KP_BULLET_FONT[mode] || KP_BULLET_FONT.interactive;
+  const fontTable = font ?? KP_BULLET_FONT;
+  const cfg = fontTable[mode] || fontTable.interactive;
   const wrapRef = useRef<HTMLSpanElement | null>(null);
   const measuredWidth = useElementWidth(wrapRef);
   const width = printing ? KP_PRINT_BULLET_WIDTH : measuredWidth;

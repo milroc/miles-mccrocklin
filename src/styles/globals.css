@@ -209,6 +209,15 @@ a { color: inherit; text-decoration: none; }
   margin: 6px 0 8px;
 }
 
+/* When KPText is rendered inside .entry-summary (as on /builder/
+   where job.summary / era achievement text need redaction-anchor
+   rendering), the wrapper span needs display: block so width
+   measurement matches the container and `.kp-line` (white-space:
+   nowrap) doesn't overflow the page edge. Mirrors the
+   `ul.bullets li > .kp-wrap { display: block; }` rule in Bullets.css
+   that handles the same problem on the bullet path. */
+.entry-summary > .kp-wrap { display: block; }
+
 /* Bullet primitive (.bullets, .bullets li, ::before) lives in
    primitives/Bullets.css. KP-line default lives in primitives/KPText.css.
    Era / Track chrome (.era, .era-head, .focus, .period, .era-tagline,

@@ -694,7 +694,8 @@
               }
             ]
           },
-          "visibility": "all"
+          "visibility": "all",
+          "builder_tagline": "EM on the Bulletin Publishing UI team through its scale-up and sunset, placing every engineer who needed a new team and rebuilding mine around the back-end work that became Pro Mode. Stayed on as EM behind Pro Mode for Facebook Creators: the surface that bundled monetization, analytics, audience, and safety tools into one home for people building a creator business on Facebook."
         },
         {
           "period": "Feb 2020 – Dec 2021",
@@ -762,7 +763,8 @@
               }
             ]
           },
-          "visibility": "all"
+          "visibility": "all",
+          "builder_tagline": "Led the engineering work behind a 0→1 social prediction market shipped out of NPE, Meta's new-product experimentation org: built the trading page, scoring, leaderboards, community feed, and forecastapp.net (the public election-prediction surface for the 2020 US election), all on an internal points economy where accuracy and community discussion beat speculation as the engagement driver. Shipped four years before Polymarket and Kalshi reached mainstream around the 2024 election."
         },
         {
           "period": "Jan 2018 – Feb 2020",
@@ -812,7 +814,8 @@
               }
             ]
           },
-          "visibility": "all"
+          "visibility": "all",
+          "builder_tagline": "Led the engineering work behind Facebook's response to viral misinformation: built the platform 80 journalism agencies across the globe used to rate content, the plumbing that fanned each rating out to every near-duplicate across Facebook, Instagram, and Ads, and the warning labels people saw when they tried to share it. Still in production today."
         },
         {
           "period": "Sep 2014 – Dec 2017",
@@ -831,7 +834,8 @@
               "visibility": "not_1pager"
             }
           ],
-          "visibility": "all"
+          "visibility": "all",
+          "builder_tagline": "Main UI engineer on several of Meta's internal natural-language analytics tools, used across sales, communications, and safety: real-time election reporting alongside Fox News and other newsrooms, crisis monitoring around the world, and topic anthologies processed live across every post on Facebook and Instagram. Took one of them and rebuilt it as Audience Insights, a free product for creative ad agencies that grew the size of the ad pie."
         }
       ],
       "visibility": "all"
