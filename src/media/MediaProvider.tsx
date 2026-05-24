@@ -547,6 +547,9 @@ export function MediaProvider({ children }: MediaProviderProps) {
             ) : (
               <div className={s.caption}>
                 {cur.caption && <span className={s.captionText}>{cur.caption}</span>}
+                {cur.prose_provenance?.caption && (
+                  <span className={s.byAi}>Caption by AI</span>
+                )}
                 {cur.tag && <span className={s.captionTag}>{cur.tag}</span>}
                 {cur.album_url && (
                   <a

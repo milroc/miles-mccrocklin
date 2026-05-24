@@ -231,6 +231,20 @@
 .captionText {
   max-width: min(820px, 92vw);
 }
+/* AI-attribution credit rendered on its own line beneath the caption,
+   ABOVE the location .captionTag. Modeled after a photo credit byline:
+   small dim mono so the editorial caption stays loudest, the location
+   tag stays second-loudest, and the credit reads as quiet metadata.
+   No pill chrome — the pill competed with .captionTag for attention. */
+.byAi {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(232, 232, 232, 0.45);
+  line-height: 1.4;
+  cursor: help;
+}
 .captionTag {
   font-family: var(--mono);
   font-size: var(--fs-eyebrow);

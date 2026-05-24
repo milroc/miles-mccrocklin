@@ -91,6 +91,16 @@ interface MeMediaItem {
   tag?: string;
 }
 
+// Per-prose-field provenance: which tier of the labels pipeline wrote
+// the final value. Only present when the value is AI-derived ('ai' =
+// raw classifier, 'refined' = LLM rewrite informed by curator notes).
+// Absence of an entry means the value is human-authored or structural.
+type ProseProvenance = {
+  caption?: 'ai' | 'refined';
+  alt?: 'ai' | 'refined';
+  story?: 'ai' | 'refined';
+};
+
 interface PhotographyJsonEntry {
   id: string;
   src: string;
@@ -109,6 +119,7 @@ interface PhotographyJsonEntry {
   story?: string;
   dupeOf?: string;
   sort_order?: number;
+  prose_provenance?: ProseProvenance;
   crit_score?: number;
   crit_composition?: number;
   crit_lighting?: number;
@@ -277,6 +288,7 @@ interface SideClassification {
   crit_emotion_notes?: string;
   crit_technical_notes?: string;
   crit_notes?: string;
+  prose_provenance?: ProseProvenance;
 }
 
 function loadClassificationSideTable(): Record<string, SideClassification> {
@@ -285,6 +297,23 @@ function loadClassificationSideTable(): Record<string, SideClassification> {
   const raw = readFileSync(path, 'utf8').trim();
   if (!raw) return {};
   return JSON.parse(raw) as Record<string, SideClassification>;
+}
+
+// Compose the manifest's prose_provenance for an entry whose prose
+// fields are assembled from multiple sources (me.json item.caption,
+// side-table sc, atlas album titles). For each field, only mark "by
+// AI" when the value that ends up in the manifest came from the side
+// table AND the side table marked that field as ai/refined. Structural
+// inputs (me.json captions, atlas album titles, country fallbacks) are
+// human-authored and stay unmarked.
+function composeProseProvenance(
+  marks: { caption?: 'ai' | 'refined'; alt?: 'ai' | 'refined'; story?: 'ai' | 'refined' },
+): ProseProvenance | undefined {
+  const out: ProseProvenance = {};
+  if (marks.caption) out.caption = marks.caption;
+  if (marks.alt) out.alt = marks.alt;
+  if (marks.story) out.story = marks.story;
+  return Object.keys(out).length > 0 ? out : undefined;
 }
 
 export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
@@ -332,6 +361,16 @@ export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
     const aspect = item.aspect ?? (await readAspect(item.src));
     const country = countryFromTag(item.tag);
     const themeArr = sc.theme ?? [];
+    // me.json's item.caption / item.tag are human-authored — they
+    // shadow side-table values, so the provenance only inherits the
+    // side-table mark when the manifest actually pulls from sc.
+    const captionFromSc = !item.caption && !!sc.caption;
+    const altFromSc = !item.caption && !!sc.alt;
+    const proseProvenance = composeProseProvenance({
+      caption: captionFromSc ? sc.prose_provenance?.caption : undefined,
+      alt: altFromSc ? sc.prose_provenance?.alt : undefined,
+      story: sc.story ? sc.prose_provenance?.story : undefined,
+    });
     photos.push({
       id: `me-${item.id}`,
       src: item.src,
@@ -341,6 +380,7 @@ export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
       aspect,
       caption: item.caption || sc.caption || undefined,
       alt: item.caption || sc.alt || item.tag || undefined,
+      prose_provenance: proseProvenance,
       theme: themeArr,
       country: country ?? sc.country,
       city: sc.city,
@@ -395,6 +435,14 @@ export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
     if (e.dupeOf) { droppedDupes += 1; continue; }
     await ensureVariants(e.src);
     const aspect = e.aspect ?? (await readAspect(e.src));
+    // alt falls back to caption when alt is missing — when that
+    // happens, alt's provenance mirrors caption's.
+    const altFallsBackToCaption = !e.alt && !!e.caption;
+    const proseProvenance = composeProseProvenance({
+      caption: e.prose_provenance?.caption,
+      alt: altFallsBackToCaption ? e.prose_provenance?.caption : e.prose_provenance?.alt,
+      story: e.story ? e.prose_provenance?.story : undefined,
+    });
     photos.push({
       id: `photo-${e.id}`,
       src: e.src,
@@ -404,6 +452,7 @@ export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
       aspect,
       caption: e.caption,
       alt: e.alt ?? e.caption,
+      prose_provenance: proseProvenance,
       theme: e.theme ?? [],
       country: e.country,
       city: e.city,
@@ -461,6 +510,16 @@ export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
     // ISO-code migration). Normalize so the manifest's country field
     // matches the rest of the data — ISO-3 codes everywhere.
     const atlasCode = normalizeCountryCode(a.country_slug) ?? a.country_slug;
+    // primary_album.title and country are human-curated atlas data —
+    // they shadow side-table values, so provenance only inherits when
+    // sc is what actually fills the field.
+    const captionFromSc = !a.primary_album?.title && !!sc.caption;
+    const altFromSc = !!sc.alt;
+    const proseProvenance = composeProseProvenance({
+      caption: captionFromSc ? sc.prose_provenance?.caption : undefined,
+      alt: altFromSc ? sc.prose_provenance?.alt : undefined,
+      story: sc.story ? sc.prose_provenance?.story : undefined,
+    });
     photos.push({
       id: `atlas-${a.country_slug}`,
       src: a.image,
@@ -470,6 +529,7 @@ export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
       aspect,
       caption: a.primary_album?.title ?? sc.caption,
       alt: sc.alt ?? a.country,
+      prose_provenance: proseProvenance,
       theme: themeArr,
       country: atlasCode,
       city: sc.city,
