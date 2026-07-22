@@ -195,7 +195,7 @@
   color: #fff;
   background: rgba(0,0,0,0.50);
   border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 999px;
+  border-radius: 2px;
   padding: 6px 12px;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -286,9 +286,8 @@
 
 /* ---------- Prev/next nav buttons --------------------------------------
    Vertically centered on each side. Backdrop-blurred pill matching the
-   close button + counter in the topbar. Disabled (low-opacity) when at
-   the first or last slide so the affordance stays consistent without
-   "did I just click into nothing?" confusion.
+   close button + counter in the topbar. The carousel wraps, so both
+   arrows are always active.
 
    The track owns swipe and click-to-toggle-chrome. The nav buttons sit
    above the track (z-index: 4) and stop propagation on click so tapping
@@ -324,17 +323,13 @@
    navigation a click on the peek will trigger. Adjacent-sibling combinator
    inside :has() pinpoints the immediate prev/next peek (the only ones on
    screen given the 72vw active slide + 14vw track padding). */
-.nav:hover:not(:disabled),
-.nav:focus-visible:not(:disabled),
-.lightbox:has(.slide[aria-hidden="true"]:hover + .slide[aria-hidden="false"]) .prev:not(:disabled),
-.lightbox:has(.slide[aria-hidden="false"] + .slide[aria-hidden="true"]:hover) .next:not(:disabled) {
+.nav:hover,
+.nav:focus-visible,
+.lightbox:has(.slide[aria-hidden="true"]:hover + .slide[aria-hidden="false"]) .prev,
+.lightbox:has(.slide[aria-hidden="false"] + .slide[aria-hidden="true"]:hover) .next {
   background: rgba(255,255,255,0.14);
   border-color: #fff;
   outline: none;
-}
-.nav:disabled {
-  opacity: 0.35;
-  cursor: default;
 }
 
 /* Larger hit target on desktop, slightly bigger glyph too. */

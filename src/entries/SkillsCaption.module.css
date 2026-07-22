@@ -1,7 +1,7 @@
 .caption {
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: var(--serif);
   font-style: italic;
-  font-size: 12.5px;
+  font-size: var(--fs-bullet);
   line-height: 1.5;
   color: var(--muted);
   margin: 0 0 8px;
@@ -9,7 +9,8 @@
 
 /* "almost free" trigger — inline button that inherits the caption's
    italic register but flips to the forest-green accent so it reads as
-   a verb, not prose. Dotted underline at rest, solid on hover/focus. */
+   a verb, not prose. Muted underline at rest, full-strength on
+   hover/focus. */
 .trigger {
   appearance: none;
   border: none;
@@ -19,19 +20,17 @@
   letter-spacing: inherit;
   color: var(--accent);
   cursor: pointer;
-  text-decoration: underline dotted;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   transition:
     color 140ms ease,
-    text-decoration-color 140ms ease,
-    text-decoration-style 140ms ease;
+    text-decoration-color 140ms ease;
 }
 .trigger:hover {
   color: var(--accent);
-  text-decoration: underline solid;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
+  text-decoration-color: currentColor;
 }
 .trigger:focus-visible {
   outline: 2px solid var(--accent);

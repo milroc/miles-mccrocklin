@@ -86,9 +86,9 @@
 }
 /* On hover, each social icon swaps to its native brand color while the
    handle text stays in --accent. Keeps system consistency for type, lets
-   the icon "light up" with its own identity. X and Threads stay on the
-   accent (their brands are already monochrome). */
-.contactStack a[href*="github.com"]:hover .handleIcon    { color: #6e40c9; }
+   the icon "light up" with its own identity. X, Threads, and GitHub stay
+   on the accent (their brand marks are monochrome). */
+.contactStack a[href*="github.com"]:hover .handleIcon    { color: var(--accent); }
 .contactStack a[href*="linkedin.com"]:hover .handleIcon  { color: #0a66c2; }
 .contactStack a[href*="instagram.com"]:hover .handleIcon { color: #e1306c; }
 .sep {

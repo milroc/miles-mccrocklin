@@ -169,7 +169,7 @@
   line-height: 1;
 }
 /* "See all N reviews" — Airbnb Bélo CTA. The Bélo is the brand mark;
-   showing it un-tinted (Airbnb red #FF5A5F) is the explicit "this is from
+   showing it un-tinted (--guest-airbnb-red) is the explicit "this is from
    Airbnb" signal. tooltip + aria-label carry the full text. */
 .link {
   display: inline-flex;
@@ -179,14 +179,14 @@
   background: transparent;
   border: 0;
   border-radius: 999px;
-  color: #FF5A5F;
+  color: var(--guest-airbnb-red);
   text-decoration: none;
   transition: transform 160ms ease, color 160ms ease;
 }
 .link:hover,
 .link:focus-visible {
   /* Slight darken on hover, no full color shift — brand marks stay close
-     to spec on hover. */
+     to spec on hover. Hover shade of --guest-airbnb-red (#FF5A5F). */
   color: #E94B50;
   transform: scale(1.06);
   outline: none;

@@ -177,7 +177,7 @@ export function App() {
         <HighLevelFeedback />
 
         <Section title="Summary" show={showSummary}>
-          <p className="entry-summary lead" style={{ marginTop: 0, fontSize: '13px', lineHeight: 1.6 }}>
+          <p className="entry-summary lead">
             {r.summary}
           </p>
           {isInteractive && <SummaryGallery media={r.summary_media} />}

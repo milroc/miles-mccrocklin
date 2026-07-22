@@ -273,7 +273,7 @@ export function MasonryWall({
                     aria-label="Reveal graphic content"
                   >
                     <span className={s.graphicBadge}>Graphic content</span>
-                    <span className={s.graphicHint}>Tap to reveal</span>
+                    <span className={s.graphicHint}>Reveal</span>
                   </button>
                 )}
                 {showMeta && <MetaPanel photo={p} />}

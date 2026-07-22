@@ -445,7 +445,7 @@ export function MediaProvider({ children }: MediaProviderProps) {
           >
             {renderedSlides.map(({ p, key, renderedIdx }) => {
               // Graphic-content gate: re-uses the same UX as the masonry
-              // tile — image blurred behind a centered "Tap to reveal"
+              // tile — image blurred behind a centered "Reveal"
               // overlay. The masonry strips graphic=true for items it
               // already revealed there, so the lightbox only sees this
               // for photos the viewer hasn't yet opted into.
@@ -508,7 +508,7 @@ export function MediaProvider({ children }: MediaProviderProps) {
                           aria-label="Reveal graphic content"
                         >
                           <span className={s.graphicBadge}>Graphic content</span>
-                          <span className={s.graphicHint}>Tap to reveal</span>
+                          <span className={s.graphicHint}>Reveal</span>
                         </button>
                       )}
                     </div>

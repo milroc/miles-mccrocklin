@@ -91,7 +91,7 @@
 }
 
 /* Hero-category hover preview: tiles whose `theme` doesn't include
-   the hovered hero (wildlife / landscape / street) fade back so the
+   the hovered hero (wildlife / landscape / culture) fade back so the
    matching photos pop. Opacity + desaturate together — opacity alone
    feels like a loading state, desaturate alone reads as washed-out.
    200ms transition matches the EditorialTopFold preview cadence. */
