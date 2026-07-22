@@ -56,8 +56,9 @@ const SOCIALS: ReadonlyArray<{
 
 // Door cards — one full-width image each at its NATIVE aspect ratio
 // (both curated to 16:9 so the stack aligns; nothing is cropped).
-// Photographer card is "Penguin Parade in the Southern Ice", the
-// top-crit-scored 16:9 in the portfolio (83). Curation is hardcoded
+// Photographer card is the lone chinstrap traversing the snow slope
+// (owner-picked 2026-07; a 1280x720 derivative of Downloads/DSC08974-2
+// lives at media/summary/chinstrap-traverse.jpg). Curation is hardcoded
 // for the bundle-guard reason above; TODOS.md tracks moving it to data.
 const DOORS: ReadonlyArray<{
   id: string;
@@ -80,7 +81,7 @@ const DOORS: ReadonlyArray<{
   {
     id: 'photographer',
     href: '/photographer/',
-    thumb: '/media/photography/20241202-dsc08560.jpg',
+    thumb: '/media/summary/chinstrap-traverse.jpg',
     label: 'PHOTOGRAPHER',
     sublabel: 'artist',
     cta: 'view portfolio →',
