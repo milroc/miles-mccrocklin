@@ -27,6 +27,11 @@
   --canvas-fg:        #b8b5ad;                   /* secondary text on canvas */
   --canvas-fg-muted:  #7a7770;                   /* muted text on canvas */
   --canvas-rule:      rgba(236, 233, 226, 0.20); /* subtle borders on canvas */
+  /* Dark-canvas shadow — the mat's own darkness deepened (derived from
+     the #0a0c0a void tone, not neutral black, so shadows stay warm on
+     the warm mat). One color for every floating surface on canvas;
+     offsets/blur stay per-surface because they encode real geometry. */
+  --canvas-shadow:    rgba(10, 12, 10, 0.55);
 
   /* ---- Color: paper (the resume itself) ---- */
   --paper: #fdfdfb;

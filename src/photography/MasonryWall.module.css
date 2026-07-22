@@ -52,7 +52,7 @@
 }
 .tile:hover,
 .tile:focus-visible {
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 28px var(--canvas-shadow);
 }
 .tile:focus-visible {
   outline: 2px solid var(--accent);
