@@ -663,11 +663,11 @@
           "role": "Engineering Manager",
           "achievements": [
             {
-              "text": "Shipped Professional Mode for Facebook Creators as EM of a team of 10. Owned composer, settings, and onboarding surfaces. Onboarded ΞM creators in the first 3 months, unlocking α% of the org's top-line annual goal at β× target.",
+              "text": "Shipped Professional Mode (“Pro Mode”) for Facebook Creators as EM of a team of 10. Owned composer, settings, and onboarding surfaces. Onboarded ΞM creators in the first 3 months, unlocking α% of the org's top-line annual goal at β× target.",
               "visibility": "all"
             },
             {
-              "text": "Led 10 ICs on the Bulletin Publishing UI team through its scale-up and ultimate sunset. Placed every UI engineer who needed a new team, then rebuilt mine around the back-end work that became Professional Mode.",
+              "text": "Led 10 ICs on the Bulletin Publishing UI team through its scale-up and ultimate sunset. Placed every UI engineer who needed a new team, then rebuilt mine around the back-end work that became Pro Mode.",
               "visibility": "all"
             }
           ],
@@ -678,7 +678,7 @@
                 "id": "ui-pro-mode-hero",
                 "type": "image",
                 "src": "media/meta-bulletin-promode/pro-mode-hero.jpeg",
-                "caption": "Facebook Professional Mode (2023). Opt-in creator surface that bundled monetization, analytics, audience tools, and safety controls into one home for people building on Facebook. Letting anyone on Facebook become a creator on the platform.",
+                "caption": "Pro Mode (2023). Opt-in creator surface that bundled monetization, analytics, audience tools, and safety controls into one home for people building on Facebook. Letting anyone on Facebook become a creator on the platform.",
                 "tag": "Pro Mode · 2023",
                 "aspect": 1.7778,
                 "subtype": "ui"
@@ -695,7 +695,7 @@
             ]
           },
           "visibility": "all",
-          "builder_tagline": "EM on the Bulletin Publishing UI team through its scale-up and sunset, placing every engineer who needed a new team and rebuilding mine around the back-end work that became Pro Mode. Stayed on as EM behind Pro Mode for Facebook Creators: the surface that bundled monetization, analytics, audience, and safety tools into one home for people building a creator business on Facebook."
+          "builder_tagline": "EM on the Bulletin Publishing UI team through its scale-up and sunset, placing every engineer who needed a new team and rebuilding mine around the back-end work that became Professional Mode (“Pro Mode”). Stayed on as EM behind Pro Mode for Facebook Creators: the surface that bundled monetization, analytics, audience, and safety tools into one home for people building a creator business on Facebook."
         },
         {
           "period": "Feb 2020 – Dec 2021",
