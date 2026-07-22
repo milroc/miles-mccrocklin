@@ -99,15 +99,16 @@ const SPLASH_NAME = 'Miles Kendrick McCrocklin';
 const CONTINENT_COUNT = 7;
 
 // Match Header.tsx's syllable wrapper. Unlike the resume version, the
-// underline animation is dormant on splash (no handle links to drive it).
-function syllable(str: string, sub: string, kind: 'mil' | 'roc'): ReactNode {
+// underline animation is dormant on splash (no handle links to drive
+// it), so both syllables share the one inert .syl class (the resume's
+// per-syllable variants don't exist in this module).
+function syllable(str: string, sub: string): ReactNode {
   const idx = str.toLowerCase().indexOf(sub.toLowerCase());
   if (idx === -1) return str;
-  const sylClass = kind === 'mil' ? `${s.syl} ${s.sylMil}` : `${s.syl} ${s.sylRoc}`;
   return (
     <>
       {str.slice(0, idx)}
-      <span className={sylClass}>{str.slice(idx, idx + sub.length)}</span>
+      <span className={s.syl}>{str.slice(idx, idx + sub.length)}</span>
       {str.slice(idx + sub.length)}
     </>
   );
@@ -121,7 +122,7 @@ function renderLast(name: string): ReactNode {
   const [, prefix, smallCap, rest] = m;
   return (
     <>
-      {prefix}<sup className={s.nameSup}>{smallCap}</sup>{syllable(rest!, SYL.roc, 'roc')}
+      {prefix}<sup className={s.nameSup}>{smallCap}</sup>{syllable(rest!, SYL.roc)}
     </>
   );
 }
@@ -186,7 +187,7 @@ export function Splash(): JSX.Element {
             loading="lazy"
           />
           <h1 className={s.wordmark}>
-            {syllable(first, SYL.mil, 'mil')}
+            {syllable(first, SYL.mil)}
             <br />
             <span className={s.last}>{renderLast(last)}</span>
           </h1>

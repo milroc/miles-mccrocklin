@@ -419,8 +419,9 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
     // 500-720px, where the tile variant's chunky coastlines read as
     // artifacts. The fetch is off the critical path (parallel with the
     // reveal) and desktop-only, so the extra bytes are acceptable.
-    // world-countries-tile.topo.json still ships in /data for any
-    // future small-tile surface.
+    // world-countries-tile.topo.json is no longer shipped to dist;
+    // the generator still emits it in /data if a small-tile surface
+    // ever returns.
     const polygonsUrl = '/data/world-countries-50m.topo.json';
     const [globeMod, reactDomClientMod, reactMod, THREE, topojsonClientMod, topology, atlas] = await Promise.all([
       import('react-globe.gl'),

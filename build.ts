@@ -93,7 +93,10 @@ cpSync('./media', './dist/media', { recursive: true });
 // modules so dynamic-import MIME-type strictness can't break the
 // globe in prod.
 cpSync('./data/world-countries-50m.topo.json', './dist/data/world-countries-50m.topo.json');
-cpSync('./data/world-countries-tile.topo.json', './dist/data/world-countries-tile.topo.json');
+// world-countries-tile.topo.json is no longer shipped: both globe
+// surfaces fetch the 50m set since the 2026-07 splash redesign. The
+// tile variant stays in /data (build-world-countries.ts still emits
+// it) in case a small-tile surface returns.
 cpSync('./data/photo-atlas.json', './dist/data/photo-atlas.json');
 // Photography manifest is inlined into dist/photographer/index.html below
 // for zero-fetch first paint, but we also ship it as a static JSON so the
