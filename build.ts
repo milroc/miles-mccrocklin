@@ -30,7 +30,7 @@
 import { rmSync, cpSync, writeFileSync, readFileSync } from 'node:fs';
 import { loadMe, buildContext, injectPersonSchema, PERSON_SCHEMA_PATHS } from './scripts/page-meta';
 import { buildPhotographyManifest } from './scripts/build-photography-manifest';
-import { buildSplashStats } from './scripts/build-splash-stats';
+import { buildSplashContent } from './scripts/build-splash-content';
 
 rmSync('./dist', { recursive: true, force: true });
 
@@ -41,10 +41,10 @@ rmSync('./dist', { recursive: true, force: true });
 // cpSync below copies them along with the rest of media/ into dist/.
 const photographyManifest = await buildPhotographyManifest();
 
-// Regenerate the splash placard's country count from data/journey.json
-// (writes src/generated/splash-stats.ts) so the stat can never drift
-// from the globe it labels.
-buildSplashStats();
+// Regenerate the splash content module (doors, socials, tagline, stat)
+// from data/splash.json + me.json + journey.json — see
+// scripts/build-splash-content.ts.
+buildSplashContent();
 
 // Bundle all four HTML entries. Bun preserves their relative directory
 // structure under outdir, so builder/index.html lands at dist/builder/index.html.

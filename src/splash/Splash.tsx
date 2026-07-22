@@ -30,73 +30,35 @@ import {
 } from 'react-icons/fa6';
 import { SYL, SMALLCAP_PREFIX_RE } from '../me';
 import { WireGlobe } from '../globe/WireGlobe';
-import { VISITED_COUNTRY_COUNT } from '../generated/splash-stats';
+import {
+  VISITED_COUNTRY_COUNT,
+  CONTINENT_COUNT,
+  SPLASH_NAME,
+  SPLASH_PORTRAIT,
+  SPLASH_TAGLINE,
+  SOCIALS,
+  DOORS,
+  EXPLORER_DOOR,
+} from '../generated/splash-content';
 import './splash-globals.css';
 import s from './Splash.module.css';
 
-// Socials — same set the resume Header renders, but icons-only on the
-// splash for a tighter editorial register. URLs hardcoded for the same
-// reason as SPLASH_NAME below: keep the splash bundle from importing
-// data/me.json and dragging all the prose into a chrome-only entry.
-// Source of truth lives in data/me.json contact_information; if a
-// handle changes, update both places (tracked in TODOS.md).
-const SOCIALS: ReadonlyArray<{
-  id: string;
-  href: string;
-  Icon: typeof FaGithub;
-  label: string;
-}> = [
-  { id: 'github',    href: 'https://github.com/milroc',                              Icon: FaGithub,    label: 'GitHub' },
-  { id: 'linkedin',  href: 'https://www.linkedin.com/in/miles-mccrocklin-7b635127',  Icon: FaLinkedin,  label: 'LinkedIn' },
-  { id: 'twitter',   href: 'https://twitter.com/Milr0c',                             Icon: FaXTwitter,  label: 'X (Twitter)' },
-  { id: 'instagram', href: 'https://instagram.com/milroc',                           Icon: FaInstagram, label: 'Instagram' },
-  { id: 'threads',   href: 'https://threads.com/@milroc',                            Icon: FaThreads,   label: 'Threads' },
-  { id: 'email',     href: 'mailto:miles@mccrockl.in',                               Icon: FaEnvelope,  label: 'Email' },
-];
-
-// Door cards — one full-width image each at its NATIVE aspect ratio
-// (both curated to 16:9 so the stack aligns; nothing is cropped).
-// Photographer card is the lone chinstrap traversing the snow slope
-// (owner-picked 2026-07; a 1280x720 derivative of Downloads/DSC08974-2
-// lives at media/summary/chinstrap-traverse.jpg). Curation is hardcoded
-// for the bundle-guard reason above; TODOS.md tracks moving it to data.
-const DOORS: ReadonlyArray<{
-  id: string;
-  href: string;
-  thumb: string;
-  label: string;
-  sublabel: string;
-  cta: string;
-  aria: string;
-}> = [
-  {
-    id: 'builder',
-    href: '/builder/',
-    thumb: '/media/meta-misinformation/fact-check-labels.jpg',
-    label: 'BUILDER',
-    sublabel: 'technologist',
-    cta: 'the work →',
-    aria: 'Builder — view resume',
-  },
-  {
-    id: 'photographer',
-    href: '/photographer/',
-    thumb: '/media/summary/chinstrap-traverse.jpg',
-    label: 'PHOTOGRAPHER',
-    sublabel: 'artist',
-    cta: 'the frames →',
-    aria: 'Photographer — view the gallery',
-  },
-];
-
-// Wordmark uses the same name string as the resume's contact_information.name.
-// Hardcoded here to keep the splash bundle from importing data/me.json.
-const SPLASH_NAME = 'Miles Kendrick McCrocklin';
-
-// The placard's continent figure. journey.json has no continent field,
-// so this can't be derived like VISITED_COUNTRY_COUNT is — it's
-// hand-maintained (lifetime-true: all seven, Antarctica included).
-const CONTINENT_COUNT = 7;
+// All splash content comes from src/generated/splash-content.ts,
+// regenerated on every build/dev boot by scripts/build-splash-content.ts:
+// door curation + tagline + continent count from data/splash.json,
+// name/portrait/socials derived from data/me.json (single source of
+// truth — no more hand-synced duplicates), country count from
+// data/journey.json. The generated module is a few hundred bytes, so
+// the bundle guard holds: me.json's prose never enters this chunk.
+// Icons are presentation, so the id → component map lives here.
+const SOCIAL_ICONS: Record<string, typeof FaGithub> = {
+  github: FaGithub,
+  linkedin: FaLinkedin,
+  twitter: FaXTwitter,
+  instagram: FaInstagram,
+  threads: FaThreads,
+  email: FaEnvelope,
+};
 
 // Match Header.tsx's syllable wrapper. Unlike the resume version, the
 // underline animation is dormant on splash (no handle links to drive
@@ -182,7 +144,7 @@ export function Splash(): JSX.Element {
         <div className={s.byline}>
           <img
             className={s.portrait}
-            src="/media/summary/portrait.jpg"
+            src={SPLASH_PORTRAIT}
             alt="Portrait of Miles McCrocklin"
             loading="lazy"
           />
@@ -192,18 +154,10 @@ export function Splash(): JSX.Element {
             <span className={s.last}>{renderLast(last)}</span>
           </h1>
         </div>
-        <p className={s.tagline}>
-          Ten years at Meta supporting teams, fighting misinformation, and
-          building prediction markets. Now on sabbatical: seven continents,
-          thousands of stories captured in frame.
-        </p>
+        <p className={s.tagline}>{SPLASH_TAGLINE}</p>
       </header>
 
-      <a
-        className={s.hero}
-        href="/explorer/"
-        aria-label="Explorer — fullscreen globe of every country I've been to"
-      >
+      <a className={s.hero} href={EXPLORER_DOOR.href} aria-label={EXPLORER_DOOR.aria}>
         <span className={s.globeBox} data-splash-globe-box="true">
           <span className={s.stat} aria-hidden="true">
             {VISITED_COUNTRY_COUNT} COUNTRIES
@@ -216,9 +170,9 @@ export function Splash(): JSX.Element {
           <span className={s.globeMount} data-splash-globe-mount="true" />
         </span>
         <span className={s.heroDoor}>
-          <span className={s.doorLabel}>EXPLORER</span>
-          <span className={s.doorSublabel}>traveler</span>
-          <span className={s.doorCta}>the journey →</span>
+          <span className={s.doorLabel}>{EXPLORER_DOOR.label}</span>
+          <span className={s.doorSublabel}>{EXPLORER_DOOR.sublabel}</span>
+          <span className={s.doorCta}>{EXPLORER_DOOR.cta}</span>
         </span>
       </a>
 
@@ -236,19 +190,23 @@ export function Splash(): JSX.Element {
       </div>
 
       <nav className={s.socials} aria-label="Miles on the internet">
-        {SOCIALS.map(({ id, href, Icon, label }) => (
-          <a
-            key={id}
-            href={href}
-            target={href.startsWith('mailto:') ? undefined : '_blank'}
-            rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
-            className={s.socialLink}
-            aria-label={label}
-            title={label}
-          >
-            <Icon className={s.socialIcon} aria-hidden="true" />
-          </a>
-        ))}
+        {SOCIALS.map(({ id, href, label }) => {
+          const Icon = SOCIAL_ICONS[id];
+          if (!Icon) return null;
+          return (
+            <a
+              key={id}
+              href={href}
+              target={href.startsWith('mailto:') ? undefined : '_blank'}
+              rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
+              className={s.socialLink}
+              aria-label={label}
+              title={label}
+            >
+              <Icon className={s.socialIcon} aria-hidden="true" />
+            </a>
+          );
+        })}
       </nav>
     </div>
   );

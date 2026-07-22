@@ -1,23 +1,15 @@
 # TODOS
 
-## Move splash grid curation from code to data
+(No open items.)
 
-**What:** Relocate the splash's hardcoded content — the door thumbnail
-choices and the duplicated `SOCIALS` / `SPLASH_NAME` constants — into data
-(`data/me.json` or a dedicated `data/splash.json`), while keeping the
-bundle-size guard that motivated the hardcoding (the splash entry must not
-drag all of me.json's prose into a chrome-only bundle). The old masonry
-grid arrays this TODO originally targeted are deleted by the globe-anchor
-redesign; what remains is one thumbnail per door plus the constants.
+## Done
 
-**Why:** Today "swap a splash image" is a code change, with commented-out lines
-serving as the curation UI. Two independent design reviewers (2026-07-22)
-flagged it as drift waiting to happen; a future PROJECTS door makes splash
-edits more frequent.
-
-**Context:** The globe-anchor splash redesign (see
-`~/.gstack/projects/milroc-miles-mccrocklin/designs/splash-improve-20260721/splash-improve-design-plan-20260722.md`)
-shrinks the door image lists to one image each, which makes this migration much
-smaller than it was under the masonry layout.
-
-**Depends on:** The globe-anchor splash redesign landing first.
+- **Move splash grid curation from code to data** — completed on
+  `feat/splash-globe-anchor`, 2026-07-22. Splash content now lives in
+  `data/splash.json` (doors, tagline, continent count) with name,
+  portrait, and socials derived from `data/me.json`'s
+  `contact_information`; `scripts/build-splash-content.ts` regenerates
+  `src/generated/splash-content.ts` on every build/dev boot. The
+  bundle guard holds (me.json prose never enters the splash chunk) and
+  the socials/name drift the 2026-07-22 reviewers flagged is
+  structurally impossible now.
