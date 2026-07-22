@@ -7,7 +7,7 @@ export const VISITED_COUNTRY_COUNT = 53;
 export const CONTINENT_COUNT = 7;
 export const SPLASH_NAME = "Miles Kendrick McCrocklin";
 export const SPLASH_PORTRAIT = "/media/summary/portrait.jpg";
-export const SPLASH_TAGLINE = "Ten years at Meta supporting teams, fighting misinformation, and building prediction markets. Now on sabbatical: seven continents, thousands of stories captured in frame.";
+export const SPLASH_TAGLINE = "Ten years at FB supporting teams, fighting misinformation, and building prediction markets. A sabbatical since: seven continents, thousands of stories captured in frame. Back to building.";
 export const SOCIALS = [
   {
     "id": "github",
