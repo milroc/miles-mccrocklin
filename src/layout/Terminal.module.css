@@ -18,8 +18,9 @@
   border-top: 1px solid rgba(217, 119, 87, 0.22);
   box-shadow: inset 0 1px 0 rgba(236, 233, 226, 0.07);
   /* Subtle text-shadow keeps cream type crisp across whatever the
-     blur is averaging from the page underneath — same trick the
-     splash glass labels use over busy imagery. */
+     blur is averaging from the page underneath. (Glass here is a
+     deliberate guest-register exception — see DESIGN.md "Terminal
+     glass"; the splash glass labels this once matched are retired.) */
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 
   color: var(--guest-claude-fg);

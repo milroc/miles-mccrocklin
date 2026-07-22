@@ -208,6 +208,14 @@ register stays visible.
 - **Intent:** Photography reads as editorial marginalia at rest, snaps to
   full color on intent. Avoids the "vacation slideshow" energy a 100%-color
   gallery would carry inside an editorial document.
+- **Exception — /photographer/ masonry wall.** On the gallery page the
+  photography IS the document, not marginalia, so tiles ship full color at
+  rest (`contrast(1.02)`) and light up on hover
+  (`saturate(1.15) contrast(1.04)`). Documented 2026-07-22 (was
+  undocumented drift; the code was right, this file was behind).
+- **Terminal glass.** The Claude Code terminal dock keeps its heavy
+  frosted-glass surface by owner preference ("it's how I prefer my own
+  terminals") — a guest-register exception, like the Airbnb palette.
 
 ## Motion
 
