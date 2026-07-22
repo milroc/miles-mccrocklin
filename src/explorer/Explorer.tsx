@@ -17,9 +17,9 @@ import { LoadingGlobe } from './LoadingGlobe';
 import { Toolbar } from './Toolbar';
 import { VISITED_COUNTRY_COUNT, CONTINENT_COUNT } from '../generated/splash-content';
 
-// Idle delay (ms) before the SiteNav fades out. Matches the
-// MediaProvider lightbox chrome-hide cadence so the globe and the
-// lightbox share one motion vocabulary.
+// Idle delay (ms) before the SiteNav fades out. 3000ms suits this
+// full-screen ambient page; the MediaProvider lightbox hides its
+// chrome faster (1200ms) because it's a focused viewing surface.
 const NAV_IDLE_MS = 3000;
 
 export function Explorer(): JSX.Element {
@@ -63,7 +63,12 @@ export function Explorer(): JSX.Element {
       },
     })
       .then((c) => { if (cancelled) c(); else cleanup = c; })
-      .catch(() => { /* non-fatal; the page just shows empty */ });
+      .catch(() => {
+        // Non-fatal, but stop the LoadingGlobe's "loading" label from
+        // pulsing forever — LoadingGlobe.module.css hides it when this
+        // attribute is present on the mount container.
+        if (!cancelled) el.setAttribute('data-globe-failed', '');
+      });
     return () => {
       cancelled = true;
       controlsRef.current = null;
