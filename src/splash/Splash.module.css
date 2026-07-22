@@ -321,11 +321,13 @@
   .doors {
     width: min(100%, 380px);
   }
-  /* Byline sized to the shared 380px measure: smaller portrait and a
-     wordmark that fits "Miles Kendrick" on one line beside it. */
+  /* Byline sized to the shared 380px measure: portrait matches the
+     two-line wordmark block's height (~80px) so the face and the name
+     read as equals; "Miles Kendrick" at 36px still fits beside it
+     (80 + 20 gap + ~250 text < 380). */
   .portrait {
-    width: 56px;
-    height: 56px;
+    width: 80px;
+    height: 80px;
   }
   .wordmark {
     font-size: 36px;
