@@ -15,6 +15,7 @@ import { SiteNav } from '../layout/SiteNav';
 import { CountryPanel } from './CountryPanel';
 import { LoadingGlobe } from './LoadingGlobe';
 import { Toolbar } from './Toolbar';
+import { VISITED_COUNTRY_COUNT, CONTINENT_COUNT } from '../generated/splash-content';
 
 // Idle delay (ms) before the SiteNav fades out. Matches the
 // MediaProvider lightbox chrome-hide cadence so the globe and the
@@ -151,8 +152,15 @@ export function Explorer(): JSX.Element {
             strips it from the DOM, so no React state machine needed. */}
         <LoadingGlobe />
       </div>
-      <p className={s.title}>
-        Explorer
+      {/* Title plate joins the same idle-hide as the nav and toolbar so
+          an untouched globe spins with zero chrome. Counts share the
+          splash placard's derivation (generated module) so the two
+          surfaces can't drift. */}
+      <p
+        className={`${s.title} ${navVisible ? '' : s.titleHidden}`}
+        aria-hidden={!navVisible}
+      >
+        Explorer · {VISITED_COUNTRY_COUNT} countries · {CONTINENT_COUNT} continents
         <em>every country I've been to, the routes I took & some example photos for each.</em>
       </p>
       {selected ? <CountryPanel selection={selected} onClose={closeModal} /> : null}
