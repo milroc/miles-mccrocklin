@@ -66,6 +66,29 @@
   grid-area: header;
 }
 
+/* Byline — the author-photo register: small circular portrait beside
+   the wordmark, book-jacket style. Answers "whose site is this" with a
+   face without competing with the globe anchor. Same photo treatment
+   as everything else: grayscale at rest, color on intent. */
+.byline {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.portrait {
+  width: 76px;
+  height: 76px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid var(--splash-canvas-rule);
+  filter: grayscale(0.18) contrast(1.02);
+  transition: filter 240ms ease;
+}
+.byline:hover .portrait {
+  filter: grayscale(0) contrast(1.04);
+}
+
 /* Wordmark — same style register as the resume's Header.name
    (Georgia, 300 weight, 900-weight last name with sup'd "c" and inert
    syllable spans). Cream instead of ink to read on the dark mat. */
@@ -232,23 +255,31 @@
 }
 
 /* ============================================================
-   Doors — compact rows for Builder and Photographer. One thumbnail,
-   label + sublabel, CTA visible at rest on every viewport (no
-   hover-only affordances). The row list scales to future doors
-   (PROJECTS) without recomposing the page.
+   Doors — stacked cards for Builder and Photographer. One full-width
+   image each at its native 16:9 (both curated to the misinformation
+   UI's aspect so the stack aligns and NOTHING is cropped), label row
+   beneath with the CTA visible at rest on every viewport. The card
+   stack scales to future doors (PROJECTS) without recomposing the
+   page.
    ============================================================ */
 .doors {
   grid-area: doors;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   align-self: center;
+  width: 100%;
+}
+@media (min-width: 900px) {
+  .doors {
+    /* Narrower than the column so both native-aspect images fit the
+       vertical budget of the 100vh composition. */
+    width: min(100%, 380px);
+  }
 }
 .door {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 10px;
+  flex-direction: column;
   background: #22261f;
   border: 1px solid transparent;
   text-decoration: none;
@@ -262,11 +293,14 @@
   outline: 2px solid var(--splash-accent);
   outline-offset: 4px;
 }
-.doorThumb {
-  width: 96px;
-  height: 64px;
+.doorImage {
+  width: 100%;
+  /* Both door images are native 16:9 — the box matches the file, so
+     object-fit never crops. If a future door ships a different ratio,
+     re-curate the image, don't crop it here. */
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  flex-shrink: 0;
+  display: block;
   /* Loading state: the void tone shows while bytes arrive (slow
      networks see a quiet dark slab, never a broken-image icon). */
   background: var(--splash-canvas-void);
@@ -275,16 +309,18 @@
   filter: grayscale(0.18) contrast(1.02);
   transition: filter 240ms ease;
 }
-.door:hover .doorThumb,
-.door:focus-visible .doorThumb {
+.door:hover .doorImage,
+.door:focus-visible .doorImage {
   filter: grayscale(0) contrast(1.04);
 }
 .doorText {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 14px;
   min-width: 0;
 }
+/* Shared by the hero's label chip (label + sublabel on one baseline). */
 .doorTitle {
   display: flex;
   align-items: baseline;
@@ -308,6 +344,8 @@
   font-size: 10px;
   letter-spacing: 0.04em;
   color: var(--splash-accent);
+  margin-left: auto;
+  white-space: nowrap;
 }
 .door:hover .doorCta {
   text-decoration: underline;

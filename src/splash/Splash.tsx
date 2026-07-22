@@ -54,10 +54,11 @@ const SOCIALS: ReadonlyArray<{
   { id: 'email',     href: 'mailto:miles@mccrockl.in',                               Icon: FaEnvelope,  label: 'Email' },
 ];
 
-// Door rows — one tight thumbnail each (a masonry collage at door size
-// reads as mud; see the 2026-07 design review). Thumbnail curation is
-// hardcoded for the bundle-guard reason above; TODOS.md tracks moving
-// it to data.
+// Door cards — one full-width image each at its NATIVE aspect ratio
+// (both curated to 16:9 so the stack aligns; nothing is cropped).
+// Photographer card is "Penguin Parade in the Southern Ice", the
+// top-crit-scored 16:9 in the portfolio (83). Curation is hardcoded
+// for the bundle-guard reason above; TODOS.md tracks moving it to data.
 const DOORS: ReadonlyArray<{
   id: string;
   href: string;
@@ -79,7 +80,7 @@ const DOORS: ReadonlyArray<{
   {
     id: 'photographer',
     href: '/photographer/',
-    thumb: '/media/sabbatical-travel/travel-09.jpeg',
+    thumb: '/media/photography/20241202-dsc08560.jpg',
     label: 'PHOTOGRAPHER',
     sublabel: 'artist',
     cta: 'view portfolio →',
@@ -176,11 +177,19 @@ export function Splash(): JSX.Element {
       ref={rootRef}
     >
       <header className={s.header}>
-        <h1 className={s.wordmark}>
-          {syllable(first, SYL.mil, 'mil')}
-          <br />
-          <span className={s.last}>{renderLast(last)}</span>
-        </h1>
+        <div className={s.byline}>
+          <img
+            className={s.portrait}
+            src="/media/summary/portrait.jpg"
+            alt="Portrait of Miles McCrocklin"
+            loading="lazy"
+          />
+          <h1 className={s.wordmark}>
+            {syllable(first, SYL.mil, 'mil')}
+            <br />
+            <span className={s.last}>{renderLast(last)}</span>
+          </h1>
+        </div>
         <p className={s.tagline}>
           Ten years at Meta fighting misinformation and building prediction
           markets. Now on sabbatical: seven continents, thousands of stories
@@ -216,12 +225,10 @@ export function Splash(): JSX.Element {
       <div className={s.doors}>
         {DOORS.map(({ id, href, thumb, label, sublabel, cta, aria }) => (
           <a key={id} className={s.door} data-id={id} href={href} aria-label={aria}>
-            <img className={s.doorThumb} src={thumb} alt="" loading="lazy" />
+            <img className={s.doorImage} src={thumb} alt="" loading="lazy" />
             <span className={s.doorText}>
-              <span className={s.doorTitle}>
-                <span className={s.doorLabel}>{label}</span>
-                <span className={s.doorSublabel}>{sublabel}</span>
-              </span>
+              <span className={s.doorLabel}>{label}</span>
+              <span className={s.doorSublabel}>{sublabel}</span>
               <span className={s.doorCta}>{cta}</span>
             </span>
           </a>
