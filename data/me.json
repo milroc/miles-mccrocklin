@@ -1131,7 +1131,7 @@
     {
       "id": "xi",
       "glyph": "Ξ",
-      "context": "Creators onboarded to Pro Mode in the first 3 months — measured in millions."
+      "context": "Creators onboarded to Pro Mode in the first 3 months (measured in millions)."
     },
     {
       "id": "alpha",
@@ -1146,7 +1146,7 @@
     {
       "id": "sigma-small",
       "glyph": "σ",
-      "context": "Share of Facebook posts that contain a web link. Small slice of total posts — the entry point for first-generation misinformation detection."
+      "context": "Share of Facebook posts that contain a web link. Small slice of total posts: the entry point for first-generation misinformation detection."
     },
     {
       "id": "sigma",
