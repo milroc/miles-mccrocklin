@@ -107,7 +107,7 @@ export function Reviews({ data, max = 4 }: ReviewsProps) {
           <span className={s.star} aria-hidden="true">★</span>
           {data.overall_rating} · {data.total_reviews} guest reviews
         </span>
-        <span className={s.summaryHint}>click to expand</span>
+        <span className={s.summaryHint}>expand</span>
       </summary>
       <div ref={contentRef} className={s.reviewsAnim}>
         <section className={`${s.reviews} ${s.compact}`}>
@@ -142,7 +142,7 @@ export function Reviews({ data, max = 4 }: ReviewsProps) {
               className={s.collapseBtn}
               onClick={animateClose}
             >
-              click to collapse
+              collapse
             </button>
           </div>
         </section>

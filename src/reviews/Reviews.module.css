@@ -12,7 +12,9 @@
   align-items: baseline;
   gap: 8px;
   padding: 4px 8px;
-  border: 1px dashed var(--rule);
+  /* Solid hairline, not dashed — the document's rules are solid
+     (DESIGN.md); dashed read as off-system placeholder chrome. */
+  border: 1px solid var(--rule);
   border-radius: 2px;
   font-family: var(--mono);
   font-size: var(--fs-eyebrow);
@@ -92,7 +94,7 @@
   font-size: var(--fs-entry-sub);
   margin-right: 2px;
 }
-/* The dashed pill lives on the <details> itself, not on the summary.
+/* The hairline pill lives on the <details> itself, not on the summary.
    When collapsed, the pill hugs the summary's intrinsic width
    (fit-content). When [open], the pill grows to the full container
    width, animated by a CSS width transition with `interpolate-size`
@@ -102,7 +104,7 @@
 .reviewsToggle {
   width: fit-content;
   max-width: 100%;
-  border: 1px dashed var(--rule);
+  border: 1px solid var(--rule);
   border-radius: 2px;
   transition:
     width 240ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -136,7 +138,7 @@
 }
 /* Outro bar at the foot of the expanded reviews list. Mirrors the
    summary chrome but bigger: large Bélo + rating echo on the left,
-   "click to collapse" affordance on the right. */
+   "collapse" affordance on the right. */
 .outro {
   display: flex;
   align-items: center;
@@ -144,7 +146,7 @@
   gap: 12px;
   margin-top: 16px;
   padding-top: 14px;
-  border-top: 1px dashed var(--rule);
+  border-top: 1px solid var(--rule);
 }
 .outroLeft {
   display: inline-flex;
@@ -194,7 +196,7 @@
   height: 36px;
   display: block;
 }
-/* Collapse affordance — mirrors the "click to expand" hint in the
+/* Collapse affordance — mirrors the "expand" hint in the
    summary so the open/close vocabulary stays consistent. */
 .collapseBtn {
   background: transparent;
