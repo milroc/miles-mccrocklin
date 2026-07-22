@@ -40,12 +40,20 @@
       'header hero'
       'doors  hero'
       'socials hero';
-    grid-template-columns: minmax(360px, 1fr) 1.1fr;
-    grid-template-rows: auto 1fr auto;
+    /* Left column caps at 520px so door rows keep a card-like measure
+       instead of stretching into full-width bars on wide monitors; the
+       whole composition caps at 1560px and centers so a 27" screen gets
+       margins, not barrenness. */
+    grid-template-columns: minmax(360px, 520px) minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
     align-items: center;
     align-content: center;
-    column-gap: clamp(32px, 5vw, 72px);
-    row-gap: 28px;
+    justify-content: center;
+    width: 100%;
+    max-width: 1560px;
+    margin: 0 auto;
+    column-gap: clamp(40px, 6vw, 96px);
+    row-gap: 36px;
     padding: 48px clamp(28px, 5vw, 72px);
   }
 }
@@ -56,7 +64,6 @@
    ============================================================ */
 .header {
   grid-area: header;
-  align-self: end;
 }
 
 /* Wordmark — same style register as the resume's Header.name
@@ -143,7 +150,12 @@
 }
 @media (min-width: 900px) {
   .globeBox {
-    width: min(58vh, 520px);
+    /* Scale with the viewport instead of pinning to 520px — the globe
+       is the anchor and should read as one on a 27" screen too. 74vh
+       keeps it inside the one-viewport composition; 42vw keeps it from
+       crowding the left column on squat windows; 720px is the ceiling
+       so it never goes planetarium. */
+    width: min(74vh, 42vw, 720px);
   }
 }
 .wireLayer {
@@ -174,10 +186,14 @@
 /* Stat — mono micro-type anchored to the hero's top-right. The count
    is derived at build time (src/generated/splash-stats.ts); the
    continent figure is hand-maintained in Splash.tsx. */
+/* Anchored to the globe box (it lives inside it) so it hugs the
+   sphere's empty top-right corner at every viewport instead of
+   drifting to the screen edge. */
 .stat {
   position: absolute;
   top: 0;
-  right: 4px;
+  right: 0;
+  z-index: 2;
   font-family: var(--splash-mono);
   font-size: 11px;
   font-weight: 500;

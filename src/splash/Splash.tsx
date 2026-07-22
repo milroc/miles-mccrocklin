@@ -193,12 +193,12 @@ export function Splash(): JSX.Element {
         href="/explorer/"
         aria-label="Explorer — fullscreen globe of every country I've been to"
       >
-        <span className={s.stat} aria-hidden="true">
-          {VISITED_COUNTRY_COUNT} COUNTRIES
-          <br />
-          {CONTINENT_COUNT} CONTINENTS
-        </span>
         <span className={s.globeBox} data-splash-globe-box="true">
+          <span className={s.stat} aria-hidden="true">
+            {VISITED_COUNTRY_COUNT} COUNTRIES
+            <br />
+            {CONTINENT_COUNT} CONTINENTS
+          </span>
           <span className={s.wireLayer}>
             <WireGlobe />
           </span>
