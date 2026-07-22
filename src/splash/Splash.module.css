@@ -191,12 +191,15 @@
 }
 @media (min-width: 900px) {
   .globeBox {
-    /* Scale with the viewport instead of pinning to 520px — the globe
-       is the anchor and should read as one on a 27" screen too. 74vh
-       keeps it inside the one-viewport composition; 42vw keeps it from
-       crowding the left column on squat windows; 720px is the ceiling
-       so it never goes planetarium. */
-    width: min(74vh, 42vw, 720px);
+    /* Deliberately outsized — the sphere nearly fills the viewport
+       height and bleeds past the composition's clipped edges (the
+       "planet rising" read; owner call 2026-07-22). 94vh almost
+       touches top and bottom; 56vw keeps the left column readable on
+       squat windows. No px ceiling: on a big monitor the planet IS
+       the point. Arcs get their headroom from .globeMount's -12.5%
+       oversize; whatever exceeds the viewport clips cleanly under
+       .root's overflow: hidden. */
+    width: min(94vh, 56vw);
   }
 }
 .wireLayer {
