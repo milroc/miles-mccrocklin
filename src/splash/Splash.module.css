@@ -44,7 +44,7 @@
        instead of stretching into full-width bars on wide monitors; the
        whole composition caps at 1560px and centers so a 27" screen gets
        margins, not barrenness. */
-    grid-template-columns: minmax(360px, 520px) minmax(0, 1fr);
+    grid-template-columns: minmax(360px, 420px) minmax(0, 1fr);
     grid-template-rows: auto auto auto;
     align-items: center;
     align-content: center;
@@ -271,10 +271,21 @@
   width: 100%;
 }
 @media (min-width: 900px) {
+  /* One shared measure for the whole left column — header, door
+     cards, and socials share left AND right edges (the 380px that
+     lets both native-16:9 cards fit the 100vh vertical budget). */
+  .header,
   .doors {
-    /* Narrower than the column so both native-aspect images fit the
-       vertical budget of the 100vh composition. */
     width: min(100%, 380px);
+  }
+  /* Byline sized to the shared 380px measure: smaller portrait and a
+     wordmark that fits "Miles Kendrick" on one line beside it. */
+  .portrait {
+    width: 56px;
+    height: 56px;
+  }
+  .wordmark {
+    font-size: 36px;
   }
 }
 .door {
