@@ -75,7 +75,7 @@ const DOORS: ReadonlyArray<{
     thumb: '/media/meta-misinformation/fact-check-labels.jpg',
     label: 'BUILDER',
     sublabel: 'technologist',
-    cta: 'learn more →',
+    cta: 'the work →',
     aria: 'Builder — view resume',
   },
   {
