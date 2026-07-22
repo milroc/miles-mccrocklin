@@ -30,7 +30,7 @@
     position: absolute;
     right: 60px; top: 60px; bottom: 60px;
     display: flex; flex-direction: column; justify-content: center;
-    text-align: right; max-width: 540px;
+    text-align: right;
     color: #ece9e2;
     z-index: 2;
   }
@@ -45,8 +45,14 @@
       0 0 40px rgba(0,0,0,0.55);
   }
   .eyebrow {
-    font: 800 13px "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    letter-spacing: 0.36em;
+    /* 13px → 19px when the lede was dropped (2026-07-22): roles are
+       the only text now and carry the whole caption. nowrap +
+       unclamped width lets the line run past the old 540px lede
+       measure; the layered shadows keep it legible where it crosses
+       the scrim falloff. */
+    font: 800 19px "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.32em;
+    white-space: nowrap;
     text-transform: uppercase;
     color: #fdfdfb;
     text-shadow:
