@@ -1,28 +1,17 @@
-// LoadingGlobe — CSS 3D wireframe globe (meridians + parallels)
-// shown inside Explorer's mount div until the WebGL canvas fades in
-// over it. No JS; pure CSS animation. Same visual register as the
-// splash's static wireframe so the transition between pages reads as
-// a continuation.
+// LoadingGlobe — explorer's pre-WebGL loading state. Wraps the shared
+// <WireGlobe> (src/globe/WireGlobe.tsx — same sphere the splash hero
+// uses, so splash → explorer reads as a continuation) in an
+// explorer-sized scene with a pulsing "loading" label. Shown inside
+// Explorer's mount div until the WebGL canvas fades in over it.
 
+import { WireGlobe } from '../globe/WireGlobe';
 import s from './LoadingGlobe.module.css';
 
 export function LoadingGlobe(): JSX.Element {
   return (
     <>
       <div className={s.scene} aria-hidden="true">
-        <div className={s.globe}>
-          <div className={s.meridian} />
-          <div className={s.meridian} />
-          <div className={s.meridian} />
-          <div className={s.meridian} />
-          <div className={s.meridian} />
-          <div className={s.meridian} />
-          <div className={`${s.parallel} ${s.parallelEq}`} />
-          <div className={`${s.parallel} ${s.parallel30N}`} />
-          <div className={`${s.parallel} ${s.parallel30S}`} />
-          <div className={`${s.parallel} ${s.parallel60N}`} />
-          <div className={`${s.parallel} ${s.parallel60S}`} />
-        </div>
+        <WireGlobe />
       </div>
       <span className={s.label}>loading</span>
     </>

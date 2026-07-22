@@ -10,9 +10,11 @@ the end so future changes either close it or cite a reason.
   portfolio. It carries the live resume, embedded UI screenshots from past
   work, photo-essay marginalia, Airbnb host reviews, and a 1-pager mode that
   prints to a single Letter page.
-- **Who it's for:** Hiring partners (engineers, EMs, founders, investors)
-  reading on desktop or mobile, plus the printed PDF reader.
-- **Project type:** Personal site / editorial document.
+- **Who it's for:** Anyone Miles points at it — friends, collaborators,
+  guests, readers. This is a personal site and a home for future
+  projects, NOT a job-seeking funnel (owner decision, 2026-07-22).
+  Don't optimize copy or layout for recruiter scan patterns.
+- **Project type:** Personal site / editorial document / project hub.
 - **Memorable thing:** *A resume that respects typography the way a printed
   document does.* Knuth-Plass line breaking, soft-hyphen pre-processing,
   hanging-indent bullets, italic editorial taglines, tabular numerals on
@@ -238,6 +240,36 @@ Print uses `@page { size: letter; margin: 0 }` with page padding handled by
 `.page` CSS instead. The browser's auto header/footer is starved of margin
 space and dropped.
 
+## Splash (globe-anchor composition, 2026-07)
+
+The front page is an asymmetric globe-anchor layout: wordmark + tagline
++ door rows + socials in the left column, a large wireframe-globe hero
+(link to /explorer/) on the right. Mobile stacks: header → globe →
+doors → socials (~1.6 viewports). Patterns introduced here are system
+vocabulary:
+
+- **Placard.** A flat cream chip (`--paper` bg, `--ink` text, sharp
+  corners, eyebrow mono caps, single small shadow) used as a label over
+  imagery — the museum-label register. Replaces the 2026-05
+  frosted-glass chips, which were off-system (decorative shadows +
+  backdrop blur).
+- **Door row.** A compact link row: one tight thumbnail (96×64), mono
+  caps label, italic sublabel, always-visible mono CTA in the accent
+  color. No hover-only affordances. The list scales to future doors
+  (e.g. PROJECTS) without recomposing the page.
+- **WireGlobe.** The shared CSS 3D wireframe sphere
+  (`src/globe/WireGlobe.tsx`) — the splash hero's base state and
+  /explorer/'s loading state. On mobile it IS the shipped design (no
+  WebGL below the 900px/hover/pointer gate). Stroke alphas are tuned to
+  read as a drawn object, not a loading stub; the equator carries the
+  one accent line.
+- **Hover language.** Door thumbnails follow the site's documented
+  photo treatment: grayscale at rest → color on intent, 240ms ease. No
+  blur, no 0ms snaps.
+- **Splash stat.** "N COUNTRIES · 7 CONTINENTS" — N derives at build
+  time from data/journey.json (scripts/build-splash-stats.ts); the
+  continent figure is hand-maintained in Splash.tsx.
+
 ## Custom Typography Pipeline
 
 The soul of the site. Documented here because anyone touching `.bullets`
@@ -349,3 +381,5 @@ on the dark mat instead of a white rectangle painted on the dark color.
 | 2026-05-01 | Type tokens are register-named, not ratio-based | Editorial design rewards half-pixel tuning over modular-scale purity. |
 | 2026-05-01 | Accent: brick red → forest green          | Coordinates with the new dark-canvas undertone; matches owner's aesthetic. Dosage held — restraint is the right register for an editorial document. |
 | 2026-05-01 | Canvas: cream → deep warm near-black      | Make the cream paper pop. Document voice unchanged; framing now reads as "paper on dark felt portfolio" instead of "cream on cream." |
+| 2026-07-22 | Audience: hiring partners → personal/project hub | Owner correction during splash design review; copy and layout stop optimizing for recruiters. |
+| 2026-07-22 | Splash: globe-anchor redesign             | One visual anchor (WireGlobe hero) instead of three competing collages; placards replace glass chips; doors replace masonry tiles; mobile ships CSS globe only. Full review: ~/.gstack/projects/milroc-miles-mccrocklin/designs/splash-improve-20260721/. |

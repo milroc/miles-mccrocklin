@@ -44,6 +44,7 @@ import resume from "./resume/index.html";
 import explorer from "./explorer/index.html";
 import photographer from "./photographer/index.html";
 import { buildPhotographyManifest } from "./scripts/build-photography-manifest";
+import { buildSplashStats } from "./scripts/build-splash-stats";
 
 // Build the photography manifest on dev-server boot so /photographer
 // has data to read. The page falls back to fetching
@@ -57,6 +58,10 @@ import { buildPhotographyManifest } from "./scripts/build-photography-manifest";
 // manifest to refresh (acceptable trade-off — these change rarely).
 console.log("  building photography manifest...");
 await buildPhotographyManifest();
+
+// Regenerate the splash placard's country count (writes
+// src/generated/splash-stats.ts) so dev matches the prod derivation.
+buildSplashStats();
 
 const PORT = Number(process.env.PORT ?? 4317);
 // Default to localhost. Set HOST=0.0.0.0 to expose on the LAN for mobile

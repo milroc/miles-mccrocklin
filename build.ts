@@ -30,6 +30,7 @@
 import { rmSync, cpSync, writeFileSync, readFileSync } from 'node:fs';
 import { loadMe, buildContext, injectPersonSchema, PERSON_SCHEMA_PATHS } from './scripts/page-meta';
 import { buildPhotographyManifest } from './scripts/build-photography-manifest';
+import { buildSplashStats } from './scripts/build-splash-stats';
 
 rmSync('./dist', { recursive: true, force: true });
 
@@ -39,6 +40,11 @@ rmSync('./dist', { recursive: true, force: true });
 // Builds sharp variants into media/portfolio/derived/ as a side effect;
 // cpSync below copies them along with the rest of media/ into dist/.
 const photographyManifest = await buildPhotographyManifest();
+
+// Regenerate the splash placard's country count from data/journey.json
+// (writes src/generated/splash-stats.ts) so the stat can never drift
+// from the globe it labels.
+buildSplashStats();
 
 // Bundle all four HTML entries. Bun preserves their relative directory
 // structure under outdir, so builder/index.html lands at dist/builder/index.html.

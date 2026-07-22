@@ -1,0 +1,90 @@
+/* WireGlobe — CSS 3D wireframe sphere. The 3D effect comes from
+   layering circle borders rotated through a common perspective:
+   meridians as great circles at varying rotateY angles, parallels as
+   horizontal circles at varying altitudes. The sphere applies a single
+   rotateY animation; meridians appear to move around the back/front,
+   parallels stay as apparent ellipses (rotationally symmetric on Y).
+
+   Stroke alphas are deliberately higher than the pre-2026-07 splash
+   wireframe (0.18/0.14): this is a designed visible state, not a
+   loading stub — it must read on a dark tile at a glance. */
+.root {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  perspective: 1200px;
+}
+.sphere {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  /* Faint radial highlight gives the sphere front-lit volume without
+     the grid losing legibility. */
+  background:
+    radial-gradient(circle at 32% 30%, rgba(255, 255, 255, 0.05), transparent 55%);
+  border-radius: 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sphere {
+    /* 7 s period — visible motion within a ~1 s glance, slow enough to
+       read as "earth spinning" rather than a spinner. */
+    animation: spin 7s linear infinite;
+  }
+}
+@keyframes spin {
+  from { transform: rotateX(15deg) rotateY(0deg); }
+  to   { transform: rotateX(15deg) rotateY(360deg); }
+}
+
+.meridian {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(236, 233, 226, 0.38);
+  border-radius: 50%;
+}
+/* Six meridians spaced 30° apart — half the longitude grid; the
+   rotation supplies the rest over time. */
+.meridian:nth-child(1) { transform: rotateY(0deg); }
+.meridian:nth-child(2) { transform: rotateY(30deg); }
+.meridian:nth-child(3) { transform: rotateY(60deg); }
+.meridian:nth-child(4) { transform: rotateY(90deg); }
+.meridian:nth-child(5) { transform: rotateY(120deg); }
+.meridian:nth-child(6) { transform: rotateY(150deg); }
+
+.parallel {
+  position: absolute;
+  left: 50%;
+  border: 1px solid rgba(236, 233, 226, 0.30);
+  border-radius: 50%;
+}
+/* Parallels at L = 0° (equator), ±30°, ±60°. A parallel at latitude L
+   is a horizontal circle with radius cos(L) at altitude sin(L) (in
+   sphere-radius units). rotateX(90deg) tips it into the equatorial
+   plane; top offsets translate it along the polar axis. */
+.parallelEq {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  transform: rotateX(90deg);
+  /* The equator carries the accent — the one green line on the sphere,
+     same dosage philosophy as the resume's accent usage. */
+  border-color: rgba(58, 107, 74, 0.85);
+  border-width: 1.5px;
+}
+.parallel30N {
+  width: 86.6%; height: 86.6%; top: -18.3%;
+  transform: translateX(-50%) rotateX(90deg);
+}
+.parallel30S {
+  width: 86.6%; height: 86.6%; top: 31.7%;
+  transform: translateX(-50%) rotateX(90deg);
+}
+.parallel60N {
+  width: 50%; height: 50%; top: -18.3%;
+  transform: translateX(-50%) rotateX(90deg);
+}
+.parallel60S {
+  width: 50%; height: 50%; top: 68.3%;
+  transform: translateX(-50%) rotateX(90deg);
+}

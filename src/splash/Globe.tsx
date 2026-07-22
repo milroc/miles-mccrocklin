@@ -11,8 +11,8 @@
 // bundle.
 
 import { SPLASH_CONFIG } from '../me';
+import { canonicalVisitedNames, VISITED_NAME_ALIASES } from '../globe/visited-aliases';
 import journeyData from '../../data/journey.json' with { type: 'json' };
-import splashStyles from './Splash.module.css';
 // Type-only — three is dynamic-imported below. The `import type` form
 // is erased at compile time, so it doesn't pull three into the splash
 // entry chunk; we use it only for type annotations on cached state.
@@ -55,24 +55,19 @@ export interface CountrySelection {
 }
 
 // Visited countries (post-alias). Built from journey.json's waypoint
-// labels, with UK constituents and Bahamas folded onto their atlas /
-// 110m polygon names so membership tests against polygon names work.
-// Used by polygonCapColor to paint visited countries that don't have a
-// photo texture in the forest-green accent — currently just The Bahamas
-// (1988–2001 visit predates the digital archive), but stays correct as
-// new visits land before their albums do.
-const VISITED_NAME_ALIASES: Readonly<Record<string, string>> = {
-  Bahamas: 'The Bahamas',
-  England: 'United Kingdom',
-  Scotland: 'United Kingdom',
-  Wales: 'United Kingdom',
-  'Northern Ireland': 'United Kingdom',
-};
-
+// labels via the shared canonicalization in src/globe/visited-aliases.ts
+// (UK constituents and Bahamas folded onto their atlas / 110m polygon
+// names so membership tests against polygon names work; the same rule
+// derives the splash placard's country count in
+// scripts/build-splash-stats.ts). Used by polygonCapColor to paint
+// visited countries that don't have a photo texture in the forest-green
+// accent — currently just The Bahamas (1988–2001 visit predates the
+// digital archive), but stays correct as new visits land before their
+// albums do.
 const WAYPOINTS: Waypoint[] = (journeyData as JourneyJson).waypoints;
 
-const VISITED_COUNTRIES: ReadonlySet<string> = new Set(
-  WAYPOINTS.map((w) => VISITED_NAME_ALIASES[w.label] ?? w.label),
+const VISITED_COUNTRIES: ReadonlySet<string> = canonicalVisitedNames(
+  WAYPOINTS.map((w) => w.label),
 );
 
 // Canonical country name → list of trips, in chronological order
@@ -1773,31 +1768,14 @@ export async function mountGlobe(
     // GPU textures instead of re-decoding 35 JPEGs. They're freed
     // when the page itself unloads.
     mountEl.innerHTML = '';
-    // Tile mode restores the static 3D wireframe so the tile doesn't
-    // go blank. Fullscreen leaves the mount empty — the page is being
-    // unmounted entirely. Mirrors the structure SSR'd by Splash.tsx
-    // (perspective container → preserve-3d sphere → meridians +
-    // parallels) so the visual is identical to the pre-mount state.
+    // Tile mode: the CSS <WireGlobe> lives OUTSIDE the mount (a
+    // sibling .wireLayer inside the hero's globe box — see Splash.tsx)
+    // and effects.tsx hides it via data-live once the canvas exists.
+    // Dropping the attribute un-hides it, so the hero never goes
+    // blank. Fullscreen leaves the mount empty — the page is being
+    // unmounted entirely.
     if (!fullscreen) {
-      const outer = document.createElement('div');
-      outer.className = splashStyles.globeStatic ?? '';
-      outer.setAttribute('aria-hidden', 'true');
-      const inner = document.createElement('div');
-      inner.className = splashStyles.globeStaticInner ?? '';
-      const meridianClass = splashStyles.staticMeridian ?? '';
-      const parallelClass = splashStyles.staticParallel ?? '';
-      for (let i = 0; i < 6; i++) {
-        const m = document.createElement('div');
-        m.className = meridianClass;
-        inner.appendChild(m);
-      }
-      for (const variantKey of ['staticParallelEq', 'staticParallel30N', 'staticParallel30S', 'staticParallel60N', 'staticParallel60S'] as const) {
-        const p = document.createElement('div');
-        p.className = `${parallelClass} ${splashStyles[variantKey] ?? ''}`;
-        inner.appendChild(p);
-      }
-      outer.appendChild(inner);
-      mountEl.appendChild(outer);
+      mountEl.parentElement?.removeAttribute('data-live');
     }
   };
 }

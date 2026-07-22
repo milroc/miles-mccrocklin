@@ -13,10 +13,9 @@ function bootSplash(): void {
   const rootEl = document.getElementById('root');
   if (!rootEl) return;
 
-  // In production builds, build.ts injects SSR'd markup into #root before
-  // shipping. In dev (bun run dev), no SSR runs, so #root is empty.
-  // Pick hydrateRoot when SSR'd content is present, createRoot otherwise.
-  // Using hydrateRoot on an empty #root throws a hydration mismatch.
+  // #root ships empty in both dev and prod — the SSR pass never worked
+  // and was removed (build.ts, commit aa94552). Keep the hydrate branch
+  // anyway so restoring SSR later doesn't require touching the entry.
   const ssrPresent = rootEl.firstElementChild !== null;
   if (ssrPresent) {
     hydrateRoot(rootEl, <Splash />);
