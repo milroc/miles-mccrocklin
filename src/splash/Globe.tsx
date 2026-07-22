@@ -413,15 +413,15 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
     // honest about what's happening and ships the files as static
     // assets that GH Pages serves with the right content-type. build.ts
     // copies ./data → ./dist/data so these paths resolve in prod.
-    // Country polygons ship as TopoJSON in two variants. /explorer/
-    // (fullscreen) fetches the full 1:50m dataset (~97 KB gz) for
-    // visible coastline detail at fullscreen camera distance. The
-    // splash tile fetches an aggressively-simplified variant
-    // (~25 KB gz) — at 240 px square, sub-degree detail just becomes
-    // high-frequency noise. One fetch per page, no mid-flight swap.
-    const polygonsUrl = fullscreen
-      ? '/data/world-countries-50m.topo.json'
-      : '/data/world-countries-tile.topo.json';
+    // Country polygons: both surfaces now fetch the full 1:50m dataset
+    // (~97 KB gz). The simplified tile variant existed for the old
+    // 240px splash tile; the 2026-07 globe-anchor hero renders at
+    // 500-720px, where the tile variant's chunky coastlines read as
+    // artifacts. The fetch is off the critical path (parallel with the
+    // reveal) and desktop-only, so the extra bytes are acceptable.
+    // world-countries-tile.topo.json still ships in /data for any
+    // future small-tile surface.
+    const polygonsUrl = '/data/world-countries-50m.topo.json';
     const [globeMod, reactDomClientMod, reactMod, THREE, topojsonClientMod, topology, atlas] = await Promise.all([
       import('react-globe.gl'),
       import('react-dom/client'),
@@ -1692,7 +1692,13 @@ export async function mountGlobe(
   // pointOfView-transition in to the target. Done via our own
   // pointOfView call instead of three-globe's `animateIn`.
   // Reduced-motion skips the transition.
-  const targetAltitude = fullscreen ? 2.0 : 1.6;
+  // Tile altitude compensates for the splash hero's oversized canvas:
+  // .globeMount extends 12.5% past the globe box on every side (arc
+  // headroom — arcs at altitude were clipping at the old canvas edge).
+  // At the old 1.6 the sphere filled ~89% of its canvas; 2.16 keeps the
+  // sphere at the same absolute pixel diameter inside the 1.25× canvas.
+  // Change one, change the other.
+  const targetAltitude = fullscreen ? 2.0 : 2.16;
   // Initial camera framing — Americas-centered. Default three-globe
   // pose is (0°N, 0°E) which lands on the Gulf of Guinea / west Africa;
   // the journey starts in San Francisco, so we open on the western

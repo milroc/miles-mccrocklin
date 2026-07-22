@@ -196,7 +196,12 @@
 }
 .globeMount {
   position: absolute;
-  inset: 0;
+  /* Oversized 12.5% per side (canvas = 1.25× the globe box) so arcs
+     flying above the sphere have headroom instead of clipping at the
+     canvas edge. Globe.tsx's tile targetAltitude (2.16) compensates so
+     the sphere's rendered diameter is unchanged — change one, change
+     the other. */
+  inset: -12.5%;
   display: block;
   /* The WebGL canvas would otherwise swallow clicks (even with
      enablePointerInteraction:false on the react-globe.gl side), which
@@ -233,17 +238,24 @@
    container differs (centered chip under the globe instead of a
    thumbnail row). */
 .heroDoor {
+  /* Same baseline-row layout as the door cards' text row — label,
+     sublabel, CTA on one line — so the explorer chip is typographically
+     identical to the doors, not a stacked variant of them. */
   display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  align-items: baseline;
+  gap: 10px;
   margin-top: -22px;
-  padding: 10px 22px;
+  padding: 10px 16px;
   background: #22261f;
   border: 1px solid transparent;
   position: relative;
   z-index: 1;
   transition: border-color 180ms ease;
+}
+.heroDoor .doorCta {
+  /* In the doors' full-width rows the CTA right-aligns via auto
+     margin; in this shrink-wrapped chip a fixed gap does that job. */
+  margin-left: 8px;
 }
 .hero:hover .heroDoor,
 .hero:focus-visible .heroDoor {
@@ -330,12 +342,6 @@
   gap: 10px;
   padding: 10px 14px;
   min-width: 0;
-}
-/* Shared by the hero's label chip (label + sublabel on one baseline). */
-.doorTitle {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
 }
 .doorLabel {
   font-family: var(--splash-mono);
