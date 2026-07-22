@@ -2,4 +2,4 @@
 // Regenerated on every `bun run dev` / `bun run build` from
 // data/journey.json. Committed so fresh checkouts typecheck.
 
-export const VISITED_COUNTRY_COUNT = 55;
+export const VISITED_COUNTRY_COUNT = 53;

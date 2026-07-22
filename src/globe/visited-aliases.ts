@@ -18,3 +18,12 @@ export function canonicalVisitedNames(labels: Iterable<string>): Set<string> {
   for (const label of labels) out.add(VISITED_NAME_ALIASES[label] ?? label);
   return out;
 }
+
+// Visited places that paint on the globe but are NOT countries for the
+// "N COUNTRIES" stat: Antarctica is a continent; Gibraltar is a British
+// Overseas Territory (already covered by the United Kingdom entry).
+// Sovereign microstates (Vatican, San Marino) DO count.
+export const NON_COUNTRY_NAMES: ReadonlySet<string> = new Set([
+  'Antarctica',
+  'Gibraltar',
+]);
