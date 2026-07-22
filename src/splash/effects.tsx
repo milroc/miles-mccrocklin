@@ -1,29 +1,61 @@
-// Splash effects — the post-hydration "show" layer.
+// Splash effects — the post-mount "show" layer.
 //
-// Splash.tsx renders SSR-safe chrome with the .revealing class hiding
-// the wordmark + tiles + socials + CTA. This module:
+// Splash.tsx renders the chrome with the .revealing class hiding the
+// header, hero, doors, and socials. This module:
 //
-//   1. Removes the .revealing class so the chrome fades in via the
-//      CSS transitions defined in Splash.module.css.
-//   2. Mounts the live react-globe.gl into the Explorer tile (loads
-//      three.js dynamically).
+//   1. Removes .revealing so the chrome fades in via the CSS
+//      transitions defined in Splash.module.css.
+//   2. On desktop only, mounts the live react-globe.gl into the hero
+//      (loads three.js dynamically) and crossfades the CSS WireGlobe
+//      out once a canvas actually exists.
 //
-// This module is dynamic-imported by splash-entry.tsx after hydration.
-// All browser-API calls (matchMedia, etc) live here, so build.ts's
-// renderToString never executes them.
+// Globe-mount gate precedence (consolidated per 2026-07 eng review):
+//   1. SPLASH_CONFIG.globeReady — config kill-switch,
+//   2. SPLASH_DESKTOP_GLOBE_MQ — viewport width + hover + fine pointer
+//      (landscape phones stay on the CSS wireframe: it's the shipped
+//      mobile design, not a fallback),
+//   3. mountGlobe's internal perf fallback — its own concern.
+// Reduced motion does NOT gate the mount: Globe.tsx mounts with all
+// motion disabled (content is never withheld for a motion preference).
+//
+// This module is dynamic-imported by Splash.tsx after mount. All
+// browser-API calls live here.
 
 import { mountGlobe } from './Globe';
+import { SPLASH_CONFIG } from '../me';
+import { SPLASH_DESKTOP_GLOBE_MQ } from './constants';
 import s from './Splash.module.css';
 
 export async function runReveal(splashRoot: HTMLElement): Promise<void> {
-  // Single beat: flip to the revealed state, then mount the globe.
-  // Reduced-motion path is identical — nothing motion-heavy left here
-  // for the splash to gate on. The globe's own arc animation is
-  // mountGlobe's concern (it self-checks prefers-reduced-motion).
   splashRoot.classList.remove(s.revealing);
-  splashRoot.classList.add(s.revealed);
 
-  // Failures are non-fatal: the static CSS wireframe stays in place.
+  if (!SPLASH_CONFIG.globeReady) return;
+  if (!matchMedia(SPLASH_DESKTOP_GLOBE_MQ).matches) return;
+
   const mountEl = splashRoot.querySelector<HTMLElement>('[data-splash-globe-mount="true"]');
-  if (mountEl) await mountGlobe(mountEl).catch(() => {});
+  const boxEl = splashRoot.querySelector<HTMLElement>('[data-splash-globe-box="true"]');
+  if (!mountEl) return;
+
+  // Failures are non-fatal: the CSS WireGlobe stays in place.
+  try {
+    await mountGlobe(mountEl);
+  } catch {
+    return;
+  }
+
+  // mountGlobe can resolve without producing a canvas (perf fallback,
+  // config gate) — only fade the CSS wireframe once WebGL is really
+  // there, so the hero is never empty. Poll one frame at a time with a
+  // 5s cap instead of trusting the resolve.
+  if (!boxEl) return;
+  const start = performance.now();
+  const waitForCanvas = (): void => {
+    if (mountEl.querySelector('canvas')) {
+      boxEl.setAttribute('data-live', 'true');
+      return;
+    }
+    if (performance.now() - start > 5000) return;
+    requestAnimationFrame(waitForCanvas);
+  };
+  waitForCanvas();
 }

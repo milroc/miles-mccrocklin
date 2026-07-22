@@ -21,11 +21,6 @@
   --splash-canvas-fg: #b8b5ad;
   --splash-canvas-fg-muted: #7a7770;
   --splash-canvas-rule: rgba(236, 233, 226, 0.20);
-  --splash-paper: #fdfdfb;
-  --splash-ink: #111111;
-  --splash-ink-soft: #2a2a2a;
-  --splash-muted: #6b6b6b;
-  --splash-rule: #d9d6cf;
   --splash-accent: #3a6b4a;
 
   --splash-serif: Georgia, 'Times New Roman', Times, serif;
@@ -39,12 +34,6 @@
 
   --splash-fs-display: 48px;
   --splash-fs-display-sm: 32px;
-
-  /* Desktop tile gutter. 72 was the design lock for the 3-column
-     decrescendo; the 2-column-with-row-span layout breathes more
-     naturally at 48 since the row gap is also part of the budget. */
-  --splash-gutter: 48px;
-  --splash-tile-radius: 2px;
 }
 
 html, body {
@@ -57,11 +46,6 @@ html, body {
   font-family: var(--splash-serif);
   min-height: 100vh;
   overflow-x: hidden;
-}
-
-@keyframes splash-globe-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
 }
 
 /* Microstate bubble markers — circular thumbnails anchored at the

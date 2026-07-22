@@ -11,8 +11,8 @@
 // bundle.
 
 import { SPLASH_CONFIG } from '../me';
+import { canonicalVisitedNames, VISITED_NAME_ALIASES } from '../globe/visited-aliases';
 import journeyData from '../../data/journey.json' with { type: 'json' };
-import splashStyles from './Splash.module.css';
 // Type-only — three is dynamic-imported below. The `import type` form
 // is erased at compile time, so it doesn't pull three into the splash
 // entry chunk; we use it only for type annotations on cached state.
@@ -55,24 +55,19 @@ export interface CountrySelection {
 }
 
 // Visited countries (post-alias). Built from journey.json's waypoint
-// labels, with UK constituents and Bahamas folded onto their atlas /
-// 110m polygon names so membership tests against polygon names work.
-// Used by polygonCapColor to paint visited countries that don't have a
-// photo texture in the forest-green accent — currently just The Bahamas
-// (1988–2001 visit predates the digital archive), but stays correct as
-// new visits land before their albums do.
-const VISITED_NAME_ALIASES: Readonly<Record<string, string>> = {
-  Bahamas: 'The Bahamas',
-  England: 'United Kingdom',
-  Scotland: 'United Kingdom',
-  Wales: 'United Kingdom',
-  'Northern Ireland': 'United Kingdom',
-};
-
+// labels via the shared canonicalization in src/globe/visited-aliases.ts
+// (UK constituents and Bahamas folded onto their atlas / 110m polygon
+// names so membership tests against polygon names work; the same rule
+// derives the splash placard's country count in
+// scripts/build-splash-stats.ts). Used by polygonCapColor to paint
+// visited countries that don't have a photo texture in the forest-green
+// accent — currently just The Bahamas (1988–2001 visit predates the
+// digital archive), but stays correct as new visits land before their
+// albums do.
 const WAYPOINTS: Waypoint[] = (journeyData as JourneyJson).waypoints;
 
-const VISITED_COUNTRIES: ReadonlySet<string> = new Set(
-  WAYPOINTS.map((w) => VISITED_NAME_ALIASES[w.label] ?? w.label),
+const VISITED_COUNTRIES: ReadonlySet<string> = canonicalVisitedNames(
+  WAYPOINTS.map((w) => w.label),
 );
 
 // Canonical country name → list of trips, in chronological order
@@ -418,15 +413,16 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
     // honest about what's happening and ships the files as static
     // assets that GH Pages serves with the right content-type. build.ts
     // copies ./data → ./dist/data so these paths resolve in prod.
-    // Country polygons ship as TopoJSON in two variants. /explorer/
-    // (fullscreen) fetches the full 1:50m dataset (~97 KB gz) for
-    // visible coastline detail at fullscreen camera distance. The
-    // splash tile fetches an aggressively-simplified variant
-    // (~25 KB gz) — at 240 px square, sub-degree detail just becomes
-    // high-frequency noise. One fetch per page, no mid-flight swap.
-    const polygonsUrl = fullscreen
-      ? '/data/world-countries-50m.topo.json'
-      : '/data/world-countries-tile.topo.json';
+    // Country polygons: both surfaces now fetch the full 1:50m dataset
+    // (~97 KB gz). The simplified tile variant existed for the old
+    // 240px splash tile; the 2026-07 globe-anchor hero renders at
+    // 500-720px, where the tile variant's chunky coastlines read as
+    // artifacts. The fetch is off the critical path (parallel with the
+    // reveal) and desktop-only, so the extra bytes are acceptable.
+    // world-countries-tile.topo.json is no longer shipped to dist;
+    // the generator still emits it in /data if a small-tile surface
+    // ever returns.
+    const polygonsUrl = '/data/world-countries-50m.topo.json';
     const [globeMod, reactDomClientMod, reactMod, THREE, topojsonClientMod, topology, atlas] = await Promise.all([
       import('react-globe.gl'),
       import('react-dom/client'),
@@ -1697,7 +1693,13 @@ export async function mountGlobe(
   // pointOfView-transition in to the target. Done via our own
   // pointOfView call instead of three-globe's `animateIn`.
   // Reduced-motion skips the transition.
-  const targetAltitude = fullscreen ? 2.0 : 1.6;
+  // Tile altitude compensates for the splash hero's oversized canvas:
+  // .globeMount extends 12.5% past the globe box on every side (arc
+  // headroom — arcs at altitude were clipping at the old canvas edge).
+  // At the old 1.6 the sphere filled ~89% of its canvas; 2.16 keeps the
+  // sphere at the same absolute pixel diameter inside the 1.25× canvas.
+  // Change one, change the other.
+  const targetAltitude = fullscreen ? 2.0 : 2.16;
   // Initial camera framing — Americas-centered. Default three-globe
   // pose is (0°N, 0°E) which lands on the Gulf of Guinea / west Africa;
   // the journey starts in San Francisco, so we open on the western
@@ -1773,31 +1775,14 @@ export async function mountGlobe(
     // GPU textures instead of re-decoding 35 JPEGs. They're freed
     // when the page itself unloads.
     mountEl.innerHTML = '';
-    // Tile mode restores the static 3D wireframe so the tile doesn't
-    // go blank. Fullscreen leaves the mount empty — the page is being
-    // unmounted entirely. Mirrors the structure SSR'd by Splash.tsx
-    // (perspective container → preserve-3d sphere → meridians +
-    // parallels) so the visual is identical to the pre-mount state.
+    // Tile mode: the CSS <WireGlobe> lives OUTSIDE the mount (a
+    // sibling .wireLayer inside the hero's globe box — see Splash.tsx)
+    // and effects.tsx hides it via data-live once the canvas exists.
+    // Dropping the attribute un-hides it, so the hero never goes
+    // blank. Fullscreen leaves the mount empty — the page is being
+    // unmounted entirely.
     if (!fullscreen) {
-      const outer = document.createElement('div');
-      outer.className = splashStyles.globeStatic ?? '';
-      outer.setAttribute('aria-hidden', 'true');
-      const inner = document.createElement('div');
-      inner.className = splashStyles.globeStaticInner ?? '';
-      const meridianClass = splashStyles.staticMeridian ?? '';
-      const parallelClass = splashStyles.staticParallel ?? '';
-      for (let i = 0; i < 6; i++) {
-        const m = document.createElement('div');
-        m.className = meridianClass;
-        inner.appendChild(m);
-      }
-      for (const variantKey of ['staticParallelEq', 'staticParallel30N', 'staticParallel30S', 'staticParallel60N', 'staticParallel60S'] as const) {
-        const p = document.createElement('div');
-        p.className = `${parallelClass} ${splashStyles[variantKey] ?? ''}`;
-        inner.appendChild(p);
-      }
-      outer.appendChild(inner);
-      mountEl.appendChild(outer);
+      mountEl.parentElement?.removeAttribute('data-live');
     }
   };
 }

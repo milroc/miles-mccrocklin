@@ -1,0 +1,31 @@
+{
+  "tagline": "Ten years at Meta supporting teams, fighting misinformation, and building prediction markets. Now on sabbatical: seven continents, thousands of stories captured in frame.",
+  "continent_count": 7,
+  "doors": [
+    {
+      "id": "builder",
+      "href": "/builder/",
+      "thumb": "/media/meta-misinformation/fact-check-labels.jpg",
+      "label": "BUILDER",
+      "sublabel": "technologist",
+      "cta": "the work →",
+      "aria": "Builder — view resume"
+    },
+    {
+      "id": "photographer",
+      "href": "/photographer/",
+      "thumb": "/media/summary/chinstrap-traverse.jpg",
+      "label": "PHOTOGRAPHER",
+      "sublabel": "artist",
+      "cta": "the frames →",
+      "aria": "Photographer — view the gallery"
+    }
+  ],
+  "explorer": {
+    "href": "/explorer/",
+    "label": "EXPLORER",
+    "sublabel": "traveler",
+    "cta": "the journey →",
+    "aria": "Explorer — fullscreen globe of every country I've been to"
+  }
+}

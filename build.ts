@@ -30,6 +30,7 @@
 import { rmSync, cpSync, writeFileSync, readFileSync } from 'node:fs';
 import { loadMe, buildContext, injectPersonSchema, PERSON_SCHEMA_PATHS } from './scripts/page-meta';
 import { buildPhotographyManifest } from './scripts/build-photography-manifest';
+import { buildSplashContent } from './scripts/build-splash-content';
 
 rmSync('./dist', { recursive: true, force: true });
 
@@ -39,6 +40,11 @@ rmSync('./dist', { recursive: true, force: true });
 // Builds sharp variants into media/portfolio/derived/ as a side effect;
 // cpSync below copies them along with the rest of media/ into dist/.
 const photographyManifest = await buildPhotographyManifest();
+
+// Regenerate the splash content module (doors, socials, tagline, stat)
+// from data/splash.json + me.json + journey.json — see
+// scripts/build-splash-content.ts.
+buildSplashContent();
 
 // Bundle all four HTML entries. Bun preserves their relative directory
 // structure under outdir, so builder/index.html lands at dist/builder/index.html.
@@ -87,7 +93,10 @@ cpSync('./media', './dist/media', { recursive: true });
 // modules so dynamic-import MIME-type strictness can't break the
 // globe in prod.
 cpSync('./data/world-countries-50m.topo.json', './dist/data/world-countries-50m.topo.json');
-cpSync('./data/world-countries-tile.topo.json', './dist/data/world-countries-tile.topo.json');
+// world-countries-tile.topo.json is no longer shipped: both globe
+// surfaces fetch the 50m set since the 2026-07 splash redesign. The
+// tile variant stays in /data (build-world-countries.ts still emits
+// it) in case a small-tile surface returns.
 cpSync('./data/photo-atlas.json', './dist/data/photo-atlas.json');
 // Photography manifest is inlined into dist/photographer/index.html below
 // for zero-fetch first paint, but we also ship it as a static JSON so the
