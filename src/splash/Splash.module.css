@@ -257,6 +257,19 @@
      margin; in this shrink-wrapped chip a fixed gap does that job. */
   margin-left: 8px;
 }
+@media (max-width: 899px) {
+  /* Mobile: the explorer chip matches the door cards' full width so
+     all three destinations present identical tap targets. CTA
+     right-aligns exactly like the door rows. */
+  .heroDoor {
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-start;
+  }
+  .heroDoor .doorCta {
+    margin-left: auto;
+  }
+}
 .hero:hover .heroDoor,
 .hero:focus-visible .heroDoor {
   border-color: var(--splash-canvas-rule);
