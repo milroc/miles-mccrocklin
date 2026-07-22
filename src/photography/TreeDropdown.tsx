@@ -232,11 +232,9 @@ export function TreeDropdown({
             aria-label={ariaLabel}
             aria-multiselectable="true"
           >
-          {/* Sheet header — only visible on mobile (a thin grab-bar
-              affordance + label + explicit close). Drives the same
-              setOpen(false) the backdrop does. */}
+          {/* Sheet header — only visible on mobile (label + explicit
+              close). Drives the same setOpen(false) the backdrop does. */}
           <div className={s.sheetHeader}>
-            <span className={s.sheetGrab} aria-hidden="true" />
             <span className={s.sheetTitle}>{ariaLabel}</span>
             <button
               type="button"

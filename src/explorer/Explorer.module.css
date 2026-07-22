@@ -87,6 +87,24 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 
+/* Idle-hide modifier — same cadence as .siteNavOverlayHidden, but the
+   plate sits at the bottom so it drops away instead of lifting. */
+.title {
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+.titleHidden {
+  opacity: 0;
+  transform: translateY(8px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .title {
+    transition: none;
+  }
+  .titleHidden {
+    transform: none;
+  }
+}
+
 .title em {
   display: block;
   margin-top: 6px;

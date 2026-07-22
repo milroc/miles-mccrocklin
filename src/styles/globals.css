@@ -27,6 +27,11 @@
   --canvas-fg:        #b8b5ad;                   /* secondary text on canvas */
   --canvas-fg-muted:  #7a7770;                   /* muted text on canvas */
   --canvas-rule:      rgba(236, 233, 226, 0.20); /* subtle borders on canvas */
+  /* Dark-canvas shadow — the mat's own darkness deepened (derived from
+     the #0a0c0a void tone, not neutral black, so shadows stay warm on
+     the warm mat). One color for every floating surface on canvas;
+     offsets/blur stay per-surface because they encode real geometry. */
+  --canvas-shadow:    rgba(10, 12, 10, 0.55);
 
   /* ---- Color: paper (the resume itself) ---- */
   --paper: #fdfdfb;
@@ -61,6 +66,10 @@
      Claude Code shell prompt; soft warm yellow that reads against the
      near-black panel without competing with the orange brand color. */
   --guest-claude-yellow: #d4c469;
+
+  /* Guest palette — Airbnb. Brand red for the Bélo mark in the reviews
+     block; shown un-tinted as the "this is from Airbnb" signal. */
+  --guest-airbnb-red: #FF5A5F;
 
   /* Laurel gold — used for the "Top-5% Superhost" star + rating signal in
      the Airbnb reviews block. Picked to read as an editorial accent (gold
@@ -217,6 +226,14 @@ a { color: inherit; text-decoration: none; }
    `ul.bullets li > .kp-wrap { display: block; }` rule in Bullets.css
    that handles the same problem on the bullet path. */
 .entry-summary > .kp-wrap { display: block; }
+
+/* Top-of-resume lede (Summary section). Slightly looser leading than the
+   per-entry summaries; flush against the section rule above it. */
+.entry-summary.lead {
+  margin-top: 0;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
 
 /* Bullet primitive (.bullets, .bullets li, ::before) lives in
    primitives/Bullets.css. KP-line default lives in primitives/KPText.css.

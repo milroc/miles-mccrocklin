@@ -32,7 +32,7 @@ export function SearchBox({ value, onChange }: SearchBoxProps): JSX.Element {
           onClick={() => onChange('')}
           aria-label="Clear search"
         >
-          ✕
+          ×
         </button>
       )}
     </div>

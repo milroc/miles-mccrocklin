@@ -21,13 +21,6 @@ interface ExperienceEntryGenericProps {
   job: Job;
 }
 
-// Drop parenthetical asides like "Meta (formerly Facebook)" → "Meta"
-// for the public page header. me.json keeps the full name for the
-// detailed resume at /resume/, where the disambiguation matters.
-function displayCompany(company: string): string {
-  return company.replace(/\s*\([^)]*\)\s*$/, '').trim();
-}
-
 function jobHeroMedia(job: Job): MediaGroup | undefined {
   if (job.media) return job.media;
   for (const track of job.tracks ?? []) {
@@ -61,7 +54,7 @@ export function ExperienceEntryGeneric({ job }: ExperienceEntryGenericProps): JS
   return (
     <div className="entry">
       <div className="entry-head">
-        <div className="l">{displayCompany(job.company)}</div>
+        <div className="l">{job.company}</div>
         <div className="r">{dateRange}</div>
       </div>
       {job.summary && (

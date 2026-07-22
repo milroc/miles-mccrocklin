@@ -188,9 +188,19 @@ same convention.
 - **Container queries:** The header uses `container-type: inline-size` so
   contact rows can collapse to a single column when wrapping would orphan
   separator dots. Inline entries do the same with `container-name: inline-l`.
-- **Shadows:** Two registers. `--shadow` (subtle paper float). `0 6px 20px
-  rgba(0,0,0,0.16-0.18)` for hover lifts on figures and portraits.
-  Lightbox imagery gets `0 30px 80px rgba(0,0,0,0.55)`.
+- **Shadows:** Four registers.
+  - `--shadow` — the paper float (three-stop, see D8).
+  - `0 6px 20px rgba(0,0,0,0.16-0.18)` — hover lifts on paper-context
+    figures and portraits.
+  - `0 30px 80px rgba(0,0,0,0.55)` — lightbox imagery, dark-theater voice.
+  - `--canvas-shadow` (`rgba(10, 12, 10, 0.55)`) — every floating surface
+    on the dark mat: the photographer filter dropdown and mobile sheet,
+    masonry tile hover, the explorer country panel edge and album-cover
+    hover. One color derived from the `#0a0c0a` void tone (not neutral
+    black — warm shadows on the warm mat); offsets and blur stay
+    per-surface because they encode real geometry (dropdowns drop, sheets
+    rise, panels slide in from the right). Decided 2026-07-22, replacing
+    five ad-hoc `rgba(0,0,0,…)` values.
 
 ## Photography Treatment
 
@@ -208,6 +218,14 @@ register stays visible.
 - **Intent:** Photography reads as editorial marginalia at rest, snaps to
   full color on intent. Avoids the "vacation slideshow" energy a 100%-color
   gallery would carry inside an editorial document.
+- **Exception — /photographer/ masonry wall.** On the gallery page the
+  photography IS the document, not marginalia, so tiles ship full color at
+  rest (`contrast(1.02)`) and light up on hover
+  (`saturate(1.15) contrast(1.04)`). Documented 2026-07-22 (was
+  undocumented drift; the code was right, this file was behind).
+- **Terminal glass.** The Claude Code terminal dock keeps its heavy
+  frosted-glass surface by owner preference ("it's how I prefer my own
+  terminals") — a guest-register exception, like the Airbnb palette.
 
 ## Motion
 
@@ -396,3 +414,4 @@ on the dark mat instead of a white rectangle painted on the dark color.
 | 2026-05-01 | Canvas: cream → deep warm near-black      | Make the cream paper pop. Document voice unchanged; framing now reads as "paper on dark felt portfolio" instead of "cream on cream." |
 | 2026-07-22 | Audience: hiring partners → personal/project hub | Owner correction during splash design review; copy and layout stop optimizing for recruiters. |
 | 2026-07-22 | Splash: globe-anchor redesign             | One visual anchor (WireGlobe hero) instead of three competing collages; placards replace glass chips; doors replace masonry tiles; mobile ships CSS globe only. Full review: ~/.gstack/projects/milroc-miles-mccrocklin/designs/splash-improve-20260721/. |
+| 2026-07-22 | Dark-canvas shadows unified on `--canvas-shadow` | Five ad-hoc black shadows on canvas surfaces become one void-derived color (warm, not neutral black); geometry stays per-surface. |

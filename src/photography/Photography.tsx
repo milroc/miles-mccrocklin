@@ -1,7 +1,7 @@
 // Photography — root composer for /photographer. Owns the chip filter
 // state and the filter algebra:
 //
-//   (category1 OR category2 ...)       — Wildlife / Landscapes / People tree
+//   (category1 OR category2 ...)       — Wildlife / Landscapes / Culture tree
 //   AND
 //   (species1 OR species2 ...)
 //   AND

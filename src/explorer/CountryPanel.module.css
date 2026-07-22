@@ -14,7 +14,7 @@
   flex-direction: column;
   background: var(--splash-canvas);
   border-left: 1px solid var(--splash-canvas-rule);
-  box-shadow: -16px 0 40px rgba(0, 0, 0, 0.4);
+  box-shadow: -16px 0 40px var(--canvas-shadow);
   overflow: hidden;
   animation: explorer-panel-slide 220ms cubic-bezier(0.2, 0.65, 0.3, 1) both;
 }
@@ -177,7 +177,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 480ms cubic-bezier(0.2, 0.65, 0.3, 1);
+  transition: transform 320ms cubic-bezier(0.2, 0.65, 0.3, 1);
 }
 
 /* "View album" sheen — a thin gradient + label that fades up from the
@@ -238,7 +238,7 @@
   .album:hover .albumCover,
   .album:focus-visible .albumCover {
     border-color: rgba(236, 233, 226, 0.55);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 10px 24px var(--canvas-shadow);
     transform: translateY(-2px);
   }
 

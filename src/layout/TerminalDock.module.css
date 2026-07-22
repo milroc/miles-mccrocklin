@@ -58,7 +58,7 @@
   border: 1px solid var(--guest-claude-rule);
   border-radius: 4px;
 
-  color: #fff;
+  color: var(--guest-claude-fg);
   font-family: var(--mono);
   font-size: 11px;
   line-height: 1;

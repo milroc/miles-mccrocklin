@@ -32,7 +32,7 @@
 }
 .brand:hover,
 .brand:focus-visible {
-  color: #ffffff;
+  color: var(--canvas-fg-strong, var(--splash-canvas-fg-strong));
 }
 .brand:focus-visible {
   outline: 2px solid var(--accent, var(--splash-accent));

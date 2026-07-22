@@ -32,6 +32,10 @@
      keeping the warm-cool register consistent with the canvas. */
   --splash-canvas-void: #0a0c0a;
 
+  /* Dark-canvas shadow — shared with globals.css (same name, unprefixed,
+     so photography/explorer modules resolve it from either root). */
+  --canvas-shadow: rgba(10, 12, 10, 0.55);
+
   --splash-fs-display: 48px;
   --splash-fs-display-sm: 32px;
 }
