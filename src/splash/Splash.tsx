@@ -84,7 +84,7 @@ const DOORS: ReadonlyArray<{
     thumb: '/media/summary/chinstrap-traverse.jpg',
     label: 'PHOTOGRAPHER',
     sublabel: 'artist',
-    cta: 'view portfolio →',
+    cta: 'the frames →',
     aria: 'Photographer — view the gallery',
   },
 ];
@@ -217,7 +217,7 @@ export function Splash(): JSX.Element {
         <span className={s.heroDoor}>
           <span className={s.doorLabel}>EXPLORER</span>
           <span className={s.doorSublabel}>traveler</span>
-          <span className={s.doorCta}>spin the globe →</span>
+          <span className={s.doorCta}>the journey →</span>
         </span>
       </a>
 
