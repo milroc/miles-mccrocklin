@@ -204,10 +204,12 @@ export function Splash(): JSX.Element {
           </span>
           <span className={s.globeMount} data-splash-globe-mount="true" />
         </span>
-        <span className={s.placard}>
-          <span className={s.placardLabel}>EXPLORER</span>
-          <span className={s.placardSub}>traveler</span>
-          <span className={s.placardCta}>spin the globe →</span>
+        <span className={s.heroDoor}>
+          <span className={s.doorTitle}>
+            <span className={s.doorLabel}>EXPLORER</span>
+            <span className={s.doorSublabel}>traveler</span>
+          </span>
+          <span className={s.doorCta}>spin the globe →</span>
         </span>
       </a>
 

@@ -203,43 +203,30 @@
   color: var(--splash-canvas-fg);
 }
 
-/* Placard — flat cream paper chip, the museum-label register (paper
-   on the dark felt mat, sharp corners, eyebrow mono caps). Replaces
-   the 2026-05 frosted-glass chips; see DESIGN.md. Overlaps the
-   globe's lower edge like a label leaning against the exhibit. */
-.placard {
+/* Explorer label — same motif as the Builder/Photographer door rows
+   (dark surface, mono label + italic sublabel, accent mono CTA) so
+   the three destinations read as one family and the hero's label
+   doesn't outshout the doors. Reuses the door text classes; only the
+   container differs (centered chip under the globe instead of a
+   thumbnail row). */
+.heroDoor {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -26px;
-  padding: 10px 24px;
-  background: var(--splash-paper);
-  color: var(--splash-ink);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  gap: 4px;
+  margin-top: -22px;
+  padding: 10px 22px;
+  background: #22261f;
+  border: 1px solid transparent;
   position: relative;
   z-index: 1;
+  transition: border-color 180ms ease;
 }
-.placardLabel {
-  font-family: var(--splash-mono);
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.36em;
+.hero:hover .heroDoor,
+.hero:focus-visible .heroDoor {
+  border-color: var(--splash-canvas-rule);
 }
-.placardSub {
-  font-family: var(--splash-serif);
-  font-style: italic;
-  font-size: 12px;
-  color: var(--splash-muted);
-  margin-top: 2px;
-}
-.placardCta {
-  font-family: var(--splash-mono);
-  font-size: 10px;
-  color: var(--splash-accent);
-  margin-top: 4px;
-  letter-spacing: 0.04em;
-}
-.hero:hover .placardCta {
+.hero:hover .doorCta {
   text-decoration: underline;
   text-underline-offset: 2px;
 }

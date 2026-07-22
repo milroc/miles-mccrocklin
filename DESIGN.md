@@ -248,11 +248,12 @@ The front page is an asymmetric globe-anchor layout: wordmark + tagline
 doors → socials (~1.6 viewports). Patterns introduced here are system
 vocabulary:
 
-- **Placard.** A flat cream chip (`--paper` bg, `--ink` text, sharp
-  corners, eyebrow mono caps, single small shadow) used as a label over
-  imagery — the museum-label register. Replaces the 2026-05
-  frosted-glass chips, which were off-system (decorative shadows +
-  backdrop blur).
+- **One label motif.** All three destinations (Explorer's globe label
+  included) share the door-row text treatment: dark `#22261f` surface,
+  mono caps label + italic sublabel, accent mono CTA. The cream
+  "placard" chip was tried for the globe and retired 2026-07-22 — it
+  outshouted the doors it should rhyme with. (The 2026-05
+  frosted-glass chips stay retired too.)
 - **Door row.** A compact link row: one tight thumbnail (96×64), mono
   caps label, italic sublabel, always-visible mono CTA in the accent
   color. No hover-only affordances. The list scales to future doors
