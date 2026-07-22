@@ -32,7 +32,7 @@
         "id": "personal-portrait",
         "type": "image",
         "src": "media/summary/portrait.jpg",
-        "caption": "Multitudes. Snap by Cat Grundy Beck (@catgundrybeck) https://www.catgundrybeck.com/",
+        "caption": "Multitudes. Snap by Cat Gundry-Beck (@catgundrybeck) https://www.catgundrybeck.com/",
         "aspect": 1
       },
       {
@@ -56,7 +56,7 @@
         "id": "travel-egypt",
         "type": "image",
         "src": "media/summary/egypt.jpg",
-        "caption": "Wondering on the value of humanities innovation & drive for communication in the Valley of Kings.",
+        "caption": "Wondering at humanity's drive for innovation and communication in the Valley of the Kings.",
         "aspect": 1.5002,
         "tag": "Luxor, Egypt"
       },
@@ -518,7 +518,7 @@
                 "id": "travel-04",
                 "type": "image",
                 "src": "media/sabbatical-travel/travel-04.jpeg",
-                "caption": "A rainy somber moment after a failed hunt.",
+                "caption": "A rainy, somber moment after a failed hunt.",
                 "aspect": 1.7778,
                 "tag": "Nairobi National Park, Kenya"
               },
@@ -550,7 +550,7 @@
                 "id": "travel-02",
                 "type": "image",
                 "src": "media/sabbatical-travel/travel-02.jpeg",
-                "caption": "Speechless at Team Labs Borderless.",
+                "caption": "Speechless at teamLab Borderless.",
                 "aspect": 1.5006,
                 "tag": "Tokyo, Japan"
               },
@@ -756,7 +756,7 @@
                 "type": "video",
                 "src": "media/meta-forecast/forecast-trading-movement.mp4",
                 "poster": "media/meta-forecast/forecast-trading-movement-poster.jpg",
-                "caption": "Forecast Motion (2021). External explainer animation showing how prices moved with volume across Forecast's prediction markets. Built to understand market mechanics and explain the platforms choices.",
+                "caption": "Forecast Motion (2021). External explainer animation showing how prices moved with volume across Forecast's prediction markets. Built to understand market mechanics and explain the platform's choices.",
                 "tag": "Forecast Motion · 2021",
                 "aspect": 1.7846,
                 "subtype": "ui"
@@ -1055,7 +1055,7 @@
             "id": "community-sfdm-talk",
             "type": "image",
             "src": "media/sf-data-mining/sf-data-mining-talk.jpg",
-            "caption": "SF Data Mining: A normal talk to the community.",
+            "caption": "A typical night at SF Data Mining.",
             "tag": "SF Data Mining · Talk",
             "aspect": 1.5048
           },
