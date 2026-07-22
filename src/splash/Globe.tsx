@@ -116,11 +116,13 @@ export type AtlasEntry =
       country_slug: string;
       render_kind: 'polygon';
       image: string;
-      // 384-edge low-res variant of `image`. Splash uses this (~15 KB
-      // each) so the first paint isn't waiting on 26 MB of full-res
-      // photos. /explorer/ uses the full-size `image`. Generated
-      // alongside `image` by scripts/build-photo-atlas.ts.
+      // Low-res variants of `image`, generated alongside it by
+      // scripts/build-photo-atlas.ts. The splash uses `image_mid`
+      // (768-edge, ~40-60 KB — sized for the near-viewport globe) with
+      // `image_tile` (384-edge, ~15 KB) as fallback; /explorer/ uses
+      // the full 2048-edge `image` (~26 MB total, drip-loaded).
       image_tile?: string;
+      image_mid?: string;
       primary_album?: AtlasAlbum;
       secondary_albums?: AtlasAlbum[];
     }
@@ -130,6 +132,7 @@ export type AtlasEntry =
       render_kind: 'bubble' | 'flat';
       image: string;
       image_tile?: string;
+      image_mid?: string;
       lat: number;
       lng: number;
       primary_album?: AtlasAlbum;
@@ -590,11 +593,13 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
     // compete with the JS bundle and topology fetch on the
     // critical path.
     //
-    // Splash renders all photos at ~240 px tile size, so we prefer the
-    // 384-edge `image_tile` variant (~15 KB each, 27× smaller than the
-    // 2048-edge originals). /explorer/ uses the full-res `image`.
+    // The splash globe renders near viewport height (2026-07), where
+    // big countries map their photo across 300-400 px — so prefer the
+    // 768-edge `image_mid` variant (~40-60 KB each, still ~7× smaller
+    // than the 2048-edge originals), falling back to the 384 tile.
+    // /explorer/ uses the full-res `image`.
     const photoSrcOf = (entry: AtlasEntry): string =>
-      `/${(!fullscreen && entry.image_tile) ? entry.image_tile : entry.image}`;
+      `/${(!fullscreen && (entry.image_mid ?? entry.image_tile)) || entry.image}`;
     interface PhotoLoadJob {
       src: string;
       mat: THREE_T.ShaderMaterial;
@@ -766,9 +771,8 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
 
     // Idempotent. mountGlobe calls this from a requestAnimationFrame
     // after the stage-1 paint; the returned promise drives the stage-2
-    // arc paint. On the splash path, photo bytes are only ~800 KB
-    // total (image_tile variants), so this resolves in ~1–2 s on
-    // mobile bandwidth. On /explorer/ the full ~26 MB downloads
+    // arc paint. On the splash path, photo bytes are ~2 MB total
+    // (image_mid variants), desktop-only and off the critical path. On /explorer/ the full ~26 MB downloads
     // progressively while the user is already looking at geometry.
     // Texture-upload drip: when each JPEG finishes downloading +
     // decoding, we queue it for assignment instead of immediately
@@ -1294,8 +1298,8 @@ export async function mountGlobe(
       });
     }
     const img = document.createElement('img');
-    // Splash bubbles use the 384-edge tile variant (~15 KB) for first
-    // paint; /explorer/ renders bubbles at full ~2048-edge.
+    // Splash bubbles stay tiny (~22 px), so the 384-edge tile variant
+    // is still right for them; /explorer/ renders bubbles full-res.
     const tileSrc = (!fullscreen && entry.image_tile) ? entry.image_tile : entry.image;
     img.src = `/${tileSrc}`;
     img.alt = entry.country;
