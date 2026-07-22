@@ -191,9 +191,9 @@ export function Splash(): JSX.Element {
           </h1>
         </div>
         <p className={s.tagline}>
-          Ten years at Meta fighting misinformation and building prediction
-          markets. Now on sabbatical: seven continents, thousands of stories
-          captured in frame.
+          Ten years at Meta supporting teams, fighting misinformation, and
+          building prediction markets. Now on sabbatical: seven continents,
+          thousands of stories captured in frame.
         </p>
       </header>
 
