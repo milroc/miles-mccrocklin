@@ -271,6 +271,18 @@ vocabulary:
   time from data/journey.json (scripts/build-splash-stats.ts); the
   continent figure is hand-maintained in Splash.tsx.
 
+## Naming
+
+Employer naming is register-scoped:
+
+- **Referential surfaces** (splash tagline, share-card badges, LinkedIn
+  cover) say **FB / ex-FB** — era-true and terse, matched to the mono
+  badge voice.
+- **Document surfaces** (/builder/ and /resume/ prose in `data/me.json`)
+  say **Meta**, anchored once as "Meta (formerly Facebook)".
+- **Product names keep their historical names** (Facebook Creators,
+  Forecast) — they shipped under those names.
+
 ## Custom Typography Pipeline
 
 The soul of the site. Documented here because anyone touching `.bullets`

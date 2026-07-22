@@ -32,7 +32,7 @@
         "id": "personal-portrait",
         "type": "image",
         "src": "media/summary/portrait.jpg",
-        "caption": "Multitudes. Snap by Cat Grundy Beck (@catgundrybeck) https://www.catgundrybeck.com/",
+        "caption": "Multitudes. Snap by Cat Gundry-Beck (@catgundrybeck) https://www.catgundrybeck.com/",
         "aspect": 1
       },
       {
@@ -56,7 +56,7 @@
         "id": "travel-egypt",
         "type": "image",
         "src": "media/summary/egypt.jpg",
-        "caption": "Wondering on the value of humanities innovation & drive for communication in the Valley of Kings.",
+        "caption": "Wondering at humanity's drive for innovation and communication in the Valley of the Kings.",
         "aspect": 1.5002,
         "tag": "Luxor, Egypt"
       },
@@ -117,10 +117,10 @@
       "location": "Global",
       "start_date": "May 2024",
       "end_date": "Present",
-      "summary": "Stepped away in 2024 to invest, explore, & make art. Back to building in Mar 2026 determining how AI will change the way humans collaborate.",
+      "summary": "Stepped away in 2024 to invest, explore, & make art. Back to building in Apr 2026.",
       "tracks": [
         {
-          "period": "Mar 2026 – Present",
+          "period": "Apr 2026 – Present",
           "focus": "Building",
           "summary": "Early exploration of how AI changes the way humans collaborate. Two experiments stood out:",
           "summary_1pager": "Builder: early exploration of AI to help humans collaborate. /human and diction.coach stood out and are in early alpha from several experiments.",
@@ -422,7 +422,7 @@
         {
           "period": "May 2024 – Present",
           "focus": "Travel & Wildlife Photography",
-          "summary_1pager": "Travel & Wildlife Photography: 22 countries, 7 continents, 54,000 shutter clicks (wildlife, landscape, street).",
+          "summary_1pager": "Travel & Wildlife Photography: 22 countries, 7 continents, >50k shutter clicks (wildlife, landscape, street).",
           "achievements": [
             {
               "text": "22 countries on all 7 continents, and countless friends along the way."
@@ -518,7 +518,7 @@
                 "id": "travel-04",
                 "type": "image",
                 "src": "media/sabbatical-travel/travel-04.jpeg",
-                "caption": "A rainy somber moment after a failed hunt.",
+                "caption": "A rainy, somber moment after a failed hunt.",
                 "aspect": 1.7778,
                 "tag": "Nairobi National Park, Kenya"
               },
@@ -550,7 +550,7 @@
                 "id": "travel-02",
                 "type": "image",
                 "src": "media/sabbatical-travel/travel-02.jpeg",
-                "caption": "Speechless at Team Labs Borderless.",
+                "caption": "Speechless at teamLab Borderless.",
                 "aspect": 1.5006,
                 "tag": "Tokyo, Japan"
               },
@@ -663,11 +663,11 @@
           "role": "Engineering Manager",
           "achievements": [
             {
-              "text": "Shipped Professional Mode for Facebook Creators as EM of a team of 10. Owned composer, settings, and onboarding surfaces. Onboarded ΞM creators in the first 3 months, unlocking α% of the org's top-line annual goal at β× target.",
+              "text": "Shipped Professional Mode (“Pro Mode”) for Facebook Creators as EM of a team of 10. Owned composer, settings, and onboarding surfaces. Onboarded ΞM creators in the first 3 months, unlocking α% of the org's top-line annual goal at β× target.",
               "visibility": "all"
             },
             {
-              "text": "Led 10 ICs on the Bulletin Publishing UI team through its scale-up and ultimate sunset. Placed every UI engineer who needed a new team, then rebuilt mine around the back-end work that became Professional Mode.",
+              "text": "Led 10 ICs on the Bulletin Publishing UI team through its scale-up and ultimate sunset. Placed every UI engineer who needed a new team, then rebuilt mine around the back-end work that became Pro Mode.",
               "visibility": "all"
             }
           ],
@@ -678,7 +678,7 @@
                 "id": "ui-pro-mode-hero",
                 "type": "image",
                 "src": "media/meta-bulletin-promode/pro-mode-hero.jpeg",
-                "caption": "Facebook Professional Mode (2023). Opt-in creator surface that bundled monetization, analytics, audience tools, and safety controls into one home for people building on Facebook. Letting anyone on Facebook become a creator on the platform.",
+                "caption": "Pro Mode (2023). Opt-in creator surface that bundled monetization, analytics, audience tools, and safety controls into one home for people building on Facebook. Letting anyone on Facebook become a creator on the platform.",
                 "tag": "Pro Mode · 2023",
                 "aspect": 1.7778,
                 "subtype": "ui"
@@ -695,7 +695,7 @@
             ]
           },
           "visibility": "all",
-          "builder_tagline": "EM on the Bulletin Publishing UI team through its scale-up and sunset, placing every engineer who needed a new team and rebuilding mine around the back-end work that became Pro Mode. Stayed on as EM behind Pro Mode for Facebook Creators: the surface that bundled monetization, analytics, audience, and safety tools into one home for people building a creator business on Facebook."
+          "builder_tagline": "EM on the Bulletin Publishing UI team through its scale-up and sunset, placing every engineer who needed a new team and rebuilding mine around the back-end work that became Professional Mode (“Pro Mode”). Stayed on as EM behind Pro Mode for Facebook Creators: the surface that bundled monetization, analytics, audience, and safety tools into one home for people building a creator business on Facebook."
         },
         {
           "period": "Feb 2020 – Dec 2021",
@@ -756,7 +756,7 @@
                 "type": "video",
                 "src": "media/meta-forecast/forecast-trading-movement.mp4",
                 "poster": "media/meta-forecast/forecast-trading-movement-poster.jpg",
-                "caption": "Forecast Motion (2021). External explainer animation showing how prices moved with volume across Forecast's prediction markets. Built to understand market mechanics and explain the platforms choices.",
+                "caption": "Forecast Motion (2021). External explainer animation showing how prices moved with volume across Forecast's prediction markets. Built to understand market mechanics and explain the platform's choices.",
                 "tag": "Forecast Motion · 2021",
                 "aspect": 1.7846,
                 "subtype": "ui"
@@ -1055,7 +1055,7 @@
             "id": "community-sfdm-talk",
             "type": "image",
             "src": "media/sf-data-mining/sf-data-mining-talk.jpg",
-            "caption": "SF Data Mining: A normal talk to the community.",
+            "caption": "A typical night at SF Data Mining.",
             "tag": "SF Data Mining · Talk",
             "aspect": 1.5048
           },

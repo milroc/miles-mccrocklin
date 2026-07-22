@@ -32,8 +32,13 @@ interface HeaderProps {
 export function Header({ contact }: HeaderProps) {
   const mode = useContext(ModeContext);
   const is1Pager = mode === '1pager';
-  const websiteLabel = stripMd(contact.website);
-  const websiteHref = urlFromMd(contact.website) || `https://${websiteLabel}`;
+  // contact.website may be markdown or a plain URL that already carries a
+  // protocol; display the bare domain, keep the protocol on the href.
+  const websiteRaw = stripMd(contact.website);
+  const websiteHref =
+    urlFromMd(contact.website) ||
+    (websiteRaw.startsWith('http') ? websiteRaw : `https://${websiteRaw}`);
+  const websiteLabel = websiteRaw.replace(/^https?:\/\//, '');
   const emailLabel = stripMd(contact.email);
   const emailHref = `mailto:${emailLabel}`;
 
