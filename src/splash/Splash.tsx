@@ -13,11 +13,11 @@
 // two options if SSR is ever wanted). The old <noscript> fallback was
 // dead code for the same reason and has been deleted.
 //
-// The reveal (chrome fade-in + desktop WebGL globe mount) is layered
-// on by src/splash/effects.tsx after mount, via dynamic import from a
-// useEffect. Mobile never mounts WebGL — the CSS <WireGlobe> is the
-// shipped design, not a loading state (gate lives in effects.tsx,
-// predicate in constants.ts).
+// The reveal (chrome fade-in + WebGL globe mount) is layered on by
+// src/splash/effects.tsx after mount, via dynamic import from a
+// useEffect. The WebGL globe mounts on every viewport (mobile
+// included); the CSS <WireGlobe> renders underneath as the pre-mount
+// state.
 
 import { useEffect, useRef, type ReactNode } from 'react';
 import {

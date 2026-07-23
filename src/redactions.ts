@@ -16,7 +16,7 @@ const RESUME_DATA = ME as unknown as Resume;
 
 export type { Redaction };
 
-export const REDACTIONS: readonly Redaction[] = RESUME_DATA.redactions ?? [];
+const REDACTIONS: readonly Redaction[] = RESUME_DATA.redactions ?? [];
 
 // Lookup by glyph for the inline renderer (KPText.withRedactions).
 export const REDACTION_BY_GLYPH: ReadonlyMap<string, Redaction> = new Map(

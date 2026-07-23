@@ -14,7 +14,7 @@ export const PrintContext = createContext<boolean>(false);
 // from 1-pager). Existing items without a visibility field keep working.
 const DEFAULT_VISIBILITY: Visibility = 'not_1pager';
 
-export function getVisibility(item: unknown): Visibility {
+function getVisibility(item: unknown): Visibility {
   if (typeof item !== 'string' && item != null && typeof item === 'object') {
     const v = (item as { visibility?: Visibility }).visibility;
     if (v === 'all' || v === 'not_1pager' || v === '1pager_only' || v === 'archived') {

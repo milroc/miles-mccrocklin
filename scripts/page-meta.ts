@@ -50,7 +50,6 @@ export type MeContext = {
 // excluded — their primary topic is the globe / the photography work,
 // not the person.
 export const PERSON_SCHEMA_PATHS = ['', 'builder/'] as const;
-export type PersonSchemaPath = (typeof PERSON_SCHEMA_PATHS)[number];
 
 export function loadMe(jsonPath = './data/me.json'): Me {
   return JSON.parse(readFileSync(jsonPath, 'utf8')) as Me;
@@ -70,7 +69,7 @@ export function buildContext(me: Me): MeContext {
 
 // JSON-LD Person schema describing the canonical entity. Google uses this
 // to populate knowledge-panel-style cards on personal-name searches.
-export function renderPersonSchema(ctx: MeContext): string {
+function renderPersonSchema(ctx: MeContext): string {
   const { me, contact, siteUrl, addressLocality, addressRegion } = ctx;
   const schema = {
     '@context': 'https://schema.org',
