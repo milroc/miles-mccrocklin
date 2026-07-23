@@ -72,7 +72,8 @@ Rules:
 ### Custom typography pipeline
 
 The `.bullets` block runs through a Knuth-Plass line breaker
-(`vendor/kp.js`) plus a soft-hyphen pre-processor (`vendor/hyphenate.js`).
+(`src/utils/kp.ts`) plus a soft-hyphen pre-processor
+(`src/utils/hyphenate.ts`).
 `.kp-line` is set to `display: inline; white-space: nowrap` on purpose.
 Do not add `word-wrap`, `overflow-wrap`, or `hyphens` rules to `.bullets`
 without reading the KP wrap logic — it will fight the line-breaker and
