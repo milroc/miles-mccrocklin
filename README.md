@@ -1,6 +1,6 @@
 # miles-mccrocklin
 
-Personal site / resume. Bun + React, deployed to GitHub Pages at [miles.mccrockl.in](https://miles.mccrockl.in).
+Personal site. Bun + React, deployed to GitHub Pages at [miles.mccrockl.in](https://miles.mccrockl.in).
 
 ## Scripts
 
