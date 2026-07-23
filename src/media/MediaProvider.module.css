@@ -15,11 +15,10 @@
   inset: 0;
   background: rgba(8,8,12,0.94);
   z-index: 100;
-  animation: fade-in 180ms ease;
+  animation: lightbox-fade-in 180ms ease;
   display: flex;
   flex-direction: column;
 }
-@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
 .track {
   flex: 1;

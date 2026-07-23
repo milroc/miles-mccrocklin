@@ -97,10 +97,7 @@
 .rotateToggle[data-active="false"]:hover {
   opacity: 1;
 }
-@keyframes rotate-icon-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
+
 @media (prefers-reduced-motion: reduce) {
   .rotateToggle[data-active="true"] .rotateIcon {
     animation: none;

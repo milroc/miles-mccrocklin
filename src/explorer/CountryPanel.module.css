@@ -18,10 +18,6 @@
   overflow: hidden;
   animation: explorer-panel-slide 220ms cubic-bezier(0.2, 0.65, 0.3, 1) both;
 }
-@keyframes explorer-panel-slide {
-  from { transform: translateX(100%); opacity: 0.4; }
-  to   { transform: translateX(0); opacity: 1; }
-}
 
 /* Inner wrapper that owns scrolling. Lives directly under .root so
    that .close (also a child of .root) stays pinned to the panel's
@@ -323,13 +319,10 @@
     max-height: 75dvh;
     border-left: none;
     border-top: 1px solid var(--splash-canvas-rule);
-    box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 -16px 40px var(--canvas-shadow);
     animation-name: explorer-panel-slide-up;
   }
-  @keyframes explorer-panel-slide-up {
-    from { transform: translateY(100%); opacity: 0.4; }
-    to   { transform: translateY(0); opacity: 1; }
-  }
+  
   .scrollArea {
     overflow-y: auto;
     overflow-x: hidden;

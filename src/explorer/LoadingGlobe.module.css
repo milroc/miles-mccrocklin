@@ -8,12 +8,9 @@
   /* Entrance animation — fade + slight scale-up over 600 ms so the
      wireframe arrives gently instead of popping in. Keeps the final
      state with `animation-fill-mode: both`. */
-  animation: enter 600ms cubic-bezier(0.2, 0.65, 0.3, 1) both;
+  animation: explorer-loader-enter 600ms cubic-bezier(0.2, 0.65, 0.3, 1) both;
 }
-@keyframes enter {
-  from { opacity: 0; transform: scale(0.92); }
-  to   { opacity: 1; transform: scale(1); }
-}
+
 .label {
   position: absolute;
   top: calc(50% + min(33vmin, 264px));
@@ -27,12 +24,9 @@
   pointer-events: none;
   white-space: nowrap;
   /* Pulse the label gently so the user knows something's happening. */
-  animation: pulse 2.4s ease-in-out infinite;
+  animation: explorer-loader-pulse 2.4s ease-in-out infinite;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 0.45; }
-  50%      { opacity: 1; }
-}
+
 /* Failure hook — Explorer sets data-globe-failed on the mount container
    when mountGlobe() rejects, so the "loading" label doesn't pulse forever
    over a globe that will never arrive. */
