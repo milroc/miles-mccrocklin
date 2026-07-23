@@ -224,10 +224,10 @@ animation use case and the GIF covers the manual-share use case.
 
 ## Iterating on the default card
 
-The folder also contains exploration HTML used to arrive at the
-locked-in default card (`variant-a.html`, `variant-b.html`,
-`variant-c.html`, `variant-d2.html`, `multi-1..4.html`) plus a
-`contexts.html` that mocks the card inside Twitter/Facebook/iMessage at
-platform-accurate sizes. These are dev-only — not part of the build, not
-loaded by the site, not crawled. Feel free to delete them or keep them
-as a starting point for the next iteration.
+The exploration HTML used to arrive at the locked-in cards has been
+deleted; the surviving sources are `og-card.html` (default card),
+`explorer/variant-b.html` + `explorer/variant-b-overlay.html` (explorer
+card), and `photographer/photographer-og-card.html`. To iterate, copy
+the relevant card to a scratch variant, tweak, re-render per the steps
+above, and delete the scratch file when done — exploration variants are
+dev-only and shouldn't accumulate in the tree.
