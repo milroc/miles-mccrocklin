@@ -21,7 +21,7 @@
 .lg { width: 220px; }
 
 /* When a slot has multiple photos, stack them vertically and slim them. */
-.n2 :global(.figure-card) { aspect-ratio: 4 / 3; }
+.n2 [data-figure-card] { aspect-ratio: 4 / 3; }
 
 /* ---------- Justified strip ---------------------------------------------
    Each tile keeps its true aspect ratio. Tiles share a target row height;
@@ -43,7 +43,7 @@
    aspect, so items in a row settle at a common height when grown — that's
    the justified-gallery property. max-height caps singletons / sparse rows
    so a wide UI doesn't stretch into a giant banner. */
-.strip :global(.figure-card) {
+.strip [data-figure-card] {
   flex: var(--ar, 1) 1 calc(var(--ar, 1) * var(--row-h));
   min-width: 0;
   max-width: calc(var(--ar, 1) * var(--row-h) * 1.6);
@@ -66,14 +66,14 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 6px;
 }
-.strip.embeds :global(.figure-card) {
+.strip.embeds [data-figure-card] {
   flex: none;
   width: 100%;
   max-width: none;
   height: auto;
 }
 
-.strip :global(.figure-tag) { display: none; }
+.strip [data-figure-tag] { display: none; }
 
 /* ---------- Phone gallery (portrait-aspect screenshots, mobile only) ----
    Mobile-only treatment for portrait mobile-app screenshots in strip
@@ -105,7 +105,7 @@
 }
 .phones::-webkit-scrollbar { display: none; }
 
-.phones :global(.figure-card) {
+.phones [data-figure-card] {
   flex: 0 0 auto;
   width: 62vw;
   height: auto;
@@ -121,15 +121,15 @@
     0 1px 0 rgba(255, 255, 255, 0.04) inset,
     0 8px 24px -8px rgba(0, 0, 0, 0.35);
 }
-.phones :global(.figure-card) img,
-.phones :global(.figure-card) video {
+.phones [data-figure-card] img,
+.phones [data-figure-card] video {
   border-radius: 18px; /* nested: bezel-radius (22) - padding (4) */
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.phones :global(.figure-tag) { display: none; }
+.phones [data-figure-tag] { display: none; }
 
 /* ---------- Figure grid (deliberate equal-column layout) ----------------
    Used by Figure(layout="grid"). Wide images (e.g. dashboard screenshots
@@ -144,13 +144,13 @@
   margin: 12px 0 4px;
   float: none;
 }
-.grid :global(.figure-card) {
+.grid [data-figure-card] {
   flex: none;
   width: 100%;
   height: auto;
   aspect-ratio: var(--ar, 4 / 3);
 }
-.grid :global(.figure-tag) { display: none; }
+.grid [data-figure-tag] { display: none; }
 @media (max-width: 560px) {
   /* Stack to single column on narrow viewports — at full mobile width
      two side-by-side dashboards become illegible. */
