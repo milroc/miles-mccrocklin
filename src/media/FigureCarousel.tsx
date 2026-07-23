@@ -45,7 +45,7 @@ export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
     let smoothUntil = 0;
 
     const measure = (): boolean => {
-      const cards = el.querySelectorAll<HTMLElement>('.figure-card');
+      const cards = el.querySelectorAll<HTMLElement>('[data-figure-card]');
       if (cards.length < N * COPIES) return false;
       const a = cards[0].offsetLeft;
       copyBStart = cards[N].offsetLeft;
@@ -55,7 +55,7 @@ export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
     };
 
     const startAtZero = () => {
-      const cards = el.querySelectorAll<HTMLElement>('.figure-card');
+      const cards = el.querySelectorAll<HTMLElement>('[data-figure-card]');
       // First card of the middle (B) copy = item 0 in the data array.
       // Array order is the priority, so the lead photo is what the user
       // sees first; subsequent items extend right.
@@ -70,7 +70,7 @@ export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
     // to open") is suppressed on them via CSS keyed off this attribute.
     let edgeFrame = 0;
     const classifyEdges = () => {
-      const cards = el.querySelectorAll<HTMLElement>('.figure-card');
+      const cards = el.querySelectorAll<HTMLElement>('[data-figure-card]');
       const elRect = el.getBoundingClientRect();
       cards.forEach((card) => {
         const cardRect = card.getBoundingClientRect();
@@ -132,7 +132,7 @@ export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
     let smoothEndTimer: ReturnType<typeof setTimeout> | null = null;
     const onClickCapture = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
-      const card = target?.closest('.figure-card') as HTMLElement | null;
+      const card = target?.closest('[data-figure-card]') as HTMLElement | null;
       if (!card || !el.contains(card)) return;
       const elRect = el.getBoundingClientRect();
       const cardRect = card.getBoundingClientRect();

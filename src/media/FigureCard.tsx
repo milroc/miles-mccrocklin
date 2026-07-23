@@ -6,17 +6,14 @@
 // only the portrait subset so swiping in the lightbox stays within the
 // phone gallery.
 //
-// All visual styling lives on the global `.figure-card` primitive in
-// globals.css; layout containers add their own modifier rules on top.
-import {
-  useContext,
-  useEffect,
-  useRef,
-  type CSSProperties,
-  type ReactNode,
-} from 'react';
-import { MediaCtx, prefersReducedMotion, mediaSrc } from '../utils/media';
+// Visual styling lives in FigureCard.module.css; layout containers add
+// their own modifier rules on top by targeting the `data-figure-card` /
+// `data-figure-tag` hooks (the module's class names are hashed).
+import { useContext, type CSSProperties, type ReactNode } from 'react';
+import { MediaCtx, mediaSrc } from '../utils/media';
+import { VideoInView } from './VideoInView';
 import type { MediaItem } from '../types';
+import s from './FigureCard.module.css';
 
 interface FigureCardProps {
   p: MediaItem;
@@ -33,7 +30,8 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
   if (p.type === 'embed') {
     return (
       <div
-        className="figure-card embed"
+        className={`${s.root} ${s.embed}`}
+        data-figure-card
         title={p.caption}
         style={cardStyle}
         onContextMenu={(e) => e.preventDefault()}
@@ -45,14 +43,17 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
           allowFullScreen
         />
-        {p.tag && !hideTag && <span className="figure-tag">{p.tag}</span>}
+        {p.tag && !hideTag && (
+          <span className={s.tag} data-figure-tag>{p.tag}</span>
+        )}
       </div>
     );
   }
   return (
     <button
       type="button"
-      className={`figure-card ${p.type}`}
+      className={`${s.root} ${s[p.type]}`}
+      data-figure-card
       onClick={() => open(scope, p.id)}
       onContextMenu={(e) => e.preventDefault()}
       onDragStart={(e) => e.preventDefault()}
@@ -80,56 +81,9 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
           height={1000}
         />
       )}
-      {p.tag && !hideTag && <span className="figure-tag">{p.tag}</span>}
+      {p.tag && !hideTag && (
+        <span className={s.tag} data-figure-tag>{p.tag}</span>
+      )}
     </button>
-  );
-}
-
-// Inline video that autoplays only when scrolled into view and pauses
-// when scrolled away. Muted + playsInline so mobile browsers allow the
-// autoplay; reduced-motion users get a paused first frame.
-function VideoInView({ src, poster }: { src?: string; poster?: string }) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    const reduceMotion = prefersReducedMotion();
-    if (reduceMotion) return;
-    if (typeof IntersectionObserver === 'undefined') {
-      // No IO support: fall back to autoplay always.
-      void v.play().catch(() => {});
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            // play() returns a promise that may reject if the user navigated
-            // away or autoplay was blocked; swallow it silently.
-            void v.play().catch(() => {});
-          } else {
-            v.pause();
-          }
-        }
-      },
-      { threshold: 0.4 },
-    );
-    io.observe(v);
-    return () => {
-      io.disconnect();
-    };
-  }, []);
-
-  return (
-    <video
-      ref={videoRef}
-      src={src}
-      poster={poster}
-      muted
-      loop
-      playsInline
-      preload="metadata"
-    />
   );
 }

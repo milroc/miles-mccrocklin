@@ -1,7 +1,7 @@
 /* Miles McCrocklin — Resume website (global theme + document primitives)
    Component-specific styles live in components/*.module.css. This file owns
    tokens, the page shell, mode/print variants, and the cross-cutting document
-   classes (section, entry, era, bullets, figure-card primitive, kp-wrap).
+   classes (section, entry, era, bullets, kp-wrap).
    Visual basis: PDF resume format (LaTeX-style "Awesome-CV"/Deedy lineage).
    Type pairing:
      - Georgia (system serif, GT nod) — display, body, italics, dates, summaries.
@@ -91,7 +91,7 @@
   --fs-eyebrow:    10.5px; /* section labels, mono toolbar, metrics chrome */
   --fs-micro:      10px;   /* chip, audit, ab-stars */
   --fs-eyebrow-sm: 9.5px;  /* metric key, ai-summary-hint */
-  --fs-overlay:    9px;    /* figure-tag overlay, ab-translate sub */
+  --fs-overlay:    9px;    /* FigureCard tag overlay, ab-translate sub */
 
   /* ---- Photography treatment -------------------------------------------
      Editorial-marginalia register. Photos rest desaturated with a touch
@@ -241,78 +241,8 @@ a { color: inherit; text-decoration: none; }
    .era-summary) lives in entries/Era.module.css.
    Inline-entry styles live in entries/InlineEntry.module.css. */
 
-/* ---------- Figure card primitive (the actual photo/video/embed tile) ---
-   Shared by Figure, FigureCarousel, and SummaryGallery layouts. The
-   layout-variant containers (figure-strip, figure-grid, figure-phones,
-   figure-carousel-track) each tweak sizing/borders on top of this base. */
-.figure-card {
-  position: relative;
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  background: var(--rule);
-  border: 1px solid var(--rule);
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  overflow: hidden;
-  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
-}
-.figure-card img,
-.figure-card video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  filter: var(--photo-filter-rest);
-  transition: var(--photo-filter-trans);
-  /* Save-as deterrents. Not a security boundary — screenshots and devtools
-     still work — but enough to stop the casual right-click → Save Image and
-     the click-and-drag-to-desktop gesture. `pointer-events: none` makes the
-     right-click bubble up to the parent <button>, which has no image
-     context, so the browser shows no "Save Image As" entry at all. */
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-touch-callout: none;
-}
-.figure-card iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-  background: #000;
-}
-.figure-card.embed { cursor: default; }
-.figure-card.embed:hover { transform: none; box-shadow: none; }
-.figure-card:hover {
-  z-index: 2;
-  border-color: var(--ink);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.16);
-}
-.figure-card:hover img,
-.figure-card:hover video { filter: var(--photo-filter-hover); transform: scale(1.03); }
-
-.figure-tag {
-  position: absolute;
-  bottom: 4px;
-  left: 4px;
-  right: 4px;
-  font-family: var(--mono);
-  font-size: var(--fs-overlay);
-  letter-spacing: 0.06em;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-  text-align: left;
-  pointer-events: none;
-  text-transform: uppercase;
-  opacity: 0.92;
-}
+/* Figure card primitive (photo/video/embed tile) lives in
+   media/FigureCard.module.css. */
 
 /* Component-scoped text-only / 1-pager hides live in each component's
    stylesheet. The rule below is the only document-primitive cross-cut
@@ -320,17 +250,6 @@ a { color: inherit; text-decoration: none; }
    exempt because it's the document's hook. */
 .page.mode-1pager .entry-summary:not(.lead) {
   display: none !important;
-}
-
-/* ---------- Reduced motion: pause autoplay videos & animations ---------- */
-@media (prefers-reduced-motion: reduce) {
-  .figure-card video {
-    animation-play-state: paused !important;
-  }
-  .figure-card video,
-  .figure-card img {
-    transition: none !important;
-  }
 }
 
 /* ---------- 1-pager layout (entry primitive only) ----------
@@ -376,11 +295,6 @@ a { color: inherit; text-decoration: none; }
    Page-padding & app-padding are fluid (clamp) above, so we don't need a
    width-keyed override here. */
 @media (max-width: 560px) {
-  .figure-card {
-    aspect-ratio: 16 / 9;
-    width: 100%;
-    display: block;
-  }
   /* Demote entry metadata (dates, locations) below the primary
      company/title pair: flatten entry-head + entry-sub so all four cells
      become direct flex children of .entry, then reorder so dates and

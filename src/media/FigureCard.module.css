@@ -1,0 +1,100 @@
+/* Figure card primitive (the actual photo/video/embed tile).
+   Shared by Figure, FigureCarousel, and SummaryGallery layouts. The
+   layout-variant containers (figure strip, grid, phones, carousel track)
+   each tweak sizing/borders on top of this base — they target the card
+   via the `data-figure-card` / `data-figure-tag` hooks, since the class
+   names here are hashed. */
+.root {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+.root img,
+.root video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: var(--photo-filter-rest);
+  transition: var(--photo-filter-trans);
+  /* Save-as deterrents. Not a security boundary — screenshots and devtools
+     still work — but enough to stop the casual right-click → Save Image and
+     the click-and-drag-to-desktop gesture. `pointer-events: none` makes the
+     right-click bubble up to the parent <button>, which has no image
+     context, so the browser shows no "Save Image As" entry at all. */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+.root iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #000;
+}
+/* Type variants. `image` and `video` carry no styles of their own yet;
+   they exist so the rendered type stays inspectable and targetable. */
+.image,
+.video {
+  /* intentionally empty */
+}
+.root.embed { cursor: default; }
+.root.embed:hover { transform: none; box-shadow: none; }
+.root:hover {
+  z-index: 2;
+  border-color: var(--ink);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.16);
+}
+.root:hover img,
+.root:hover video { filter: var(--photo-filter-hover); transform: scale(1.03); }
+
+.tag {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  font-family: var(--mono);
+  font-size: var(--fs-overlay);
+  letter-spacing: 0.06em;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  text-align: left;
+  pointer-events: none;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+/* ---------- Reduced motion: pause autoplay videos & animations ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .root video {
+    animation-play-state: paused !important;
+  }
+  .root video,
+  .root img {
+    transition: none !important;
+  }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 560px) {
+  .root {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    display: block;
+  }
+}

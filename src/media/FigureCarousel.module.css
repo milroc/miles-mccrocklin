@@ -114,7 +114,7 @@
   padding: 0 var(--page-pad-x);
   width: max-content;
 }
-.track :global(.figure-card) {
+.track [data-figure-card] {
   flex: 0 0 auto;
   height: 280px;
   width: calc(280px * var(--ar, 1));
@@ -125,28 +125,28 @@
   border: none;
   background: transparent;
 }
-.track :global(.figure-card):hover {
+.track [data-figure-card]:hover {
   border: none;
 }
-.track :global(.figure-card) img,
-.track :global(.figure-card) video { border-radius: 0; }
+.track [data-figure-card] img,
+.track [data-figure-card] video { border-radius: 0; }
 
 /* Edge cards advance the strip on click instead of opening the lightbox.
    The hover-zoom is the "this opens" affordance — suppress it for those
    cards so the cursor still reads as interactive (handled by the carousel
    chevron hint), but the image holds still. `data-edge` is set/cleared
    from JS on scroll + resize. */
-.track :global(.figure-card[data-edge="true"]):hover {
+.track [data-figure-card][data-edge="true"]:hover {
   z-index: auto;
   box-shadow: none;
 }
-.track :global(.figure-card[data-edge="true"]):hover img,
-.track :global(.figure-card[data-edge="true"]):hover video {
+.track [data-figure-card][data-edge="true"]:hover img,
+.track [data-figure-card][data-edge="true"]:hover video {
   filter: var(--photo-filter-rest);
   transform: none;
 }
 @media (max-width: 720px) {
-  .track :global(.figure-card) {
+  .track [data-figure-card] {
     height: 220px;
     width: calc(220px * var(--ar, 1));
   }
