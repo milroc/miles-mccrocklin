@@ -45,9 +45,10 @@ export interface MediaItem {
   src: string;
   caption?: string;
   // Descriptive a11y text for screen readers. Different from `caption`,
-  // which is editorial display copy ("Motherland."). When `alt` is not
-  // authored, render paths fall back to caption. Backfill is a curation
-  // task tracked in TODOS.md.
+  // which is editorial display copy ("Motherland."). The /photographer
+  // manifest uses it (pipeline-generated); the resume figure renderers
+  // deliberately use caption as the accessible text and ignore this
+  // field. No me.json item authors it today.
   alt?: string;
   tag?: string;
   aspect?: number;
