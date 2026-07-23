@@ -821,6 +821,11 @@ function clusterFingerprint(
 ): string {
   const latestByid = new Map<string, string>();
   for (const ev of allEvents) {
+    // Skip the dupe-merge pass's own output events: including them
+    // makes the canonical's latest-timestamp advance on every run, so
+    // the stored signature never matches and every cluster re-runs
+    // through the LLM on every merge.
+    if (ev.kind === DUPE_KIND) continue;
     const prev = latestByid.get(ev.id);
     if (!prev || prev < ev.timestamp) latestByid.set(ev.id, ev.timestamp);
   }
