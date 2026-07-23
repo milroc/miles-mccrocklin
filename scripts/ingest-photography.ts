@@ -307,12 +307,13 @@ async function ingest(): Promise<void> {
 // dropping any leftover label fields if the file hasn't been
 // re-merged yet. Defensive — bootstrap is supposed to leave only
 // structural, but be tolerant.
-function stripToStructural(e: Record<string, unknown>): PhotographyEntryJson {
+function stripToStructural(e: PhotographyEntryJson): PhotographyEntryJson {
+  const rec = e as unknown as Record<string, unknown>;
   const out: Record<string, unknown> = {};
   for (const k of STRUCTURAL_FIELDS) {
-    if (e[k] != null) out[k] = e[k];
+    if (rec[k] != null) out[k] = rec[k];
   }
-  return out as PhotographyEntryJson;
+  return out as unknown as PhotographyEntryJson;
 }
 
 if (import.meta.main) {

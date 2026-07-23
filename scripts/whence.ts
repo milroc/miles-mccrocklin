@@ -46,9 +46,9 @@ function loadAllEvents(): Event[] {
             tier,
             sessionFile,
             fields: (o.fields ?? {}) as Record<string, unknown>,
-            ...(o.source_fingerprint && {
-              source_fingerprint: o.source_fingerprint as { human: string; ai: string },
-            }),
+            ...(o.source_fingerprint
+              ? { source_fingerprint: o.source_fingerprint as { human: string; ai: string } }
+              : {}),
           });
         } catch { /* skip malformed */ }
       }

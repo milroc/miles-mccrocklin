@@ -235,8 +235,8 @@ export function appendEvent(
   };
   // tier+sessionFile aren't actually stored on disk — they're derived
   // when loading. Strip them before serializing so the on-disk schema
-  // matches what bootstrap-labels.ts wrote (and what humans expect to
-  // see when they cat a file).
+  // matches what the original bootstrap import wrote (and what humans
+  // expect to see when they cat a file).
   const onDisk = {
     v: event.v,
     id: event.id,
@@ -288,9 +288,9 @@ function loadEvents(tier: Tier, strict: boolean): LabelEvent[] {
         tier,
         sessionFile,
         fields: o.fields as Record<string, unknown>,
-        ...(o.source_fingerprint && typeof o.source_fingerprint === 'object' && {
-          source_fingerprint: o.source_fingerprint as { human: string; ai: string },
-        }),
+        ...(o.source_fingerprint && typeof o.source_fingerprint === 'object'
+          ? { source_fingerprint: o.source_fingerprint as { human: string; ai: string } }
+          : {}),
         ...(typeof o.kind === 'string' && { kind: o.kind }),
         ...(typeof o.dupe_signature === 'string' && { dupe_signature: o.dupe_signature }),
       });
@@ -1198,7 +1198,7 @@ export async function merge(opts: Partial<CliOptions> = {}): Promise<void> {
   const o: CliOptions = {
     dryRun: false, verbose: false, strict: false, skipRefine: false,
     endpoint: DEFAULT_ENDPOINT, model: null, backend: null,
-    latestSession: false,
+    latestSession: false, only: [], emitProgress: false,
     ...opts,
   };
 
