@@ -278,10 +278,11 @@ vocabulary:
   (e.g. PROJECTS) without recomposing the page.
 - **WireGlobe.** The shared CSS 3D wireframe sphere
   (`src/globe/WireGlobe.tsx`) — the splash hero's base state and
-  /explorer/'s loading state. On mobile it IS the shipped design (no
-  WebGL below the 900px/hover/pointer gate). Stroke alphas are tuned to
-  read as a drawn object, not a loading stub; the equator carries the
-  one accent line.
+  /explorer/'s loading state. The WebGL globe mounts on every viewport
+  (2026-07: the mobile wireframe-only gate read as a loading state that
+  never finished); the wireframe remains the pre-canvas base and the
+  perf/failure fallback. Stroke alphas are tuned to read as a drawn
+  object, not a loading stub; the equator carries the one accent line.
 - **Hover language.** Door thumbnails follow the site's documented
   photo treatment: grayscale at rest → color on intent, 240ms ease. No
   blur, no 0ms snaps.

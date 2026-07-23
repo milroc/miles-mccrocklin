@@ -5,16 +5,17 @@
 //
 //   1. Removes .revealing so the chrome fades in via the CSS
 //      transitions defined in Splash.module.css.
-//   2. On desktop only, mounts the live react-globe.gl into the hero
-//      (loads three.js dynamically) and crossfades the CSS WireGlobe
-//      out once a canvas actually exists.
+//   2. Mounts the live react-globe.gl into the hero (loads three.js
+//      dynamically) and crossfades the CSS WireGlobe out once a canvas
+//      actually exists.
 //
-// Globe-mount gate precedence (consolidated per 2026-07 eng review):
+// Globe-mount gate precedence:
 //   1. SPLASH_CONFIG.globeReady — config kill-switch,
-//   2. SPLASH_DESKTOP_GLOBE_MQ — viewport width + hover + fine pointer
-//      (landscape phones stay on the CSS wireframe: it's the shipped
-//      mobile design, not a fallback),
-//   3. mountGlobe's internal perf fallback — its own concern.
+//   2. mountGlobe's internal perf fallback — its own concern.
+// Mobile mounts the live globe too (2026-07): the CSS wireframe reads
+// as a loading state that never finishes, not a designed end state.
+// The wireframe remains the pre-canvas base and the perf/failure
+// fallback on low-end devices.
 // Reduced motion does NOT gate the mount: Globe.tsx mounts with all
 // motion disabled (content is never withheld for a motion preference).
 //
@@ -23,14 +24,12 @@
 
 import { mountGlobe } from './Globe';
 import { SPLASH_CONFIG } from '../me';
-import { SPLASH_DESKTOP_GLOBE_MQ } from './constants';
 import s from './Splash.module.css';
 
 export async function runReveal(splashRoot: HTMLElement): Promise<void> {
   splashRoot.classList.remove(s.revealing);
 
   if (!SPLASH_CONFIG.globeReady) return;
-  if (!matchMedia(SPLASH_DESKTOP_GLOBE_MQ).matches) return;
 
   const mountEl = splashRoot.querySelector<HTMLElement>('[data-splash-globe-mount="true"]');
   const boxEl = splashRoot.querySelector<HTMLElement>('[data-splash-globe-box="true"]');
