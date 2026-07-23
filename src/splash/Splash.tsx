@@ -31,8 +31,6 @@ import {
 import { SYL, SMALLCAP_PREFIX_RE } from '../me';
 import { WireGlobe } from '../globe/WireGlobe';
 import {
-  VISITED_COUNTRY_COUNT,
-  CONTINENT_COUNT,
   SPLASH_NAME,
   SPLASH_PORTRAIT,
   SPLASH_TAGLINE,
@@ -159,11 +157,6 @@ export function Splash(): JSX.Element {
 
       <a className={s.hero} href={EXPLORER_DOOR.href} aria-label={EXPLORER_DOOR.aria}>
         <span className={s.globeBox} data-splash-globe-box="true">
-          <span className={s.stat} aria-hidden="true">
-            {VISITED_COUNTRY_COUNT} COUNTRIES
-            <br />
-            {CONTINENT_COUNT} CONTINENTS
-          </span>
           <span className={s.wireLayer}>
             <WireGlobe />
           </span>
