@@ -1,7 +1,7 @@
 // WireGlobe — the CSS 3D wireframe globe (meridians + parallels)
 // spinning around a slightly-tilted polar axis. Owned here because two
 // pages consume it: the splash renders it as the hero's base state
-// (and the permanent state on mobile / when WebGL never mounts), and
+// (and the permanent state when WebGL never mounts), and
 // /explorer/'s LoadingGlobe wraps it as the pre-WebGL loading state.
 // One implementation is what makes splash → explorer read as a
 // continuation.

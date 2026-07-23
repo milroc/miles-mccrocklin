@@ -163,10 +163,10 @@
 /* ============================================================
    Hero — the globe, the page's one visual anchor. A single link to
    /explorer/. The CSS WireGlobe is the base state (and the permanent
-   state on mobile / when WebGL never mounts); effects.tsx layers the
-   WebGL globe into .globeMount on desktop and crossfades .wireLayer
-   out via [data-live="true"] once a canvas exists — one animating
-   globe at a time.
+   state when WebGL never mounts — perf fallback or failure);
+   effects.tsx layers the WebGL globe into .globeMount on every
+   viewport and crossfades .wireLayer out via [data-live="true"] once
+   a canvas exists — one animating globe at a time.
    ============================================================ */
 .hero {
   grid-area: hero;
