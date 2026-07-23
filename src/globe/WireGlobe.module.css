@@ -18,22 +18,36 @@
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
+  /* Base pose lives HERE, not only in the keyframes: when the
+     animation doesn't run (reduced motion, or any regression in
+     keyframe resolution — see wire-globe-spin in splash-globals.css)
+     the sphere still shows its tilt, which is what keeps the
+     parallels visible instead of edge-on. */
+  transform: rotateX(15deg);
+  /* WebKit flattens this preserve-3d context unless the sphere and
+     its hairline-border children get their own compositing layers —
+     without this, iOS renders the globe as a single collapsed
+     ellipse. Verified against Playwright WebKit 26. */
+  will-change: transform;
   /* Faint radial highlight gives the sphere front-lit volume without
      the grid losing legibility. */
   background:
     radial-gradient(circle at 32% 30%, rgba(255, 255, 255, 0.05), transparent 55%);
   border-radius: 50%;
 }
+.sphere > * {
+  will-change: transform;
+}
 @media (prefers-reduced-motion: no-preference) {
   .sphere {
     /* 7 s period — visible motion within a ~1 s glance, slow enough to
-       read as "earth spinning" rather than a spinner. */
-    animation: spin 7s linear infinite;
+       read as "earth spinning" rather than a spinner. Keyframes live
+       unhashed in splash-globals.css per the CLAUDE.md rule: Bun's
+       CSS-Modules transform hashes @keyframes blocks but does NOT
+       rewrite animation references, so module-scoped keyframes
+       silently never run. */
+    animation: wire-globe-spin 7s linear infinite;
   }
-}
-@keyframes spin {
-  from { transform: rotateX(15deg) rotateY(0deg); }
-  to   { transform: rotateX(15deg) rotateY(360deg); }
 }
 
 .meridian {
@@ -59,14 +73,21 @@
 }
 /* Parallels at L = 0° (equator), ±30°, ±60°. A parallel at latitude L
    is a horizontal circle with radius cos(L) at altitude sin(L) (in
-   sphere-radius units). rotateX(90deg) tips it into the equatorial
-   plane; top offsets translate it along the polar axis. */
+   sphere-radius units). rotateX tips it into the equatorial plane;
+   top offsets translate it along the polar axis.
+
+   89.5deg, NOT 90deg: WebKit culls children whose LOCAL transform is
+   exactly edge-on before composing the parent's 3D transform, so at
+   90deg every parallel is invisible on iOS even though the sphere's
+   tilt should give them area. Chromium composes first and renders
+   either way. Half a degree is imperceptible geometry and escapes
+   the cull. Verified against Playwright WebKit 26. */
 .parallelEq {
   inset: 0;
   width: 100%;
   height: 100%;
   left: 0;
-  transform: rotateX(90deg);
+  transform: rotateX(89.5deg);
   /* The equator carries the accent — the one green line on the sphere,
      same dosage philosophy as the resume's accent usage. */
   border-color: rgba(58, 107, 74, 0.85);
@@ -74,17 +95,17 @@
 }
 .parallel30N {
   width: 86.6%; height: 86.6%; top: -18.3%;
-  transform: translateX(-50%) rotateX(90deg);
+  transform: translateX(-50%) rotateX(89.5deg);
 }
 .parallel30S {
   width: 86.6%; height: 86.6%; top: 31.7%;
-  transform: translateX(-50%) rotateX(90deg);
+  transform: translateX(-50%) rotateX(89.5deg);
 }
 .parallel60N {
   width: 50%; height: 50%; top: -18.3%;
-  transform: translateX(-50%) rotateX(90deg);
+  transform: translateX(-50%) rotateX(89.5deg);
 }
 .parallel60S {
   width: 50%; height: 50%; top: 68.3%;
-  transform: translateX(-50%) rotateX(90deg);
+  transform: translateX(-50%) rotateX(89.5deg);
 }

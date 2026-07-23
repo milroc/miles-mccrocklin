@@ -52,6 +52,43 @@ html, body {
   overflow-x: hidden;
 }
 
+/* WireGlobe spin — referenced from WireGlobe.module.css via
+   `animation:`. Lives here UNHASHED per the CLAUDE.md keyframes rule:
+   Bun's CSS-Modules transform hashes @keyframes blocks inside modules
+   but does not rewrite the animation references, so module-scoped
+   keyframes silently never run (this exact bug shipped: the globe
+   never spun and, tilt-less, rendered blank on iOS). Global files
+   skip the hashing entirely. */
+@keyframes wire-globe-spin {
+  from { transform: rotateX(15deg) rotateY(0deg); }
+  to   { transform: rotateX(15deg) rotateY(360deg); }
+}
+
+@keyframes explorer-loader-enter {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes explorer-loader-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 1; }
+}
+
+@keyframes rotate-icon-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes explorer-panel-slide {
+  from { transform: translateX(100%); opacity: 0.4; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes explorer-panel-slide-up {
+    from { transform: translateY(100%); opacity: 0.4; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+
 /* Microstate bubble markers — circular thumbnails anchored at the
    country's lat/lng. Used for countries too small to appear as
    polygons in Natural Earth 110m (Singapore today). Lives in globals

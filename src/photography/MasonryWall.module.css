@@ -12,7 +12,7 @@
    calculation; gap is the same as the masonry packing gap so the
    horizontal + vertical rhythm matches. Filter transitions are a
    full-wall opacity fade applied inline on .root — no per-tile
-   animation beyond the existing tile-enter keyframe on mount. */
+   animation beyond the existing masonry-tile-enter keyframe on mount. */
 .row {
   display: flex;
   gap: 8px;
@@ -42,7 +42,7 @@
   width: 100%;
   /* Staggered fade-in on filter change. The tick attr changes when the
      filtered photo set changes; that flips the entry animation. */
-  animation: tile-enter 240ms ease both;
+  animation: masonry-tile-enter 240ms ease both;
   /* Drop-shadow lift on hover (pairs with the inner-img saturate + scale).
      Rest state has no shadow so the lift reads as the tile physically
      coming off the canvas mat when the cursor lands on it. */
@@ -111,17 +111,6 @@
 .tileDimmed:hover,
 .tileDimmed:focus-visible {
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-}
-
-@keyframes tile-enter {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -48,12 +48,6 @@
   animation: redaction-target-pulse 2400ms ease-out;
 }
 
-@keyframes redaction-target-pulse {
-  0% { background: rgba(58, 107, 74, 0.32); }
-  35% { background: rgba(58, 107, 74, 0.32); }
-  100% { background: transparent; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .glyph { transition: none; }
   .glyph:target { animation: none; background: rgba(58, 107, 74, 0.20); }

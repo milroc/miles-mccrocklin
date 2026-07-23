@@ -395,3 +395,44 @@ a { color: inherit; text-decoration: none; }
   .entry-sub  .r { order: -1; text-align: left; margin-bottom: 6px; }
   /* .era-head mobile collapse lives in entries/Era.module.css. */
 }
+
+/* Module-referenced keyframes live here UNHASHED: Bun's CSS-Modules
+   transform hashes @keyframes blocks inside modules but does not
+   rewrite animation references, so module-scoped keyframes silently
+   never run (shipped bug, fixed 2026-07-22). See also the same block
+   in splash-globals.css. */
+
+@keyframes masonry-tile-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tree-sheet-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes terminal-caret {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0.15; }
+}
+
+@keyframes redaction-target-pulse {
+  0% { background: rgba(58, 107, 74, 0.32); }
+  35% { background: rgba(58, 107, 74, 0.32); }
+  100% { background: transparent; }
+}
+
+@keyframes lightbox-fade-in { from { opacity: 0; } to { opacity: 1; } }
