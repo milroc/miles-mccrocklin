@@ -4,10 +4,10 @@
 // masonry below (controlled via the lifted previewTheme state);
 // tapping/clicking applies the matching category filter.
 //
-// The intro copy + the 3 hero categories are HARDCODED in v1. TODOs
-// #7 and #8 (curator-author final intro copy + pick the 3 categories)
-// land here when you ship them. Keep this component shallow so the
-// edits are obvious.
+// The intro copy + the 3 hero categories are HARDCODED in v1. Two
+// curator tasks in TODOS.md (author the final intro copy + pick the 3
+// categories) land here when shipped. Keep this component shallow so
+// the edits are obvious.
 
 import { useMemo } from 'react';
 import type { PhotographyManifest } from '../types';
@@ -26,14 +26,15 @@ interface EditorialTopFoldProps {
   onPreviewTheme: (theme: string) => void;
 }
 
-// TODO #7 — curator-author the final intro copy. Keep it 1-2 sentences.
+// TODO (TODOS.md) — curator-author the final intro copy. Keep it 1-2
+// sentences.
 const INTRO_LEAD = "I shoot ";
 // Split the trailing punctuation off so we can glue the period to the
 // last hero button (via a nowrap span) — otherwise the browser breaks
 // the line between "culture" and "." on narrow mobile widths.
 const INTRO_AFTER = " Countless experiences, thousands held in a frame, hundreds to explore below.";
 
-// TODO #8 — curator picks the 3 hero categories. Defaults are
+// TODO (TODOS.md) — curator picks the 3 hero categories. Defaults are
 // the recommended starter set from the design review.
 const HERO_CATEGORIES = ['wildlife', 'landscape', 'culture'] as const;
 

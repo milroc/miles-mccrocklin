@@ -47,7 +47,7 @@ export interface MediaItem {
   // Descriptive a11y text for screen readers. Different from `caption`,
   // which is editorial display copy ("Motherland."). When `alt` is not
   // authored, render paths fall back to caption. Backfill is a curation
-  // task tracked in the project TODOs.
+  // task tracked in TODOS.md.
   alt?: string;
   tag?: string;
   aspect?: number;
