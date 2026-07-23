@@ -1614,6 +1614,21 @@ export async function mountGlobe(
   const BUBBLE_BASE_PX = 22;
   const BUBBLE_MIN_PX = 11;
   const BUBBLE_MAX_PX = 50;
+  // Hero-hover spin nudge (splash tile only). Hovering the hero link
+  // eases the auto-rotation up to the hover speed; leaving eases it
+  // back. The lerp lives in tickFrame so the change is a ramp, not a
+  // visible snap. Pairs with the CSS halo in Splash.module.css
+  // (.globeBox::after). Listeners go on the hero <a> — the mount
+  // itself is pointer-events: none so the link stays clickable.
+  const AUTOROTATE_BASE_SPEED = 0.4;
+  const AUTOROTATE_HOVER_SPEED = 1.15;
+  let autoRotateSpeedTarget = AUTOROTATE_BASE_SPEED;
+  const heroHoverEl: HTMLElement | null =
+    !fullscreen && !reduceMotion ? mountEl.closest('a') : null;
+  const onHeroEnter = (): void => { autoRotateSpeedTarget = AUTOROTATE_HOVER_SPEED; };
+  const onHeroLeave = (): void => { autoRotateSpeedTarget = AUTOROTATE_BASE_SPEED; };
+  heroHoverEl?.addEventListener('pointerenter', onHeroEnter);
+  heroHoverEl?.addEventListener('pointerleave', onHeroLeave);
   let shimmerRaf: number | null = null;
   function tickFrame(): void {
     const t = performance.now() / 1000;
@@ -1621,13 +1636,18 @@ export async function mountGlobe(
       if ('uniforms' in m && m.uniforms.uTime) m.uniforms.uTime.value = t;
     }
     const inst = globeRef.current;
-    const cam = inst?.controls().object;
+    const controls = inst?.controls();
+    const cam = controls?.object;
     if (cam) {
       const distance = cam.position.length();
       const altitude = Math.max(0.05, distance / GLOBE_RADIUS - 1);
       const rawPx = BUBBLE_BASE_PX * (BUBBLE_REFERENCE_ALTITUDE / altitude);
       const sizedPx = Math.min(BUBBLE_MAX_PX, Math.max(BUBBLE_MIN_PX, rawPx));
       document.documentElement.style.setProperty('--bubble-scale', (sizedPx / BUBBLE_BASE_PX).toFixed(3));
+    }
+    if (controls && controls.autoRotate) {
+      controls.autoRotateSpeed +=
+        (autoRotateSpeedTarget - controls.autoRotateSpeed) * 0.08;
     }
     shimmerRaf = requestAnimationFrame(tickFrame);
   }
@@ -1721,7 +1741,7 @@ export async function mountGlobe(
     if (!inst) return;
     const controls = inst.controls();
     controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.4;
+    controls.autoRotateSpeed = AUTOROTATE_BASE_SPEED;
   }
 
   // Wait until the globe ref is populated, then snap the camera to the
@@ -1757,6 +1777,8 @@ export async function mountGlobe(
 
   return () => {
     cancelled = true;
+    heroHoverEl?.removeEventListener('pointerenter', onHeroEnter);
+    heroHoverEl?.removeEventListener('pointerleave', onHeroLeave);
     if (shimmerRaf !== null) cancelAnimationFrame(shimmerRaf);
     canvasObserver.disconnect();
     ro.disconnect();

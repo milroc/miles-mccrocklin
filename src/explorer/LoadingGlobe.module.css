@@ -2,7 +2,15 @@
    (src/globe/WireGlobe.module.css owns the sphere itself). This module
    only sizes the scene and styles the pulsing label. */
 .scene {
-  width: min(60vmin, 480px);
+  /* Match the WebGL sphere the wireframe crossfades into: fullscreen
+     camera altitude 2.0 → distance 3R; with three's default 50°
+     vertical fov the sphere's apparent diameter is
+     tan(asin(1/3)) / tan(25°) ≈ 75.8% of the canvas (= mount) height,
+     independent of width. On narrow portrait viewports the sphere
+     overflows the sides exactly like the canvas sphere does; .root's
+     overflow: hidden clips both the same way. Change the fullscreen
+     targetAltitude in Globe.tsx, re-derive this. */
+  height: 75.8%;
   aspect-ratio: 1;
   position: relative;
   /* Entrance animation — fade + slight scale-up over 600 ms so the
@@ -13,7 +21,10 @@
 
 .label {
   position: absolute;
-  top: calc(50% + min(33vmin, 264px));
+  /* Just under the sphere's bottom limb (sphere bottom = 50% + 37.9%
+     of mount height), clamped up on short viewports so it never slides
+     under the bottom title plate. */
+  top: min(calc(87.9% + 10px), calc(100% - 96px));
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--splash-mono);

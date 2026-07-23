@@ -286,9 +286,9 @@ vocabulary:
 - **Hover language.** Door thumbnails follow the site's documented
   photo treatment: grayscale at rest → color on intent, 240ms ease. No
   blur, no 0ms snaps.
-- **Splash stat.** "N COUNTRIES · 7 CONTINENTS" — N derives at build
-  time from data/journey.json (scripts/build-splash-stats.ts); the
-  continent figure is hand-maintained in Splash.tsx.
+- **Splash stat.** Retired 2026-07: the "N COUNTRIES · 7 CONTINENTS"
+  micro-type was dropped from the splash hero (the counts still appear
+  in /explorer/'s title plate, derived from the same generated module).
 
 ## Naming
 
