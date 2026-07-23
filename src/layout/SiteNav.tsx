@@ -18,7 +18,7 @@
 
 import s from './SiteNav.module.css';
 
-export type SitePillar = 'builder' | 'photographer' | 'explorer';
+type SitePillar = 'builder' | 'photographer' | 'explorer';
 
 interface SiteNavProps {
   current: SitePillar;

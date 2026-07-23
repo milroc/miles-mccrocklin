@@ -97,19 +97,6 @@ export const LEGACY_THEME_REWRITES: Record<string, string | null> = {
   underwater: null,
 };
 
-// Wildlife sub-classes — the level under which species are injected
-// as leaves at render time. Used by build-photography-manifest.ts to
-// decide which class a given species belongs to (the majority class
-// tag across photos that mention the species).
-export const WILDLIFE_CLASS_IDS = [
-  'birds',
-  'mammals',
-  'reptiles-amphibians',
-  'marine-life',
-  'insects',
-  'flora',
-] as const;
-
 // Species sub-groups within a wildlife class — collapses related
 // species (multiple penguins, multiple primates) under a labelled
 // folder in the dropdown. Each subgroup only renders when 2+ of its

@@ -10,10 +10,8 @@
 
 /* ============================================================
    Composition root. Desktop is a one-viewport composition (100vh);
-   mobile relaxes the cap and scrolls (~1.6 viewports).
-   The 900px breakpoint must match SPLASH_DESKTOP_MIN_WIDTH in
-   src/splash/constants.ts — effects.tsx builds the WebGL-mount
-   gate from the same number.
+   mobile relaxes the cap and scrolls (~1.6 viewports). 900px is
+   the desktop breakpoint throughout this file.
    ============================================================ */
 .root {
   min-height: 100vh;

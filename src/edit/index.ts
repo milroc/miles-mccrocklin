@@ -10,4 +10,3 @@ export { NoteBubble } from './NoteBubble';
 export { HighLevelFeedback } from './HighLevelFeedback';
 export { AddButton } from './AddButton';
 export { joinPath } from './path';
-export type { ChangeRecord } from './changes';

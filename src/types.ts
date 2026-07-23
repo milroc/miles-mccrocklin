@@ -18,12 +18,12 @@ export type RichText = string | { text: string; short?: string; visibility?: Vis
 
 // ----- Media (formerly photos.json + uis.json + per-entry slots) -------
 
-export type MediaType = 'image' | 'video' | 'embed';
-export type MediaLayout = 'stack' | 'strip' | 'carousel' | 'grid';
+type MediaType = 'image' | 'video' | 'embed';
+type MediaLayout = 'stack' | 'strip' | 'carousel' | 'grid';
 // Lightbox treatment. 'ui' renders the about-text in a dedicated side/bottom
 // panel beside the screenshot; 'photo' (default when omitted) keeps the
 // existing bottom gradient caption overlay. Opt-in via me.json.
-export type MediaSubtype = 'photo' | 'ui';
+type MediaSubtype = 'photo' | 'ui';
 
 // Per-prose-field provenance. Only present when a prose value was
 // written (or rewritten) by the LLM in the labels pipeline:
@@ -32,7 +32,7 @@ export type MediaSubtype = 'photo' | 'ui';
 // Absence of an entry means the value is human-authored (curator
 // override, me.json item.caption, atlas album title) or structural.
 // The lightbox keys off this to render a "by AI" badge next to AI prose.
-export type ProseProvenanceTier = 'ai' | 'refined';
+type ProseProvenanceTier = 'ai' | 'refined';
 export interface ProseProvenance {
   caption?: ProseProvenanceTier;
   alt?: ProseProvenanceTier;
@@ -45,9 +45,10 @@ export interface MediaItem {
   src: string;
   caption?: string;
   // Descriptive a11y text for screen readers. Different from `caption`,
-  // which is editorial display copy ("Motherland."). When `alt` is not
-  // authored, render paths fall back to caption. Backfill is a curation
-  // task tracked in the project TODOs.
+  // which is editorial display copy ("Motherland."). The /photographer
+  // manifest uses it (pipeline-generated); the resume figure renderers
+  // deliberately use caption as the accessible text and ignore this
+  // field. No me.json item authors it today.
   alt?: string;
   tag?: string;
   aspect?: number;
@@ -241,7 +242,7 @@ export interface Achievement {
   visibility?: Visibility;
 }
 
-export interface ProjectMetrics {
+interface ProjectMetrics {
   commits?: number;
   lines_added?: number;
   lines_removed?: number;

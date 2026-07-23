@@ -47,19 +47,6 @@ export const CODE_GROUPS = ['d3.unconf()', 'd3.js'] as const;
 // Airbnb listing fallback (used only if reviews data lacks listing_url).
 export const AIRBNB_LISTING_FALLBACK = 'https://www.airbnb.com/rooms/1575184';
 
-// Splash page reveal: three identity strikes fired in order. Reading
-// order is BUILDER → PHOTOGRAPHER → EXPLORER per the locked Layout E
-// composition. Each entry is one phrase laid along one bolt path.
-export const SPLASH_REVEAL_SCRIPT: ReadonlyArray<{
-  readonly id: 'builder' | 'photographer' | 'explorer';
-  readonly text: string;
-  readonly delayMs: number;
-}> = [
-  { id: 'builder',      text: 'BUILDER technologist',     delayMs: 0 },
-  { id: 'photographer', text: 'PHOTOGRAPHER artist',      delayMs: 0 },
-  { id: 'explorer',     text: 'EXPLORER traveler',        delayMs: 0 },
-];
-
 // Splash globe gating: when false, the Explorer tile renders a static
 // wireframe placeholder (no journey arcs) instead of pretending to know
 // where I've been. Flip to true after the real waypoints land in
@@ -67,5 +54,3 @@ export const SPLASH_REVEAL_SCRIPT: ReadonlyArray<{
 export const SPLASH_CONFIG = {
   globeReady: true,
 } as const;
-
-export const PORTFOLIO = 'https://milesmccrocklin.myportfolio.com/';
