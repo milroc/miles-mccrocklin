@@ -15,7 +15,7 @@ import { Community } from './entries/Community';
 import { RedactionNotes } from './primitives/RedactionNotes';
 import { SummaryGallery } from './media/SummaryGallery';
 import { MediaProvider } from './media/MediaProvider';
-import { ModeContext, PrintContext, visible, isArchived as isArchivedItem } from './utils/mode';
+import { ModeContext, PrintContext, TypesetContext, visible, isArchived as isArchivedItem, type Typeset } from './utils/mode';
 import { EDIT_ENABLED, EditToolbar, HighLevelFeedback, useEdit } from './edit';
 import ME from '../data/me.json' with { type: 'json' };
 import type { Mode, Resume } from './types';
@@ -50,9 +50,21 @@ export function App() {
   const [printing, setPrinting] = useState(false);
   const savedModeBeforePrint = useRef<Mode | null>(null);
 
+  // Typesetting mode, reader-toggleable from the toolbar: KP justified,
+  // KP ragged, or the browser's own wrap (no KPText layout). Persisted
+  // so the preference survives reloads while comparing settings.
+  const [typeset, setTypeset] = useState<Typeset>(() => {
+    const stored = localStorage.getItem('resume-typeset');
+    return stored === 'ragged' || stored === 'off' ? stored : 'justify';
+  });
+
   useEffect(() => {
     localStorage.setItem('resume-mode', mode);
   }, [mode]);
+
+  useEffect(() => {
+    localStorage.setItem('resume-typeset', typeset);
+  }, [typeset]);
 
   useEffect(() => {
     document.body.classList.toggle('printing', printing);
@@ -123,6 +135,7 @@ export function App() {
   return (
     <ModeContext.Provider value={mode}>
     <PrintContext.Provider value={printing}>
+    <TypesetContext.Provider value={typeset}>
     <MediaProvider>
     <div className={`app mode-${mode}`} data-app>
       <a href="#resume-content" className="skip-link">Skip to resume</a>
@@ -166,6 +179,30 @@ export function App() {
               : 'Single-page resume — must-have items only, used automatically when printing'}
           >
             1-Pager
+          </button>
+          <button
+            className={typeset === 'justify' ? 'active' : ''}
+            aria-pressed={typeset === 'justify'}
+            onClick={() => setTypeset('justify')}
+            title="Knuth-Plass breaks, flush right edge (word-spacing fills the measure)"
+          >
+            Justify
+          </button>
+          <button
+            className={typeset === 'ragged' ? 'active' : ''}
+            aria-pressed={typeset === 'ragged'}
+            onClick={() => setTypeset('ragged')}
+            title="Knuth-Plass breaks, ragged right edge"
+          >
+            Ragged
+          </button>
+          <button
+            className={typeset === 'off' ? 'active' : ''}
+            aria-pressed={typeset === 'off'}
+            onClick={() => setTypeset('off')}
+            title="Browser default wrap — no Knuth-Plass at all"
+          >
+            Browser
           </button>
           <button onClick={() => window.print()} disabled={editActive}>Print / PDF</button>
         </nav>
@@ -227,6 +264,7 @@ export function App() {
       {isInteractive && <TerminalDock />}
     </div>
     </MediaProvider>
+    </TypesetContext.Provider>
     </PrintContext.Provider>
     </ModeContext.Provider>
   );

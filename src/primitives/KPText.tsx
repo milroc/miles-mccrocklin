@@ -29,7 +29,7 @@ import { REDACTION_BY_GLYPH } from '../redactions';
 import { layoutParagraph, measureText } from '../utils/kp';
 import { hyphenate as hyphenateText } from '../utils/hyphenate';
 import { useElementWidth } from '../utils/hooks';
-import { ModeContext, PrintContext } from '../utils/mode';
+import { ModeContext, PrintContext, TypesetContext } from '../utils/mode';
 import { KP_BULLET_FONT, KP_PRINT_BULLET_WIDTH, type KPFontCfg } from '../utils/kp-font';
 import type { Mode } from '../types';
 import './KPText.css';
@@ -60,9 +60,11 @@ interface KPTextProps {
 // pathological lines (few spaces, wide measure).
 const MAX_STRETCH_EM = 0.5;
 
-export function KPText({ text, prefix, prefixNode, firstLineIndent, font, justify }: KPTextProps) {
+export function KPText({ text, prefix, prefixNode, firstLineIndent, font, justify: justifyProp }: KPTextProps) {
   const mode = useContext(ModeContext);
   const printing = useContext(PrintContext);
+  const typeset = useContext(TypesetContext);
+  const justify = (justifyProp ?? false) && typeset === 'justify';
   const fontTable = font ?? KP_BULLET_FONT;
   const cfg = fontTable[mode] || fontTable.interactive;
   const wrapRef = useRef<HTMLSpanElement | null>(null);
@@ -70,6 +72,10 @@ export function KPText({ text, prefix, prefixNode, firstLineIndent, font, justif
   const width = printing ? KP_PRINT_BULLET_WIDTH : measuredWidth;
 
   const layout = useMemo(() => {
+    // 'off' skips KP entirely: the plain-span fallback below renders
+    // and the browser's own greedy wrap takes over (no soft hyphens,
+    // no chosen breaks) — the comparison baseline for the toolbar.
+    if (typeset === 'off') return null;
     if (!text || width < 40) return null;
     const hyph = hyphenateText ? hyphenateText(text) : text;
     let indent = firstLineIndent || 0;
@@ -84,7 +90,7 @@ export function KPText({ text, prefix, prefixNode, firstLineIndent, font, justif
       justify,
     });
     return { result, firstLineMaxWidth };
-  }, [text, prefix, firstLineIndent, width, cfg.font, cfg.boldFont, justify]);
+  }, [text, prefix, firstLineIndent, width, cfg.font, cfg.boldFont, justify, typeset]);
   const result = layout?.result ?? null;
 
   // Justified lines fill the measure by stretching their inter-word

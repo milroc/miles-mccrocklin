@@ -63,14 +63,20 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  row-gap: 6px;
+  /* The button cluster wraps under the nav when the row gets tight
+     (more buttons, narrow window) instead of overlapping the pillar
+     links. */
+  flex-wrap: wrap;
   padding: 0 8px;
 }
 /* SiteNav stretches to fill the available space; its internal
    justify-between pushes brand to the left edge and pillars to where
-   the mode buttons cluster begins. */
+   the mode buttons cluster begins. fit-content (not 0) so the nav
+   never compresses below its links — the toolbar wraps instead. */
 .toolbar-row > :first-child {
   flex: 1 1 auto;
-  min-width: 0;
+  min-width: fit-content;
 }
 
 /* Toolbar — the mode-button cluster only. Color tokens come from the
