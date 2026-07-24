@@ -5,12 +5,10 @@
 // like soft hyphens) — then runs a dynamic-programming search for the
 // break sequence that minimizes a cumulative line-cost score.
 //
-// Tuned for resume bullets: short paragraphs (1-4 lines), occasional
-// soft-hyphen breaks. Two cost modes: ragged-right (rag-depth cost) and
-// full justification (per-space stretch-ratio cost + widow control; the
-// renderer distributes each line's slack as word-spacing). Reference:
-// Knuth & Plass, "Breaking Paragraphs into Lines" (Software—Practice
-// and Experience, 1981).
+// Tuned for resume bullets: short paragraphs (1-4 lines), ragged-right
+// with natural spacing (never adjusted), occasional soft-hyphen breaks,
+// widow control. Reference: Knuth & Plass, "Breaking Paragraphs into
+// Lines" (Software—Practice and Experience, 1981).
 
 import { prepareWithSegments } from '@chenglou/pretext';
 
@@ -45,19 +43,10 @@ interface KPLayoutOpts {
   font: string;
   maxWidth: number;
   firstLineMaxWidth?: number;
-  // Full justification: line costs switch from rag-depth to per-space
-  // stretch ratio (how far each inter-word space must stretch to fill
-  // the measure), the classic KP badness. The renderer then distributes
-  // each line's slack as word-spacing. Last lines stay ragged, but a
-  // small widow penalty discourages a lone short word down there.
-  justify?: boolean;
 }
 interface KPLine {
   text: string;
   width: number;
-  // Interior inter-word spaces on the line — what word-spacing
-  // distributes slack across when justifying. 0 ⇒ render ragged.
-  spaces: number;
 }
 interface KPResult {
   lines: KPLine[];
@@ -71,33 +60,27 @@ interface KPResult {
 // OVERFLOW_BASE makes any line that doesn't fit categorically worse than
 // any feasible alternative — but still finite so the DP can pick the
 // least-bad overflow when no soft hyphen rescues a giant word.
-const SLACK_DIVISOR = 100;
+//
+// Spacing is NEVER adjusted — ragged-right with natural spaces is the
+// point (a justification experiment was tried and rejected: stretching
+// spaces to a flush edge reads as gaps and rivers; see PR #49). KP's
+// job here is purely better BREAKS than greedy: even rag depth, no
+// stranded single-word last lines, compounds kept together.
+const SLACK_DIVISOR = 40;
 const HYPHEN_COST = 50;
 const ADJ_HYPHEN_COST = 200;
 const OVERFLOW_BASE = 1e6;
 const OVERFLOW_PER_PX = 1e3;
 const FIT_EPSILON = 0.5;
-// Justify mode: a space may comfortably stretch about half its own
-// width and SHRINK by about a third (TeX's classic glue proportions);
-// the ratio cost is cubed so mildly adjusted lines are cheap and
-// extreme ones get expensive fast. Shrink is what separates true KP
-// justification from greedy-plus-stretching: the DP can pull a word up
-// onto a slightly-tight line to relieve a gappy one below, evening out
-// spacing across the paragraph — a trade greedy can't see. WIDOW_COST
-// nudges the DP away from leaving a very short last line when a
-// rebreak fixes it.
-const STRETCH_PER_SPACE = 0.5;
-const SHRINK_PER_SPACE = 0.33;
-const JUSTIFY_COST_SCALE = 100;
+// Widow control. Graded cost on a short last line — a lone word pays
+// nearly the whole cost, a half-filled short line pays little — so the
+// DP has a gradient to climb by pulling words down. A single-word last
+// line under a multi-line paragraph is categorically bad (TeX's
+// widowpenalty posture) and pays a flat high cost on top; one-line
+// paragraphs have no competing break, so the constant cannot change
+// their layout.
 const WIDOW_MIN_FRACTION = 0.15;
-// Graded, not flat: a lone word pays nearly the whole cost, a
-// half-filled short line pays little — so the DP has a gradient to
-// climb by pulling words down even when the result is still shortish.
 const WIDOW_COST = 40;
-// A single word stranded under a justified block is categorically bad
-// (TeX's widowpenalty posture): pay almost any stretch price upstream
-// to pull a companion word down. Only bites when an alternative break
-// exists — one-line paragraphs have no competing break to lose to.
 const SINGLE_WORD_WIDOW_COST = 200;
 
 // --- Item construction --------------------------------------------------
@@ -143,46 +126,39 @@ function buildItems(text: string, font: string): Item[] {
 // Sum the box+glue widths from items[a..b-1], dropping leading glue (it
 // collapses at the start of a new line). If the line ends at a flagged
 // penalty (soft hyphen), include the hyphen-glyph width. Also count the
-// interior glues (justify distributes slack across them) and remember a
-// representative space width for the stretch-ratio cost.
+// interior glues so the widow rule can tell a lone word from a phrase.
 function measureLine(
   items: Item[], a: number, b: number,
-): { w: number; spaces: number; spaceW: number } {
+): { w: number; spaces: number } {
   let i = a;
   while (i < b && items[i]!.kind === 'glue') i++;
   let w = 0;
   let spaces = 0;
-  let spaceW = 0;
   for (let j = i; j < b; j++) {
     const it = items[j]!;
     if (it.kind === 'box' || it.kind === 'glue') w += it.width;
-    if (it.kind === 'glue' && it.width > 0) { spaces++; spaceW = it.width; }
+    if (it.kind === 'glue' && it.width > 0) spaces++;
   }
   const term = items[b];
   if (term && term.kind === 'penalty' && term.flag) w += term.width;
-  return { w, spaces, spaceW };
+  return { w, spaces };
 }
 
 function lineCost(
   items: Item[], a: number, b: number, maxWidth: number, isLast: boolean,
-  justify: boolean,
 ): number {
-  const { w, spaces, spaceW } = measureLine(items, a, b);
-  // Justified non-last lines may exceed the natural measure by up to
-  // the line's total shrinkability (the renderer compresses the spaces
-  // back to the measure). Everything else overflows as before.
-  const shrinkable =
-    justify && !isLast ? spaces * Math.max(1, spaceW) * SHRINK_PER_SPACE : 0;
-  if (w > maxWidth + shrinkable + FIT_EPSILON) {
+  const { w, spaces } = measureLine(items, a, b);
+  if (w > maxWidth + FIT_EPSILON) {
     return OVERFLOW_BASE + (w - maxWidth) * OVERFLOW_PER_PX;
   }
   const term = items[b];
   const hyphenTax =
     term && term.kind === 'penalty' && term.flag ? HYPHEN_COST : 0;
   if (isLast) {
-    // Ragged last line, but in justify mode discourage a widow (a line
-    // so short it strands a word or two under a justified block).
-    if (justify && w > 0) {
+    // Last lines are free-form, except widow control: don't strand a
+    // lone word (or a very short phrase) under a multi-line paragraph
+    // when an earlier break can pull a companion down.
+    if (w > 0) {
       if (spaces === 0 && w < maxWidth * 0.5) return SINGLE_WORD_WIDOW_COST;
       const minW = maxWidth * WIDOW_MIN_FRACTION;
       if (w < minW) return WIDOW_COST * ((minW - w) / minW);
@@ -190,19 +166,8 @@ function lineCost(
     return 0;
   }
   const slack = maxWidth - w;
-  if (!justify) {
-    const norm = slack / SLACK_DIVISOR;
-    return norm * norm + hyphenTax;
-  }
-  // Adjustment ratio: slack distributed across the line's spaces,
-  // relative to how far a space adjusts gracefully in that direction
-  // (positive slack stretches, negative shrinks). Cubed magnitude,
-  // TeX-style.
-  const per = Math.max(1, spaces) * Math.max(1, spaceW);
-  const r = slack >= 0
-    ? slack / (per * STRETCH_PER_SPACE)
-    : slack / (per * SHRINK_PER_SPACE);
-  return JUSTIFY_COST_SCALE * Math.abs(r * r * r) + hyphenTax;
+  const norm = slack / SLACK_DIVISOR;
+  return norm * norm + hyphenTax;
 }
 
 // --- DP -----------------------------------------------------------------
@@ -217,7 +182,7 @@ function isParaEnd(items: Item[], b: number): boolean {
   return !!(t && t.kind === 'penalty' && t.penalty <= PARA_END);
 }
 
-function runDP(items: Item[], maxWidth: number, firstLineWidth: number, justify: boolean): number[] {
+function runDP(items: Item[], maxWidth: number, firstLineWidth: number): number[] {
   const N = items.length;
   if (N === 0) return [];
 
@@ -237,7 +202,7 @@ function runDP(items: Item[], maxWidth: number, firstLineWidth: number, justify:
   for (let b = 0; b < N; b++) {
     if (!isBP[b]) continue;
     const last = isParaEnd(items, b);
-    const c = lineCost(items, 0, b, firstLineWidth, last, justify);
+    const c = lineCost(items, 0, b, firstLineWidth, last);
     if (c < cost[b]) {
       cost[b] = c;
       prev[b] = -1;
@@ -253,7 +218,7 @@ function runDP(items: Item[], maxWidth: number, firstLineWidth: number, justify:
     for (let b = a + 1; b < N; b++) {
       if (!isBP[b]) continue;
       const last = isParaEnd(items, b);
-      let c = cost[a] + lineCost(items, a + 1, b, maxWidth, last, justify);
+      let c = cost[a] + lineCost(items, a + 1, b, maxWidth, last);
       if (prevHyph && endsWithHyphen(items, b)) c += ADJ_HYPHEN_COST;
       if (c < cost[b]) {
         cost[b] = c;
@@ -288,13 +253,9 @@ function materializeLine(items: Item[], a: number, b: number): KPLine {
   while (i < b && items[i]!.kind === 'glue') i++;
   let text = '';
   let width = 0;
-  let spaces = 0;
-  let trailingGlueW = 0;
   for (let j = i; j < b; j++) {
     const it = items[j]!;
     if (it.kind === 'box' || it.kind === 'glue') { text += it.text; width += it.width; }
-    if (it.kind === 'glue' && it.width > 0) { spaces++; trailingGlueW = it.width; }
-    else if (it.kind === 'box') trailingGlueW = 0;
     // mid-line penalties (soft hyphens not chosen) contribute nothing
   }
   const term = items[b];
@@ -302,14 +263,9 @@ function materializeLine(items: Item[], a: number, b: number): KPLine {
     text += HYPHEN;
     width += term.width;
   }
-  // Trim any trailing whitespace baked into the last glue/box; a
-  // trailing glue also isn't an interior space, so drop its count/width.
-  const trimmed = text.replace(/[ \t]+$/, '');
-  if (trimmed !== text && trailingGlueW > 0) {
-    spaces--;
-    width -= trailingGlueW;
-  }
-  return { text: trimmed, width, spaces };
+  // Trim any trailing whitespace baked into the last glue/box.
+  text = text.replace(/[ \t]+$/, '');
+  return { text, width };
 }
 
 // --- Public API ---------------------------------------------------------
@@ -317,23 +273,22 @@ function materializeLine(items: Item[], a: number, b: number): KPLine {
 const cache = new Map<string, KPResult>();
 const CACHE_LIMIT = 256;
 
-function cacheKey(text: string, font: string, maxWidth: number, firstLineMaxWidth: number, justify: boolean): string {
-  return `${justify ? 'J' : 'R'}|${maxWidth}|${firstLineMaxWidth}|${font}|${text}`;
+function cacheKey(text: string, font: string, maxWidth: number, firstLineMaxWidth: number): string {
+  return `${maxWidth}|${firstLineMaxWidth}|${font}|${text}`;
 }
 
 export function layoutParagraph(text: string, opts: KPLayoutOpts): KPResult {
   const font = opts.font;
   const maxWidth = opts.maxWidth;
   const firstLineMaxWidth = opts.firstLineMaxWidth ?? maxWidth;
-  const justify = opts.justify ?? false;
-  if (!text || !font || !maxWidth) return { lines: [{ text: text || '', width: 0, spaces: 0 }] };
+  if (!text || !font || !maxWidth) return { lines: [{ text: text || '', width: 0 }] };
 
-  const key = cacheKey(text, font, maxWidth, firstLineMaxWidth, justify);
+  const key = cacheKey(text, font, maxWidth, firstLineMaxWidth);
   const cached = cache.get(key);
   if (cached) return cached;
 
   const items = buildItems(text, font);
-  const breaks = runDP(items, maxWidth, firstLineMaxWidth, justify);
+  const breaks = runDP(items, maxWidth, firstLineMaxWidth);
   const lines: KPLine[] = [];
   let start = 0;
   for (const b of breaks) {

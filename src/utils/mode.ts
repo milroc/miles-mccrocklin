@@ -8,13 +8,12 @@ export const ModeContext = createContext<Mode>('interactive');
 // on-screen ResizeObserver measured — otherwise a narrow window would
 // produce KP lines that don't fill the 816px printed letter page.
 export const PrintContext = createContext<boolean>(false);
-// Reader-facing typesetting switch, driven by the resume toolbar so
-// the three states can be compared live on the page:
-//   'justify' — KP breaks + per-line word-spacing fills the measure
-//   'ragged'  — KP breaks, ragged right (the pre-justification look)
-//   'off'     — no KPText layout at all: the browser's own greedy wrap
-export type Typeset = 'justify' | 'ragged' | 'off';
-export const TypesetContext = createContext<Typeset>('justify');
+// Reader-facing typesetting switch, driven by the floating panel so
+// the two states can be compared live on the page:
+//   'kp'  — Knuth-Plass breaks (even rag, widow control), natural spacing
+//   'off' — no KPText layout at all: the browser's own greedy wrap
+export type Typeset = 'kp' | 'off';
+export const TypesetContext = createContext<Typeset>('kp');
 
 // Default visibility when the field is missing — matches the legacy
 // numeric-priority default of 2 (renders in interactive + text, hides

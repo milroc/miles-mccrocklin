@@ -59,7 +59,7 @@ export function ExperienceEntryGeneric({ job }: ExperienceEntryGenericProps): JS
       </div>
       {job.summary && (
         <div className="entry-summary">
-          <KPText text={job.summary} font={KP_BODY_FONT} justify />
+          <KPText text={job.summary} font={KP_BODY_FONT} />
         </div>
       )}
       {hasEras

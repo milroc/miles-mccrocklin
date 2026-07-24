@@ -1,11 +1,12 @@
 // Floating typesetting evaluation panel — prototype chrome for the KP
-// justification PR. Hosts the Justify / Ragged / Browser switch, a gap
-// visualization overlay (every inter-word space tinted by how far it
-// deviates from the page's median gap, the same idea as the pretext
-// justification-comparison demo), and live micro-typography stats:
-// line count, gap-width deviation, and river joins (gaps on adjacent
-// lines whose horizontal spans overlap — the raw material of "rivers"
-// of white running down a paragraph).
+// line-breaking PR. Hosts the KP / Browser switch, a rag visualization
+// overlay (each line's unused right-edge slack tinted, deep rag hotter)
+// and live micro-typography stats measured from the rendered DOM: line
+// count, rag depth mean/max/deviation, single-word widows, and river
+// joins (inter-word gaps on adjacent lines whose horizontal spans
+// overlap — the raw material of "rivers" of white). Spacing itself is
+// never adjusted in either mode, so gap width stats would be constant;
+// the rag is where the two engines differ.
 import { useCallback, useEffect, useState } from 'react';
 import type { Typeset } from '../utils/mode';
 import s from './TypesetPanel.module.css';
@@ -19,14 +20,20 @@ interface GapRect {
   line: number;
 }
 
+interface RagRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 interface GapStats {
   paragraphs: number;
   lines: number;
-  gaps: number;
-  mean: number;
-  sigma: number;
-  min: number;
-  max: number;
+  ragMean: number;
+  ragSigma: number;
+  ragMax: number;
+  widows: number;
   rivers: number;
 }
 
@@ -40,8 +47,18 @@ interface TypesetPanelProps {
 // the text is KP-set (spaces inside .kp-line spans, word-spacing
 // applied) or browser-wrapped plain text — which is what makes the
 // stats comparable across the three modes.
-function collectGaps(): { gaps: GapRect[]; lineCount: number; paraCount: number } {
+function collectGaps(): {
+  gaps: GapRect[];
+  rags: RagRect[];
+  ragDepths: number[];
+  widows: number;
+  lineCount: number;
+  paraCount: number;
+} {
   const gaps: GapRect[] = [];
+  const rags: RagRect[] = [];
+  const ragDepths: number[] = [];
+  let widows = 0;
   let lineCount = 0;
   const wraps = Array.from(document.querySelectorAll('.kp-wrap'));
   wraps.forEach((wrap, para) => {
@@ -54,7 +71,7 @@ function collectGaps(): { gaps: GapRect[]; lineCount: number; paraCount: number 
     const frags = Array.from(range.getClientRects()).filter(
       (r) => r.width > 1 && r.height > 4,
     );
-    const lineRects: Array<{ top: number; bottom: number }> = [];
+    const lineRects: Array<{ top: number; bottom: number; right: number }> = [];
     frags
       .sort((a, b) => a.top - b.top)
       .forEach((r) => {
@@ -63,11 +80,28 @@ function collectGaps(): { gaps: GapRect[]; lineCount: number; paraCount: number 
         if (last && mid < last.bottom) {
           last.top = Math.min(last.top, r.top);
           last.bottom = Math.max(last.bottom, r.bottom);
+          last.right = Math.max(last.right, r.right);
         } else {
-          lineRects.push({ top: r.top, bottom: r.bottom });
+          lineRects.push({ top: r.top, bottom: r.bottom, right: r.right });
         }
       });
     lineCount += lineRects.length;
+    // Rag: unused right-edge slack per non-last line, both as a stat
+    // and as an overlay box from line end to the measure edge.
+    const wrapRight = wrap.getBoundingClientRect().right;
+    lineRects.forEach((lr, i) => {
+      if (i === lineRects.length - 1) return;
+      const depth = Math.max(0, wrapRight - lr.right);
+      ragDepths.push(depth);
+      if (depth > 0.5) {
+        rags.push({
+          x: lr.right + window.scrollX,
+          y: lr.top + window.scrollY,
+          w: depth,
+          h: lr.bottom - lr.top,
+        });
+      }
+    });
     const lineOf = (y: number): number => {
       let best = 0;
       let bestD = Infinity;
@@ -98,16 +132,26 @@ function collectGaps(): { gaps: GapRect[]; lineCount: number; paraCount: number 
         });
       }
     }
+    if (lineRects.length > 1) {
+      const lastIdx = lineRects.length - 1;
+      const gapsOnLast = gaps.filter((g) => g.para === para && g.line === lastIdx).length;
+      if (gapsOnLast === 0) widows++;
+    }
   });
-  return { gaps, lineCount, paraCount: wraps.length };
+  return { gaps, rags, ragDepths, widows, lineCount, paraCount: wraps.length };
 }
 
-function computeStats(gaps: GapRect[], lineCount: number, paraCount: number): GapStats {
-  const widths = gaps.map((g) => g.w);
-  const n = widths.length;
-  const mean = n ? widths.reduce((a, b) => a + b, 0) / n : 0;
-  const sigma = n
-    ? Math.sqrt(widths.reduce((a, b) => a + (b - mean) * (b - mean), 0) / n)
+function computeStats(
+  gaps: GapRect[],
+  ragDepths: number[],
+  widows: number,
+  lineCount: number,
+  paraCount: number,
+): GapStats {
+  const n = ragDepths.length;
+  const ragMean = n ? ragDepths.reduce((a, b) => a + b, 0) / n : 0;
+  const ragSigma = n
+    ? Math.sqrt(ragDepths.reduce((a, b) => a + (b - ragMean) * (b - ragMean), 0) / n)
     : 0;
   // River joins: within a paragraph, a gap on line L and a gap on line
   // L+1 whose horizontal spans overlap stack into a vertical channel of
@@ -129,38 +173,31 @@ function computeStats(gaps: GapRect[], lineCount: number, paraCount: number): Ga
   return {
     paragraphs: paraCount,
     lines: lineCount,
-    gaps: n,
-    mean,
-    sigma,
-    min: n ? Math.min(...widths) : 0,
-    max: n ? Math.max(...widths) : 0,
+    ragMean,
+    ragSigma,
+    ragMax: n ? Math.max(...ragDepths) : 0,
+    widows,
     rivers,
   };
 }
 
-// Tint scale for the overlay: deviation from the median gap, blue when
-// tighter, orange→red when wider. Median (not natural space width)
-// keeps the scale meaningful in all three modes without a canvas probe.
-function gapColor(w: number, median: number): string {
-  const dev = (w - median) / median;
-  if (dev < -0.04) return 'rgba(64, 120, 192, 0.55)';
-  if (dev > 0.35) return 'rgba(200, 60, 40, 0.60)';
-  if (dev > 0.12) return 'rgba(214, 138, 60, 0.55)';
-  return 'rgba(120, 140, 120, 0.30)';
+// Tint scale for the rag overlay: shallow rag is quiet, deep rag runs
+// hot — the eye should land where a line stops far short of the measure.
+function ragColor(depth: number): string {
+  if (depth > 80) return 'rgba(200, 60, 40, 0.45)';
+  if (depth > 40) return 'rgba(214, 138, 60, 0.40)';
+  return 'rgba(120, 140, 120, 0.22)';
 }
 
 export function TypesetPanel({ typeset, onChange }: TypesetPanelProps) {
   const [showGaps, setShowGaps] = useState(false);
   const [stats, setStats] = useState<GapStats | null>(null);
-  const [overlay, setOverlay] = useState<GapRect[]>([]);
-  const [median, setMedian] = useState(3.5);
+  const [overlay, setOverlay] = useState<RagRect[]>([]);
 
   const measure = useCallback(() => {
-    const { gaps, lineCount, paraCount } = collectGaps();
-    setStats(computeStats(gaps, lineCount, paraCount));
-    const widths = gaps.map((g) => g.w).sort((a, b) => a - b);
-    setMedian(widths[Math.floor(widths.length / 2)] ?? 3.5);
-    setOverlay(gaps);
+    const { gaps, rags, ragDepths, widows, lineCount, paraCount } = collectGaps();
+    setStats(computeStats(gaps, ragDepths, widows, lineCount, paraCount));
+    setOverlay(rags);
   }, []);
 
   // Re-measure when the mode flips (double rAF + settle delay so KP's
@@ -177,8 +214,7 @@ export function TypesetPanel({ typeset, onChange }: TypesetPanelProps) {
   }, [typeset, measure]);
 
   const modes: Array<{ id: Typeset; label: string; title: string }> = [
-    { id: 'justify', label: 'Justify', title: 'Knuth-Plass breaks + shrink/stretch glue, flush right edge' },
-    { id: 'ragged', label: 'Ragged', title: 'Knuth-Plass breaks, ragged right edge' },
+    { id: 'kp', label: 'KP', title: 'Knuth-Plass breaks — even rag, widow control, natural spacing' },
     { id: 'off', label: 'Browser', title: 'Browser default wrap — no Knuth-Plass at all' },
   ];
 
@@ -195,7 +231,7 @@ export function TypesetPanel({ typeset, onChange }: TypesetPanelProps) {
                 top: g.y,
                 width: g.w,
                 height: g.h,
-                background: gapColor(g.w, median),
+                background: ragColor(g.w),
               }}
             />
           ))}
@@ -221,14 +257,15 @@ export function TypesetPanel({ typeset, onChange }: TypesetPanelProps) {
             checked={showGaps}
             onChange={(e) => setShowGaps(e.target.checked)}
           />
-          show gaps
+          show rag
         </label>
         {stats && (
           <dl className={s.stats}>
             <div><dt>lines</dt><dd>{stats.lines} in {stats.paragraphs} blocks</dd></div>
-            <div><dt>gaps</dt><dd>{stats.gaps} · mean {stats.mean.toFixed(2)}px</dd></div>
-            <div><dt>deviation σ</dt><dd>{stats.sigma.toFixed(2)}px ({stats.mean > 0 ? ((100 * stats.sigma) / stats.mean).toFixed(0) : 0}%)</dd></div>
-            <div><dt>range</dt><dd>{stats.min.toFixed(1)}–{stats.max.toFixed(1)}px</dd></div>
+            <div><dt>rag mean</dt><dd>{stats.ragMean.toFixed(1)}px</dd></div>
+            <div><dt>rag σ</dt><dd>{stats.ragSigma.toFixed(1)}px</dd></div>
+            <div><dt>rag max</dt><dd>{stats.ragMax.toFixed(0)}px</dd></div>
+            <div><dt>widows</dt><dd>{stats.widows}</dd></div>
             <div><dt>river joins</dt><dd>{stats.rivers}</dd></div>
           </dl>
         )}

@@ -51,12 +51,13 @@ export function App() {
   const [printing, setPrinting] = useState(false);
   const savedModeBeforePrint = useRef<Mode | null>(null);
 
-  // Typesetting mode, reader-toggleable from the toolbar: KP justified,
-  // KP ragged, or the browser's own wrap (no KPText layout). Persisted
-  // so the preference survives reloads while comparing settings.
+  // Typesetting mode, toggleable from the floating panel: Knuth-Plass
+  // breaks or the browser's own wrap (no KPText layout). Persisted so
+  // the preference survives reloads while comparing. Legacy stored
+  // values from the justification experiment map to 'kp'.
   const [typeset, setTypeset] = useState<Typeset>(() => {
     const stored = localStorage.getItem('resume-typeset');
-    return stored === 'ragged' || stored === 'off' ? stored : 'justify';
+    return stored === 'off' ? 'off' : 'kp';
   });
 
   useEffect(() => {
