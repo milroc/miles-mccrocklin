@@ -7,6 +7,13 @@ import type { Mode } from '../types';
 const KP_BULLET_FONT_BASE =
   'Georgia, "Times New Roman", Times, serif';
 
+// Measurement parity guard: KP measures through @chenglou/pretext's
+// canvas context, which applies default kerning and ligatures — matching
+// the CSS ("kern" 1, "liga" 1) on the rendered registers. If a KP-set
+// register ever gains `letter-spacing`, thread the same value through
+// prepareWithSegments' `letterSpacing` option (kp.ts) or measured breaks
+// will diverge from rendered widths and lines will jitter.
+
 export type KPFontCfg = { font: string; boldFont: string };
 
 export const KP_BULLET_FONT: Record<Mode, KPFontCfg> = {
