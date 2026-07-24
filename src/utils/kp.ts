@@ -78,10 +78,16 @@ const OVERFLOW_BASE = 1e6;
 const OVERFLOW_PER_PX = 1e3;
 const FIT_EPSILON = 0.5;
 // Justify mode: a space may comfortably stretch about half its own
-// width; the ratio cost is cubed (TeX-style) so mildly loose lines are
-// cheap and gappy ones get expensive fast. WIDOW_COST nudges the DP
-// away from leaving a very short last line when a rebreak fixes it.
+// width and SHRINK by about a third (TeX's classic glue proportions);
+// the ratio cost is cubed so mildly adjusted lines are cheap and
+// extreme ones get expensive fast. Shrink is what separates true KP
+// justification from greedy-plus-stretching: the DP can pull a word up
+// onto a slightly-tight line to relieve a gappy one below, evening out
+// spacing across the paragraph — a trade greedy can't see. WIDOW_COST
+// nudges the DP away from leaving a very short last line when a
+// rebreak fixes it.
 const STRETCH_PER_SPACE = 0.5;
+const SHRINK_PER_SPACE = 0.33;
 const JUSTIFY_COST_SCALE = 100;
 const WIDOW_MIN_FRACTION = 0.15;
 // Graded, not flat: a lone word pays nearly the whole cost, a
@@ -162,7 +168,12 @@ function lineCost(
   justify: boolean,
 ): number {
   const { w, spaces, spaceW } = measureLine(items, a, b);
-  if (w > maxWidth + FIT_EPSILON) {
+  // Justified non-last lines may exceed the natural measure by up to
+  // the line's total shrinkability (the renderer compresses the spaces
+  // back to the measure). Everything else overflows as before.
+  const shrinkable =
+    justify && !isLast ? spaces * Math.max(1, spaceW) * SHRINK_PER_SPACE : 0;
+  if (w > maxWidth + shrinkable + FIT_EPSILON) {
     return OVERFLOW_BASE + (w - maxWidth) * OVERFLOW_PER_PX;
   }
   const term = items[b];
@@ -183,10 +194,14 @@ function lineCost(
     const norm = slack / SLACK_DIVISOR;
     return norm * norm + hyphenTax;
   }
-  // Stretch ratio: slack distributed across the line's spaces, relative
-  // to how far a space stretches gracefully. Cubed magnitude, TeX-style.
-  const stretchable = Math.max(1, spaces) * Math.max(1, spaceW) * STRETCH_PER_SPACE;
-  const r = slack / stretchable;
+  // Adjustment ratio: slack distributed across the line's spaces,
+  // relative to how far a space adjusts gracefully in that direction
+  // (positive slack stretches, negative shrinks). Cubed magnitude,
+  // TeX-style.
+  const per = Math.max(1, spaces) * Math.max(1, spaceW);
+  const r = slack >= 0
+    ? slack / (per * STRETCH_PER_SPACE)
+    : slack / (per * SHRINK_PER_SPACE);
   return JUSTIFY_COST_SCALE * Math.abs(r * r * r) + hyphenTax;
 }
 

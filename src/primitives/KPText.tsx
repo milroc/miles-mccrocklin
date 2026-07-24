@@ -59,6 +59,10 @@ interface KPTextProps {
 // the DP's stretch-ratio cost this should rarely trigger — it guards
 // pathological lines (few spaces, wide measure).
 const MAX_STRETCH_EM = 0.5;
+// Shrink cap: a Georgia space is ~0.28em, and TeX-style shrink allows
+// about a third of it. Matches the DP's shrinkable bound so any line
+// the DP accepts can always be compressed back inside the measure.
+const MAX_SHRINK_EM = 0.1;
 // Justify short of the measure by this much. Canvas measurement drifts
 // from DOM rendering by a fraction of a px per glyph; a line stretched
 // to the exact theoretical width can overshoot in the browser, and a
@@ -110,9 +114,12 @@ export function KPText({ text, prefix, prefixNode, firstLineIndent, font, justif
     if (i === result.lines.length - 1 || ln.spaces <= 0) return undefined;
     const target = (i === 0 ? layout.firstLineMaxWidth : width) - JUSTIFY_SAFETY_PX;
     const slack = target - ln.width;
-    if (slack <= 0.5) return undefined;
+    if (Math.abs(slack) <= 0.5) return undefined;
     const fontPx = parseFloat(cfg.font.match(/(\d+(?:\.\d+)?)px/)?.[1] ?? '13');
-    const per = Math.min(slack / ln.spaces, fontPx * MAX_STRETCH_EM);
+    const per = Math.max(
+      Math.min(slack / ln.spaces, fontPx * MAX_STRETCH_EM),
+      -fontPx * MAX_SHRINK_EM,
+    );
     return `${per.toFixed(2)}px`;
   };
 
