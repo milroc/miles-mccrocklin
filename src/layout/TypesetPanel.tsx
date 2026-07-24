@@ -141,6 +141,37 @@ function collectGaps(): {
   return { gaps, rags, ragDepths, widows, lineCount, paraCount: wraps.length };
 }
 
+// River joins: within a paragraph, a gap on line L and a gap on line
+// L+1 whose horizontal spans overlap stack into a vertical channel of
+// white. Each such pair is one join; chains of joins read as rivers.
+// Returns the join count plus the set of gap indices participating on
+// either end, so the overlay can paint river gaps hot.
+function markRivers(gaps: GapRect[]): { joins: number; riverGaps: Set<number> } {
+  let joins = 0;
+  const riverGaps = new Set<number>();
+  const byParaLine = new Map<string, number[]>();
+  gaps.forEach((g, i) => {
+    const k = `${g.para}:${g.line}`;
+    const arr = byParaLine.get(k);
+    if (arr) arr.push(i); else byParaLine.set(k, [i]);
+  });
+  gaps.forEach((g, i) => {
+    const below = byParaLine.get(`${g.para}:${g.line + 1}`);
+    if (!below) return;
+    let joined = false;
+    for (const j of below) {
+      const b = gaps[j]!;
+      if (b.x < g.x + g.w && g.x < b.x + b.w) {
+        joined = true;
+        riverGaps.add(i);
+        riverGaps.add(j);
+      }
+    }
+    if (joined) joins++;
+  });
+  return { joins, riverGaps };
+}
+
 function computeStats(
   gaps: GapRect[],
   ragDepths: number[],
@@ -153,23 +184,7 @@ function computeStats(
   const ragSigma = n
     ? Math.sqrt(ragDepths.reduce((a, b) => a + (b - ragMean) * (b - ragMean), 0) / n)
     : 0;
-  // River joins: within a paragraph, a gap on line L and a gap on line
-  // L+1 whose horizontal spans overlap stack into a vertical channel of
-  // white. Each such pair is one join; chains of joins read as rivers.
-  let rivers = 0;
-  const byParaLine = new Map<string, GapRect[]>();
-  gaps.forEach((g) => {
-    const k = `${g.para}:${g.line}`;
-    const arr = byParaLine.get(k);
-    if (arr) arr.push(g); else byParaLine.set(k, [g]);
-  });
-  gaps.forEach((g) => {
-    const below = byParaLine.get(`${g.para}:${g.line + 1}`);
-    if (!below) return;
-    for (const b of below) {
-      if (b.x < g.x + g.w && g.x < b.x + b.w) { rivers++; break; }
-    }
-  });
+  const { joins: rivers } = markRivers(gaps);
   return {
     paragraphs: paraCount,
     lines: lineCount,
@@ -191,13 +206,17 @@ function ragColor(depth: number): string {
 
 export function TypesetPanel({ typeset, onChange }: TypesetPanelProps) {
   const [showGaps, setShowGaps] = useState(false);
+  const [showRag, setShowRag] = useState(false);
   const [stats, setStats] = useState<GapStats | null>(null);
-  const [overlay, setOverlay] = useState<RagRect[]>([]);
+  const [ragOverlay, setRagOverlay] = useState<RagRect[]>([]);
+  const [gapOverlay, setGapOverlay] = useState<Array<GapRect & { river: boolean }>>([]);
 
   const measure = useCallback(() => {
     const { gaps, rags, ragDepths, widows, lineCount, paraCount } = collectGaps();
     setStats(computeStats(gaps, ragDepths, widows, lineCount, paraCount));
-    setOverlay(rags);
+    setRagOverlay(rags);
+    const { riverGaps } = markRivers(gaps);
+    setGapOverlay(gaps.map((g, i) => ({ ...g, river: riverGaps.has(i) })));
   }, []);
 
   // Re-measure when the mode flips (double rAF + settle delay so KP's
@@ -220,11 +239,11 @@ export function TypesetPanel({ typeset, onChange }: TypesetPanelProps) {
 
   return (
     <>
-      {showGaps && (
+      {(showGaps || showRag) && (
         <div className={s.overlay} aria-hidden="true">
-          {overlay.map((g, i) => (
+          {showRag && ragOverlay.map((g, i) => (
             <div
-              key={i}
+              key={`r${i}`}
               className={s.gap}
               style={{
                 left: g.x,
@@ -232,6 +251,23 @@ export function TypesetPanel({ typeset, onChange }: TypesetPanelProps) {
                 width: g.w,
                 height: g.h,
                 background: ragColor(g.w),
+              }}
+            />
+          ))}
+          {showGaps && gapOverlay.map((g, i) => (
+            <div
+              key={`g${i}`}
+              className={s.gap}
+              style={{
+                left: g.x,
+                top: g.y,
+                width: g.w,
+                height: g.h,
+                // River gaps hot (they stack into channels of white on
+                // adjacent lines); ordinary spaces a quiet wash.
+                background: g.river
+                  ? 'rgba(200, 60, 40, 0.55)'
+                  : 'rgba(64, 120, 192, 0.30)',
               }}
             />
           ))}
@@ -256,6 +292,14 @@ export function TypesetPanel({ typeset, onChange }: TypesetPanelProps) {
             type="checkbox"
             checked={showGaps}
             onChange={(e) => setShowGaps(e.target.checked)}
+          />
+          show gaps
+        </label>
+        <label className={s.gapsToggle}>
+          <input
+            type="checkbox"
+            checked={showRag}
+            onChange={(e) => setShowRag(e.target.checked)}
           />
           show rag
         </label>
