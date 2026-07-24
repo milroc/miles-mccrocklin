@@ -67,7 +67,7 @@ export function Bullets({ items, path }: BulletsProps) {
                     <NoteBubble path={itemPath} />
                   </>
                 ) : (
-                  <KPText text={text} />
+                  <KPText text={text} justify />
                 )}
               </li>
             );

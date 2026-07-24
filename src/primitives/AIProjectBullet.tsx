@@ -51,6 +51,7 @@ export function AIProjectBullet({ p, path }: AIProjectBulletProps) {
           text={desc}
           prefixNode={<><b style={{ fontWeight: 700 }}>{p.name}</b>{' — '}</>}
           firstLineIndent={indent}
+          justify
         />
       )}
     </li>

@@ -34,7 +34,7 @@ export function EraGeneric({ era }: EraGenericProps): JSX.Element | null {
     <EraChrome focus={era.focus} period={era.period}>
       {lede && (
         <div className="entry-summary">
-          <KPText text={lede} font={KP_BODY_FONT} />
+          <KPText text={lede} font={KP_BODY_FONT} justify />
         </div>
       )}
       {era.media && <Figure media={era.media} />}

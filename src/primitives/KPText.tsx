@@ -48,9 +48,19 @@ interface KPTextProps {
   // resume bullets. Defaults to KP_BULLET_FONT so existing callers
   // (Bullets) keep working.
   font?: Record<Mode, KPFontCfg>;
+  // Full justification: KP switches to stretch-ratio line costs and
+  // each non-last line distributes its slack as word-spacing so the
+  // right edge sits flush on the measure. Last lines stay ragged.
+  justify?: boolean;
 }
 
-export function KPText({ text, prefix, prefixNode, firstLineIndent, font }: KPTextProps) {
+// A space stretched past this multiple of the font size reads as a gap
+// (rivers); beyond it the line renders ragged instead of gappy. With
+// the DP's stretch-ratio cost this should rarely trigger — it guards
+// pathological lines (few spaces, wide measure).
+const MAX_STRETCH_EM = 0.5;
+
+export function KPText({ text, prefix, prefixNode, firstLineIndent, font, justify }: KPTextProps) {
   const mode = useContext(ModeContext);
   const printing = useContext(PrintContext);
   const fontTable = font ?? KP_BULLET_FONT;
@@ -59,7 +69,7 @@ export function KPText({ text, prefix, prefixNode, firstLineIndent, font }: KPTe
   const measuredWidth = useElementWidth(wrapRef);
   const width = printing ? KP_PRINT_BULLET_WIDTH : measuredWidth;
 
-  const result = useMemo(() => {
+  const layout = useMemo(() => {
     if (!text || width < 40) return null;
     const hyph = hyphenateText ? hyphenateText(text) : text;
     let indent = firstLineIndent || 0;
@@ -67,12 +77,30 @@ export function KPText({ text, prefix, prefixNode, firstLineIndent, font }: KPTe
       indent = measureText(prefix, cfg.boldFont) + 1;
     }
     const firstLineMaxWidth = Math.max(40, width - indent);
-    return layoutParagraph(hyph, {
+    const result = layoutParagraph(hyph, {
       font: cfg.font,
       maxWidth: width,
       firstLineMaxWidth,
+      justify,
     });
-  }, [text, prefix, firstLineIndent, width, cfg.font, cfg.boldFont]);
+    return { result, firstLineMaxWidth };
+  }, [text, prefix, firstLineIndent, width, cfg.font, cfg.boldFont, justify]);
+  const result = layout?.result ?? null;
+
+  // Justified lines fill the measure by stretching their inter-word
+  // spaces: slack is known per line from the KP pass, so word-spacing
+  // is exact, not the browser's guess. Last lines render ragged.
+  const lineSpacing = (i: number): string | undefined => {
+    if (!justify || !layout || !result) return undefined;
+    const ln = result.lines[i]!;
+    if (i === result.lines.length - 1 || ln.spaces <= 0) return undefined;
+    const target = i === 0 ? layout.firstLineMaxWidth : width;
+    const slack = target - ln.width;
+    if (slack <= 0.5) return undefined;
+    const fontPx = parseFloat(cfg.font.match(/(\d+(?:\.\d+)?)px/)?.[1] ?? '13');
+    const per = Math.min(slack / ln.spaces, fontPx * MAX_STRETCH_EM);
+    return `${per.toFixed(2)}px`;
+  };
 
   if (!text && !prefixNode && !prefix) return null;
 
@@ -88,12 +116,20 @@ export function KPText({ text, prefix, prefixNode, firstLineIndent, font }: KPTe
   return (
     <span ref={wrapRef} className="kp-wrap">
       {head}
-      {result.lines.map((ln, i) => (
-        <Fragment key={i}>
-          {i > 0 && <br />}
-          <span className="kp-line">{withRedactions(ln.text)}</span>
-        </Fragment>
-      ))}
+      {result.lines.map((ln, i) => {
+        const ws = lineSpacing(i);
+        return (
+          <Fragment key={i}>
+            {i > 0 && <br />}
+            <span
+              className="kp-line"
+              style={ws ? { wordSpacing: ws } : undefined}
+            >
+              {withRedactions(ln.text)}
+            </span>
+          </Fragment>
+        );
+      })}
     </span>
   );
 }
