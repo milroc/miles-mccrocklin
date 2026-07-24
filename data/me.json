@@ -56,7 +56,7 @@
         "id": "travel-egypt",
         "type": "image",
         "src": "media/summary/egypt.jpg",
-        "caption": "Wondering at humanity's drive for innovation and communication in the Valley of the Kings.",
+        "caption": "Wondering at humanity’s drive for innovation and communication in the Valley of the Kings.",
         "aspect": 1.5002,
         "tag": "Luxor, Egypt"
       },
@@ -80,7 +80,7 @@
         "id": "travel-redwoods",
         "type": "image",
         "src": "media/summary/redwoods.jpg",
-        "caption": "Nature's skyscrapers.",
+        "caption": "Nature’s skyscrapers.",
         "aspect": 0.6665,
         "tag": "Redwood National Park, California"
       },
@@ -152,7 +152,7 @@
               "repo": "milroc/agentic-feedback-test",
               "url": "https://diction.coach/",
               "description": {
-                "text": "Most people don't get the most out of AI. diction.coach reads your chat and shows you how to ask better next time."
+                "text": "Most people don’t get the most out of AI. diction.coach reads your chat and shows you how to ask better next time."
               },
               "stack": [
                 "Next.js",
@@ -191,7 +191,7 @@
             {
               "name": "gtgstack",
               "repo": "milroc/gtgstack",
-              "description": "Orchestration bridge mapping gstack skills onto Gas Town's Mayor / Polecat / Beads model: strategy → plan → decompose → build → discover → fix loop.",
+              "description": "Orchestration bridge mapping gstack skills onto Gas Town’s Mayor / Polecat / Beads model: strategy → plan → decompose → build → discover → fix loop.",
               "metrics": {
                 "commits": 5,
                 "lines_added": 3542,
@@ -470,7 +470,7 @@
                 "id": "travel-15",
                 "type": "image",
                 "src": "media/sabbatical-travel/travel-15.jpeg",
-                "caption": "Lone penguin trek in the world's largest desert.",
+                "caption": "Lone penguin trek in the world’s largest desert.",
                 "aspect": 1.5006,
                 "tag": "Antarctica"
               },
@@ -510,7 +510,7 @@
                 "id": "travel-13",
                 "type": "image",
                 "src": "media/sabbatical-travel/travel-13.jpeg",
-                "caption": "Pyramids in the world's largest desert.",
+                "caption": "Pyramids in the world’s largest desert.",
                 "aspect": 1.5006,
                 "tag": "Antarctica"
               },
@@ -574,7 +574,7 @@
                 "id": "travel-17",
                 "type": "image",
                 "src": "media/sabbatical-travel/travel-17.jpeg",
-                "caption": "World's largest hummingbird.",
+                "caption": "World’s largest hummingbird.",
                 "aspect": 1.5003,
                 "tag": "Santiago, Chile"
               },
@@ -582,7 +582,7 @@
                 "id": "travel-18",
                 "type": "image",
                 "src": "media/sabbatical-travel/travel-18.jpeg",
-                "caption": "A tourist's key to the temple.",
+                "caption": "A tourist’s key to the temple.",
                 "aspect": 1.7716,
                 "tag": "Abu Simbel, Egypt"
               },
@@ -622,7 +622,7 @@
                 "id": "travel-25",
                 "type": "image",
                 "src": "media/sabbatical-travel/travel-25.jpeg",
-                "caption": "Darwin's finch.",
+                "caption": "Darwin’s finch.",
                 "aspect": 1.5003,
                 "tag": "Galapagos Islands, Ecuador"
               },
@@ -663,7 +663,7 @@
           "role": "Engineering Manager",
           "achievements": [
             {
-              "text": "Shipped Professional Mode (“Pro Mode”) for Facebook Creators as EM of a team of 10. Owned composer, settings, and onboarding surfaces. Onboarded ΞM creators in the first 3 months, unlocking α% of the org's top-line annual goal at β× target.",
+              "text": "Shipped Professional Mode (“Pro Mode”) for Facebook Creators as EM of a team of 10. Owned composer, settings, and onboarding surfaces. Onboarded ΞM creators in the first 3 months, unlocking α% of the org’s top-line annual goal at β× target.",
               "visibility": "all"
             },
             {
@@ -687,7 +687,7 @@
                 "id": "ui-bulletin",
                 "type": "image",
                 "src": "media/meta-bulletin-promode/bulletin.jpeg",
-                "caption": "Bulletin (2021). Meta's independent newsletter platform for paid writers: discovery, publishing, and subscriptions. Used by a curated roster of journalists and authors including Malcolm Gladwell, Erin Andrews, and Mitch Albom.",
+                "caption": "Bulletin (2021). Meta’s independent newsletter platform for paid writers: discovery, publishing, and subscriptions. Used by a curated roster of journalists and authors including Malcolm Gladwell, Erin Andrews, and Mitch Albom.",
                 "tag": "Bulletin · 2021",
                 "aspect": 1.5,
                 "subtype": "ui"
@@ -703,7 +703,7 @@
           "role": "0 -> 1 Eng",
           "achievements": [
             {
-              "text": "Tech lead on Forecast, Meta's 0→1 social-first prediction market. Built on an internal points economy rather than real money, so accuracy and community discussion drove engagement instead of financial speculation.",
+              "text": "Tech lead on Forecast, Meta’s 0→1 social-first prediction market. Built on an internal points economy rather than real money, so accuracy and community discussion drove engagement instead of financial speculation.",
               "visibility": "all"
             },
             {
@@ -711,7 +711,7 @@
               "visibility": "all"
             },
             {
-              "text": "Set up the team's experimentation framework, driving the post-launch shift from rapid idea exploration to isolating the surfaces that drove growth and retention.",
+              "text": "Set up the team’s experimentation framework, driving the post-launch shift from rapid idea exploration to isolating the surfaces that drove growth and retention.",
               "visibility": "all"
             },
             {
@@ -728,7 +728,7 @@
                 "id": "ui-forecast-web",
                 "type": "image",
                 "src": "media/meta-forecast/forecast-web.png",
-                "caption": "forecastapp.net (2020). Public election surface for Forecast, Meta's social prediction market. Aggregated forecasts on the 2020 US election were watched by journalists, election-night newsrooms, and the general public.",
+                "caption": "forecastapp.net (2020). Public election surface for Forecast, Meta’s social prediction market. Aggregated forecasts on the 2020 US election were watched by journalists, election-night newsrooms, and the general public.",
                 "tag": "forecastapp.net · 2020",
                 "aspect": 0.689,
                 "subtype": "ui"
@@ -746,7 +746,7 @@
                 "id": "ui-forecast-ui",
                 "type": "image",
                 "src": "media/meta-forecast/forecast-ui.png",
-                "caption": "Forecast Feed (2021). Community feed of predictions, leaderboards, and market discussion threads. Used to keep in sync on the market & follow each other's positions and reasoning.",
+                "caption": "Forecast Feed (2021). Community feed of predictions, leaderboards, and market discussion threads. Used to keep in sync on the market & follow each other’s positions and reasoning.",
                 "tag": "Forecast Feed · 2021",
                 "aspect": 0.4618,
                 "subtype": "ui"
@@ -756,7 +756,7 @@
                 "type": "video",
                 "src": "media/meta-forecast/forecast-trading-movement.mp4",
                 "poster": "media/meta-forecast/forecast-trading-movement-poster.jpg",
-                "caption": "Forecast Motion (2021). External explainer animation showing how prices moved with volume across Forecast's prediction markets. Built to understand market mechanics and explain the platform's choices.",
+                "caption": "Forecast Motion (2021). External explainer animation showing how prices moved with volume across Forecast’s prediction markets. Built to understand market mechanics and explain the platform’s choices.",
                 "tag": "Forecast Motion · 2021",
                 "aspect": 1.7846,
                 "subtype": "ui"
@@ -764,7 +764,7 @@
             ]
           },
           "visibility": "all",
-          "builder_tagline": "Led the engineering work behind a 0→1 social prediction market shipped out of NPE, Meta's new-product experimentation org: built the trading page, scoring, leaderboards, community feed, and forecastapp.net (the public election-prediction surface for the 2020 US election), all on an internal points economy where accuracy and community discussion beat speculation as the engagement driver. Shipped four years before Polymarket and Kalshi reached mainstream around the 2024 election."
+          "builder_tagline": "Led the engineering work behind a 0→1 social prediction market shipped out of NPE, Meta’s new-product experimentation org: built the trading page, scoring, leaderboards, community feed, and forecastapp.net (the public election-prediction surface for the 2020 US election), all on an internal points economy where accuracy and community discussion beat speculation as the engagement driver. Shipped four years before Polymarket and Kalshi reached mainstream around the 2024 election."
         },
         {
           "period": "Jan 2018 – Feb 2020",
@@ -772,7 +772,7 @@
           "role": "Fact Checking Tech Lead",
           "achievements": [
             {
-              "text": "Tech lead (team grew to 8) on the product Facebook's external fact-checking partners used to rate viral content on Facebook and Instagram. Launched with 5 partners; scaled to 80 organizations (including Reuters, AFP, and PolitiFact), hundreds of journalists, and 60 languages.",
+              "text": "Tech lead (team grew to 8) on the product Facebook’s external fact-checking partners used to rate viral content on Facebook and Instagram. Launched with 5 partners; scaled to 80 organizations (including Reuters, AFP, and PolitiFact), hundreds of journalists, and 60 languages.",
               "visibility": "all"
             },
             {
@@ -799,7 +799,7 @@
                 "id": "ui-fact-check-2",
                 "type": "image",
                 "src": "media/meta-misinformation/fact-check-ui-1.jpeg",
-                "caption": "Fact-Checking UI (2018–20). The warning-label and friction surfaces shown to people who encountered content rated false on Facebook and Instagram (posts, photos, video, then Ads). Ratings authored by 80 partner organizations including Reuters, AFP, and PolitiFact, then fanned out via Meta's content-deduplication so one rating covered every near-identical copy.",
+                "caption": "Fact-Checking UI (2018–20). The warning-label and friction surfaces shown to people who encountered content rated false on Facebook and Instagram (posts, photos, video, then Ads). Ratings authored by 80 partner organizations including Reuters, AFP, and PolitiFact, then fanned out via Meta’s content-deduplication so one rating covered every near-identical copy.",
                 "tag": "3PFC UI · 2018–20",
                 "aspect": 1.0925,
                 "subtype": "ui"
@@ -815,7 +815,7 @@
             ]
           },
           "visibility": "all",
-          "builder_tagline": "Led the engineering work behind Facebook's response to viral misinformation: built the platform 80 journalism agencies across the globe used to rate content, the plumbing that fanned each rating out to every near-duplicate across Facebook, Instagram, and Ads, and the warning labels people saw when they tried to share it. Still in production today."
+          "builder_tagline": "Led the engineering work behind Facebook’s response to viral misinformation: built the platform 80 journalism agencies across the globe used to rate content, the plumbing that fanned each rating out to every near-duplicate across Facebook, Instagram, and Ads, and the warning labels people saw when they tried to share it. Still in production today."
         },
         {
           "period": "Sep 2014 – Dec 2017",
@@ -835,7 +835,7 @@
             }
           ],
           "visibility": "all",
-          "builder_tagline": "Main UI engineer on several of Meta's internal natural-language analytics tools, used across sales, communications, and safety: real-time election reporting alongside Fox News and other newsrooms, crisis monitoring around the world, and topic anthologies processed live across every post on Facebook and Instagram. Took one of them and rebuilt it as Audience Insights, a free product for creative ad agencies that grew the size of the ad pie."
+          "builder_tagline": "Main UI engineer on several of Meta’s internal natural-language analytics tools, used across sales, communications, and safety: real-time election reporting alongside Fox News and other newsrooms, crisis monitoring around the world, and topic anthologies processed live across every post on Facebook and Instagram. Took one of them and rebuilt it as Audience Insights, a free product for creative ad agencies that grew the size of the ad pie."
         }
       ],
       "visibility": "all"
@@ -1046,7 +1046,7 @@
       "start_date": "Feb 2012",
       "end_date": "Mar 2015",
       "details": {
-        "text": "Co-organized SF Data Mining. Grew from 100 to 10,000+ members, the Bay Area's largest ML and data community at the time. Hosted talks on ML methods, distributed processing, and interactive visualization."
+        "text": "Co-organized SF Data Mining. Grew from 100 to 10,000+ members, the Bay Area’s largest ML and data community at the time. Hosted talks on ML methods, distributed processing, and interactive visualization."
       },
       "media": {
         "layout": "strip",
@@ -1136,12 +1136,12 @@
     {
       "id": "alpha",
       "glyph": "α",
-      "context": "Pro Mode's share of the org's annual creator-onboarding goal. Internal planning artifact."
+      "context": "Pro Mode’s share of the org’s annual creator-onboarding goal. Internal planning artifact."
     },
     {
       "id": "beta",
       "glyph": "β",
-      "context": "How far Pro Mode's 3-month onboarding overshot the team's stated target."
+      "context": "How far Pro Mode’s 3-month onboarding overshot the team’s stated target."
     },
     {
       "id": "sigma-small",
@@ -1151,7 +1151,7 @@
     {
       "id": "sigma",
       "glyph": "Σ",
-      "context": "Per-rating fan-out count via Meta's content-deduplication system."
+      "context": "Per-rating fan-out count via Meta’s content-deduplication system."
     },
     {
       "id": "psi",

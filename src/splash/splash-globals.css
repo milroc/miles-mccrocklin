@@ -55,6 +55,14 @@ html, body {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   color: var(--splash-canvas-fg-strong);
   font-family: var(--splash-serif);
+  /* Same text-rendering stack as styles/globals.css body — kerning,
+     f-ligatures, and grayscale antialiasing (subpixel AA fringes on
+     the dark mat). Without these the splash/explorer render the same
+     Georgia with different kerning than the resume. */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1;
   min-height: 100vh;
   overflow-x: hidden;
 }
