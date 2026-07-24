@@ -59,6 +59,14 @@ interface KPTextProps {
 // the DP's stretch-ratio cost this should rarely trigger — it guards
 // pathological lines (few spaces, wide measure).
 const MAX_STRETCH_EM = 0.5;
+// Justify short of the measure by this much. Canvas measurement drifts
+// from DOM rendering by a fraction of a px per glyph; a line stretched
+// to the exact theoretical width can overshoot in the browser, and a
+// first line sharing its row with a bold prefix then wraps WHOLE below
+// it (nowrap makes the span atomic) — stranding "name —" alone on the
+// line. A uniform shortfall keeps the right edge optically straight
+// while making overshoot impossible.
+const JUSTIFY_SAFETY_PX = 3;
 
 export function KPText({ text, prefix, prefixNode, firstLineIndent, font, justify: justifyProp }: KPTextProps) {
   const mode = useContext(ModeContext);
@@ -100,7 +108,7 @@ export function KPText({ text, prefix, prefixNode, firstLineIndent, font, justif
     if (!justify || !layout || !result) return undefined;
     const ln = result.lines[i]!;
     if (i === result.lines.length - 1 || ln.spaces <= 0) return undefined;
-    const target = i === 0 ? layout.firstLineMaxWidth : width;
+    const target = (i === 0 ? layout.firstLineMaxWidth : width) - JUSTIFY_SAFETY_PX;
     const slack = target - ln.width;
     if (slack <= 0.5) return undefined;
     const fontPx = parseFloat(cfg.font.match(/(\d+(?:\.\d+)?)px/)?.[1] ?? '13');
