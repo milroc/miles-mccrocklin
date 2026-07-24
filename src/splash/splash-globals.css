@@ -94,8 +94,9 @@ html, body {
    polygons in Natural Earth 110m (Singapore today). Lives in globals
    because the markup is injected by react-globe.gl's htmlElement
    callback outside React, where hashed CSS Module names aren't
-   reachable. */
-.splash-globe-bubble {
+   reachable — keyed on a data attribute per the cross-component-hook
+   rule. */
+[data-splash-globe-bubble] {
   /* `--bubble-scale` is updated each frame from mountGlobe's rAF loop
      based on the camera's current altitude — closer camera = bigger
      thumbnail, farther = smaller. Scaling via width/height (not CSS
@@ -111,11 +112,11 @@ html, body {
 }
 /* Splash tile bubbles stay inert. Explorer flips data-clickable on so
    the bubble accepts pointer events and shows a hand cursor. */
-.splash-globe-bubble[data-clickable="true"] {
+[data-splash-globe-bubble][data-clickable="true"] {
   pointer-events: auto;
   cursor: pointer;
 }
-.splash-globe-bubble img {
+[data-splash-globe-bubble] img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -127,7 +128,7 @@ html, body {
   display: block;
   transition: box-shadow 160ms ease, border-color 160ms ease;
 }
-.splash-globe-bubble[data-clickable="true"]:hover img {
+[data-splash-globe-bubble][data-clickable="true"]:hover img {
   box-shadow:
     0 0 0 2px var(--splash-canvas-fg-strong),
     0 0 0 4px rgba(28, 31, 26, 0.85),
@@ -136,7 +137,7 @@ html, body {
 /* Selected bubble — cream ring + glow, the bubble analogue of the
    polygon outline. The inner dark band separates the ring from the
    photo so it reads on bright and dark thumbnails alike. */
-.splash-globe-bubble[data-selected="true"] img {
+[data-splash-globe-bubble][data-selected="true"] img {
   box-shadow:
     0 0 0 2px var(--splash-canvas-fg-strong),
     0 0 0 4px rgba(28, 31, 26, 0.9),

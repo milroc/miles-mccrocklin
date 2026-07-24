@@ -1096,11 +1096,11 @@ export async function mountGlobe(
   // container three-globe parents them under.
   function setBubbleSelection(name: string | null): void {
     document.querySelectorAll<HTMLElement>(
-      '.splash-globe-bubble[data-selected="true"]',
+      '[data-splash-globe-bubble][data-selected="true"]',
     ).forEach((el) => { el.dataset.selected = 'false'; });
     if (!name) return;
     const el = document.querySelector<HTMLElement>(
-      `.splash-globe-bubble[data-country="${CSS.escape(name)}"]`,
+      `[data-splash-globe-bubble][data-country="${CSS.escape(name)}"]`,
     );
     if (el) el.dataset.selected = 'true';
   }
@@ -1283,7 +1283,7 @@ export async function mountGlobe(
   const htmlElementFn = (d: object): HTMLElement => {
     const entry = d as AtlasEntry & { lat: number; lng: number };
     const wrap = document.createElement('div');
-    wrap.className = 'splash-globe-bubble';
+    wrap.dataset.splashGlobeBubble = 'true';
     wrap.title = entry.country;
     // data-country lets setSelectedCountry find this bubble's DOM node
     // to toggle the selection ring. The base CSS has pointer-events:
@@ -1360,7 +1360,7 @@ export async function mountGlobe(
   // 5 px of movement and 600 ms between them, then raycast via
   // toGlobeCoords + point-in-polygon. Same path the old arc-click
   // forwarder used. Bubble overlays handle their own clicks; we ignore
-  // pointer events whose target is inside a .splash-globe-bubble.
+  // pointer events whose target is inside a [data-splash-globe-bubble].
   const CLICK_PIXEL_TOLERANCE = 5;
   const CLICK_TIME_MS = 600;
   let pointerDownX = 0;
@@ -1372,7 +1372,7 @@ export async function mountGlobe(
   // starts moving, so a plain click doesn't flicker through `grabbing`.
   let isDragging = false;
   const isBubbleTarget = (target: EventTarget | null): boolean =>
-    !!(target instanceof Element && target.closest('.splash-globe-bubble'));
+    !!(target instanceof Element && target.closest('[data-splash-globe-bubble]'));
   // Canvas cursor reflects: grabbing during a drag, pointer over a
   // clickable polygon (atlas + visited), grab over everything else.
   // Bubbles set their own cursor via CSS (pointer when data-clickable).
@@ -1600,7 +1600,7 @@ export async function mountGlobe(
   // and skip the shimmer math.
   //
   // Bubble scale: read the camera's distance from the globe origin and
-  // scale the .splash-globe-bubble overlays inversely — closer camera
+  // scale the [data-splash-globe-bubble] overlays inversely — closer camera
   // (smaller distance, smaller altitude multiple) makes the
   // microstate thumbnails bigger; pulling out makes them smaller.
   // The CSS variable cascades to every bubble through document root.

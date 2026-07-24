@@ -43,7 +43,7 @@ export function Builder(): JSX.Element {
     <ModeContext.Provider value="interactive">
     <PrintContext.Provider value={false}>
     <MediaProvider>
-      <div className="app mode-interactive">
+      <div className="app mode-interactive" data-app>
         <a href="#builder-content" className="skip-link">Skip to content</a>
         <div className="toolbar-row">
           <SiteNav current="builder" />

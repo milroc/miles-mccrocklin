@@ -14,7 +14,6 @@ import { ModeContext, visible, pickText, isArchived as isArchivedItem } from '..
 import {
   AddButton, EDIT_ENABLED, EditableText, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import editStyles from '../edit/edit.module.css';
 import type { Achievement, RichText } from '../types';
 import './Bullets.css';
 
@@ -54,7 +53,7 @@ export function Bullets({ items, path }: BulletsProps) {
             const textPath = isObj ? joinPath(itemPath, 'text') : itemPath;
             const text = pickText(it as RichText, mode);
             return (
-              <li key={i} className={archived ? editStyles.archived : undefined}>
+              <li key={i} data-archived={archived || undefined}>
                 {editActive && itemPath ? (
                   <>
                     {/* Bypass KP in edit mode — contentEditable inside

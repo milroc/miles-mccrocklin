@@ -8,7 +8,6 @@ import { CODE_GROUPS } from '../me';
 import {
   EDIT_ENABLED, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import editStyles from '../edit/edit.module.css';
 import type { CommunityEntry } from '../types';
 import s from './Community.module.css';
 
@@ -54,9 +53,8 @@ export function Community({ items, path }: CommunityProps) {
         const detailsText = pickText(c.details, mode);
         const itemPath = path ? joinPath(path, i) : '';
         const archived = isArchived(c);
-        const cls = `entry ${archived ? editStyles.archived : ''}`.trim();
         return (
-          <div key={i} className={cls}>
+          <div key={i} className="entry" data-archived={archived || undefined}>
             <div className="entry-head">
               <div className="l">
                 {renderGroup(c.group)}

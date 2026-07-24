@@ -89,7 +89,7 @@
    serif body type, same accent. The only "guest" treatment retained is
    the laurel-gold star (the "Top-5% Superhost" signal) and the highlight
    tint on host_highlights phrases. */
-.reviewsToggle .star {
+.toggle .star {
   color: var(--laurel-gold);
   font-size: var(--fs-entry-sub);
   margin-right: 2px;
@@ -101,7 +101,7 @@
    so the keyword morph (fit-content → 100%) actually animates. In
    parallel, the JS WAAPI height animation slides the reviews list
    down inside it. The chrome literally morphs into the list. */
-.reviewsToggle {
+.toggle {
   width: fit-content;
   max-width: 100%;
   border: 1px solid var(--rule);
@@ -111,16 +111,16 @@
     border-color 120ms ease;
   interpolate-size: allow-keywords;
 }
-.reviewsToggle:hover { border-color: var(--ink); }
-.reviewsToggle[open] { width: 100%; }
+.toggle:hover { border-color: var(--ink); }
+.toggle[open] { width: 100%; }
 /* Strip the inline-pill border off the summary — the outer details
    pill carries it now. Hover on the outer container handles the
    border-color shift; summary just inherits color transitions. */
-.reviewsToggle > summary,
-.reviewsToggle > summary:hover { border: 0; }
+.toggle > summary,
+.toggle > summary:hover { border: 0; }
 /* When open, summary stretches across the (now full-width) pill and
    acts as the header row of the unified container. */
-.reviewsToggle[open] > summary {
+.toggle[open] > summary {
   display: flex;
   width: 100%;
   align-items: center;
@@ -130,9 +130,9 @@
 /* Animation wrapper. JS uses WAAPI to animate height + opacity on
    open/close; we just need overflow clipped so content doesn't spill
    while the wrapper height shrinks below its natural content height. */
-.reviewsAnim { overflow: hidden; }
+.anim { overflow: hidden; }
 /* Reviews list is borderless — the outer details pill is the border. */
-.reviewsToggle .reviews {
+.toggle .list {
   margin: 0;
   border: 0;
 }
@@ -215,7 +215,7 @@
   outline: none;
 }
 
-.reviews {
+.list {
   margin: 8px 0 4px;
   padding: 14px;
   border: 1px solid var(--rule);
@@ -224,11 +224,12 @@
   font-family: var(--serif);
   color: var(--ink);
 }
-.reviews.compact {
+.list.compact {
   padding: 12px 14px;
 }
 
-/* Review cards — stacked vertically with thin dividers, denser version. */
+/* Review cards — stacked vertically with thin dividers, denser version.
+   Card internals live in ReviewCard.module.css; this is just the stack. */
 .cards {
   display: flex;
   flex-direction: column;
@@ -236,129 +237,6 @@
   width: 100%;
   margin: 0;
 }
-.card {
-  padding: 12px 0;
-  background: transparent;
-  border: 0;
-  border-top: 1px solid var(--rule);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.card:first-child { border-top: 0; padding-top: 0; }
-.card:last-child { padding-bottom: 2px; }
-.cardHead {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-/* Meta row (rating · date) sits flush right on the head row. */
-.cardHead .metaRow {
-  margin-left: auto;
-  flex-shrink: 0;
-  text-align: right;
-}
-.avatar {
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--serif);
-  font-size: var(--fs-entry-sub);
-  font-weight: 600;
-  color: var(--paper);
-  background: var(--muted);
-  letter-spacing: 0;
-  text-transform: uppercase;
-}
-.reviewer { display: flex; flex-direction: column; min-width: 0; }
-.name {
-  font-size: var(--fs-bullet);
-  font-weight: 500;
-  color: var(--ink);
-  letter-spacing: 0;
-  line-height: 1.2;
-}
-.location {
-  font-size: var(--fs-eyebrow);
-  font-family: var(--mono);
-  letter-spacing: 0.04em;
-  color: var(--muted);
-  margin-top: 1px;
-}
-.metaRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 5px;
-  font-size: var(--fs-eyebrow);
-  font-family: var(--mono);
-  letter-spacing: 0.04em;
-  color: var(--ink-soft);
-}
-.stars {
-  color: var(--laurel-gold);
-  letter-spacing: 1px;
-  font-size: var(--fs-micro);
-}
-.text {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: var(--fs-bullet);
-  line-height: 1.55;
-  color: var(--ink);
-  font-style: normal;
-}
-.highlight {
-  background: var(--accent-soft);
-  color: var(--ink);
-  font-weight: 600;
-  padding: 1px 4px;
-  margin: 0 -2px;
-  border-radius: 2px;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-
-.translate {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 0;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  font-family: var(--serif);
-  font-size: var(--fs-era);
-  color: var(--ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  cursor: pointer;
-  align-self: flex-start;
-}
-.translate:hover { color: var(--muted); }
-.translateIcon {
-  display: inline-flex;
-  align-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 2px;
-  background: var(--accent-soft);
-  font-size: var(--fs-tag);
-  font-weight: 500;
-  letter-spacing: 0;
-  justify-content: center;
-  text-decoration: none;
-}
-.translateIcon sub {
-  font-size: var(--fs-overlay);
-  margin-left: 1px;
-  bottom: -0.1em;
-}
 
 /* Hide the entire reviews block in text-only / 1-pager modes. */
-:global(.page.text-only) .reviewsToggle { display: none !important; }
+:global(.page.text-only) .toggle { display: none !important; }

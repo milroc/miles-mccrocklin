@@ -1,10 +1,11 @@
-/* Era / Track sub-block — phase within a job (focus + period + bullets).
-   Reused by both Era.tsx and Track.tsx, which render the same chrome. */
-.era {
+/* Era / Track sub-block chrome — phase within a job (focus + period).
+   Owned by EraChrome.tsx; Era, Track, and the builder's EraGeneric all
+   render through it. */
+.root {
   margin-top: 10px;
   padding-left: 0;
 }
-.eraHead {
+.head {
   display: grid;
   /* Focus on left, period on right — mirrors .entry-head's `1fr auto`
      so the date column lines up with the top-level entry's date. */
@@ -36,29 +37,9 @@
   text-align: right;
 }
 
-/* Track-only — taglines/summaries above the era's bullets. */
-.tagline {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: var(--fs-entry);
-  color: var(--ink-soft);
-  margin: 2px 0 6px;
-  line-height: 1.55;
-}
-.summary {
-  font-size: var(--fs-bullet);
-  color: var(--ink-soft);
-  margin: 4px 0 8px;
-  line-height: 1.55;
-}
-
-/* 1-pager: tagline + summary collapse out (only must-have bullets). */
-:global(.page.mode-1pager) .tagline,
-:global(.page.mode-1pager) .summary {
-  display: none !important;
-}
-:global(.page.mode-1pager) .era { margin-top: 3px; }
-:global(.page.mode-1pager) .eraHead {
+/* 1-pager register. */
+:global(.page.mode-1pager) .root { margin-top: 3px; }
+:global(.page.mode-1pager) .head {
   margin-bottom: 1px;
   font-size: 9.5pt;
   letter-spacing: 0.1em;
@@ -67,10 +48,10 @@
 
 /* Text-only register: tighter top margin since taglines/summaries get more
    visual weight in this view. */
-:global(.page.text-only) .era { margin-top: 8px; }
+:global(.page.text-only) .root { margin-top: 8px; }
 
 @media (max-width: 560px) {
-  .eraHead {
+  .head {
     grid-template-columns: 1fr;
     gap: 2px;
   }
@@ -80,5 +61,5 @@
 }
 
 @media print {
-  .era { page-break-inside: avoid; break-inside: avoid; }
+  .root { page-break-inside: avoid; break-inside: avoid; }
 }

@@ -12,8 +12,8 @@
 import { Figure } from '../media/Figure';
 import { KPText } from '../primitives/KPText';
 import { KP_BODY_FONT } from '../utils/kp-font';
+import { EraChrome } from '../entries/EraChrome';
 import type { Achievement, Era as EraData } from '../types';
-import eraStyles from '../entries/Era.module.css';
 
 interface EraGenericProps {
   era: EraData;
@@ -31,17 +31,13 @@ export function EraGeneric({ era }: EraGenericProps): JSX.Element | null {
   // fallback for eras that haven't been tagline-authored yet.
   const lede = era.builder_tagline ?? firstAchievementText(era.achievements);
   return (
-    <div className={eraStyles.era}>
-      <div className={eraStyles.eraHead}>
-        <span className={eraStyles.focus}>{era.focus}</span>
-        <span className={eraStyles.period}>{era.period}</span>
-      </div>
+    <EraChrome focus={era.focus} period={era.period}>
       {lede && (
         <div className="entry-summary">
           <KPText text={lede} font={KP_BODY_FONT} />
         </div>
       )}
       {era.media && <Figure media={era.media} />}
-    </div>
+    </EraChrome>
   );
 }

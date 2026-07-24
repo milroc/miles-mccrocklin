@@ -3,7 +3,6 @@
 // role drops to its own line as a complete unit and the separator
 // disappears — see InlineEntry.module.css.
 import { EDIT_ENABLED, NoteBubble, VisibilityChip, useEdit } from '../edit';
-import editStyles from '../edit/edit.module.css';
 import type { Job } from '../types';
 import s from './InlineEntry.module.css';
 
@@ -17,9 +16,8 @@ export function InlineEntry({ job, path, archived }: InlineEntryProps) {
   const edit = useEdit();
   const editActive = EDIT_ENABLED && edit.active;
   const company = job.shortened_title || job.company;
-  const cls = `entry ${s.entryInline} ${archived ? editStyles.archived : ''}`.trim();
   return (
-    <div className={cls}>
+    <div className={`entry ${s.entryInline}`} data-archived={archived || undefined}>
       <div className="entry-head">
         <div className="l">
           {company}

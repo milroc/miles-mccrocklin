@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { highlightReview } from '../utils/highlight';
 import type { Review } from '../types';
-import s from './Reviews.module.css';
+import s from './ReviewCard.module.css';
 
 interface ReviewCardProps {
   r: Review;
@@ -28,8 +28,8 @@ export function ReviewCard({ r, cleanLocation }: ReviewCardProps) {
     : r.host_highlights;
 
   return (
-    <article className={s.card}>
-      <div className={s.cardHead}>
+    <article className={s.root}>
+      <div className={s.head}>
         <div className={s.avatar} aria-hidden="true">
           {r.reviewer.charAt(0)}
         </div>
