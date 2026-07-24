@@ -89,8 +89,8 @@
    the icon "light up" with its own identity. X, Threads, and GitHub stay
    on the accent (their brand marks are monochrome). */
 .contactStack a[href*="github.com"]:hover .handleIcon    { color: var(--accent); }
-.contactStack a[href*="linkedin.com"]:hover .handleIcon  { color: #0a66c2; }
-.contactStack a[href*="instagram.com"]:hover .handleIcon { color: #e1306c; }
+.contactStack a[href*="linkedin.com"]:hover .handleIcon  { color: var(--guest-linkedin-blue); }
+.contactStack a[href*="instagram.com"]:hover .handleIcon { color: var(--guest-instagram-pink); }
 .sep {
   color: var(--rule);
 }

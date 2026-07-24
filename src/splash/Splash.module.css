@@ -107,11 +107,11 @@
   border-radius: 50%;
   flex-shrink: 0;
   border: 1px solid var(--splash-canvas-rule);
-  filter: grayscale(0.18) contrast(1.02);
+  filter: var(--photo-filter-rest);
   transition: filter 240ms ease;
 }
 .byline:hover .portrait {
-  filter: grayscale(0) contrast(1.04);
+  filter: var(--photo-filter-hover);
 }
 
 /* Wordmark — same style register as the resume's Header.name
@@ -396,12 +396,12 @@
   background: var(--splash-canvas-void);
   /* DESIGN.md photo language: editorial grayscale at rest, snaps to
      color on intent. System easing — no blur, no 0ms snap. */
-  filter: grayscale(0.18) contrast(1.02);
+  filter: var(--photo-filter-rest);
   transition: filter 240ms ease;
 }
 .door:hover .doorImage,
 .door:focus-visible .doorImage {
-  filter: grayscale(0) contrast(1.04);
+  filter: var(--photo-filter-hover);
 }
 .doorText {
   display: flex;
