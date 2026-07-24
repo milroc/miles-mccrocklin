@@ -1,0 +1,117 @@
+/* Floating typesetting evaluation panel — canvas-context chrome (dark
+   mat voice, mono register), pinned bottom-right above the paper. */
+.root {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(28, 31, 26, 0.94);
+  border: 1px solid var(--canvas-rule);
+  box-shadow: 0 8px 24px var(--canvas-shadow, rgba(10, 12, 10, 0.55));
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  color: var(--canvas-fg);
+  max-width: 240px;
+}
+
+.modes {
+  display: flex;
+  gap: 6px;
+}
+.modes button {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 9px;
+  background: transparent;
+  color: var(--canvas-fg);
+  border: 1px solid var(--canvas-rule);
+  cursor: pointer;
+}
+.modes button:hover {
+  color: var(--canvas-fg-strong);
+  border-color: var(--canvas-fg);
+}
+.modes .active {
+  background: var(--canvas-fg-strong);
+  color: var(--canvas);
+  border-color: var(--canvas-fg-strong);
+}
+
+.gapsToggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  color: var(--canvas-fg);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.gapsToggle input {
+  accent-color: var(--accent);
+  margin: 0;
+}
+
+.stats {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-top: 1px solid var(--canvas-rule);
+  padding-top: 8px;
+}
+.stats > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+.stats dt {
+  color: var(--canvas-fg-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.stats dd {
+  margin: 0;
+  color: var(--canvas-fg-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+.refresh {
+  align-self: flex-end;
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow-sm);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--canvas-fg-muted);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.refresh:hover { color: var(--canvas-fg-strong); }
+
+/* Gap overlay — document-positioned tint boxes over every inter-word
+   space. Pointer-transparent; purely diagnostic. */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+.gap {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* The paper is 1-pager-print's whole world; hide evaluation chrome. */
+@media print {
+  .root, .overlay { display: none; }
+}

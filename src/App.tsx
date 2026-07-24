@@ -6,6 +6,7 @@ import { flushSync } from 'react-dom';
 import { Header } from './layout/Header';
 import { Section } from './layout/Section';
 import { SiteNav } from './layout/SiteNav';
+import { TypesetPanel } from './layout/TypesetPanel';
 import { TerminalDock } from './layout/TerminalDock';
 import { ExperienceEntry } from './entries/ExperienceEntry';
 import { EduEntry } from './entries/EduEntry';
@@ -180,30 +181,6 @@ export function App() {
           >
             1-Pager
           </button>
-          <button
-            className={typeset === 'justify' ? 'active' : ''}
-            aria-pressed={typeset === 'justify'}
-            onClick={() => setTypeset('justify')}
-            title="Knuth-Plass breaks, flush right edge (word-spacing fills the measure)"
-          >
-            Justify
-          </button>
-          <button
-            className={typeset === 'ragged' ? 'active' : ''}
-            aria-pressed={typeset === 'ragged'}
-            onClick={() => setTypeset('ragged')}
-            title="Knuth-Plass breaks, ragged right edge"
-          >
-            Ragged
-          </button>
-          <button
-            className={typeset === 'off' ? 'active' : ''}
-            aria-pressed={typeset === 'off'}
-            onClick={() => setTypeset('off')}
-            title="Browser default wrap — no Knuth-Plass at all"
-          >
-            Browser
-          </button>
           <button onClick={() => window.print()} disabled={editActive}>Print / PDF</button>
         </nav>
       </div>
@@ -262,6 +239,7 @@ export function App() {
       </main>
       <EditToolbar />
       {isInteractive && <TerminalDock />}
+      <TypesetPanel typeset={typeset} onChange={setTypeset} />
     </div>
     </MediaProvider>
     </TypesetContext.Provider>
