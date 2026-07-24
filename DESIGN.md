@@ -79,9 +79,11 @@ uses `pt` units — see `.page.mode-1pager`.
 | `--fs-eyebrow-sm`  | 9.5px     | metric key, ai-summary-hint                        |
 | `--fs-overlay`     | 9px       | figure-tag overlay, ab-translate sub               |
 
-Component-local one-offs (left inline, deliberately):
-`.metric .v` 15px, `.ab-favorite-title` 20px, `.ab-favorite-rating` 56px /
-44px (mobile), `.lb-prev`/`.lb-next` 32px, `.lb-close` 22px.
+Component-local one-offs (left inline, deliberately): the lightbox
+nav arrows 26px / close 30px (`MediaProvider.module.css`), the 12px
+skills caption (`SkillsCaption.module.css`), and the 12px redaction
+tooltip (`KPText.css`). The splash/explorer/photography surfaces run
+their own px sizes; the `--fs-*` scale only claims the resume page.
 
 ### 1-pager / print sizes
 
@@ -143,7 +145,8 @@ undertone.
 | Token              | Value                  | Usage                                  |
 | ------------------ | ---------------------- | -------------------------------------- |
 | `--accent`         | `#3a6b4a`              | Forest green — accent surfaces above  |
-| `--accent-soft`    | `rgba(58,107,74,0.10)` | Metrics block background               |
+| `--accent-soft`    | `rgba(58,107,74,0.10)` | Photography chip/search + reviews highlights |
+| `--laurel-gold`    | `#C7A958`              | "Top-5% Superhost" star + rating seal — editorial accent (gold leaf), not a brand quote |
 
 - **Dark mode:** Not implemented as a toggle. The screen presentation is
   cream paper on dark mat; print is cream paper on white (browsers honor
@@ -167,6 +170,17 @@ same convention.
 | `--guest-airbnb-fg-muted`      | `#717171`          |
 | `--guest-airbnb-highlight`     | `rgba(0,0,0,0.06)` |
 | `--guest-airbnb-red`           | `#FF5A5F`          |
+
+Other guest palettes on `:root`, same convention:
+
+- `--guest-claude-*` — the Terminal glass block quotes the Claude Code
+  shell (near-black panel, orange brand, hostname yellow, sage-teal
+  muted text). See the token comments in `globals.css` for the
+  per-value rationale.
+- `--guest-linkedin-blue` (`#0a66c2`) / `--guest-instagram-pink`
+  (`#e1306c`) — contact-stack icon hover colors; each icon lights up
+  with its own identity on intent while the handle text stays on
+  `--accent`.
 
 ## Spacing
 
@@ -358,6 +372,10 @@ any future deliberate brand quote.
 Promoted to `--photo-filter-rest`, `--photo-filter-hover`, and
 `--photo-filter-trans`. The `transform: scale()` lift stays inline because
 the value differs per surface (figures 1.03, portraits 1.04).
+
+2026-07-24: the standalone splash bundle now mirrors the three tokens in
+`splash-globals.css` (same names, unprefixed — the `--canvas-shadow`
+pattern); a retune must change both roots.
 
 ### D6 — Accent dosage ✅ Closed 2026-05-01 (held dosage, swapped hue)
 

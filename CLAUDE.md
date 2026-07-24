@@ -7,7 +7,8 @@ All font choices, colors, spacing, and aesthetic direction are defined there.
 Do not deviate without explicit user approval.
 
 In QA / design-review mode, flag any code that doesn't match `DESIGN.md`,
-including the "Known Drift" section (D1–D6) — those are the open gaps.
+including the "Known Drift" section at the end (D-numbered items). All
+are currently closed; treat any reopened or new drift as a gap to flag.
 
 ### One component per file, one CSS module per component
 

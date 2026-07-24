@@ -36,6 +36,13 @@
      so photography/explorer modules resolve it from either root). */
   --canvas-shadow: rgba(10, 12, 10, 0.55);
 
+  /* Photo treatment — shared with globals.css (same names, unprefixed).
+     The splash bundle is standalone, so the values are mirrored here;
+     a retune must change both roots. */
+  --photo-filter-rest:  grayscale(0.18) contrast(1.02);
+  --photo-filter-hover: grayscale(0) contrast(1.04);
+  --photo-filter-trans: filter 240ms ease, transform 320ms ease;
+
   --splash-fs-display: 48px;
   --splash-fs-display-sm: 32px;
 }

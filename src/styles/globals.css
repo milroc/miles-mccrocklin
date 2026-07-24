@@ -71,6 +71,11 @@
      block; shown un-tinted as the "this is from Airbnb" signal. */
   --guest-airbnb-red: #FF5A5F;
 
+  /* Guest palette — social brands. Icon hover colors in the contact
+     stack; each icon "lights up" with its own identity on intent. */
+  --guest-linkedin-blue: #0a66c2;
+  --guest-instagram-pink: #e1306c;
+
   /* Laurel gold — used for the "Top-5% Superhost" star + rating signal in
      the Airbnb reviews block. Picked to read as an editorial accent (gold
      leaf, certificate seal) rather than as a brand quote. */
