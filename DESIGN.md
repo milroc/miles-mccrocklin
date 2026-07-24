@@ -16,9 +16,10 @@ the end so future changes either close it or cite a reason.
   Don't optimize copy or layout for recruiter scan patterns.
 - **Project type:** Personal site / editorial document / project hub.
 - **Memorable thing:** *A resume that respects typography the way a printed
-  document does.* Knuth-Plass line breaking, soft-hyphen pre-processing,
-  hanging-indent bullets, italic editorial taglines, tabular numerals on
-  dates. Every design decision should serve this.
+  document does.* Hanging-indent bullets, italic editorial taglines,
+  redaction variables with footnote anchors, careful micro-typography
+  (kerning, curly punctuation, en-dash ranges). Every design decision
+  should serve this.
 
 ## Aesthetic Direction
 
@@ -322,21 +323,16 @@ Employer naming is register-scoped:
 - **Product names keep their historical names** (Facebook Creators,
   Forecast) — they shipped under those names.
 
-## Custom Typography Pipeline
+## Typography Pipeline (removed 2026-07)
 
-The soul of the site. Documented here because anyone touching `.bullets`
-needs to know.
-
-- **Knuth-Plass line breaker** lives in `src/utils/kp.ts`, soft-hyphen
-  pre-processor in `src/utils/hyphenate.ts`. They run client-side after fonts
-  load and re-run when the column width changes.
-- **`.kp-wrap` and `.kp-line`** are load-bearing class hooks. `.kp-line` is
-  set to `display: inline; white-space: nowrap` because the browser would
-  otherwise re-break at internal hyphens on top of KP's chosen breaks,
-  doubling the wrap.
-- **Don't add `word-wrap`, `overflow-wrap`, or `hyphens` rules to `.bullets`
-  without reading the KP wrap logic.** It will fight the line-breaker and
-  produce visible jitter.
+Bullets and summaries wrap natively. The Knuth-Plass line breaker +
+soft-hyphen pre-processor that previously chose breaks was removed
+after instrumented comparison (line-diff, rag depth, widow and river
+counts) showed near-zero visible difference from browser wrapping at
+this measure; a full justification variant was prototyped and rejected
+(stretched spaces read as gaps and rivers). PR #49/#50 hold the
+record. Redaction anchors from that pipeline live on in
+`src/primitives/RedactedText.tsx` / `.redacted`.
 
 ## Known Drift
 

@@ -10,8 +10,7 @@
 // photography carousel without re-authoring it at job level.
 
 import { Figure } from '../media/Figure';
-import { KPText } from '../primitives/KPText';
-import { KP_BODY_FONT } from '../utils/kp-font';
+import { RedactedText } from '../primitives/RedactedText';
 import { EraGeneric } from './EraGeneric';
 import { InlineEntry } from '../entries/InlineEntry';
 import { SabbaticalEntry } from '../entries/SabbaticalEntry';
@@ -59,7 +58,7 @@ export function ExperienceEntryGeneric({ job }: ExperienceEntryGenericProps): JS
       </div>
       {job.summary && (
         <div className="entry-summary">
-          <KPText text={job.summary} font={KP_BODY_FONT} />
+          <RedactedText text={job.summary} />
         </div>
       )}
       {hasEras

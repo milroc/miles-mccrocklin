@@ -70,15 +70,16 @@ Rules:
   templated in via `dangerouslySetInnerHTML` so SSR'd HTML carries the
   correct hashes.
 
-### Custom typography pipeline
+### Typography note
 
-The `.bullets` block runs through a Knuth-Plass line breaker
-(`src/utils/kp.ts`) plus a soft-hyphen pre-processor
-(`src/utils/hyphenate.ts`).
-`.kp-line` is set to `display: inline; white-space: nowrap` on purpose.
-Do not add `word-wrap`, `overflow-wrap`, or `hyphens` rules to `.bullets`
-without reading the KP wrap logic — it will fight the line-breaker and
-produce visible jitter.
+Bullets and summaries wrap natively. A Knuth-Plass line-breaking
+pipeline (`src/utils/kp.ts` + soft-hyphen pre-processing) previously
+chose the breaks; it was removed in 2026-07 after instrumented
+comparison showed near-zero visible difference from browser wrapping
+at this measure (PR #49/#50 have the full record, including a rejected
+justification experiment). Redaction anchors — the one piece of that
+pipeline with content value — live on in
+`src/primitives/RedactedText.tsx`.
 
 ## Editing resume prose
 

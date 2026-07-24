@@ -342,7 +342,7 @@ export interface CommunityEntry {
 
 // Redaction registry — Greek-letter variables that stand in for figures
 // intentionally withheld from the public resume. Each entry powers two
-// surfaces: the inline anchor + tooltip in running prose (KPText) and
+// surfaces: the inline anchor + tooltip in running prose (RedactedText) and
 // the Notes section at the end of the resume (RedactionNotes).
 export interface Redaction {
   // DOM-safe anchor name. The inline glyph renders as
@@ -350,7 +350,7 @@ export interface Redaction {
   // `id="note-{id}"`. Use lowercase Greek letter names ("alpha", etc).
   id: string;
   // The actual character that appears in me.json prose. Kept
-  // narrow on purpose — KPText scans for `[ΞαβσΣΨΩΦ]` only (see
+  // narrow on purpose — RedactedText scans for `[ΞαβσΣΨΩΦ]` only (see
   // REDACTED_GLYPH_RE in me.ts).
   glyph: string;
   // Short context string. Shown in the hover tooltip (desktop) and the

@@ -3,12 +3,6 @@ import { createContext } from 'react';
 import type { Mode, RichText, Visibility } from '../types';
 
 export const ModeContext = createContext<Mode>('interactive');
-// `true` while the browser is preparing a print snapshot. KPText reads
-// this and substitutes the canonical print column width for whatever the
-// on-screen ResizeObserver measured — otherwise a narrow window would
-// produce KP lines that don't fill the 816px printed letter page.
-export const PrintContext = createContext<boolean>(false);
-
 // Default visibility when the field is missing — matches the legacy
 // numeric-priority default of 2 (renders in interactive + text, hides
 // from 1-pager). Existing items without a visibility field keep working.
