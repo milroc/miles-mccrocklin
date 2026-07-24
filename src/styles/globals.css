@@ -175,7 +175,7 @@ a { color: inherit; text-decoration: none; }
 /* Date typography — serif italic at the muted color so dates recede into
    the body register instead of stamping themselves as a separate system.
    The matching `.period` rule for the .era-head sub-block lives in
-   entries/Era.module.css; keep the two in sync visually. */
+   entries/EraChrome.module.css; keep the two in sync visually. */
 .entry-head .r {
   font-family: var(--serif);
   font-style: italic;
@@ -237,8 +237,9 @@ a { color: inherit; text-decoration: none; }
 
 /* Bullet primitive (.bullets, .bullets li, ::before) lives in
    primitives/Bullets.css. KP-line default lives in primitives/KPText.css.
-   Era / Track chrome (.era, .era-head, .focus, .period, .era-tagline,
-   .era-summary) lives in entries/Era.module.css.
+   Era / Track chrome (root, head, focus, period) lives in
+   entries/EraChrome.module.css; Track's tagline/summary live in
+   entries/Track.module.css.
    Inline-entry styles live in entries/InlineEntry.module.css. */
 
 /* Figure card primitive (photo/video/embed tile) lives in
@@ -283,7 +284,7 @@ a { color: inherit; text-decoration: none; }
 @media print {
   html, body { background: white; }
   /* `.entry` page-break stays here (entry primitive is global). The
-     matching `.era` page-break lives in entries/Era.module.css. */
+     matching `.era` page-break lives in entries/EraChrome.module.css. */
   .entry { page-break-inside: avoid; break-inside: avoid; }
   * {
     -webkit-print-color-adjust: exact;
@@ -307,7 +308,38 @@ a { color: inherit; text-decoration: none; }
   .entry-sub  .l { order: -3; margin-bottom: 2px; }
   .entry-head .r { order: -2; text-align: left; }
   .entry-sub  .r { order: -1; text-align: left; margin-bottom: 6px; }
-  /* .era-head mobile collapse lives in entries/Era.module.css. */
+  /* .era-head mobile collapse lives in entries/EraChrome.module.css. */
+}
+
+/* ---------- Archive treatment (edit mode) ----------
+   Cross-component document state — the sanctioned exception to the
+   CSS-Modules rule. Entries, bullets, and skills flag archived items
+   with `data-archived="true"` (set only while edit mode is active);
+   styling lives here unhashed so a dozen components don't all have to
+   import the edit module for one rule.
+   Items that would normally be hidden (priority 4 or omit:true) render
+   in edit mode with reduced presence so they're visible-but-clearly-off.
+   Uses `::after` (not `::before`) because some archived elements — like
+   `<li>` inside `ul.bullets` — already have a `::before` pseudo for
+   their bullet ring. One element only gets one of each pseudo, so we
+   stay out of `::before`'s way. */
+[data-archived="true"] {
+  opacity: 0.45;
+  position: relative;
+}
+[data-archived="true"]::after {
+  content: "ARCHIVED";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1px 6px;
+  font-family: var(--mono);
+  font-size: var(--fs-overlay);
+  letter-spacing: 0.12em;
+  background: var(--rule);
+  color: var(--muted);
+  border-radius: 2px;
+  pointer-events: none;
 }
 
 /* Module-referenced keyframes live here UNHASHED: Bun's CSS-Modules

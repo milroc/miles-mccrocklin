@@ -1,6 +1,12 @@
 /* Edit-mode UI styles. Scoped to a CSS module so production never
    includes them (the EditProvider isn't mounted in prod, none of these
-   classes are referenced, the bundler tree-shakes the file). */
+   classes are referenced, the bundler tree-shakes the file).
+
+   This one module is deliberately shared by the six edit components
+   (EditToolbar, EditableText, VisibilityChip, NoteBubble, AddButton,
+   HighLevelFeedback) — they form a single dev-only surface behind the
+   stub/real DCE pattern, and splitting the module per component would
+   break the "one file to tree-shake" property for no gain. */
 
 /* ---------- Toolbar ----------------------------------------------------- */
 .toolbar {
@@ -273,28 +279,7 @@
   color: var(--accent);
 }
 
-/* ---------- Archive treatment ------------------------------------------ */
-/* Items that would normally be hidden (priority 4 or omit:true) render
-   in edit mode with reduced presence so they're visible-but-clearly-off.
-   Uses `::after` (not `::before`) because some archived elements — like
-   `<li>` inside `ul.bullets` — already have a `::before` pseudo for
-   their bullet ring. One element only gets one of each pseudo, so we
-   stay out of `::before`'s way. */
-.archived {
-  opacity: 0.45;
-  position: relative;
-}
-.archived::after {
-  content: "ARCHIVED";
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 1px 6px;
-  font-family: var(--mono);
-  font-size: var(--fs-overlay);
-  letter-spacing: 0.12em;
-  background: var(--rule);
-  color: var(--muted);
-  border-radius: 2px;
-  pointer-events: none;
-}
+/* Archive treatment lives in globals.css as `[data-archived="true"]` —
+   it's a document-level state flagged by non-edit components (entries,
+   bullets, skills), which set the data attribute rather than importing
+   this module. */

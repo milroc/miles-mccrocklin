@@ -6,9 +6,8 @@ import { ModeContext, visible } from '../utils/mode';
 import {
   EDIT_ENABLED, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import editStyles from '../edit/edit.module.css';
+import { EraChrome } from './EraChrome';
 import type { Era as EraData } from '../types';
-import s from './Era.module.css';
 
 interface EraProps {
   era: EraData;
@@ -23,21 +22,22 @@ export function Era({ era, path, archived }: EraProps) {
   if (!editActive && !visible(era, mode)) return null;
   const isInteractive = mode === 'interactive';
 
-  const cls = `${s.era} ${archived ? editStyles.archived : ''}`.trim();
   return (
-    <div className={cls}>
-      <div className={s.eraHead}>
-        <span className={s.focus}>{era.focus}</span>
-        <span className={s.period}>{era.period}</span>
-        {editActive && path && (
+    <EraChrome
+      focus={era.focus}
+      period={era.period}
+      archived={archived}
+      headExtra={
+        editActive && path ? (
           <>
             <VisibilityChip path={path} />
             <NoteBubble path={path} />
           </>
-        )}
-      </div>
+        ) : null
+      }
+    >
       <Bullets items={era.achievements} path={path ? joinPath(path, 'achievements') : undefined} />
       {era.media && isInteractive && <Figure media={era.media} />}
-    </div>
+    </EraChrome>
   );
 }

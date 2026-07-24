@@ -8,7 +8,6 @@ import { measureKPPrefix } from '../utils/kp-font';
 import {
   EDIT_ENABLED, EditableText, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import editStyles from '../edit/edit.module.css';
 import type { Project, RichText } from '../types';
 
 interface AIProjectBulletProps {
@@ -34,7 +33,7 @@ export function AIProjectBullet({ p, path }: AIProjectBulletProps) {
     ? joinPath(path, 'description')
     : joinPath(path, 'description', 'text')) : '';
   return (
-    <li className={archived ? editStyles.archived : undefined}>
+    <li data-archived={archived || undefined}>
       {editActive && path ? (
         <>
           <span className="kp-wrap">

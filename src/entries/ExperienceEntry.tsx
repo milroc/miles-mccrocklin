@@ -12,7 +12,6 @@ import { ModeContext, visible, isArchived as isArchivedItem } from '../utils/mod
 import {
   EDIT_ENABLED, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import editStyles from '../edit/edit.module.css';
 import type { Job } from '../types';
 
 interface ExperienceEntryProps {
@@ -39,9 +38,8 @@ export function ExperienceEntry({ job, path, archived }: ExperienceEntryProps) {
   const childArchived = (item: unknown): boolean =>
     editActive && isArchivedItem(item);
 
-  const cls = `entry ${archived ? editStyles.archived : ''}`.trim();
   return (
-    <div className={cls}>
+    <div className="entry" data-archived={archived || undefined}>
       <div className="entry-head">
         <div className="l">
           {job.company}

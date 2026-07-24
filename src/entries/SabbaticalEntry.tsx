@@ -12,7 +12,6 @@ import { ModeContext, visible, isArchived as isArchivedItem } from '../utils/mod
 import {
   EDIT_ENABLED, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import editStyles from '../edit/edit.module.css';
 import s from './SabbaticalEntry.module.css';
 import type { Job, Track as TrackData } from '../types';
 
@@ -31,13 +30,12 @@ export function SabbaticalEntry({ job, path, archived, collapseAll }: Sabbatical
   const edit = useEdit();
   const editActive = EDIT_ENABLED && edit.active;
   const dateRange = `${job.start_date} – ${job.end_date}`;
-  const cls = `entry sabbatical ${archived ? editStyles.archived : ''}`.trim();
 
   if (mode === '1pager' && !editActive) {
     // 1-pager: just the entry header, sub-line, and the standard summary.
     // Track detail lives in the interactive/text modes only.
     return (
-      <div className={cls}>
+      <div className="entry sabbatical" data-archived={archived || undefined}>
         <div className="entry-head">
           <div className="l">{job.company}</div>
           <div className="r">{dateRange}</div>
@@ -80,7 +78,7 @@ export function SabbaticalEntry({ job, path, archived, collapseAll }: Sabbatical
   );
 
   return (
-    <div className={cls}>
+    <div className="entry sabbatical" data-archived={archived || undefined}>
       <div className="entry-head">
         <div className="l">
           {job.company}

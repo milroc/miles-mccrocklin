@@ -124,7 +124,7 @@ export function App() {
     <ModeContext.Provider value={mode}>
     <PrintContext.Provider value={printing}>
     <MediaProvider>
-    <div className={`app mode-${mode}`}>
+    <div className={`app mode-${mode}`} data-app>
       <a href="#resume-content" className="skip-link">Skip to resume</a>
       <div className="toolbar-row">
         {/* Shared cross-page nav (favicon + name on the left,

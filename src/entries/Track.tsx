@@ -11,9 +11,9 @@ import { ModeContext, visible } from '../utils/mode';
 import {
   AddButton, EDIT_ENABLED, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import editStyles from '../edit/edit.module.css';
+import { EraChrome } from './EraChrome';
 import type { Track as TrackData } from '../types';
-import s from './Era.module.css';
+import s from './Track.module.css';
 
 interface TrackProps {
   track: TrackData;
@@ -36,19 +36,20 @@ export function Track({ track, path, archived }: TrackProps) {
     .map((p, i) => ({ p, i }))
     .filter(({ p }) => editActive || visible(p, mode));
 
-  const cls = `${s.era} ${archived ? editStyles.archived : ''}`.trim();
   return (
-    <div className={cls}>
-      <div className={s.eraHead}>
-        <span className={s.focus}>{track.focus}</span>
-        <span className={s.period}>{track.period}</span>
-        {editActive && path && (
+    <EraChrome
+      focus={track.focus}
+      period={track.period}
+      archived={archived}
+      headExtra={
+        editActive && path ? (
           <>
             <VisibilityChip path={path} />
             <NoteBubble path={path} />
           </>
-        )}
-      </div>
+        ) : null
+      }
+    >
       {track.tagline && <div className={s.tagline}>{track.tagline}</div>}
       {track.summary && <div className={s.summary}>{track.summary}</div>}
       {(track.achievements || editActive) && (
@@ -81,6 +82,6 @@ export function Track({ track, path, archived }: TrackProps) {
       )}
       {track.reviews && isInteractive && <Reviews data={track.reviews} max={5} />}
       {track.media && isInteractive && <Figure media={track.media} />}
-    </div>
+    </EraChrome>
   );
 }

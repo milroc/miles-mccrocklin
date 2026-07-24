@@ -1,0 +1,22 @@
+/* Track-only prose — taglines/summaries above the era's bullets. The
+   head/period chrome comes from EraChrome. */
+.tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: var(--fs-entry);
+  color: var(--ink-soft);
+  margin: 2px 0 6px;
+  line-height: 1.55;
+}
+.summary {
+  font-size: var(--fs-bullet);
+  color: var(--ink-soft);
+  margin: 4px 0 8px;
+  line-height: 1.55;
+}
+
+/* 1-pager: tagline + summary collapse out (only must-have bullets). */
+:global(.page.mode-1pager) .tagline,
+:global(.page.mode-1pager) .summary {
+  display: none !important;
+}

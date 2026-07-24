@@ -372,7 +372,7 @@ export function MediaProvider({ children }: MediaProviderProps) {
   // users don't read through the resume content while the dialog is up.
   useEffect(() => {
     if (openIdx == null) return;
-    const app = document.querySelector('.app') as HTMLElement | null;
+    const app = document.querySelector('[data-app]') as HTMLElement | null;
     if (!app) return;
     app.setAttribute('inert', '');
     return () => app.removeAttribute('inert');

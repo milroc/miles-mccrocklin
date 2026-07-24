@@ -6,7 +6,6 @@ import { ModeContext, visible } from '../utils/mode';
 import {
   EDIT_ENABLED, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import editStyles from '../edit/edit.module.css';
 import type { School } from '../types';
 
 interface EduEntryProps {
@@ -23,9 +22,8 @@ export function EduEntry({ school, path, archived }: EduEntryProps) {
   const degreeText = (mode === '1pager' && school.degree_short)
     ? school.degree_short
     : school.degree;
-  const cls = `entry ${archived ? editStyles.archived : ''}`.trim();
   return (
-    <div className={cls}>
+    <div className="entry" data-archived={archived || undefined}>
       <div className="entry-head">
         <div className="l">
           {school.institution}

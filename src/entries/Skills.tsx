@@ -3,7 +3,6 @@ import { ModeContext, visible, pickText, isArchived as isArchivedItem } from '..
 import {
   AddButton, EDIT_ENABLED, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import editStyles from '../edit/edit.module.css';
 import type { RichText, SkillSet } from '../types';
 import s from './Skills.module.css';
 
@@ -51,7 +50,7 @@ export function Skills({ skills, path }: SkillsProps) {
                     return (
                       <span
                         key={i}
-                        className={archived ? editStyles.archived : undefined}
+                        data-archived={archived || undefined}
                         style={{ display: 'inline-block', marginRight: 6 }}
                       >
                         {text}

@@ -100,7 +100,7 @@ export function Reviews({ data, max = 4 }: ReviewsProps) {
   };
 
   return (
-    <details ref={detailsRef} className={`${s.aiProjects} ${s.reviewsToggle}`}>
+    <details ref={detailsRef} className={`${s.aiProjects} ${s.toggle}`}>
       <summary onClick={handleSummaryClick}>
         <span className={s.summaryLabel}>
           <FaAirbnb className={s.summaryBelo} aria-hidden="true" />
@@ -109,8 +109,8 @@ export function Reviews({ data, max = 4 }: ReviewsProps) {
         </span>
         <span className={s.summaryHint}>expand</span>
       </summary>
-      <div ref={contentRef} className={s.reviewsAnim}>
-        <section className={`${s.reviews} ${s.compact}`}>
+      <div ref={contentRef} className={s.anim}>
+        <section className={`${s.list} ${s.compact}`}>
           <div className={s.cards}>
             {picks.map((r, i) => (
               <ReviewCard

@@ -1,0 +1,40 @@
+/* Per-tile metadata panel. Only rendered when ?meta=1 is in the URL —
+   a curator review mode for spot-checking the classifier output. Lives
+   inside the tile wrapper, below the image button, in the same width
+   column. Mono register, generous padding, scrollable JSON dump. */
+.root {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border-left: 2px solid var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--canvas-fg-strong);
+  max-height: 240px;
+  overflow: auto;
+}
+.root pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.root .story {
+  margin: 0 0 6px;
+  font-family: var(--serif, Georgia, serif);
+  font-size: 13px;
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--canvas-fg);
+}
+.root .tags {
+  margin: 0 0 4px;
+  letter-spacing: 0.04em;
+}
+.root .label {
+  color: var(--canvas-fg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 9px;
+  margin-right: 6px;
+}
