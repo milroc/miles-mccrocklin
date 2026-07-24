@@ -55,8 +55,14 @@ the end so future changes either close it or cite a reason.
   used for taglines, summaries, locations, and dates. They share one voice
   and recede into the body register; only size separates them.
 - **Numerals:** `font-variant-numeric: tabular-nums` and
-  `font-feature-settings: "tnum" 1` on every date and metric so columns
-  align across stacked entries.
+  `font-feature-settings: "tnum" 1` are declared on dates and metrics,
+  but note: Georgia has no tabular figures, so the declarations are
+  inert on serif dates (measured: `1111` ≠ `9999` width with tnum
+  requested). Georgia's proportional old-style figures are accepted as
+  part of the editorial voice; date columns align by right-alignment,
+  not digit width. Metric numerals get true tabular behavior from
+  JetBrains Mono (monospace, so every figure is tabular by nature).
+  The declarations stay as future-proofing if the serif ever changes.
 
 ### Type scale (screen)
 
