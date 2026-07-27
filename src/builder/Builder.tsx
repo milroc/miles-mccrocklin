@@ -25,7 +25,7 @@ import { MediaProvider } from '../media/MediaProvider';
 import { Skills } from '../entries/Skills';
 import { SkillsCaption } from '../entries/SkillsCaption';
 import { EduEntry } from '../entries/EduEntry';
-import { ModeContext, PrintContext } from '../utils/mode';
+import { ModeContext } from '../utils/mode';
 import { ExperienceEntryGeneric } from './ExperienceEntryGeneric';
 import ME from '../../data/me.json' with { type: 'json' };
 import type { Resume } from '../types';
@@ -41,7 +41,6 @@ export function Builder(): JSX.Element {
 
   return (
     <ModeContext.Provider value="interactive">
-    <PrintContext.Provider value={false}>
     <MediaProvider>
       <div className="app mode-interactive" data-app>
         <a href="#builder-content" className="skip-link">Skip to content</a>
@@ -88,7 +87,6 @@ export function Builder(): JSX.Element {
         <TerminalDock />
       </div>
     </MediaProvider>
-    </PrintContext.Provider>
     </ModeContext.Provider>
   );
 }

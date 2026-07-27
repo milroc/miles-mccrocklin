@@ -1,15 +1,16 @@
-// Hanging-indent bullet list. Each <li> wraps its text through KPText so
-// the resume gets Knuth-Plass paragraph breaking instead of the browser's
-// greedy line wrap. The .bullets class stays a global string (Reviews
-// references it via `:global(.bullets)`), so styles live in Bullets.css
-// rather than a hashed CSS module.
+// Hanging-indent bullet list, browser-wrapped. (A Knuth-Plass pipeline
+// once chose the line breaks here; it was removed after measurement
+// showed near-zero visible difference from native wrapping — see PR
+// #50.) The .bullets class stays a global string (Reviews references
+// it via `:global(.bullets)`), so styles live in Bullets.css rather
+// than a hashed CSS module.
 //
 // In edit mode (build-time gated) every <li> also renders a visibility
 // chip, note bubble, and EditableText wrapper. Bullets with visibility
 // "archived" still render here (faded) so the user can re-classify or
 // delete them.
 import { useContext } from 'react';
-import { KPText } from './KPText';
+import { RedactedText } from './RedactedText';
 import { ModeContext, visible, pickText, isArchived as isArchivedItem } from '../utils/mode';
 import {
   AddButton, EDIT_ENABLED, EditableText, NoteBubble, VisibilityChip, joinPath, useEdit,
@@ -56,18 +57,14 @@ export function Bullets({ items, path }: BulletsProps) {
               <li key={i} data-archived={archived || undefined}>
                 {editActive && itemPath ? (
                   <>
-                    {/* Bypass KP in edit mode — contentEditable inside
-                        KP's multi-span line wrappers fights the caret.
-                        Plain browser wrap is fine while authoring; KP
-                        returns on save+reload. */}
-                    <span className="kp-wrap">
+                    <span>
                       <EditableText path={textPath} value={text} />
                     </span>
                     <VisibilityChip path={itemPath} />
                     <NoteBubble path={itemPath} />
                   </>
                 ) : (
-                  <KPText text={text} />
+                  <RedactedText text={text} />
                 )}
               </li>
             );

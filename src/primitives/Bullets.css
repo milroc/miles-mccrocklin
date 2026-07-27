@@ -32,12 +32,6 @@ ul.bullets li::before {
   box-sizing: border-box;
 }
 
-/* Knuth-Plass wrapper inside <li>: a block child so we can measure the
-   actual column width via getBoundingClientRect and re-run KP layout when
-   the page shrinks below its design width. .kp-wrap is global (emitted
-   by KPText.tsx as a string class). */
-ul.bullets li > .kp-wrap { display: block; }
-
 /* 1-pager tightening. */
 .page.mode-1pager ul.bullets { margin: 2px 0 0; }
 .page.mode-1pager ul.bullets li {

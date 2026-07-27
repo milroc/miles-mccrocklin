@@ -4,14 +4,13 @@
 // line: the first achievement's text. The rest of the achievements
 // stay on /resume/.
 //
-// KPText is the render path because achievement text carries
+// RedactedText is the render path because achievement text carries
 // redaction glyphs (Ξ, α, β, σ, Σ, Ψ, Ω, Φ) that need the anchor +
 // tooltip treatment — plain divs would render them as literal
 // characters with no signal.
 
 import { Figure } from '../media/Figure';
-import { KPText } from '../primitives/KPText';
-import { KP_BODY_FONT } from '../utils/kp-font';
+import { RedactedText } from '../primitives/RedactedText';
 import { EraChrome } from '../entries/EraChrome';
 import type { Achievement, Era as EraData } from '../types';
 
@@ -34,7 +33,7 @@ export function EraGeneric({ era }: EraGenericProps): JSX.Element | null {
     <EraChrome focus={era.focus} period={era.period}>
       {lede && (
         <div className="entry-summary">
-          <KPText text={lede} font={KP_BODY_FONT} />
+          <RedactedText text={lede} />
         </div>
       )}
       {era.media && <Figure media={era.media} />}

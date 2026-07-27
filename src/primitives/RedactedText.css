@@ -1,15 +1,3 @@
-/* KPText output: per-line span emitted between <br>s.
-   `white-space: nowrap` is load-bearing — without it the browser would
-   break at any internal hyphen ("fact-checked" → "fact-" / "checked")
-   on top of KP's chosen breaks, doubling the wrap. KP already decided
-   exactly how this line should break; we want the browser to honor it.
-
-   `.kp-line` and its sibling `.kp-wrap` (whose `display: block` override
-   inside <li> lives in Bullets.css) stay as global string classes
-   because the contract spans two components — KPText emits them and
-   Bullets restyles them. Side-effect imported by KPText.tsx. */
-.kp-line { display: inline; white-space: nowrap; }
-
 /* Redacted metric variables — Greek letters that stand in for figures
    intentionally withheld out of respect for former-employer confidentiality.
    Italic + accent green signals "this is authored, not a typo." Each
@@ -52,9 +40,6 @@
   font-weight: 400;
   letter-spacing: 0.015em;
   line-height: 1.5;
-  /* `.kp-line` ancestor sets `white-space: nowrap` (load-bearing for KP).
-     The tooltip inherits it, which stops the message wrapping inside the
-     max-width box and causes horizontal overflow. Override explicitly. */
   white-space: normal;
   width: 260px;
   text-align: center;

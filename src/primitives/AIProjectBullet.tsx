@@ -1,10 +1,8 @@
-// One-line "<name> — <description>" bullet. The hanging indent is set to
-// the rendered width of the bold prefix so wrapped lines align cleanly
-// under the start of the description.
+// One-line "<name> — <description>" bullet. Wrapped lines align under
+// the bullet's hanging indent (standard list convention).
 import { useContext } from 'react';
-import { KPText } from './KPText';
+import { RedactedText } from './RedactedText';
 import { ModeContext, pickText, isArchived as isArchivedItem } from '../utils/mode';
-import { measureKPPrefix } from '../utils/kp-font';
 import {
   EDIT_ENABLED, EditableText, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
@@ -24,10 +22,6 @@ export function AIProjectBullet({ p, path }: AIProjectBulletProps) {
     typeof p.description === 'string' ? p.description : (p.description as RichText),
     mode,
   );
-  const indent = measureKPPrefix(
-    [[p.name, 'bold'], [' — ', 'normal']] as const,
-    mode,
-  );
   const archived = editActive && isArchivedItem(p);
   const descPath = path ? (typeof p.description === 'string'
     ? joinPath(path, 'description')
@@ -36,7 +30,7 @@ export function AIProjectBullet({ p, path }: AIProjectBulletProps) {
     <li data-archived={archived || undefined}>
       {editActive && path ? (
         <>
-          <span className="kp-wrap">
+          <span>
             <b style={{ fontWeight: 700 }}>
               <EditableText path={joinPath(path, 'name')} value={p.name} />
             </b>
@@ -47,11 +41,11 @@ export function AIProjectBullet({ p, path }: AIProjectBulletProps) {
           <NoteBubble path={path} />
         </>
       ) : (
-        <KPText
-          text={desc}
-          prefixNode={<><b style={{ fontWeight: 700 }}>{p.name}</b>{' — '}</>}
-          firstLineIndent={indent}
-        />
+        <>
+          <b style={{ fontWeight: 700 }}>{p.name}</b>
+          {' — '}
+          <RedactedText text={desc} />
+        </>
       )}
     </li>
   );

@@ -15,7 +15,7 @@ import { Community } from './entries/Community';
 import { RedactionNotes } from './primitives/RedactionNotes';
 import { SummaryGallery } from './media/SummaryGallery';
 import { MediaProvider } from './media/MediaProvider';
-import { ModeContext, PrintContext, visible, isArchived as isArchivedItem } from './utils/mode';
+import { ModeContext, visible, isArchived as isArchivedItem } from './utils/mode';
 import { EDIT_ENABLED, EditToolbar, HighLevelFeedback, useEdit } from './edit';
 import ME from '../data/me.json' with { type: 'json' };
 import type { Mode, Resume } from './types';
@@ -122,7 +122,6 @@ export function App() {
 
   return (
     <ModeContext.Provider value={mode}>
-    <PrintContext.Provider value={printing}>
     <MediaProvider>
     <div className={`app mode-${mode}`} data-app>
       <a href="#resume-content" className="skip-link">Skip to resume</a>
@@ -227,7 +226,6 @@ export function App() {
       {isInteractive && <TerminalDock />}
     </div>
     </MediaProvider>
-    </PrintContext.Provider>
     </ModeContext.Provider>
   );
 }
