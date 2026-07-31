@@ -24,6 +24,7 @@
         "@types/topojson-specification": "^1.0.5",
         "bun-types": "latest",
         "exifr": "^7.1.3",
+        "playwright-core": "^1.62.1",
         "sharp": "^0.34.5",
         "topojson-server": "^3.0.1",
         "topojson-simplify": "^3.0.3",
@@ -195,6 +196,8 @@
     "meshoptimizer": ["meshoptimizer@1.1.1", "", {}, "sha512-oRFNWJRDA/WTrVj7NWvqa5HqE1t9MYDj2VaWirQCzCCrAd2GHrqR/sQezCxiWATPNlKTcRaPRHPJwIRoPBAp5g=="],
 
     "object-assign": ["object-assign@4.1.1", "", {}, "sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg=="],
+
+    "playwright-core": ["playwright-core@1.62.1", "", { "bin": { "playwright-core": "cli.js" } }, "sha512-wPYSwEBJY9GHraISXqyqtx0na0LpO3XEX7jNDhntbex7tzUS7kLnZsOlFruFJB4Hi/rhDMjXGqHewDZ68nYZVw=="],
 
     "point-in-polygon-hao": ["point-in-polygon-hao@1.2.4", "", { "dependencies": { "robust-predicates": "^3.0.2" } }, "sha512-x2pcvXeqhRHlNRdhLs/tgFapAbSSe86wa/eqmj1G6pWftbEs5aVRJhRGM6FYSUERKu0PjekJzMq0gsI2XyiclQ=="],
 

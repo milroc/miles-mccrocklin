@@ -32,7 +32,7 @@ const MAX_LONG_EDGE = 2048;
 // motion blur — and lands at ~12–18 KB per JPEG, ~30× smaller than
 // the full-size file. /explorer/ keeps using the 2048-edge originals.
 const TILE_LONG_EDGE = 384;
-const TILE_QUALITY = 70;
+const TILE_QUALITY = 78;
 const TILE_SUFFIX = '-tile.jpg';
 const tilePathFor = (destPath: string): string =>
   destPath.replace(/\.jpg$/, TILE_SUFFIX);
@@ -43,7 +43,7 @@ const tilePathFor = (destPath: string): string =>
 // still loaded progressively after geometry. /explorer/ keeps the
 // 2048-edge originals.
 const MID_LONG_EDGE = 768;
-const MID_QUALITY = 75;
+const MID_QUALITY = 80;
 const MID_SUFFIX = '-mid.jpg';
 const midPathFor = (destPath: string): string =>
   destPath.replace(/\.jpg$/, MID_SUFFIX);
@@ -692,14 +692,25 @@ async function resizeToTexture(srcPath: string, destPath: string): Promise<void>
     .resize({ width: MAX_LONG_EDGE, height: MAX_LONG_EDGE, fit: 'inside', withoutEnlargement: true })
     .jpeg({ quality: 85, mozjpeg: true })
     .toFile(destPath);
+  // Tile/mid variants are heavily downscaled, and raw lanczos output
+  // reads soft as a globe texture: the downscale averages away edge
+  // acutance. A mild unsharp pass after resize restores it, and
+  // fastShrinkOnLoad off avoids the shrink-on-decode fast path's
+  // extra softening. Sharpened output carries more high-frequency
+  // detail, so these encode ~35-45% larger than the unsharpened
+  // variants did — that's the acutance being kept, not waste.
+  // (4:4:4 chroma was tried and rejected: 2-3× the bytes for no
+  // visible gain on photographic content at texture scale.)
   // Splash-tile variant — see TILE_LONG_EDGE comment near the top.
   await sharp(srcPath)
-    .resize({ width: TILE_LONG_EDGE, height: TILE_LONG_EDGE, fit: 'inside', withoutEnlargement: true })
+    .resize({ width: TILE_LONG_EDGE, height: TILE_LONG_EDGE, fit: 'inside', withoutEnlargement: true, fastShrinkOnLoad: false })
+    .sharpen({ sigma: 0.9 })
     .jpeg({ quality: TILE_QUALITY, mozjpeg: true })
     .toFile(tilePathFor(destPath));
   // Splash-mid variant — see MID_LONG_EDGE comment near the top.
   await sharp(srcPath)
-    .resize({ width: MID_LONG_EDGE, height: MID_LONG_EDGE, fit: 'inside', withoutEnlargement: true })
+    .resize({ width: MID_LONG_EDGE, height: MID_LONG_EDGE, fit: 'inside', withoutEnlargement: true, fastShrinkOnLoad: false })
+    .sharpen({ sigma: 0.65 })
     .jpeg({ quality: MID_QUALITY, mozjpeg: true })
     .toFile(midPathFor(destPath));
 }
