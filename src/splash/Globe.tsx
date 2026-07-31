@@ -397,13 +397,60 @@ interface GlobeAssets {
   // bundle and topology fetch on the critical path. Returns a promise
   // that resolves when every atlas entry has been processed (loaded,
   // errored, or skipped). Idempotent — repeat calls return the
-  // in-flight promise.
-  loadPhotos: () => Promise<void>;
+  // in-flight promise. Options: `getRenderer` lets the pump pre-upload
+  // each texture (renderer.initTexture) inside a measured frame budget
+  // instead of letting the next render absorb the cost; `isBusy`
+  // pauses the pump (e.g. mid-drag); `camera` orders loads
+  // nearest-to-camera-first.
+  loadPhotos: (opts?: {
+    getRenderer?: () => THREE_T.WebGLRenderer | null;
+    isBusy?: () => boolean;
+    camera?: { lat: number; lng: number };
+  }) => Promise<void>;
+  // Explorer-only lazy full-res swaps (no-ops when the initial drip
+  // already loaded the best variant). Upgrades countries whose
+  // projected on-screen size exceeds the mid variant's resolution,
+  // given the sphere's current apparent diameter in physical px.
+  upgradePhotosForView: (lat: number, lng: number, spherePxNow: number, maxUpgrades: number) => void;
+}
+
+// Bbox summary of a country polygon: largest angular span (degrees)
+// plus the bbox centroid. The span drives the splash texture-variant
+// pick — a country's on-screen size scales with its angular extent, so
+// small landmasses can take the 384 tile without visible softening.
+// The centroid orders photo loads nearest-to-camera-first.
+// Antimeridian-wrapping bboxes (Russia) inflate toward 360 — harmless,
+// they clamp into the "big" bucket and their centroid is only used for
+// load ordering.
+function bboxOf(geometry: object): { extentDeg: number; lat: number; lng: number } {
+  const g = geometry as
+    | { type: 'Polygon'; coordinates: number[][][] }
+    | { type: 'MultiPolygon'; coordinates: number[][][][] };
+  let minLng = 180, maxLng = -180, minLat = 90, maxLat = -90;
+  const visit = (ring: number[][]): void => {
+    for (const [lng, lat] of ring) {
+      if (lng < minLng) minLng = lng;
+      if (lng > maxLng) maxLng = lng;
+      if (lat < minLat) minLat = lat;
+      if (lat > maxLat) maxLat = lat;
+    }
+  };
+  if (g.type === 'Polygon') visit(g.coordinates[0] ?? []);
+  else for (const poly of g.coordinates) visit(poly[0] ?? []);
+  return {
+    extentDeg: Math.max(maxLng - minLng, maxLat - minLat, 0),
+    lat: (minLat + maxLat) / 2,
+    lng: (minLng + maxLng) / 2,
+  };
 }
 
 // Load the dynamic imports + topology + photo atlas + per-country
 // materials that mountGlobe needs. Called once per page mount.
-async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
+// spherePx: the globe sphere's projected diameter in physical pixels
+// (CSS px × device pixel ratio), measured by mountGlobe. Sizes the
+// per-country texture pick on the splash; 0 means "unknown" and falls
+// back to the mid variant for everything.
+async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<GlobeAssets> {
   return await (async () => {
     // Six independent imports run in parallel (async-parallel rule):
     // overlapping these network fetches saves ~1s on cold cache vs.
@@ -478,6 +525,15 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
     // HTML overlays. Pre-warm those via Image() so the first paint of
     // the bubble overlay isn't a blank circle.
     const textureLoader = new THREE.TextureLoader();
+    // Prefer ImageBitmapLoader when the browser has createImageBitmap:
+    // the JPEG decode happens off the main thread, so the upload pump
+    // only pays the texImage2D cost, not decode + upload in one frame.
+    // imageOrientation: 'flipY' bakes the vertical flip into the bitmap
+    // itself — three.js ignores UNPACK_FLIP_Y_WEBGL for ImageBitmap
+    // sources, so the texture's flipY must stay false on that path.
+    const bitmapLoader = typeof createImageBitmap !== 'undefined'
+      ? new THREE.ImageBitmapLoader().setOptions({ imageOrientation: 'flipY', premultiplyAlpha: 'none' })
+      : null;
     const photoMaterials = new Map<string, THREE_T.Material>();
     // Tracked so mountGlobe's rAF can update each shader's uTime uniform
     // for the shimmer animation. ShaderMaterials only — MeshBasicMaterials
@@ -593,19 +649,51 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
     // compete with the JS bundle and topology fetch on the
     // critical path.
     //
-    // The splash globe renders near viewport height (2026-07), where
-    // big countries map their photo across 300-400 px — so prefer the
-    // 768-edge `image_mid` variant (~40-60 KB each, still ~7× smaller
-    // than the 2048-edge originals), falling back to the 384 tile.
-    // /explorer/ uses the full-res `image`.
-    const photoSrcOf = (entry: AtlasEntry): string =>
-      `/${(!fullscreen && (entry.image_mid ?? entry.image_tile)) || entry.image}`;
+    // Splash texture variant, sized per country by projected on-screen
+    // pixels. Big landmasses (Canada, Russia, Brazil) map their photo
+    // across 300-400+ px on the desktop hero and need the 768-edge
+    // `image_mid`; small countries render well under the 384 tile's
+    // resolution, and on mobile (sphere ≈ 300 CSS px) nearly everything
+    // does — so the same pixel math serves mobile lighter automatically.
+    // The pick caps at `image_mid`: the 2048 originals never load in
+    // the initial drip. /explorer/ starts from `image_mid` too and
+    // upgrades individual countries to the 2048 original on demand
+    // (click / zoom proximity — see upgradePhoto), so its zoomed-in
+    // fidelity is unchanged while its load window stays smooth.
+    const TILE_LONG_EDGE = 384; // matches scripts/build-photo-atlas.ts
+    const MID_LONG_EDGE = 768;  // ditto
+    const photoSrcOf = (entry: AtlasEntry, extentDeg: number): string => {
+      if (fullscreen) return `/${entry.image_mid ?? entry.image}`;
+      // Projected width ≈ chord of the country's angular extent on the
+      // sphere silhouette. Take the tile only when it stays ≥1.25×
+      // oversampled at that size — a texture stretched past its native
+      // resolution reads soft, and mipmapped sampling looks crisper
+      // with supersampling headroom than at 1:1.
+      const projectedPx = spherePx * Math.sin((Math.min(extentDeg, 90) * Math.PI) / 360);
+      const wantsTile = spherePx > 0 && projectedPx * 1.25 <= TILE_LONG_EDGE;
+      const pick = wantsTile
+        ? (entry.image_tile ?? entry.image_mid)
+        : (entry.image_mid ?? entry.image_tile);
+      return `/${pick ?? entry.image}`;
+    };
     interface PhotoLoadJob {
+      country: string;
       src: string;
+      // 2048-edge original, set only when it differs from `src`
+      // (i.e. fullscreen with a mid variant available). Loaded lazily
+      // by upgradePhoto.
+      fullSrc?: string;
       mat: THREE_T.ShaderMaterial;
       isFlat: boolean;
       flatBboxHalfWidth: number;
       flatBboxHalfHeight: number;
+      // Country anchor for nearest-to-camera-first load ordering and
+      // visibility gating of upgrades.
+      lat: number;
+      lng: number;
+      // Largest angular bbox span — drives the projected-pixel test
+      // that decides when the mid variant stops being enough.
+      extentDeg: number;
     }
     const photoLoadJobs: PhotoLoadJob[] = [];
     // Counter for per-country polygonOffset bias. Every polygon (photo
@@ -625,7 +713,8 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
         // small to be on the critical path.
         continue;
       }
-      if (!countries.find((f) => f.properties.name === entry.country)) {
+      const countryFeature = countries.find((f) => f.properties.name === entry.country);
+      if (!countryFeature) {
         console.warn(`[Globe] no GeoJSON match for country "${entry.country}"`);
         continue;
       }
@@ -760,12 +849,22 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
 
       photoMaterials.set(entry.country, mat);
       shimmerMaterials.push(mat);
+      const bbox = bboxOf(countryFeature.geometry);
+      const anchor = 'lat' in entry && 'lng' in entry
+        ? (entry as AtlasEntry & { lat: number; lng: number })
+        : bbox;
+      const src = photoSrcOf(entry, bbox.extentDeg);
       photoLoadJobs.push({
-        src: photoSrcOf(entry),
+        country: entry.country,
+        src,
+        fullSrc: fullscreen && src !== `/${entry.image}` ? `/${entry.image}` : undefined,
         mat,
         isFlat,
         flatBboxHalfWidth,
         flatBboxHalfHeight,
+        lat: anchor.lat,
+        lng: anchor.lng,
+        extentDeg: bbox.extentDeg,
       });
     }
 
@@ -776,87 +875,227 @@ async function loadGlobeAssets(fullscreen: boolean): Promise<GlobeAssets> {
     // progressively while the user is already looking at geometry.
     // Texture-upload drip: when each JPEG finishes downloading +
     // decoding, we queue it for assignment instead of immediately
-    // mutating `mat.uniforms.uPhoto.value`. A rAF loop pulls one
-    // queued texture per frame and does the assignment, which is
-    // what triggers the synchronous `texImage2D` upload to the GPU.
+    // mutating `mat.uniforms.uPhoto.value`. A rAF pump drains the
+    // queue under an explicit per-frame budget: renderer.initTexture()
+    // performs the texImage2D + mipmap upload right there (instead of
+    // hiding it in the next render), so the pump can measure the
+    // elapsed time and stop pulling jobs once the budget is spent.
     // Effect: instead of a single ~1.3 s burst of 49 uploads (during
-    // which the autoRotate animation freezes), the cost is amortized
-    // at ~25 ms per frame, one upload per ~16 ms tick. Animation
-    // never pauses; photos pop in over ~1 s, distributed.
-    let photosReadyPromise: Promise<void> | null = null;
-    const loadPhotos = (): Promise<void> => {
-      if (photosReadyPromise) return photosReadyPromise;
-      interface Pending {
-        tex: THREE_T.Texture;
-        mat: THREE_T.ShaderMaterial;
-        isFlat: boolean;
-        flatBboxHalfWidth: number;
-        flatBboxHalfHeight: number;
-      }
-      const queue: Pending[] = [];
-      let pumpScheduled = false;
-      const pumpOne = (): void => {
-        pumpScheduled = false;
-        const job = queue.shift();
-        if (!job) {
-          // Nothing decoded yet; wait for the next decode to schedule us.
-          return;
-        }
+    // which the autoRotate animation freezes), uploads spread across
+    // frames without ever blowing an individual frame's budget.
+    // Shared texture pipeline. The pump machinery lives at assets
+    // scope (not inside loadPhotos) so the /explorer/ on-demand
+    // full-res upgrade path reuses the same queue, frame budget, and
+    // drag-pause behavior as the initial drip.
+    let pumpOpts: {
+      getRenderer?: () => THREE_T.WebGLRenderer | null;
+      isBusy?: () => boolean;
+    } = {};
+    interface Pending {
+      tex: THREE_T.Texture;
+      mat: THREE_T.ShaderMaterial;
+      isFlat: boolean;
+      flatBboxHalfWidth: number;
+      flatBboxHalfHeight: number;
+    }
+    const queue: Pending[] = [];
+    let pumpScheduled = false;
+    // Half a 60 Hz frame: leaves headroom for three-globe's own
+    // render work in the same tick. 768px textures fit 1-2 uploads.
+    const UPLOAD_BUDGET_MS = 6;
+    const applyJob = (job: Pending): void => {
         job.mat.uniforms.uPhoto.value = job.tex;
-        job.mat.uniforms.uHasPhoto.value = 1.0;
-        const img = job.tex.image as { width?: number; height?: number } | undefined;
-        if (job.isFlat && img && img.width && img.height) {
-          // Aspect-cover: photo fills the country's bbox while
-          // preserving its own aspect ratio. The dimension that
-          // would otherwise leave letterbox bands is expanded
-          // beyond the bbox; the polygon clips the overflow so
-          // visible pixels are always inside the photo.
-          const photoAspect = img.width / img.height;
-          const bboxAspect = job.flatBboxHalfWidth / job.flatBboxHalfHeight;
-          if (photoAspect > bboxAspect) {
-            job.mat.uniforms.uHalfHeight.value = job.flatBboxHalfHeight;
-            job.mat.uniforms.uHalfWidth.value = job.flatBboxHalfHeight * photoAspect;
-          } else {
-            job.mat.uniforms.uHalfWidth.value = job.flatBboxHalfWidth;
-            job.mat.uniforms.uHalfHeight.value = job.flatBboxHalfWidth / photoAspect;
-          }
+      job.mat.uniforms.uHasPhoto.value = 1.0;
+      const img = job.tex.image as { width?: number; height?: number } | undefined;
+      if (job.isFlat && img && img.width && img.height) {
+        // Aspect-cover: photo fills the country's bbox while
+        // preserving its own aspect ratio. The dimension that
+        // would otherwise leave letterbox bands is expanded
+        // beyond the bbox; the polygon clips the overflow so
+        // visible pixels are always inside the photo.
+        const photoAspect = img.width / img.height;
+        const bboxAspect = job.flatBboxHalfWidth / job.flatBboxHalfHeight;
+        if (photoAspect > bboxAspect) {
+          job.mat.uniforms.uHalfHeight.value = job.flatBboxHalfHeight;
+          job.mat.uniforms.uHalfWidth.value = job.flatBboxHalfHeight * photoAspect;
+        } else {
+          job.mat.uniforms.uHalfWidth.value = job.flatBboxHalfWidth;
+          job.mat.uniforms.uHalfHeight.value = job.flatBboxHalfWidth / photoAspect;
         }
-        if (queue.length > 0) schedulePump();
-      };
-      const schedulePump = (): void => {
-        if (pumpScheduled) return;
-        pumpScheduled = true;
-        requestAnimationFrame(pumpOne);
-      };
+      }
+    };
+    const pumpOne = (): void => {
+      pumpScheduled = false;
+      if (pumpOpts.isBusy?.()) {
+        // User is dragging — retry next frame, upload nothing now.
+        schedulePump();
+        return;
+      }
+      const renderer = pumpOpts.getRenderer?.() ?? null;
+      const start = performance.now();
+      let job = queue.shift();
+      while (job) {
+        // Upload now (decode already happened off-thread for the
+        // ImageBitmap path), then flip the uniforms. Without a
+        // renderer the assignment still works — the next render
+        // just absorbs the upload like the old path did.
+        renderer?.initTexture(job.tex);
+        applyJob(job);
+        if (performance.now() - start >= UPLOAD_BUDGET_MS) break;
+        job = queue.shift();
+      }
+      if (queue.length > 0) schedulePump();
+    };
+    const schedulePump = (): void => {
+      if (pumpScheduled) return;
+      pumpScheduled = true;
+      requestAnimationFrame(pumpOne);
+    };
 
-      const jobPromises = photoLoadJobs.map(
-        ({ src, mat, isFlat, flatBboxHalfWidth, flatBboxHalfHeight }) =>
-          new Promise<void>((resolve) => {
-            textureLoader.load(
-              src,
-              (tex) => {
-                tex.colorSpace = THREE.SRGBColorSpace;
-                tex.anisotropy = 4;
-                tex.flipY = true;
-                tex.wrapS = THREE.RepeatWrapping;
-                tex.wrapT = THREE.RepeatWrapping;
-                queue.push({ tex, mat, isFlat, flatBboxHalfWidth, flatBboxHalfHeight });
-                schedulePump();
-                resolve();
-              },
-              undefined,
-              () => {
-                console.warn(`[Globe] failed to load photo texture: ${src}`);
-                resolve();
-              },
-            );
-          }),
+    // Fetch + decode one photo and hand it to the upload pump. `src`
+    // is a parameter (not read off the job) so the same job can load
+    // its mid variant during the drip and its full-res variant later.
+    const loadOne = (
+      { mat, isFlat, flatBboxHalfWidth, flatBboxHalfHeight }: PhotoLoadJob,
+      src: string,
+    ): Promise<void> =>
+      new Promise<void>((resolve) => {
+        const enqueue = (tex: THREE_T.Texture): void => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          // 8-tap anisotropic filtering: the sphere's surface is
+          // oblique to the camera almost everywhere, and 4 taps
+          // visibly blurs photo detail toward the limb.
+          tex.anisotropy = 8;
+          tex.wrapS = THREE.RepeatWrapping;
+          tex.wrapT = THREE.RepeatWrapping;
+          queue.push({ tex, mat, isFlat, flatBboxHalfWidth, flatBboxHalfHeight });
+          schedulePump();
+          resolve();
+        };
+        const fail = (): void => {
+          console.warn(`[Globe] failed to load photo texture: ${src}`);
+          resolve();
+        };
+        if (bitmapLoader) {
+          bitmapLoader.load(
+            src,
+            (bitmap) => {
+              const tex = new THREE.Texture(bitmap);
+              // Flip is baked into the bitmap via imageOrientation;
+              // flipY must stay false here (see bitmapLoader above).
+              tex.flipY = false;
+              tex.needsUpdate = true;
+              enqueue(tex);
+            },
+            undefined,
+            fail,
+          );
+        } else {
+          textureLoader.load(
+            src,
+            (tex) => {
+              tex.flipY = true;
+              enqueue(tex);
+            },
+            undefined,
+            fail,
+          );
+        }
+      });
+
+    // On-demand full-res upgrades (explorer). The initial drip loads
+    // the cheap 768 mids so the load window stays smooth even on big
+    // canvases; each country's 2048 original swaps in only once its
+    // projected on-screen size outgrows what the mid can resolve —
+    // the same landmass-size math the splash uses for its variant
+    // pick, evaluated continuously against the live camera. Big
+    // countries upgrade even at the resting pose on large monitors;
+    // small countries never fetch the original at all (a country
+    // spanning 4° of arc never exceeds 768 px on screen at any sane
+    // zoom). Idempotent per country.
+    const upgradedCountries = new Set<string>();
+    const upgradePhoto = (job: PhotoLoadJob): void => {
+      if (!job.fullSrc || upgradedCountries.has(job.country)) return;
+      upgradedCountries.add(job.country);
+      void loadOne(job, job.fullSrc);
+    };
+    const toRad = Math.PI / 180;
+    const centralAngleDeg = (
+      a: { lat: number; lng: number },
+      b: { lat: number; lng: number },
+    ): number =>
+      Math.acos(Math.min(1, Math.max(-1,
+        Math.sin(a.lat * toRad) * Math.sin(b.lat * toRad) +
+        Math.cos(a.lat * toRad) * Math.cos(b.lat * toRad) *
+        Math.cos((a.lng - b.lng) * toRad)))) / toRad;
+    // Upgrade whatever the mid variant can no longer serve, given the
+    // sphere's current apparent diameter in physical pixels.
+    // 0.8 slack upgrades slightly before the crossover so the swap
+    // lands ahead of the softness becoming visible. maxUpgrades paces
+    // the trickle — each 2048 upload is a ~1-frame cost, so callers
+    // meter a couple per check instead of bursting.
+    const VISIBLE_HEMISPHERE_DEG = 60;
+    const upgradePhotosForView = (
+      lat: number,
+      lng: number,
+      spherePxNow: number,
+      maxUpgrades: number,
+    ): void => {
+      let fired = 0;
+      for (const job of photoLoadJobs) {
+        if (fired >= maxUpgrades) return;
+        if (!job.fullSrc || upgradedCountries.has(job.country)) continue;
+        if (centralAngleDeg({ lat, lng }, job) > VISIBLE_HEMISPHERE_DEG) continue;
+        const projectedPx = spherePxNow * Math.sin((Math.min(job.extentDeg, 90) * Math.PI) / 360);
+        if (projectedPx > MID_LONG_EDGE * 0.8) {
+          upgradePhoto(job);
+          fired++;
+        }
+      }
+    };
+
+    let photosReadyPromise: Promise<void> | null = null;
+    const loadPhotos = (opts: {
+      getRenderer?: () => THREE_T.WebGLRenderer | null;
+      // When true, the pump idles this frame (e.g. mid-drag) so
+      // interaction keeps the full frame budget.
+      isBusy?: () => boolean;
+      // Initial camera anchor; photo loads sort nearest-first so the
+      // visible hemisphere fills in before the far side.
+      camera?: { lat: number; lng: number };
+    } = {}): Promise<void> => {
+      if (photosReadyPromise) return photosReadyPromise;
+      pumpOpts = { getRenderer: opts.getRenderer, isBusy: opts.isBusy };
+      const camera = opts.camera;
+      // Nearest-to-camera-first: the countries the user is looking at
+      // fill in first; the far side decodes while hidden.
+      const ordered = camera
+        ? [...photoLoadJobs].sort((a, b) => centralAngleDeg(camera, a) - centralAngleDeg(camera, b))
+        : photoLoadJobs;
+
+      // Bounded concurrency. Firing all ~49 fetch+decodes at once made
+      // completions arrive in bursts that contended with the render
+      // loop (worst on /explorer/'s 2048-edge JPEGs: decode workers
+      // saturate the cores while the pump uploads). A small worker
+      // pool keeps the network busy but spreads decode completions out
+      // so the pump sees a steady trickle.
+      const CONCURRENT_LOADS = 4;
+      let nextJob = 0;
+      const workers = Array.from(
+        { length: Math.min(CONCURRENT_LOADS, ordered.length) },
+        async () => {
+          while (nextJob < ordered.length) {
+            const job = ordered[nextJob];
+            nextJob += 1;
+            await loadOne(job, job.src);
+          }
+        },
       );
-      photosReadyPromise = Promise.all(jobPromises).then(() => {});
+      photosReadyPromise = Promise.all(workers).then(() => {});
       return photosReadyPromise;
     };
 
-    return { Globe, createRoot, React, THREE, countries, atlas, photoMaterials, loadPhotos, shimmerMaterials };
+    return { Globe, createRoot, React, THREE, countries, atlas, photoMaterials, loadPhotos, shimmerMaterials, upgradePhotosForView };
   })();
 }
 
@@ -888,8 +1127,18 @@ export async function mountGlobe(
   // Runs once per mount — JS bundle plus a topology fetch (~15 KB gz
   // tile for splash, ~50 KB gz full for /explorer/) plus the topojson
   // decode (~10–30 ms on main thread).
-  const assets = await loadGlobeAssets(fullscreen);
-  const { Globe, createRoot, React, THREE, countries, atlas, photoMaterials, loadPhotos, shimmerMaterials } = assets;
+  // Sphere size in physical px for the texture-variant pick: the tile
+  // canvas is 1.25× the mount (.globeMount inset -12.5%) and the
+  // sphere subtends ~71.6% of the canvas at the resting altitude (see
+  // the .wireLayer inset derivation in Splash.module.css — change the
+  // altitude or oversize there, re-derive here).
+  const mountRect = mountEl.getBoundingClientRect();
+  const mountCssPx = fullscreen
+    ? Math.max(mountRect.width, mountRect.height)
+    : Math.min(mountRect.width, mountRect.height) || 240;
+  const spherePx = mountCssPx * 1.25 * 0.716 * Math.min(2, window.devicePixelRatio || 1);
+  const assets = await loadGlobeAssets(fullscreen, spherePx);
+  const { Globe, createRoot, React, THREE, countries, atlas, photoMaterials, loadPhotos, shimmerMaterials, upgradePhotosForView } = assets;
 
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1298,12 +1547,21 @@ export async function mountGlobe(
       });
     }
     const img = document.createElement('img');
-    // Splash bubbles stay tiny (~22 px), so the 384-edge tile variant
-    // is still right for them; /explorer/ renders bubbles full-res.
-    const tileSrc = (!fullscreen && entry.image_tile) ? entry.image_tile : entry.image;
+    // Bubbles render at 11-50 CSS px in both modes (see BUBBLE_*_PX),
+    // so the 384-edge tile variant covers them with room to spare even
+    // on retina. The full-res original used to load here on /explorer/
+    // — a 2048-edge decode + raster per microstate for a thumbnail;
+    // the detail panel loads the full-res image itself when opened.
+    const tileSrc = entry.image_tile ?? entry.image_mid ?? entry.image;
     img.src = `/${tileSrc}`;
     img.alt = entry.country;
-    img.loading = 'lazy';
+    // Eager, not lazy: lazy-loading made each bubble fetch + decode +
+    // rasterize the moment rotation carried it into the viewport — a
+    // one-frame hitch mid-spin, repeating as each microstate came
+    // around. The tiles are ~15 KB each (a handful total), so loading
+    // them all upfront is cheaper than five deferred hiccups;
+    // fetchPriority stays low so they don't compete with anything.
+    img.loading = 'eager';
     img.decoding = 'async';
     // Photos aren't critical-path: deprioritize behind any future
     // user-initiated nav. Modern Chrome/Safari honor this; older
@@ -1449,6 +1707,25 @@ export async function mountGlobe(
   // uniforms (no re-render needed — three-globe's autoRotate frame
   // loop picks the new uniforms up on the next tick).
 
+  // Batched polygon feeding. Handing three-globe all ~241 features
+  // (791 single polygons at 50m resolution) in one shot triangulates
+  // every ConicPolygonGeometry in a single synchronous pass — a long
+  // main-thread stall right at first paint. three-globe's data join
+  // keys features by object identity, so feeding a growing prefix of
+  // the same feature array each frame builds only the NEW meshes and
+  // skips geometry rebuilds for the ones already in the scene. Photo
+  // countries sort first so batch 1 carries the visually meaningful
+  // landmasses; the remaining small countries stream in over the next
+  // few frames, behind the loader crossfade.
+  const orderedCountries = [...countries].sort(
+    (a, b) =>
+      Number(photoMaterials.has(b.properties.name)) -
+      Number(photoMaterials.has(a.properties.name)),
+  );
+  const POLYGON_BATCH_INITIAL = 60;
+  let polygonBatchSize = 48;
+  let polygonFeed: CountryFeature[] = orderedCountries.slice(0, POLYGON_BATCH_INITIAL);
+
   // animateIn deliberately stays off. Three-globe's animateIn=true
   // animates the camera distance from MAX_DISTANCE down to the target
   // altitude over ~1500ms — the scene is fully rendered the whole
@@ -1480,8 +1757,13 @@ export async function mountGlobe(
         // photoMaterials is populated synchronously in loadGlobeAssets with
         // shimmer-state ShaderMaterials, then mutated in place as each
         // texture lands — no polygonsData invalidation needed.
-        polygonsData: countries,
+        polygonsData: polygonFeed,
         polygonAltitude: POLYGON_ALTITUDE,
+        // three-globe's default is 1000ms — every entering polygon
+        // gets a Tween allocated and ticked for a second. With
+        // animateIn off and a constant altitude there's nothing to
+        // animate; 0 takes the direct-apply branch.
+        polygonsTransitionDuration: 0,
         polygonCapMaterial: polygonCapMaterialFn,
         polygonCapColor: polygonCapColorFn,
         polygonSideColor: polygonSideColorFn,
@@ -1543,11 +1825,35 @@ export async function mountGlobe(
   let lastRenderAt = performance.now();
   let resizeTimer: ReturnType<typeof setTimeout> | null = null;
 
-  // Initial paint — sphere + country polygons (every photo-eligible
-  // country renders its shader's shimmer state immediately) + bubble
-  // overlays. Arcs withheld; they fire once every photo has finished
-  // loading so the journey timeline lands as one closing beat.
+  // Initial paint — sphere + batch 1 of country polygons (every
+  // photo-eligible country renders its shader's shimmer state
+  // immediately) + bubble overlays. Arcs withheld; they fire once
+  // every photo has finished loading so the journey timeline lands as
+  // one closing beat.
   renderGlobe();
+
+  // Stream the remaining polygons in, one batch per frame. The frame
+  // timestamp doubles as a governor: a long gap since the previous
+  // feed means the last batch blew the frame budget, so halve the
+  // batch before pulling more triangulation onto the main thread.
+  let polygonFeedRaf: number | null = null;
+  let lastFeedTs = 0;
+  const feedPolygons = (ts: number): void => {
+    polygonFeedRaf = null;
+    if (lastFeedTs && ts - lastFeedTs > 40) {
+      polygonBatchSize = Math.max(12, Math.floor(polygonBatchSize / 2));
+    }
+    lastFeedTs = ts;
+    polygonFeed = orderedCountries.slice(0, polygonFeed.length + polygonBatchSize);
+    renderGlobe();
+    lastRenderAt = performance.now();
+    if (polygonFeed.length < orderedCountries.length) {
+      polygonFeedRaf = requestAnimationFrame(feedPolygons);
+    }
+  };
+  if (polygonFeed.length < orderedCountries.length) {
+    polygonFeedRaf = requestAnimationFrame(feedPolygons);
+  }
 
   // Cross-fade WebGL onto the pre-mount loader (loading wireframe or
   // SSR'd static globe) once real polygon content has been added to
@@ -1578,11 +1884,41 @@ export async function mountGlobe(
       }
     }, 220);
   };
+  // Reveal once (a) the scene has real content, (b) every polygon
+  // batch has been fed, and (c) the shader programs have compiled.
+  // compileAsync uses KHR_parallel_shader_compile where available, so
+  // compilation happens off the driver thread while the pre-mount
+  // loader is still showing — the crossfade then lands on clean
+  // frames instead of right on top of the compile stall. Batch 1
+  // contains every photo country, so both custom programs are in the
+  // scene by the time we get here.
+  let compileKicked = false;
   const tickPaint = (): void => {
-    const inst = globeRef.current as (typeof globeRef.current & { scene?: () => { children: unknown[] } }) | null;
+    const inst = globeRef.current as (typeof globeRef.current & {
+      camera?: () => THREE_T.Camera;
+      renderer?: () => THREE_T.WebGLRenderer;
+    }) | null;
     let sceneCount = -1;
     try { sceneCount = inst?.scene?.()?.children?.length ?? -1; } catch { /* scene not yet available */ }
-    if (sceneCount > 1) revealRealGlobe();
+    if (sceneCount > 1 && polygonFeed.length >= orderedCountries.length && !compileKicked) {
+      compileKicked = true;
+      const renderer = inst?.renderer?.();
+      const scene = inst?.scene?.();
+      const camera = inst?.camera?.();
+      if (renderer?.compileAsync && scene && camera) {
+        // Belt for slow/broken drivers: don't hold the reveal past
+        // 1.5s even if compileAsync never settles.
+        const compileTimeout = setTimeout(revealRealGlobe, 1500);
+        void renderer.compileAsync(scene, camera)
+          .catch(() => { /* compile errors surface at render time anyway */ })
+          .then(() => {
+            clearTimeout(compileTimeout);
+            revealRealGlobe();
+          });
+      } else {
+        revealRealGlobe();
+      }
+    }
     if (!realPaintRevealed) requestAnimationFrame(tickPaint);
   };
   requestAnimationFrame(tickPaint);
@@ -1622,6 +1958,14 @@ export async function mountGlobe(
   // itself is pointer-events: none so the link stays clickable.
   const AUTOROTATE_BASE_SPEED = 0.4;
   const AUTOROTATE_HOVER_SPEED = 1.15;
+  // Projected-pixel texture upgrades (see upgradePhotosForView). The
+  // sphere's apparent diameter as a fraction of the canvas height:
+  // tan(asin(1/(1+altitude))) / tan(fov/2), with three-globe's default
+  // 50° vertical fov. Same derivation as the .wireLayer inset math in
+  // Splash.module.css.
+  const FOV_HALF_TAN = Math.tan((25 * Math.PI) / 180);
+  let lastUpgradeCheck = 0;
+  let lastBubbleScale = '';
   let autoRotateSpeedTarget = AUTOROTATE_BASE_SPEED;
   const heroHoverEl: HTMLElement | null =
     !fullscreen && !reduceMotion ? mountEl.closest('a') : null;
@@ -1643,7 +1987,34 @@ export async function mountGlobe(
       const altitude = Math.max(0.05, distance / GLOBE_RADIUS - 1);
       const rawPx = BUBBLE_BASE_PX * (BUBBLE_REFERENCE_ALTITUDE / altitude);
       const sizedPx = Math.min(BUBBLE_MAX_PX, Math.max(BUBBLE_MIN_PX, rawPx));
-      document.documentElement.style.setProperty('--bubble-scale', (sizedPx / BUBBLE_BASE_PX).toFixed(3));
+      // Only touch the CSS variable when the value actually changes —
+      // writing it every frame invalidates style on the document root
+      // even when nothing moved, and at rest the altitude is constant.
+      const bubbleScale = (sizedPx / BUBBLE_BASE_PX).toFixed(3);
+      if (bubbleScale !== lastBubbleScale) {
+        lastBubbleScale = bubbleScale;
+        document.documentElement.style.setProperty('--bubble-scale', bubbleScale);
+      }
+      // Full-res upgrades (explorer): whenever a visible country's
+      // projected size outgrows its 768 mid at the current camera
+      // altitude and canvas size, swap in the 2048 original. Big
+      // countries cross the threshold at the resting pose on large
+      // monitors; small ones never do. Throttled to twice a second
+      // and metered to 2 swaps per check so the uploads trickle
+      // through the pump instead of bursting.
+      if (fullscreen && performance.now() - lastUpgradeCheck > 500) {
+        lastUpgradeCheck = performance.now();
+        const pov = (inst as unknown as {
+          pointOfView: () => { lat?: number; lng?: number };
+        }).pointOfView();
+        if (typeof pov?.lat === 'number' && typeof pov?.lng === 'number') {
+          const renderer = (inst as unknown as { renderer?: () => THREE_T.WebGLRenderer }).renderer?.();
+          const ratio = renderer?.getPixelRatio() ?? Math.min(2, window.devicePixelRatio || 1);
+          const sphereFraction = Math.tan(Math.asin(1 / (1 + altitude))) / FOV_HALF_TAN;
+          const spherePxNow = height * ratio * sphereFraction;
+          upgradePhotosForView(pov.lat, pov.lng, spherePxNow, 2);
+        }
+      }
     }
     if (controls && controls.autoRotate) {
       controls.autoRotateSpeed +=
@@ -1665,7 +2036,18 @@ export async function mountGlobe(
   let cancelled = false;
   requestAnimationFrame(() => {
     if (cancelled) return;
-    void loadPhotos();
+    void loadPhotos({
+      getRenderer: () => {
+        const inst = globeRef.current as (typeof globeRef.current & {
+          renderer?: () => THREE_T.WebGLRenderer;
+        }) | null;
+        return inst?.renderer?.() ?? null;
+      },
+      // isDragging only flips in fullscreen (splash keeps pointer
+      // interaction off), so the splash pump never pauses.
+      isBusy: () => isDragging,
+      camera: { lat: initialLat, lng: initialLng },
+    });
   });
 
   // Recompute on container resize. Three layers of protection here:
@@ -1757,6 +2139,21 @@ export async function mountGlobe(
       return;
     }
     inst.pointOfView({ lat: initialLat, lng: initialLng, altitude: targetAltitude }, 0);
+    // Fill-rate guard for very large canvases. three-render-objects
+    // sets pixelRatio = min(2, devicePixelRatio) at init; on a 4K+
+    // monitor both the fullscreen explorer and the near-viewport-height
+    // splash hero raster 6M+ physical pixels per frame, which leaves
+    // no headroom for texture uploads during the photo drip — each
+    // pop then drops a frame mid-rotation. Capping at 1.5 cuts raster
+    // cost ~44% for a softening that's hard to see at monitor viewing
+    // distance. Laptop-sized canvases (< ~6M px) keep the full ratio.
+    {
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      if (width * height * dpr * dpr > 6_000_000 && dpr > 1.5) {
+        (inst as unknown as { renderer?: () => THREE_T.WebGLRenderer })
+          .renderer?.()?.setPixelRatio(1.5);
+      }
+    }
     // Enable autoRotate on the next paint — one rAF gives the
     // pointOfView call a frame to apply through OrbitControls before
     // autoRotate starts driving it. (No fly-in delay needed; the
@@ -1780,6 +2177,7 @@ export async function mountGlobe(
     heroHoverEl?.removeEventListener('pointerenter', onHeroEnter);
     heroHoverEl?.removeEventListener('pointerleave', onHeroLeave);
     if (shimmerRaf !== null) cancelAnimationFrame(shimmerRaf);
+    if (polygonFeedRaf !== null) cancelAnimationFrame(polygonFeedRaf);
     canvasObserver.disconnect();
     ro.disconnect();
     if (resizeTimer !== null) clearTimeout(resizeTimer);
