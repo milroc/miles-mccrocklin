@@ -13,9 +13,9 @@ function bootSplash(): void {
   const rootEl = document.getElementById('root');
   if (!rootEl) return;
 
-  // #root ships empty in both dev and prod — the SSR pass never worked
-  // and was removed (build.ts, commit aa94552). Keep the hydrate branch
-  // anyway so restoring SSR later doesn't require touching the entry.
+  // Prod ships #root prerendered (build.ts injects the ssr-entry.tsx
+  // markup) → hydrate. Dev serves the source HTML's empty #root
+  // (dev.ts does no prerender pass) → fresh render.
   const ssrPresent = rootEl.firstElementChild !== null;
   if (ssrPresent) {
     hydrateRoot(rootEl, <Splash />);

@@ -479,39 +479,32 @@
 }
 
 /* ============================================================
-   Reveal state — chrome hidden until effects.tsx flips the class.
-   Three coupled places (down from four — the noscript fallback died
-   with the broken SSR pass, commit aa94552):
-   1. this selector list,
+   Reveal — a pure-CSS entrance fade, formerly the JS-flipped
+   .revealing class. Now that build.ts prerenders the chrome into
+   dist/index.html, the default state must be VISIBLE (no-JS and
+   slow-network visitors read the prerendered document; JS only adds
+   the WebGL globe). The fade runs from the first paint via
+   `animation` instead of waiting for effects.tsx, so the choreography
+   is identical with JS but no longer withholds content without it.
+   Three coupled places:
+   1. this animation (keyframes live UNHASHED in splash-globals.css
+      per the CLAUDE.md keyframes rule),
    2. the reduced-motion override below,
-   3. effects.tsx removing .revealing.
+   3. the <noscript> override Splash.tsx inlines (no-JS visitors get
+      the content with no entrance fade at all).
    ============================================================ */
-.revealing .header,
-.revealing .hero,
-.revealing .door,
-.revealing .socials {
-  opacity: 0;
-  pointer-events: none;
-}
 .header,
 .hero,
 .door,
 .socials {
-  transition: opacity 480ms ease;
+  animation: splash-chrome-enter 480ms ease both;
 }
 @media (prefers-reduced-motion: reduce) {
-  .revealing .header,
-  .revealing .hero,
-  .revealing .door,
-  .revealing .socials {
-    opacity: 1;
-    pointer-events: auto;
-  }
   .header,
   .hero,
   .door,
   .socials {
-    transition: none;
+    animation: none;
   }
 }
 

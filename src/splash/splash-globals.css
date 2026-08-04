@@ -79,6 +79,16 @@ html, body {
    keyframes silently never run (this exact bug shipped: the globe
    never spun and, tilt-less, rendered blank on iOS). Global files
    skip the hashing entirely. */
+/* Splash chrome entrance — referenced from Splash.module.css via
+   `animation:` (same unhashed-keyframes rule as wire-globe-spin
+   below). Runs from first paint with no JS involvement; Splash.tsx's
+   <noscript> style disables it so no-JS visitors get the prerendered
+   content with zero delay. */
+@keyframes splash-chrome-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 @keyframes wire-globe-spin {
   from { transform: rotateX(15deg) rotateY(0deg); }
   to   { transform: rotateX(15deg) rotateY(360deg); }

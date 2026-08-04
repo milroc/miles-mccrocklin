@@ -7,17 +7,21 @@
 // are compact "door" rows that scale to future doors (e.g. PROJECTS)
 // without recomposing the page.
 //
-// First paint is JS paint — there is NO SSR for this page. build.ts
-// ships an empty #root (the renderToString pass never worked and was
-// removed the day it shipped, commit aa94552; see build.ts for the
-// two options if SSR is ever wanted). The old <noscript> fallback was
-// dead code for the same reason and has been deleted.
+// First paint is the PRERENDERED document: build.ts bundles
+// src/splash/ssr-entry.tsx and injects renderToString(<Splash />)
+// into dist/index.html's #root, so the full chrome (wordmark,
+// tagline, doors, socials, CSS wireframe globe) is real HTML before
+// any JavaScript runs — and IS the page when JavaScript never runs.
+// splash-entry.tsx hydrates that markup in prod and fresh-renders in
+// dev (dev.ts serves the source HTML's empty #root).
 //
-// The reveal (chrome fade-in + WebGL globe mount) is layered on by
+// The chrome fade-in is a pure-CSS entrance animation
+// (splash-chrome-enter, see Splash.module.css) — content is never
+// withheld waiting for JS. The WebGL globe mount is layered on by
 // src/splash/effects.tsx after mount, via dynamic import from a
-// useEffect. The WebGL globe mounts on every viewport (mobile
-// included); the CSS <WireGlobe> renders underneath as the pre-mount
-// state.
+// useEffect. It mounts on every viewport (mobile included); the CSS
+// <WireGlobe> renders underneath as the pre-mount state and the
+// permanent no-JS / perf-fallback state.
 
 import { useEffect, useRef, type ReactNode } from 'react';
 import {
@@ -94,15 +98,10 @@ export function Splash(): JSX.Element {
     const root = rootRef.current;
     if (!root) return;
 
-    // Safety timer: if the reveal hasn't completed in 4s (network blip,
-    // slow device, runtime error in effects), force the end-state.
-    const safetyTimer = setTimeout(() => {
-      if (root.classList.contains(s.revealing)) {
-        console.warn('Splash reveal timed out at 4s; falling back to end-state.');
-        root.classList.remove(s.revealing);
-      }
-    }, 4000);
-
+    // The chrome fade-in is pure CSS (splash-chrome-enter) — effects
+    // only mounts the WebGL globe now, so a failure here leaves the
+    // CSS WireGlobe in place and costs nothing else. No safety timer:
+    // there is no hidden state to force out of anymore.
     let cancelled = false;
 
     import('./effects')
@@ -110,19 +109,13 @@ export function Splash(): JSX.Element {
         if (cancelled) return;
         return runReveal(root);
       })
-      .then(() => {
-        clearTimeout(safetyTimer);
-      })
       .catch((err: unknown) => {
-        clearTimeout(safetyTimer);
         const msg = err instanceof Error ? err.message : String(err);
-        console.warn('Splash effects failed; showing end-state.', msg);
-        root.classList.remove(s.revealing);
+        console.warn('Splash effects failed; keeping the CSS wireframe globe.', msg);
       });
 
     return () => {
       cancelled = true;
-      clearTimeout(safetyTimer);
     };
   }, []);
 
@@ -134,10 +127,25 @@ export function Splash(): JSX.Element {
 
   return (
     <div
-      className={`${s.root} ${s.revealing}`}
+      className={s.root}
       data-splash-root="true"
       ref={rootRef}
     >
+      {/* No-JS override, per the CLAUDE.md <noscript> rule: rendered
+          from inside the component so the SSR'd HTML carries the
+          hashed class names. The prerendered chrome already works
+          JS-less; the one thing to fix is the entrance fade — no-JS
+          visitors should get the content instantly, not after a
+          480ms animation. suppressHydrationWarning: browsers parse
+          live <noscript> children as a text node, so its innerHTML
+          never matches what renderToString emitted. */}
+      <noscript
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html:
+            `<style>.${s.header},.${s.hero},.${s.door},.${s.socials}{animation:none}</style>`,
+        }}
+      />
       <header className={s.header}>
         <div className={s.byline}>
           <img

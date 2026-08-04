@@ -1,13 +1,11 @@
 // Splash effects — the post-mount "show" layer.
 //
-// Splash.tsx renders the chrome with the .revealing class hiding the
-// header, hero, doors, and socials. This module:
-//
-//   1. Removes .revealing so the chrome fades in via the CSS
-//      transitions defined in Splash.module.css.
-//   2. Mounts the live react-globe.gl into the hero (loads three.js
-//      dynamically) and crossfades the CSS WireGlobe out once a canvas
-//      actually exists.
+// The chrome fade-in left this module in the prerender change: it's a
+// pure-CSS entrance animation now (splash-chrome-enter, see
+// Splash.module.css), so the prerendered document never waits on JS.
+// What remains here is the one genuinely JS effect: mounting the live
+// react-globe.gl into the hero (loads three.js dynamically) and
+// crossfading the CSS WireGlobe out once a canvas actually exists.
 //
 // Globe-mount gate precedence:
 //   1. SPLASH_CONFIG.globeReady — config kill-switch,
@@ -24,11 +22,8 @@
 
 import { mountGlobe } from './Globe';
 import { SPLASH_CONFIG } from '../me';
-import s from './Splash.module.css';
 
 export async function runReveal(splashRoot: HTMLElement): Promise<void> {
-  splashRoot.classList.remove(s.revealing);
-
   if (!SPLASH_CONFIG.globeReady) return;
 
   const mountEl = splashRoot.querySelector<HTMLElement>('[data-splash-globe-mount="true"]');
