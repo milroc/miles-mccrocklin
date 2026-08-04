@@ -382,12 +382,14 @@
     border: 0;
     color: var(--canvas-fg);
     cursor: pointer;
-    width: 36px;
-    height: 36px;
+    /* 44px touch-target floor; the glyph stays 24px so the visual
+       weight doesn't change. */
+    width: 44px;
+    height: 44px;
     font-size: 24px;
     line-height: 1;
     padding: 0;
-    margin-top: 4px;
+    margin-top: 0;
   }
   .sheetClose:hover,
   .sheetClose:focus-visible {
