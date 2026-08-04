@@ -4,13 +4,12 @@
 // line: the first achievement's text. The rest of the achievements
 // stay on /resume/.
 //
-// RedactedText is the render path because achievement text carries
-// redaction glyphs (Ξ, α, β, σ, Σ, Ψ, Ω, Φ) that need the anchor +
-// tooltip treatment — plain divs would render them as literal
-// characters with no signal.
+// The lede renders through BuilderProse: the roman body register
+// (upright, unlike /resume/'s italic .entry-summary asides) with the
+// RedactedText anchor + tooltip treatment for redaction glyphs.
 
 import { Figure } from '../media/Figure';
-import { RedactedText } from '../primitives/RedactedText';
+import { BuilderProse } from './BuilderProse';
 import { EraChrome } from '../entries/EraChrome';
 import type { Achievement, Era as EraData } from '../types';
 
@@ -31,11 +30,7 @@ export function EraGeneric({ era }: EraGenericProps): JSX.Element | null {
   const lede = era.builder_tagline ?? firstAchievementText(era.achievements);
   return (
     <EraChrome focus={era.focus} period={era.period}>
-      {lede && (
-        <div className="entry-summary">
-          <RedactedText text={lede} />
-        </div>
-      )}
+      {lede && <BuilderProse text={lede} />}
       {era.media && <Figure media={era.media} />}
     </EraChrome>
   );

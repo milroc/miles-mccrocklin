@@ -27,6 +27,8 @@ import { Skills } from '../entries/Skills';
 import { SkillsCaption } from '../entries/SkillsCaption';
 import { EduEntry } from '../entries/EduEntry';
 import { ModeContext } from '../utils/mode';
+import { BuilderFooter } from './BuilderFooter';
+import { BuilderTagline } from './BuilderTagline';
 import { ExperienceEntryGeneric } from './ExperienceEntryGeneric';
 import ME from '../../data/me.json' with { type: 'json' };
 import type { Resume } from '../types';
@@ -55,6 +57,7 @@ export function Builder(): JSX.Element {
         <main id="builder-content">
           <article className="page mode-interactive">
             <Header contact={r.contact_information} />
+            <BuilderTagline />
 
             {r.summary && (
               <Section title="Summary">
@@ -85,6 +88,7 @@ export function Builder(): JSX.Element {
             )}
           </article>
         </main>
+        <BuilderFooter email={r.contact_information.email} />
         <TerminalDock />
       </div>
     </MediaProvider>

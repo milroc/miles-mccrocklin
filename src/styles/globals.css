@@ -34,6 +34,11 @@
      the warm mat). One color for every floating surface on canvas;
      offsets/blur stay per-surface because they encode real geometry. */
   --canvas-shadow:    rgba(10, 12, 10, 0.55);
+  /* Door-row surface — a step lighter than the canvas so door cards
+     read as raised placards on the mat. Mirror of --splash-door-bg in
+     splash-globals.css (this bundle is standalone); a retune must
+     change both roots. */
+  --door-bg: #22261f;
 
   /* ---- Color: paper (the resume itself) ---- */
   --paper: #fdfdfb;

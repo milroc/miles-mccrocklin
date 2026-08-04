@@ -1,0 +1,50 @@
+// BuilderFooter — where-to-next doors on the dark mat below the paper,
+// so /builder/ no longer dead-ends at the 2010 education entry. Uses
+// the splash door vocabulary (DESIGN.md "Door row"): compact rows with
+// a tight 96×64 thumbnail, mono caps label, italic sublabel, and an
+// always-visible mono CTA. Door copy + the photographer thumb come
+// from the generated splash-content module (single source of truth:
+// data/splash.json). The explorer door has no photo by design — its
+// tile carries the WireGlobe, the same drawn sphere the splash hero
+// and /explorer/'s loader use (static here: the spin keyframes live in
+// splash-globals.css, outside this bundle, and the base pose is
+// designed to stand on its own).
+
+import { WireGlobe } from '../globe/WireGlobe';
+import { DOORS, EXPLORER_DOOR } from '../generated/splash-content';
+import { stripMd } from '../utils/markdown';
+import s from './BuilderFooter.module.css';
+
+interface BuilderFooterProps {
+  email: string;
+}
+
+export function BuilderFooter({ email }: BuilderFooterProps): JSX.Element {
+  const photographer = DOORS.find((d) => d.id === 'photographer');
+  const emailLabel = stripMd(email);
+  return (
+    <footer className={s.root}>
+      {photographer && (
+        <a className={s.door} href={photographer.href} aria-label={photographer.aria}>
+          <img className={s.thumb} src={photographer.thumb} alt="" loading="lazy" />
+          <span className={s.label}>{photographer.label}</span>
+          <span className={s.sublabel}>{photographer.sublabel}</span>
+          <span className={s.cta}>{photographer.cta}</span>
+        </a>
+      )}
+      <a className={s.door} href={EXPLORER_DOOR.href} aria-label={EXPLORER_DOOR.aria}>
+        <span className={s.globeTile}>
+          <span className={s.globeBox}>
+            <WireGlobe />
+          </span>
+        </span>
+        <span className={s.label}>{EXPLORER_DOOR.label}</span>
+        <span className={s.sublabel}>{EXPLORER_DOOR.sublabel}</span>
+        <span className={s.cta}>{EXPLORER_DOOR.cta}</span>
+      </a>
+      <p className={s.hello}>
+        or just say hello: <a href={`mailto:${emailLabel}`}>{emailLabel}</a>
+      </p>
+    </footer>
+  );
+}
