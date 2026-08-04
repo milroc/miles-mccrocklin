@@ -354,6 +354,11 @@ interface MountGlobeOptions {
   // a small control surface. Used by Explorer to ping the idle timer
   // when the modal dismisses.
   onReady?: (controls: GlobeControls) => void;
+  // Microstate bubble markers (Gibraltar, Singapore, …) render at a
+  // fixed 22px base size, so on very small mounts they dwarf the
+  // sphere. Default true; the builder footer's 48px tile turns them
+  // off.
+  bubbles?: boolean;
 }
 
 // Cached country-feature view of the bundled world atlas. Narrowed to
@@ -1233,9 +1238,14 @@ export async function mountGlobe(
   // stays fixed on screen while the polygon moves over it, giving a
   // "window into a scene" parallax instead of stretching the texture
   // across a polygon that wraps the south pole.
-  const overlayAtlasEntries = atlas.filter(
-    (e): e is AtlasEntry & { render_kind: 'bubble' } => e.render_kind === 'bubble',
-  );
+  // An empty list when bubbles are off: the rest of the bubble plumbing
+  // (scale rAF writes, selection querySelector) no-ops harmlessly on a
+  // document with no bubble nodes.
+  const overlayAtlasEntries = options.bubbles === false
+    ? []
+    : atlas.filter(
+        (e): e is AtlasEntry & { render_kind: 'bubble' } => e.render_kind === 'bubble',
+      );
 
   const globeRef = React.createRef<{
     controls: () => {

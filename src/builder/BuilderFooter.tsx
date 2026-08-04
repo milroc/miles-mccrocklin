@@ -38,7 +38,7 @@ export function BuilderFooter({ email }: BuilderFooterProps): JSX.Element {
         const el = globeMountRef.current;
         if (cancelled || !el) return;
         import('../splash/Globe')
-          .then(({ mountGlobe }) => mountGlobe(el))
+          .then(({ mountGlobe }) => mountGlobe(el, { bubbles: false }))
           .then((c) => {
             if (cancelled) c();
             else cleanup = c;
