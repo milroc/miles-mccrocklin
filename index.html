@@ -40,12 +40,15 @@
   -->
 
   <!--
-    No-JS / no-effect override is rendered inline by <Splash> via a
-    <noscript><style> block with hashed CSS Module class names. Per the
-    CSS Modules rule in CLAUDE.md, all splash-component selectors live
-    inside src/splash/Splash.module.css (hashed at build); inlining the
-    fallback inside the SSR'd component is the only way to reference
-    those hashed names from <noscript>.
+    #root ships EMPTY in this source file and in dev; build.ts's
+    prerender pass (src/splash/ssr-entry.tsx) injects the
+    renderToString'd splash chrome into it in dist/index.html, so prod
+    serves the full composition before — or without — JavaScript.
+    splash-entry.tsx hydrates when markup is present, fresh-renders
+    when it isn't. The <noscript> override (kills the CSS entrance
+    fade for no-JS visitors) is rendered from inside <Splash> because
+    it references hashed CSS Module class names — per the CSS Modules
+    rule in CLAUDE.md.
   -->
 </head>
 <body>

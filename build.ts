@@ -16,18 +16,22 @@
 // script that funnels each to its canonical pillar. (/resume is no
 // longer in that legacy map — it's now a real route.)
 //
-// Splash gets an SSR pass: src/splash/Splash.tsx is renderToString()'d
-// and the resulting markup is injected into dist/index.html so crawlers
-// + no-JS users see the full composition (wordmark, tiles, CTA, role
-// labels) without running JavaScript. The client bundle hydrates and
-// runs the reveal effect.
+// Splash gets a prerender pass: src/splash/ssr-entry.tsx is bundled,
+// its renderToString(<Splash />) markup is injected into
+// dist/index.html's #root, and crawlers + no-JS users get the full
+// composition (wordmark, tagline, doors, socials, CSS wireframe
+// globe) without running JavaScript. The client bundle hydrates and
+// mounts the WebGL globe. See the prerender block below for why the
+// render must go through the bundler.
 //
 // Uses Bun's JS bundler API instead of `bun build --minify` because the
 // CLI's `--minify` umbrella flag emits a broken JSX-runtime binding
 // (`h=void 0`) for our entry, which crashes on first render. Passing
 // the granular `minify: { ... }` options to Bun.build() avoids that.
 
-import { rmSync, cpSync, writeFileSync, readFileSync } from 'node:fs';
+import { rmSync, cpSync, writeFileSync, readFileSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { loadMe, buildContext, injectPersonSchema, PERSON_SCHEMA_PATHS } from './scripts/page-meta';
 import { buildPhotographyManifest } from './scripts/build-photography-manifest';
 import { buildSplashContent } from './scripts/build-splash-content';
@@ -67,24 +71,68 @@ if (!result.success) {
   process.exit(1);
 }
 
-// SSR injection used to live here — renderToString(<Splash />) into the
-// empty <div id="root"></div>. It's been removed because Bun's RUNTIME
-// (which executes this script directly) loads `*.module.css` imports as
-// the raw CSS source string rather than the hashed-class-name mapping
-// that the Bun BUNDLER produces in the emitted JS chunks. So when the
-// SSR pass evaluated `s.root`, `s.tile`, etc., every key resolved to
-// undefined, and the rendered HTML shipped class="undefined undefined"
-// strings everywhere. The client bundle still works (the bundler maps
-// names correctly there) — the splash just hydrates from an empty
-// root and paints once JS runs.
-//
-// Tradeoff: crawlers + no-JS visitors no longer see the splash chrome
-// inline. The OG/Twitter meta tags + page title carry the SEO; no-JS
-// browsers see a blank dark canvas. Acceptable for a personal site.
-// To restore SSR cleanly we'd need to either (a) build a CSS-Module
-// hash manifest from the emitted CSS and inject it before
-// renderToString, or (b) move the SSR call into a bundler entrypoint
-// so it gets the same module resolution as the client.
+// Splash prerender. renderToString(<Splash />) must NOT run against
+// Bun's runtime module resolution — the runtime loads `*.module.css`
+// imports as raw CSS source strings, so every `s.foo` resolves to
+// undefined and the markup ships class="undefined" (the failure that
+// killed the first SSR pass, commit aa94552). Instead this is option
+// (b) from that pass's postmortem: bundle src/splash/ssr-entry.tsx to
+// a scratch dir so it gets the BUNDLER's hashed-class-name mapping,
+// import the emitted JS, and inject its markup into #root. Bun's
+// CSS-Module hashing is deterministic (path + content), so the names
+// match the client bundle built above; the parity check below turns
+// any future hashing-scheme change into a build failure instead of a
+// shipped hydration mismatch + unstyled page.
+{
+  const ssrOutdir = mkdtempSync(join(tmpdir(), 'splash-ssr-'));
+  try {
+    const ssr = await Bun.build({
+      entrypoints: ['./src/splash/ssr-entry.tsx'],
+      outdir: ssrOutdir,
+      target: 'bun',
+    });
+    if (!ssr.success) {
+      for (const log of ssr.logs) console.error(log);
+      process.exit(1);
+    }
+    const ssrJs = ssr.outputs.find((o) => o.path.endsWith('.js'));
+    if (!ssrJs) {
+      console.error('splash prerender failed: no JS output from ssr-entry build');
+      process.exit(1);
+    }
+    const { renderSplash } = (await import(ssrJs.path)) as { renderSplash: () => string };
+    const markup = renderSplash();
+
+    // Parity check: every class token the markup references must exist
+    // in the client CSS emitted by the main build above.
+    const clientCss = result.outputs
+      .filter((o) => o.path.endsWith('.css'))
+      .map((o) => readFileSync(o.path, 'utf8'))
+      .join('\n');
+    const classTokens = new Set(
+      [...markup.matchAll(/class="([^"]+)"/g)].flatMap((m) => m[1]!.split(/\s+/)),
+    );
+    for (const token of classTokens) {
+      if (!clientCss.includes(`.${token}`)) {
+        console.error(`splash prerender failed: class "${token}" not found in client CSS — CSS-Module hash drift between the SSR and client builds`);
+        process.exit(1);
+      }
+    }
+
+    const splashHtmlPath = './dist/index.html';
+    const html = readFileSync(splashHtmlPath, 'utf8');
+    const emptyRoot = '<div id="root"></div>';
+    const updated = html.replace(emptyRoot, `<div id="root">${markup}</div>`);
+    if (updated === html) {
+      console.error(`splash prerender failed: ${emptyRoot} not found in ${splashHtmlPath}`);
+      process.exit(1);
+    }
+    writeFileSync(splashHtmlPath, updated);
+    console.log(`  prerendered splash chrome (${markup.length} bytes, ${classTokens.size} class names verified) into ${splashHtmlPath}`);
+  } finally {
+    rmSync(ssrOutdir, { recursive: true, force: true });
+  }
+}
 
 // Static asset copies — same as before, plus 404.html now.
 cpSync('./media', './dist/media', { recursive: true });

@@ -1758,8 +1758,9 @@ export async function mountGlobe(
   // altitude over ~1500ms — the scene is fully rendered the whole
   // time, but the camera fly-in reads as "globe is loading" on top of
   // the post-storm tile fade-in. With animateIn=false the globe
-  // appears at its final pose the moment it mounts; the fade-in from
-  // .revealing → .revealed already supplies the visual entrance.
+  // appears at its final pose the moment it mounts; the wireframe →
+  // canvas crossfade ([data-live]) already supplies the visual
+  // entrance.
   function renderGlobe(): void {
     const animateIn = false;
     root.render(
