@@ -64,7 +64,7 @@ import {
 } from './lm-client';
 import {
   ALL_COUNTRY_CODES, countryNameForCode, LOCATIONS, normalizeCountryCode,
-} from './locations';
+} from '../src/utils/locations';
 import { LEGACY_THEME_REWRITES } from '../src/photography/categories';
 
 // Theme rewrites applied by applyTier. Legacy values (`portrait`,

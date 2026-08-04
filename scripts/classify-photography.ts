@@ -78,7 +78,7 @@ const ALL_TREATMENT_TAGS = new Set<string>(TREATMENT_TAGS);
 // Country codes the photography page recognizes. Storage format is
 // ISO-3166-1 alpha-3 (lowercase: usa, deu, gbr, ata, ...). The merger
 // uses the same allowlist via scripts/locations.ts so we never drift.
-import { ALL_COUNTRY_CODES, LOCATIONS, normalizeCountryCode } from './locations';
+import { ALL_COUNTRY_CODES, LOCATIONS, normalizeCountryCode } from '../src/utils/locations';
 const COUNTRY_SLUGS = ALL_COUNTRY_CODES;
 
 interface PhotographyEntry {
