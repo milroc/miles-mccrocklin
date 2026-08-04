@@ -215,12 +215,16 @@ export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
       <div className={s.carousel} ref={ref}>
         <div className={s.track}>
           {Array.from({ length: COPIES }).flatMap((_, c) =>
+            // Copy 1 (the middle copy the strip anchors on) is the
+            // primary; the flanking loop clones are decorative so
+            // keyboard/AT users traverse each card exactly once.
             matches.map((p) => (
               <FigureCard
                 key={`${c}-${p.id}`}
                 p={p}
                 scope={matches}
                 hideTag={hideTags}
+                decorative={c !== 1}
               />
             ))
           )}

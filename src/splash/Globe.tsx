@@ -1233,6 +1233,9 @@ export async function mountGlobe(
     controls: () => {
       autoRotate: boolean;
       autoRotateSpeed: number;
+      // OrbitControls dolly limits — camera distance from globe center.
+      minDistance: number;
+      maxDistance: number;
       // OrbitControls.object is the camera; we read its position to
       // derive the current altitude for the bubble-scale calculation
       // in the rAF loop below.
@@ -2139,6 +2142,18 @@ export async function mountGlobe(
       return;
     }
     inst.pointOfView({ lat: initialLat, lng: initialLng, altitude: targetAltitude }, 0);
+    // Camera distance clamp — altitude stays within [0.3, 4] globe
+    // radii (distance = GLOBE_RADIUS × (1 + altitude)), so wheel-zoom
+    // can never put the camera inside the sphere or shrink the globe
+    // to a speck. Every scripted pose fits inside the window (selection
+    // fly-to 1.1, explorer rest 2.0, splash rest 2.16). The splash
+    // canvas is pointer-events:none, so the clamp only bites where
+    // OrbitControls takes input: /explorer/.
+    {
+      const controls = inst.controls();
+      controls.minDistance = GLOBE_RADIUS * (1 + 0.3);
+      controls.maxDistance = GLOBE_RADIUS * (1 + 4);
+    }
     // Fill-rate guard for very large canvases. three-render-objects
     // sets pixelRatio = min(2, devicePixelRatio) at init; on a 4K+
     // monitor both the fullscreen explorer and the near-viewport-height

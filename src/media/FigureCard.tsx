@@ -21,9 +21,14 @@ interface FigureCardProps {
   // Suppress the corner tag overlay only — the tag stays in the data so
   // the lightbox caption can still show it. Used by MediaGroup.hide_tags.
   hideTag?: boolean;
+  // Loop-clone card: removed from the tab order and AT tree so keyboard
+  // and screen-reader users traverse each strip's items exactly once.
+  // Mouse clicks must keep working — clones are visible in the peek/edge
+  // zones — so this is aria-hidden + tabIndex, NOT `inert`.
+  decorative?: boolean;
 }
 
-export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
+export function FigureCard({ p, scope, hideTag, decorative }: FigureCardProps): ReactNode {
   const { open } = useContext(MediaCtx);
   const ar = p.aspect || 1;
   const cardStyle = { '--ar': ar } as CSSProperties;
@@ -34,11 +39,13 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
         data-figure-card
         title={p.caption}
         style={cardStyle}
+        aria-hidden={decorative || undefined}
         onContextMenu={(e) => e.preventDefault()}
       >
         <iframe
           src={mediaSrc(p.src)}
           title={p.caption || 'Embedded UI'}
+          tabIndex={decorative ? -1 : undefined}
           loading="lazy"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
           allowFullScreen
@@ -54,6 +61,8 @@ export function FigureCard({ p, scope, hideTag }: FigureCardProps): ReactNode {
       type="button"
       className={`${s.root} ${s[p.type]}`}
       data-figure-card
+      aria-hidden={decorative || undefined}
+      tabIndex={decorative ? -1 : undefined}
       onClick={() => open(scope, p.id)}
       onContextMenu={(e) => e.preventDefault()}
       onDragStart={(e) => e.preventDefault()}
