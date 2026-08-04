@@ -25,6 +25,17 @@ export function TerminalDock(): JSX.Element {
     return () => window.removeEventListener(TERMINAL_DOCK_REVEAL_EVENT, handler);
   }, []);
 
+  // Escape closes the dock while revealed — same dismiss path as the
+  // × button. Listener only exists while the dock is open.
+  useEffect(() => {
+    if (!revealed) return;
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') setRevealed(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [revealed]);
+
   const stateClass = revealed ? s.revealed : s.hidden;
 
   return (

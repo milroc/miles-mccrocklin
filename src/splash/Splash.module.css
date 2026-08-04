@@ -212,11 +212,14 @@
   position: absolute;
   inset: -10%;
   border-radius: 50%;
+  /* Peak alpha 0.16 (was 0.10): at 0.10 the flare barely registered
+     over the dark mat, so first-timers missed the hover affordance
+     entirely. Same accent hue, same geometry. */
   background: radial-gradient(
     circle closest-side,
     transparent 70%,
-    rgba(58, 107, 74, 0.1) 79%,
-    rgba(58, 107, 74, 0.04) 87%,
+    rgba(58, 107, 74, 0.16) 79%,
+    rgba(58, 107, 74, 0.07) 87%,
     transparent 95%
   );
   opacity: 0;
@@ -299,7 +302,10 @@
   margin-top: -22px;
   padding: 10px 16px;
   background: var(--splash-door-bg);
-  border: 1px solid transparent;
+  /* Faint resting border — the one cue that the hero is a door, not a
+     decoration. Same cream as --splash-canvas-rule at half its alpha,
+     so hover still reads as a reveal (rest 0.10 → hover 0.20). */
+  border: 1px solid rgba(236, 233, 226, 0.1);
   position: relative;
   z-index: 1;
   transition: border-color 180ms ease;

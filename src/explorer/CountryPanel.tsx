@@ -3,6 +3,7 @@
 // from Explorer when the globe fires onCountryClick; dismissed via the
 // close button, Escape, or by selecting a different country.
 
+import { useEffect, useRef } from 'react';
 import s from './CountryPanel.module.css';
 import type { AtlasAlbum, CountrySelection, Visit } from '../splash/Globe';
 
@@ -34,6 +35,27 @@ function formatVisit(v: Visit): string {
 
 export function CountryPanel({ selection, onClose }: CountryPanelProps): JSX.Element {
   const { name, entry, visits } = selection;
+  const closeRef = useRef<HTMLButtonElement>(null);
+  // Focus lands on the close button whenever the panel opens or swaps
+  // country (the keyed <aside> below remounts its DOM per country, so
+  // without this Tab keeps cycling the invisible country buttons
+  // behind the panel). No trap — the panel stays non-modal.
+  const openerRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (openerRef.current === null && document.activeElement instanceof HTMLElement) {
+      openerRef.current = document.activeElement;
+    }
+    closeRef.current?.focus();
+  }, [name]);
+  // On close (Escape or ×) hand focus back to whatever opened the
+  // panel — for keyboard users, the country button in the hidden index.
+  useEffect(
+    () => () => {
+      const opener = openerRef.current;
+      if (opener?.isConnected) opener.focus();
+    },
+    [],
+  );
   // Hero stays the country-level photo (primary album cover when we
   // have one, otherwise the textured globe image). Visited-only
   // countries (no entry) skip the media band entirely.
@@ -62,6 +84,7 @@ export function CountryPanel({ selection, onClose }: CountryPanelProps): JSX.Ele
     >
       <button
         type="button"
+        ref={closeRef}
         className={s.close}
         onClick={onClose}
         aria-label="Close"

@@ -14,6 +14,9 @@
   position: relative;
   letter-spacing: 0.01em;
   outline: none;
+  /* Clear the fixed toolbar when a note's ↩ return link jumps back
+     up to this glyph — same offset as the notes' scroll-margin. */
+  scroll-margin-top: 88px;
 }
 .redacted:visited,
 .redacted:link {

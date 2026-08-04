@@ -187,7 +187,12 @@ export function Explorer(): JSX.Element {
     window.addEventListener('mousemove', onActivity, { passive: true });
     window.addEventListener('keydown', onActivity);
     window.addEventListener('touchstart', onActivity, { passive: true });
-    arm();
+    // Coarse pointers: don't arm the initial hide timer. A touch
+    // visitor has no cursor to wiggle the chrome back, and the only
+    // recovering gesture (a tap) also selects a country — so the
+    // "tap any country" plate must survive until they interact.
+    // The first touchstart runs onActivity and arms the timer.
+    if (!window.matchMedia('(pointer: coarse)').matches) arm();
     return () => {
       window.removeEventListener('mousemove', onActivity);
       window.removeEventListener('keydown', onActivity);

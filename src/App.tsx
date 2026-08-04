@@ -43,7 +43,9 @@ export function App() {
   // (priority-1 only, no media). Migrate legacy `resume-density` key.
   const [mode, setMode] = useState<Mode>(() => {
     const stored = localStorage.getItem('resume-mode');
-    if (isMode(stored)) return stored;
+    // 1-pager is a print/preview target, not a landing state — a
+    // returning visitor gets the full mode back instead.
+    if (isMode(stored)) return stored === '1pager' ? 'interactive' : stored;
     const legacy = localStorage.getItem('resume-density');
     if (legacy === 'compact') return 'text';
     return 'interactive';

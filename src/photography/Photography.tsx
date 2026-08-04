@@ -369,7 +369,7 @@ export function Photography({ manifest }: PhotographyProps): JSX.Element {
             onClear={clear}
           />
 
-          <MasonryWall photos={filtered} previewTheme={previewTheme} />
+          <MasonryWall photos={filtered} previewTheme={previewTheme} onClear={clear} />
         </main>
 
         <footer className={s.footer}>
