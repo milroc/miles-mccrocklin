@@ -1,5 +1,16 @@
 # CLAUDE.md
 
+## Module boundaries
+
+**`src/` never imports from `scripts/`.** `scripts/` is build-time
+tooling (Node/Bun-only APIs, LLM calls, sharp, network fetches) and
+must never be reachable from a shipped bundle — one careless import
+drags tooling into the client graph. The dependency arrow points one
+way: `scripts/` may import from `src/` (build-time can see everything),
+never the reverse. A data module both sides need lives in `src/`
+(e.g. `src/utils/locations.ts`, the ISO-3166 country table) and the
+scripts reach up to it.
+
 ## Design System
 
 Always read `DESIGN.md` before making any visual or UI decisions.

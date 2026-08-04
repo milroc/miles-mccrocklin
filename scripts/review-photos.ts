@@ -111,7 +111,7 @@ const atlas = JSON.parse(readFileSync(ATLAS_JSON, 'utf8')) as AtlasEntry[];
 // data layers agree); the visible label is the display name. Pulled
 // from the shared locations table so the dropdown stays in sync with
 // the merger's allowlist + the manifest builder's continent map.
-import { countryNameForCode, LOCATIONS, normalizeCountryCode } from './locations';
+import { countryNameForCode, LOCATIONS, normalizeCountryCode } from '../src/utils/locations';
 import {
   CATEGORY_TREE,
   allCategoryIds,

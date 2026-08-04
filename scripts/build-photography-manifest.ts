@@ -141,7 +141,7 @@ interface PhotographyJsonEntry {
 // from the review tool's dropdown.
 import {
   continentForCode, countryNameForCode, LOCATIONS, normalizeCountryCode,
-} from './locations';
+} from '../src/utils/locations';
 const CONTINENT_BY_CODE: Record<string, string> = {};
 for (const row of LOCATIONS) {
   CONTINENT_BY_CODE[row.code] = row.continent;
