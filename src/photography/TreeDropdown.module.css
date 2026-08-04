@@ -241,15 +241,18 @@
   transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
   box-sizing: border-box;
 }
+/* Glyphs are cream, not canvas/accent: the accent fill is dark enough
+   that a dark glyph lands ~2.7:1 — below the 3:1 non-text floor. Cream
+   clears 5:1 on the fill and 4.5:1 on the soft fill. */
 .check.checkOn {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--canvas);
+  color: var(--canvas-fg-strong);
 }
 .check.checkPartial {
   background: var(--accent-soft);
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--canvas-fg-strong);
 }
 /* Hover on the row should still preview a "would-fill" look on
    unchecked boxes so the affordance is unmistakable. */
