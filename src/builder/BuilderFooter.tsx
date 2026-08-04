@@ -4,12 +4,14 @@
 // a tight 96×64 thumbnail, mono caps label, italic sublabel, and an
 // always-visible mono CTA. Door copy + the photographer thumb come
 // from the generated splash-content module (single source of truth:
-// data/splash.json). The explorer door has no photo by design — its
-// tile carries the WireGlobe, the same drawn sphere the splash hero
-// and /explorer/'s loader use (static here: the spin keyframes live in
-// splash-globals.css, outside this bundle, and the base pose is
-// designed to stand on its own).
+// data/splash.json). The explorer door carries the live photo-textured
+// globe (splash tile mode: tile topology + tile texture variants), with
+// the WireGlobe as the pre-mount base state — but only after the
+// window load event plus an idle slot, so the document, its images,
+// and the carousels always win the bandwidth race. mountGlobe's own
+// perf fallback keeps low-end devices on the wireframe.
 
+import { useEffect, useRef } from 'react';
 import { WireGlobe } from '../globe/WireGlobe';
 import { DOORS, EXPLORER_DOOR } from '../generated/splash-content';
 import { stripMd } from '../utils/markdown';
@@ -22,6 +24,36 @@ interface BuilderFooterProps {
 export function BuilderFooter({ email }: BuilderFooterProps): JSX.Element {
   const photographer = DOORS.find((d) => d.id === 'photographer');
   const emailLabel = stripMd(email);
+  const globeMountRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    let cleanup: (() => void) | null = null;
+    const mount = (): void => {
+      const idle: (cb: () => void) => void =
+        'requestIdleCallback' in window
+          ? (cb) => window.requestIdleCallback(cb)
+          : (cb) => window.setTimeout(cb, 250);
+      idle(() => {
+        const el = globeMountRef.current;
+        if (cancelled || !el) return;
+        import('../splash/Globe')
+          .then(({ mountGlobe }) => mountGlobe(el))
+          .then((c) => {
+            if (cancelled) c();
+            else cleanup = c;
+          })
+          .catch(() => { /* wireframe stays — same fallback as splash */ });
+      });
+    };
+    if (document.readyState === 'complete') mount();
+    else window.addEventListener('load', mount, { once: true });
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', mount);
+      cleanup?.();
+    };
+  }, []);
   return (
     <footer className={s.root}>
       {photographer && (
@@ -36,6 +68,7 @@ export function BuilderFooter({ email }: BuilderFooterProps): JSX.Element {
         <span className={s.globeTile}>
           <span className={s.globeBox}>
             <WireGlobe />
+            <span className={s.globeMount} ref={globeMountRef} />
           </span>
         </span>
         <span className={s.label}>{EXPLORER_DOOR.label}</span>

@@ -15,6 +15,7 @@ import { EraGeneric } from './EraGeneric';
 import { InlineEntry } from '../entries/InlineEntry';
 import { SabbaticalEntry } from '../entries/SabbaticalEntry';
 import type { Job, MediaGroup } from '../types';
+import s from './ExperienceEntryGeneric.module.css';
 
 interface ExperienceEntryGenericProps {
   job: Job;
@@ -43,7 +44,13 @@ export function ExperienceEntryGeneric({ job }: ExperienceEntryGenericProps): JS
       ...job,
       tracks: (job.tracks ?? []).filter((t) => t.focus !== 'Building'),
     };
-    return <SabbaticalEntry job={builderJob} collapseAll />;
+    // Host class sets the shared lede upright on this page only —
+    // see ExperienceEntryGeneric.module.css.
+    return (
+      <div className={s.sabbatical}>
+        <SabbaticalEntry job={builderJob} collapseAll />
+      </div>
+    );
   }
   if (job.inline) return <InlineEntry job={job} />;
 

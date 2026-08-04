@@ -51,9 +51,11 @@
   filter: var(--photo-filter-hover);
 }
 
-/* Explorer tile — no photo by design; the WireGlobe on the canvas
-   tone, a step darker than the door surface so the sphere reads as
-   framed the way the photo thumb does. */
+/* Explorer tile — the live photo globe in splash tile mode, on the
+   canvas tone so the sphere reads as framed the way the photo thumb
+   does. The WireGlobe underneath is the pre-mount and perf-fallback
+   state (mountGlobe layers its canvas on top and strips loaders once
+   painting). */
 .globeTile {
   width: 96px;
   height: 64px;
@@ -69,6 +71,16 @@
   height: 48px;
   position: relative;
   display: block;
+}
+.globeMount {
+  position: absolute;
+  /* Oversized 12.5% per side, matching the splash hero's mount: the
+     canvas is 1.25× the box and the tile altitude compensates, so the
+     sphere lands at the box diameter. */
+  inset: -12.5%;
+  display: block;
+  /* The canvas must not swallow clicks — the whole door is the link. */
+  pointer-events: none;
 }
 
 .label {
