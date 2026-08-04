@@ -1,0 +1,10 @@
+/* Roman body register for /builder/ prose. Composes onto the global
+   .entry-summary (size, color, leading, margins come from there); the
+   single override is posture — upright, because on /builder/ these
+   paragraphs are the body content, not an italic aside. The compound
+   selector (the component always renders both classes) outranks the
+   global italic rule by specificity, so the override doesn't depend
+   on bundle order. */
+.root:global(.entry-summary) {
+  font-style: normal;
+}

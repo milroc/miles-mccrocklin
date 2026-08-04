@@ -1,0 +1,7 @@
+/* The sabbatical lede shares .entry-summary.lead with the resume, where
+   it must stay italic. On /builder/ it reads as body prose like the era
+   ledes (owner decision 2026-08-04), so this host class sets it upright.
+   Triple-class specificity beats globals.css regardless of bundle order. */
+.sabbatical :global(.entry-summary.lead) {
+  font-style: normal;
+}

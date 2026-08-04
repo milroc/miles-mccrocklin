@@ -10,11 +10,12 @@
 // photography carousel without re-authoring it at job level.
 
 import { Figure } from '../media/Figure';
-import { RedactedText } from '../primitives/RedactedText';
+import { BuilderProse } from './BuilderProse';
 import { EraGeneric } from './EraGeneric';
 import { InlineEntry } from '../entries/InlineEntry';
 import { SabbaticalEntry } from '../entries/SabbaticalEntry';
 import type { Job, MediaGroup } from '../types';
+import s from './ExperienceEntryGeneric.module.css';
 
 interface ExperienceEntryGenericProps {
   job: Job;
@@ -43,7 +44,13 @@ export function ExperienceEntryGeneric({ job }: ExperienceEntryGenericProps): JS
       ...job,
       tracks: (job.tracks ?? []).filter((t) => t.focus !== 'Building'),
     };
-    return <SabbaticalEntry job={builderJob} collapseAll />;
+    // Host class sets the shared lede upright on this page only —
+    // see ExperienceEntryGeneric.module.css.
+    return (
+      <div className={s.sabbatical}>
+        <SabbaticalEntry job={builderJob} collapseAll />
+      </div>
+    );
   }
   if (job.inline) return <InlineEntry job={job} />;
 
@@ -56,11 +63,16 @@ export function ExperienceEntryGeneric({ job }: ExperienceEntryGenericProps): JS
         <div className="l">{job.company}</div>
         <div className="r">{dateRange}</div>
       </div>
-      {job.summary && (
-        <div className="entry-summary">
-          <RedactedText text={job.summary} />
+      {/* Role + location sub-row, same .entry-sub treatment as
+          /resume/'s ExperienceEntry — the identity frame the public
+          page was missing. */}
+      {job.role && (
+        <div className="entry-sub">
+          <div className="l">{job.role}</div>
+          <div className="r">{job.location}</div>
         </div>
       )}
+      {job.summary && <BuilderProse text={job.summary} />}
       {hasEras
         ? job.eras!.map((e, i) => <EraGeneric key={i} era={e} />)
         : heroMedia && <Figure media={heroMedia} />}
