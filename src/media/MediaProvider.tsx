@@ -463,18 +463,31 @@ export function MediaProvider({ children }: MediaProviderProps) {
               // slide isn't gated, to keep the non-gated render path
               // structurally unchanged.
               const aspect = p.aspect && p.aspect > 0 ? p.aspect : undefined;
+              // Media windowing: only slides within ±2 of the active
+              // rendered index carry a real src. The full track (COPIES ×
+              // N slides) stays mounted so the loop landmarks and
+              // scroll-snap geometry are unchanged — slide boxes are
+              // sized by CSS, not by their media's intrinsic size — but
+              // a tap no longer downloads the whole scope's catalog.
+              // Identical URLs across the three copies share one cache
+              // entry, so crossing the loop seam never refetches.
+              const inWindow = Math.abs(renderedIdx - openIdx) <= 2;
               const renderMedia = (): JSX.Element =>
                 p.type === 'video' ? (
                   <video
-                    src={mediaSrc(p.src)}
-                    poster={mediaSrc(p.poster)}
+                    src={inWindow ? mediaSrc(p.src) : undefined}
+                    poster={inWindow ? mediaSrc(p.poster) : undefined}
                     autoPlay={renderedIdx === openIdx && !prefersReducedMotion()}
                     loop={!prefersReducedMotion()}
                     playsInline
                     muted
                   />
                 ) : (
-                  <img src={mediaSrc(p.src)} alt={p.caption || ''} draggable={false} />
+                  <img
+                    src={inWindow ? mediaSrc(p.src) : undefined}
+                    alt={p.caption || ''}
+                    draggable={false}
+                  />
                 );
               return (
                 <div

@@ -228,7 +228,9 @@ export const MANIFEST: Entry[] = [
   },
   {
     country: 'Canada', country_slug: 'canada', render_kind: 'polygon',
-    primary_album: { title: 'Niagra Falls', url: `${ALBUM_HOST}/niagra-falls` },
+    // The portfolio host's album slug really is "niagra-falls"; only
+    // the display title carries the corrected spelling.
+    primary_album: { title: 'Niagara Falls', url: `${ALBUM_HOST}/niagra-falls` },
     secondary_albums: [],
     notes: 'Niagara Falls span US/Canada border; assigned to Canada per user.',
   },

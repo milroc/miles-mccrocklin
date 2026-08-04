@@ -8,7 +8,8 @@
 // Cards dropped from the public page:
 //   - visibility: 'archived'  — author's resume-side hide flag
 //   - hide_on_builder: true   — author's public-page hide flag
-//     (e.g. Cisco, Northrop)
+//     (currently unset on every entry; Cisco and Northrop stay on the
+//     page as compact entries via `inline: true` instead)
 //
 // Visual identity is intentionally the same as /resume/: cream paper
 // on dark canvas, document register, editorial typography. The two
