@@ -87,8 +87,9 @@
        so the empty state doesn't shout "SEARCH" at the user. */
     font-size: 16px;
     letter-spacing: 0.06em;
-    /* 44px+ touch target via padding. */
-    padding: 10px 40px 10px 12px;
+    /* 44px+ touch target via padding; 48px right clears the 44px
+       clear button. */
+    padding: 10px 48px 10px 12px;
     min-height: 44px;
     box-sizing: border-box;
   }
@@ -103,12 +104,13 @@
     letter-spacing: 0.14em;
   }
   .clear {
-    /* Bigger tap area; centered visually with the new taller input. */
-    width: 36px;
-    height: 36px;
+    /* 44px touch-target floor, flush to the input edge; the glyph
+       stays 18px so only the tap area grows. */
+    width: 44px;
+    height: 44px;
     font-size: 18px;
     padding: 0;
-    right: 4px;
+    right: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;

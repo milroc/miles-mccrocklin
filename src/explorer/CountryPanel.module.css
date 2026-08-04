@@ -276,11 +276,11 @@
   top: 12px;
   right: 12px;
   z-index: 1;
-  /* 40×40 hits the 44px touch-target minimum once you include the
-     surrounding hit-slop most browsers add for mouse targets, and
-     keeps the visual footprint compact against the hero photo. */
-  width: 40px;
-  height: 40px;
+  /* Explicit 44×44 touch-target floor — no longer relies on browser
+     hit-slop. The glyph and chrome stay the same size, so the visual
+     footprint against the hero photo barely changes. */
+  width: 44px;
+  height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
