@@ -1,0 +1,22 @@
+/* CountryIndex — standard visually-hidden pattern. The whole region
+   stays out of the visual layout but every button remains in the tab
+   order, so keyboard and screen-reader users get a country list the
+   pointer-driven globe can't offer them. */
+
+.root {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

@@ -273,12 +273,23 @@ export function CategoryDropdown({
     const labels: string[] = [];
     for (const r of rows) {
       if (r.id.startsWith('sub:')) continue;
-      if (r.check === 'on') labels.push(r.label);
+      if (r.check === 'on') {
+        labels.push(r.label);
+        continue;
+      }
+      // Parent categories aggregate their subtree into `check`, so a
+      // top-level filter applied on its own (hero buttons / deep link
+      // ?categories=wildlife) reads 'partial' even though the row's own
+      // id is selected. Include those rows so the trigger names the
+      // filter and lights up instead of showing the placeholder.
+      if (r.id.startsWith('cat:') && selectedCategories.has(r.id.slice(4))) {
+        labels.push(r.label);
+      }
     }
     if (labels.length === 0) return undefined;
     if (labels.length <= 2) return labels.join(', ');
     return `${labels.slice(0, 2).join(', ')}…`;
-  }, [rows]);
+  }, [rows, selectedCategories]);
 
   return (
     <TreeDropdown

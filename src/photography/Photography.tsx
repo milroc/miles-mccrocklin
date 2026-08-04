@@ -360,6 +360,7 @@ export function Photography({ manifest }: PhotographyProps): JSX.Element {
             selectedSpecies={species}
             selectedLocations={countries}
             query={query}
+            resultCount={filtered.length}
             onToggleCategory={toggleCategory}
             onToggleSpecies={toggleSpecies}
             onToggleLocation={toggleCountry}

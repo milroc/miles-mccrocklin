@@ -12,6 +12,7 @@ import { EduEntry } from './entries/EduEntry';
 import { Skills } from './entries/Skills';
 import { SkillsCaption } from './entries/SkillsCaption';
 import { Community } from './entries/Community';
+import { RedactionLegend } from './primitives/RedactionLegend';
 import { RedactionNotes } from './primitives/RedactionNotes';
 import { SummaryGallery } from './media/SummaryGallery';
 import { MediaProvider } from './media/MediaProvider';
@@ -219,6 +220,10 @@ export function App() {
         <Section title="Notes" show={mode !== '1pager'}>
           <RedactionNotes items={r.redactions} />
         </Section>
+
+        {/* 1-pager hides the Notes section to hold one Letter page,
+            so the printed PDF gets this one-line key instead. */}
+        {mode === '1pager' && <RedactionLegend items={r.redactions} />}
 
       </article>
       </main>
