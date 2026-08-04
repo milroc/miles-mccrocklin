@@ -107,9 +107,9 @@ export function Explorer(): JSX.Element {
     })
       .then((c) => { if (cancelled) c(); else cleanup = c; })
       .catch(() => {
-        // Non-fatal, but stop the LoadingGlobe's "loading" label from
-        // pulsing forever — LoadingGlobe.module.css hides it when this
-        // attribute is present on the mount container.
+        // Non-fatal. LoadingGlobe.module.css keys off this attribute
+        // to swap the pulsing "loading" label for the failure note +
+        // photographer link; the wireframe stays as the visual.
         if (!cancelled) el.setAttribute('data-globe-failed', '');
       });
     return () => {

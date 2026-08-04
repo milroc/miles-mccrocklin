@@ -38,12 +38,62 @@
   animation: explorer-loader-pulse 2.4s ease-in-out infinite;
 }
 
-/* Failure hook — Explorer sets data-globe-failed on the mount container
-   when mountGlobe() rejects, so the "loading" label doesn't pulse forever
-   over a globe that will never arrive. */
+/* Failure state — Explorer sets data-globe-failed on the mount
+   container when mountGlobe() rejects. The pulsing "loading" label
+   swaps for a quiet explanation in the same mono register plus a
+   door out to the photo archive, so the visitor learns the real
+   globe isn't coming instead of watching ambient art forever. The
+   wireframe stays as the visual. */
 [data-globe-failed] .label {
   animation: none;
   display: none;
+}
+
+.failure {
+  /* Hidden during normal loading and after a successful mount; only
+     the data-globe-failed hook below reveals it. */
+  display: none;
+  position: absolute;
+  /* Same anchor as .label: just under the sphere's bottom limb,
+     clamped up on short viewports (see .label's derivation). */
+  top: min(calc(87.9% + 10px), calc(100% - 96px));
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+[data-globe-failed] .failure {
+  display: flex;
+}
+
+.failureNote {
+  /* Same voice as the loading label it replaces — mono caps, wide
+     tracking, canvas-muted — minus the pulse: nothing is happening. */
+  font-family: var(--splash-mono);
+  font-size: 10px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--splash-canvas-fg-muted);
+  white-space: nowrap;
+}
+
+.failureCta {
+  /* Door-row CTA voice (Splash .doorCta): accent mono, tight
+     tracking, underline on intent. */
+  font-family: var(--splash-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--splash-accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.failureCta:hover,
+.failureCta:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 /* Reduced motion — skip the entrance and hold the label steady. */
 @media (prefers-reduced-motion: reduce) {
