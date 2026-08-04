@@ -10,8 +10,12 @@
      content underneath bleeds through softened, like a ghosted
      terminal floating above the resume. */
   background: rgba(28, 29, 40, 0.58);
-  backdrop-filter: blur(36px) saturate(1.6);
-  -webkit-backdrop-filter: blur(36px) saturate(1.6);
+  /* 24px (down from 36px, 2026-08-04): past ~24px the sampled page
+     content is already fully diffused, so the extra radius was pure
+     composite cost on high-DPI screens with no visible frost gain.
+     The heavy-glass character (owner preference) is unchanged. */
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
   /* Glass meniscus — a hairline at the top edge tinted with the
      Claude orange, plus a faint inner highlight that reads as the
      curve of the glass catching ambient light. */

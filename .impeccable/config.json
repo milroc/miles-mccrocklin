@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/edit/edit.module.css"
+        ],
+        "createdAt": "2026-08-04T18:50:40.285Z",
+        "reason": "Dev-only authoring tool (EDIT_ENABLED gates it out of production); the accent border is a note affordance in an editor, not a card tell. Verified false positive in the 2026-08-04 audit."
+      }
+    ]
+  }
+}
