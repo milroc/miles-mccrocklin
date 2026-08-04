@@ -23,6 +23,39 @@ import { VISITED_COUNTRY_COUNT, CONTINENT_COUNT } from '../generated/splash-cont
 // chrome faster (1200ms) because it's a focused viewing surface.
 const NAV_IDLE_MS = 3000;
 
+// Country name → URL slug. Matches the atlas's country_slug convention
+// (lowercase, non-alphanumerics collapsed to hyphens), so countries
+// without an atlas entry (visited-only, e.g. The Bahamas) still get a
+// stable slug that round-trips through the ?country= param.
+function slugifyCountry(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+// Raw ?country= value at load time, or null. Read synchronously so the
+// URL-sync effect can't strip the param before the globe is ready to
+// apply it.
+function readCountryParam(): string | null {
+  if (typeof window === 'undefined') return null;
+  return new URL(window.location.href).searchParams.get('country');
+}
+
+// Resolve a ?country= value against the globe's visitable-country list.
+// Prefers the canonical slug form ("canada", "united-states"); falls
+// back to a case-insensitive name match. Unknown values return null and
+// are ignored silently.
+function resolveCountryParam(param: string, names: readonly string[]): string | null {
+  const wanted = param.trim().toLowerCase();
+  if (!wanted) return null;
+  return (
+    names.find((n) => slugifyCountry(n) === wanted) ??
+    names.find((n) => n.toLowerCase() === wanted) ??
+    null
+  );
+}
+
 export function Explorer(): JSX.Element {
   const mountRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<GlobeControls | null>(null);
@@ -41,6 +74,11 @@ export function Explorer(): JSX.Element {
   // the globe hands back its control surface (onReady) — the list is
   // derived from the same atlas + visits data the click flow gates on.
   const [countryNames, setCountryNames] = useState<string[]>([]);
+  // ?country= deep link. Captured once at first render; consumed (and
+  // nulled) when the globe reports ready. While it's pending, the
+  // URL-sync effect below leaves the URL alone so a slow globe load
+  // can't erase the param before it's applied.
+  const pendingCountryParamRef = useRef<string | null>(readCountryParam());
 
   const closeModal = useCallback(() => {
     setSelected(null);
@@ -65,7 +103,17 @@ export function Explorer(): JSX.Element {
       },
       onReady: (controls) => {
         controlsRef.current = controls;
-        setCountryNames(controls.visitableCountries());
+        const names = controls.visitableCountries();
+        setCountryNames(names);
+        // Apply the ?country= deep link through the exact same path a
+        // polygon click takes (camera fly + onCountryClick → panel).
+        // Unknown values resolve to null and are dropped silently.
+        const param = pendingCountryParamRef.current;
+        pendingCountryParamRef.current = null;
+        if (param) {
+          const name = resolveCountryParam(param, names);
+          if (name) controls.selectCountryByName(name);
+        }
       },
     })
       .then((c) => { if (cancelled) c(); else cleanup = c; })
@@ -93,6 +141,26 @@ export function Explorer(): JSX.Element {
 
   useEffect(() => {
     controlsRef.current?.setSelectedCountry(selected?.name ?? null);
+  }, [selected]);
+
+  // Sync selection to ?country= so globe state is shareable. Atlas
+  // entries carry the canonical slug; visited-only countries slugify
+  // their name the same way. replaceState (not pushState) matches the
+  // photographer page (design D4): back exits the page in one press,
+  // never cycles through selections.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    // Deep-link param not applied yet — don't strip it before the
+    // globe gets a chance to open it.
+    if (!selected && pendingCountryParamRef.current != null) return;
+    const url = new URL(window.location.href);
+    if (selected) {
+      const slug = selected.entry?.country_slug ?? slugifyCountry(selected.name);
+      url.searchParams.set('country', slug);
+    } else {
+      url.searchParams.delete('country');
+    }
+    window.history.replaceState({}, '', url.toString());
   }, [selected]);
 
   useEffect(() => {
