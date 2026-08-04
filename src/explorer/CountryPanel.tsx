@@ -49,11 +49,12 @@ export function CountryPanel({ selection, onClose }: CountryPanelProps): JSX.Ele
         ...(entry.secondary_albums ?? []),
       ]
     : [];
+  // Plain complementary landmark, not role="dialog": the globe stays
+  // interactive behind the panel and focus is never trapped, so the
+  // dialog role would over-promise modal behavior to screen readers.
   return (
     <aside
       className={s.root}
-      role="dialog"
-      aria-modal="false"
       aria-label={name}
       // Stop clicks from bubbling to the globe canvas behind the panel.
       onClick={(e) => e.stopPropagation()}

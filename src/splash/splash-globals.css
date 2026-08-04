@@ -19,9 +19,14 @@
   --splash-canvas: #1c1f1a;
   --splash-canvas-fg-strong: #ece9e2;
   --splash-canvas-fg: #b8b5ad;
-  --splash-canvas-fg-muted: #7a7770;
+  --splash-canvas-fg-muted: #8a8780; /* mirror of --canvas-fg-muted — lightened
+                        2026-08-04 for WCAG AA; a retune must change both roots */
   --splash-canvas-rule: rgba(236, 233, 226, 0.20);
   --splash-accent: #3a6b4a;
+  /* Door-row surface — a step lighter than the canvas so the doors read
+     as raised placards on the mat. Shared by the hero door and the door
+     cards; future doors take the same token. */
+  --splash-door-bg: #22261f;
 
   --splash-serif: Georgia, 'Times New Roman', Times, serif;
   --splash-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;

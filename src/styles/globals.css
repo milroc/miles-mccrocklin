@@ -25,7 +25,9 @@
   --canvas: #1c1f1a;
   --canvas-fg-strong: #ece9e2;                   /* the prior cream — primary text on canvas */
   --canvas-fg:        #b8b5ad;                   /* secondary text on canvas */
-  --canvas-fg-muted:  #7a7770;                   /* muted text on canvas */
+  --canvas-fg-muted:  #8a8780;                   /* muted text on canvas — lightened
+                        2026-08-04 from #7a7770 (~3.7:1) to clear WCAG AA 4.5:1
+                        for the 10–13px mono labels this token carries */
   --canvas-rule:      rgba(236, 233, 226, 0.20); /* subtle borders on canvas */
   /* Dark-canvas shadow — the mat's own darkness deepened (derived from
      the #0a0c0a void tone, not neutral black, so shadows stay warm on
@@ -47,6 +49,11 @@
      emphasis, focus outline. */
   --accent: #3a6b4a;
   --accent-soft: rgba(58, 107, 74, 0.10);
+
+  /* Phone-bezel surface for embedded device mockups (Figure phone
+     gallery). Darker than --ink so the bezel reads as hardware, not
+     ink; the bezel border uses --ink-soft. */
+  --phone-bezel: #0e0e0e;
 
   /* Guest palette — Claude Code terminal. Distinct from the editorial
      paper register; quoted as a brand artifact, like the Airbnb block.

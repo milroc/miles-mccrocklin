@@ -127,7 +127,7 @@ unreadable on the dark mat.
 | `--canvas`             | `#1c1f1a`                      | Outside the paper (body background)              |
 | `--canvas-fg-strong`   | `#ece9e2`                      | Primary text on canvas, hover/active states      |
 | `--canvas-fg`          | `#b8b5ad`                      | Secondary text on canvas (toolbar buttons rest)  |
-| `--canvas-fg-muted`    | `#7a7770`                      | Muted text on canvas (toolbar label)             |
+| `--canvas-fg-muted`    | `#8a8780`                      | Muted text on canvas (toolbar label). Lightened 2026-08-04 from `#7a7770` (~3.7:1) to clear WCAG AA 4.5:1 at the small mono sizes it carries |
 | `--canvas-rule`        | `rgba(236, 233, 226, 0.20)`    | Subtle borders on canvas (toolbar buttons)       |
 
 ### Paper (the resume itself)
@@ -288,7 +288,8 @@ doors → socials (~1.6 viewports). Patterns introduced here are system
 vocabulary:
 
 - **One label motif.** All three destinations (Explorer's globe label
-  included) share the door-row text treatment: dark `#22261f` surface,
+  included) share the door-row text treatment: dark `--splash-door-bg`
+  (`#22261f`) surface,
   mono caps label + italic sublabel, accent mono CTA. The cream
   "placard" chip was tried for the globe and retired 2026-07-22 — it
   outshouted the doors it should rhyme with. (The 2026-05
@@ -436,3 +437,5 @@ on the dark mat instead of a white rectangle painted on the dark color.
 | 2026-07-22 | Audience: hiring partners → personal/project hub | Owner correction during splash design review; copy and layout stop optimizing for recruiters. |
 | 2026-07-22 | Splash: globe-anchor redesign             | One visual anchor (WireGlobe hero) instead of three competing collages; placards replace glass chips; doors replace masonry tiles; mobile ships CSS globe only. Full review: ~/.gstack/projects/milroc-miles-mccrocklin/designs/splash-improve-20260721/. |
 | 2026-07-22 | Dark-canvas shadows unified on `--canvas-shadow` | Five ad-hoc black shadows on canvas surfaces become one void-derived color (warm, not neutral black); geometry stays per-surface. |
+| 2026-08-04 | Canvas-muted lifted to AA (`#7a7770` → `#8a8780`, both roots) | The token only ever carries 10–13px mono labels; ~3.7:1 failed WCAG AA. Hierarchy preserved (still clearly dimmer than `--canvas-fg`). Photography check glyphs move to `--canvas-fg-strong` for the same reason (dark-on-accent was ~2.7:1). |
+| 2026-08-04 | Tokenized `--splash-door-bg` (`#22261f`) and `--phone-bezel` (`#0e0e0e`) | Door surface had two magic-value call sites and a roadmap of future doors; phone bezel border now cites `--ink-soft` instead of duplicating it. |
