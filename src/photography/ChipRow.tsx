@@ -29,6 +29,10 @@ interface ChipRowProps {
   selectedSpecies: Set<string>;
   selectedLocations: Set<string>;
   query: string;
+  // Photos currently matching the filters + search. Equals the manifest
+  // total when nothing is selected. Rendered as a quiet mono count at
+  // the right end of the row.
+  resultCount: number;
   onToggleCategory: (id: string) => void;
   onToggleSpecies: (species: string) => void;
   onToggleLocation: (slug: string) => void;
@@ -45,6 +49,7 @@ export function ChipRow({
   selectedSpecies,
   selectedLocations,
   query,
+  resultCount,
   onToggleCategory,
   onToggleSpecies,
   onToggleLocation,
@@ -86,6 +91,10 @@ export function ChipRow({
           Clear filters
         </button>
       )}
+
+      <span className={s.count} aria-live="polite">
+        {resultCount} {resultCount === 1 ? 'photo' : 'photos'}
+      </span>
     </div>
   );
 }

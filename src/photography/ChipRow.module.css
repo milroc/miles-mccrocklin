@@ -37,6 +37,23 @@
   outline-offset: 2px;
 }
 
+/* Matching-photo count — eyebrow register, right end of the row. When
+   "Clear filters" is present it takes the auto margin, so the count
+   drops its own and sits just right of it. */
+.count {
+  margin-left: auto;
+  color: var(--canvas-fg-muted);
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.clear + .count {
+  margin-left: 0;
+}
+
 /* ---------- Mobile (≤640px) ------------------------------------------ */
 @media (max-width: 640px) {
   .root {

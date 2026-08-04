@@ -12,6 +12,7 @@ import {
 } from '../splash/Globe';
 import '../splash/splash-globals.css';
 import { SiteNav } from '../layout/SiteNav';
+import { CountryIndex } from './CountryIndex';
 import { CountryPanel } from './CountryPanel';
 import { LoadingGlobe } from './LoadingGlobe';
 import { Toolbar } from './Toolbar';
@@ -36,6 +37,10 @@ export function Explorer(): JSX.Element {
   // and on initial paint (so the visitor sees the nav at least once).
   const [navVisible, setNavVisible] = useState(true);
   const navIdleTimerRef = useRef<number | null>(null);
+  // Visitable country names for the hidden keyboard index. Filled once
+  // the globe hands back its control surface (onReady) — the list is
+  // derived from the same atlas + visits data the click flow gates on.
+  const [countryNames, setCountryNames] = useState<string[]>([]);
 
   const closeModal = useCallback(() => {
     setSelected(null);
@@ -60,6 +65,7 @@ export function Explorer(): JSX.Element {
       },
       onReady: (controls) => {
         controlsRef.current = controls;
+        setCountryNames(controls.visitableCountries());
       },
     })
       .then((c) => { if (cancelled) c(); else cleanup = c; })
@@ -151,6 +157,14 @@ export function Explorer(): JSX.Element {
         onToggleRotation={toggleRotation}
         visible={navVisible}
       />
+      {/* Hidden keyboard index — Tab reaches one button per country;
+          Enter runs the same select flow a polygon click does. Sits
+          right after the Toolbar so keyboard users hit it before the
+          globe canvas. */}
+      <CountryIndex
+        countries={countryNames}
+        onSelect={(name) => controlsRef.current?.selectCountryByName(name)}
+      />
       <div className={s.mount} ref={mountRef}>
         {/* Loading state — CSS 3D wireframe globe. mountGlobe fades
             the WebGL canvas in over this once polygons paint, then
@@ -166,7 +180,7 @@ export function Explorer(): JSX.Element {
         aria-hidden={!navVisible}
       >
         Explorer · {VISITED_COUNTRY_COUNT} countries · {CONTINENT_COUNT} continents
-        <em>every country I've been to, the routes I took & some example photos for each.</em>
+        <em>every country I've been to, the routes I took & some example photos for each. tap any country to open it.</em>
       </p>
       {selected ? <CountryPanel selection={selected} onClose={closeModal} /> : null}
     </div>

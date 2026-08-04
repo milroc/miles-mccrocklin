@@ -329,6 +329,14 @@ export interface GlobeControls {
   // idle window. Toggling unlock immediately resumes rotation.
   // Independent of the click/drag-driven idle pause/resume.
   setRotationLocked: (locked: boolean) => void;
+  // Keyboard path into the exact same select flow the polygon click
+  // uses (camera fly + onCountryClick). Names come from
+  // visitableCountries(); unknown names are ignored.
+  selectCountryByName: (name: string) => void;
+  // Sorted names of every country the click flow accepts: photo-atlas
+  // entries plus visited-only countries. Feeds Explorer's hidden
+  // country index so the keyboard list can't drift from the globe.
+  visitableCountries: () => string[];
 }
 
 interface MountGlobeOptions {
@@ -1603,6 +1611,22 @@ export async function mountGlobe(
     const name = feature.properties.name;
     selectAtlasEntry(name, polygonCentroid(feature.geometry));
   }
+  // GlobeControls.selectCountryByName — keyboard entry into the click
+  // flow. Countries with a 110m polygon route through selectCountry
+  // (centroid fallback); microstates without one (Singapore, Vatican)
+  // fall through to selectAtlasEntry, whose bubble entry carries its
+  // own lat/lng.
+  function selectCountryByName(name: string): void {
+    const feature = countries.find((f) => f.properties.name === name);
+    if (feature) selectCountry(feature);
+    else selectAtlasEntry(name);
+  }
+  // GlobeControls.visitableCountries — same eligibility set the click
+  // handler gates on (atlas entry OR visited).
+  function visitableCountries(): string[] {
+    const names = new Set<string>([...atlasByName.keys(), ...VISITED_COUNTRIES]);
+    return [...names].sort((a, b) => a.localeCompare(b));
+  }
   // Hover fires with the polygon under the cursor (or null when the
   // cursor leaves a polygon entirely). Drives a dim cream outline on
   // clickable countries so users know which polygons respond.
@@ -2182,7 +2206,13 @@ export async function mountGlobe(
     if (fullscreen) {
       const controls = inst.controls();
       controls.addEventListener?.('start', kickIdleTimer);
-      options.onReady?.({ kickIdleTimer, setSelectedCountry, setRotationLocked });
+      options.onReady?.({
+        kickIdleTimer,
+        setSelectedCountry,
+        setRotationLocked,
+        selectCountryByName,
+        visitableCountries,
+      });
     }
   }
   setInitialCamera();
