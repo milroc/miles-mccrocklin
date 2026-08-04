@@ -19,8 +19,8 @@ interface VisibilityChipProps {
 }
 
 const LEVELS: Array<{ value: Visibility; label: string; title: string }> = [
-  { value: 'all',         label: 'ALL',  title: 'Show in all modes (interactive · text · 1-pager)' },
-  { value: 'not_1pager',  label: '!1P',  title: 'Hide from 1-pager (interactive · text only)' },
+  { value: 'all',         label: 'ALL',  title: 'Show in all modes (full · text · 1-pager)' },
+  { value: 'not_1pager',  label: '!1P',  title: 'Hide from 1-pager (full · text only)' },
   { value: '1pager_only', label: '1P',   title: 'Show only in 1-pager' },
   { value: 'archived',    label: 'ARCH', title: 'Archived — kept in JSON, never rendered' },
 ];

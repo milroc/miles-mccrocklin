@@ -265,8 +265,9 @@ register stays visible.
 
 The page supports three orthogonal modes set as classes on `.page`:
 
-1. **Default (interactive editorial).** Full media, carousels, lightbox,
-   reviews. The portfolio voice.
+1. **Default (labeled "Full" in the toolbar; internal id stays
+   `interactive`).** Full media, carousels, lightbox, reviews. The
+   portfolio voice.
 2. **`text-only`.** Hides figures, reviews, metrics, chips, summary gallery,
    era taglines, and entry summaries (except `.entry-summary.lead`). Bullets
    shift to full-ink color. The terse deliverables-focused view.

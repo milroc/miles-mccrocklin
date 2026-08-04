@@ -143,9 +143,9 @@ export function App() {
             disabled={editActive}
             title={editActive
               ? 'Mode is locked to "Text only" while editing'
-              : 'Full media — photos, videos, UIs, reviews, all detail'}
+              : 'Full portfolio: photos, videos, reviews, all detail'}
           >
-            Interactive
+            Full
           </button>
           <button
             className={mode === 'text' ? 'active' : ''}
