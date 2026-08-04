@@ -68,9 +68,11 @@
   left: 0;
   z-index: 10;
   /* Sized to fit the longest category label ("REPTILES & AMPHIBIANS")
-     plus checkbox + count without excessive white space. */
-  min-width: 240px;
-  max-width: 300px;
+     plus checkbox + count without excessive white space. +10px over
+     the original 240/300 to compensate for the 24px chevron column,
+     keeping the label measure unchanged. */
+  min-width: 250px;
+  max-width: 310px;
   background: var(--canvas);
   border: 1px solid var(--canvas-rule);
   box-shadow: 0 18px 40px var(--canvas-shadow);
@@ -162,8 +164,12 @@
 
 .chevron,
 .chevronSpacer {
-  flex: 0 0 14px;
-  width: 14px;
+  /* 24px column: WCAG 2.2 pointer-target minimum (24×24) for the
+     expand/collapse toggle; rows are ~24px tall, so width is the
+     binding dimension. Mobile overrides below with its own 44px
+     min-height treatment. */
+  flex: 0 0 24px;
+  width: 24px;
   height: 100%;
   display: inline-flex;
   align-items: center;

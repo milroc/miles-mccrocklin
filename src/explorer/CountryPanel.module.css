@@ -300,7 +300,14 @@
   color: var(--splash-canvas-fg-strong);
   border-color: var(--splash-canvas-fg-strong);
   background: rgba(0, 0, 0, 0.65);
-  outline: none;
+}
+/* Keyboard focus gets an explicit accent ring (the previous rule
+   killed the outline, leaving a hover-identical border change as the
+   only indicator). Drawn inset so it can't clip against the hero
+   media or the panel edge. */
+.close:focus-visible {
+  outline: 2px solid var(--splash-accent);
+  outline-offset: -2px;
 }
 
 /* Mobile — switch to a bottom sheet so the globe still has top
