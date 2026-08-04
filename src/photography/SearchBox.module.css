@@ -33,6 +33,15 @@
   letter-spacing: 0.18em;
   font-weight: 800;
 }
+/* type="search" makes WebKit/Blink inject a native clear (✕) inside the
+   input once it has text — a second clear affordance beside our .clear
+   button, which owns the 44px target, aria-label, and focus styling.
+   Suppress the native one. */
+.input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
 .input:hover,
 .input:focus-visible {
   color: var(--canvas-fg-strong);
