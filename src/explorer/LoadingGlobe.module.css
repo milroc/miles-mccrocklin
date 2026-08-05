@@ -71,16 +71,24 @@
      the data-globe-failed hook below reveals it. */
   display: none;
   position: absolute;
-  /* Same anchor as .label: just under the sphere's bottom limb,
-     clamped up on short viewports (see .label's derivation). */
-  top: min(calc(87.9% + 10px), calc(100% - 96px));
+  /* Dead center over the dimmed sphere — an error is the page's
+     message now, not a caption under it. Frosted plate matches the
+     explorer chrome family (nav overlay, title plate, toolbar). */
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   margin: 0;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
   text-align: center;
+  padding: 20px 26px;
+  background: rgba(28, 31, 26, 0.55);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  border: 1px solid var(--splash-canvas-rule);
+  border-radius: 2px;
+  box-shadow: 0 18px 40px var(--canvas-shadow);
 }
 [data-globe-failed] .failure {
   display: flex;
@@ -88,13 +96,13 @@
 
 .failureNote {
   /* Same voice as the loading label it replaces — mono caps, wide
-     tracking — but a register brighter than the muted label: an error
-     is information, not chrome. */
+     tracking — but strong cream at a step up in size: an error is
+     the page's message, not chrome. */
   font-family: var(--splash-mono);
-  font-size: 10px;
-  letter-spacing: 0.36em;
+  font-size: 11px;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--splash-canvas-fg);
+  color: var(--splash-canvas-fg-strong);
   white-space: nowrap;
 }
 
