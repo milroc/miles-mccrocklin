@@ -21,9 +21,17 @@ export function LoadingGlobe(): JSX.Element {
         <WireGlobe />
       </div>
       <span className={s.label}>loading</span>
+      {/* Both failure notes render; the mount container's
+          data-globe-failed VALUE ('webgl' | 'load') picks which shows,
+          so the copy always names the actual cause. Retry only appears
+          for load failures — reloading can't conjure WebGL. */}
       <p className={s.failure}>
-        <span className={s.failureNote}>the interactive globe needs WebGL</span>
-        <a className={s.failureCta} href="/photographer/">the photos live here →</a>
+        <span className={`${s.failureNote} ${s.whenWebgl}`}>the interactive globe needs WebGL</span>
+        <span className={`${s.failureNote} ${s.whenLoad}`}>the globe's map data didn't load</span>
+        <span className={s.failureCtas}>
+          <a className={`${s.failureCta} ${s.whenLoad}`} href="">try again →</a>
+          <a className={s.failureCta} href="/photographer/">the photos live here →</a>
+        </span>
       </p>
     </>
   );

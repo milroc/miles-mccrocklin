@@ -39,14 +39,31 @@
 }
 
 /* Failure state — Explorer sets data-globe-failed on the mount
-   container when mountGlobe() rejects. The pulsing "loading" label
-   swaps for a quiet explanation in the same mono register plus a
-   door out to the photo archive, so the visitor learns the real
-   globe isn't coming instead of watching ambient art forever. The
-   wireframe stays as the visual. */
+   container when mountGlobe() rejects, with the VALUE naming the
+   cause ('webgl' | 'load') so the copy is accurate. The pulsing
+   "loading" label swaps for the explanation plus doors out; the
+   wireframe stays as the visual but frozen and dimmed — a spinning
+   sphere under an error reads as "still loading", and nothing is. */
 [data-globe-failed] .label {
   animation: none;
   display: none;
+}
+[data-globe-failed] .scene {
+  opacity: 0.45;
+}
+[data-globe-failed] .scene * {
+  animation-play-state: paused;
+}
+
+/* Cause-gated copy: both notes render; the attribute value picks one.
+   Retry only shows for load failures. */
+.whenWebgl,
+.whenLoad {
+  display: none;
+}
+[data-globe-failed='webgl'] .whenWebgl,
+[data-globe-failed='load'] .whenLoad {
+  display: inline-block;
 }
 
 .failure {
@@ -71,13 +88,20 @@
 
 .failureNote {
   /* Same voice as the loading label it replaces — mono caps, wide
-     tracking, canvas-muted — minus the pulse: nothing is happening. */
+     tracking — but a register brighter than the muted label: an error
+     is information, not chrome. */
   font-family: var(--splash-mono);
   font-size: 10px;
   letter-spacing: 0.36em;
   text-transform: uppercase;
-  color: var(--splash-canvas-fg-muted);
+  color: var(--splash-canvas-fg);
   white-space: nowrap;
+}
+
+.failureCtas {
+  display: flex;
+  gap: 18px;
+  align-items: center;
 }
 
 .failureCta {
