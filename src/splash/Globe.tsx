@@ -1121,6 +1121,18 @@ export async function mountGlobe(
 ): Promise<() => void> {
   const fullscreen = options.fullscreen ?? false;
 
+  // THREE's WebGLRenderer throws during React's render when no WebGL
+  // context is available — an error that never reaches this promise
+  // chain, so the caller's .catch (and the explorer's failure state)
+  // would never fire. Probe up front: a WebGL-less browser rejects
+  // here on fullscreen surfaces and quietly keeps the wireframe on
+  // tile surfaces.
+  const probe = document.createElement('canvas');
+  if (!(probe.getContext('webgl2') ?? probe.getContext('webgl'))) {
+    if (!fullscreen) return () => {};
+    throw new Error('webgl-unavailable');
+  }
+
   // Per locked plan: when globeReady is false, the SSR'd static
   // wireframe is the production state — no real arcs, no fake pins.
   // Real waypoints land before the flag flips. The /explorer/ page

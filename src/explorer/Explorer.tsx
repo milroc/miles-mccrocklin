@@ -106,11 +106,18 @@ export function Explorer(): JSX.Element {
       },
     })
       .then((c) => { if (cancelled) c(); else cleanup = c; })
-      .catch(() => {
-        // Non-fatal, but stop the LoadingGlobe's "loading" label from
-        // pulsing forever — LoadingGlobe.module.css hides it when this
-        // attribute is present on the mount container.
-        if (!cancelled) el.setAttribute('data-globe-failed', '');
+      .catch((err: unknown) => {
+        // Non-fatal. LoadingGlobe.module.css keys off this attribute's
+        // VALUE for cause-accurate copy: 'webgl' (the probe's sentinel,
+        // reloading won't help) vs 'load' (assets failed to arrive, a
+        // retry can). The wireframe stays as the visual, frozen by the
+        // same attribute.
+        if (cancelled) return;
+        const kind =
+          err instanceof Error && err.message === 'webgl-unavailable'
+            ? 'webgl'
+            : 'load';
+        el.setAttribute('data-globe-failed', kind);
       });
     return () => {
       cancelled = true;

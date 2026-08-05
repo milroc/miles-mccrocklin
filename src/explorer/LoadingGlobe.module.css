@@ -38,12 +38,94 @@
   animation: explorer-loader-pulse 2.4s ease-in-out infinite;
 }
 
-/* Failure hook — Explorer sets data-globe-failed on the mount container
-   when mountGlobe() rejects, so the "loading" label doesn't pulse forever
-   over a globe that will never arrive. */
+/* Failure state — Explorer sets data-globe-failed on the mount
+   container when mountGlobe() rejects, with the VALUE naming the
+   cause ('webgl' | 'load') so the copy is accurate. The pulsing
+   "loading" label swaps for the explanation plus doors out; the
+   wireframe stays as the visual but frozen and dimmed — a spinning
+   sphere under an error reads as "still loading", and nothing is. */
 [data-globe-failed] .label {
   animation: none;
   display: none;
+}
+[data-globe-failed] .scene {
+  opacity: 0.45;
+}
+[data-globe-failed] .scene * {
+  animation-play-state: paused;
+}
+
+/* Cause-gated copy: both notes render; the attribute value picks one.
+   Retry only shows for load failures. */
+.whenWebgl,
+.whenLoad {
+  display: none;
+}
+[data-globe-failed='webgl'] .whenWebgl,
+[data-globe-failed='load'] .whenLoad {
+  display: inline-block;
+}
+
+.failure {
+  /* Hidden during normal loading and after a successful mount; only
+     the data-globe-failed hook below reveals it. */
+  display: none;
+  position: absolute;
+  /* Dead center over the dimmed sphere — an error is the page's
+     message now, not a caption under it. Frosted plate matches the
+     explorer chrome family (nav overlay, title plate, toolbar). */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  padding: 20px 26px;
+  background: rgba(28, 31, 26, 0.55);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  border: 1px solid var(--splash-canvas-rule);
+  border-radius: 2px;
+  box-shadow: 0 18px 40px var(--canvas-shadow);
+}
+[data-globe-failed] .failure {
+  display: flex;
+}
+
+.failureNote {
+  /* Same voice as the loading label it replaces — mono caps, wide
+     tracking — but strong cream at a step up in size: an error is
+     the page's message, not chrome. */
+  font-family: var(--splash-mono);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--splash-canvas-fg-strong);
+  white-space: nowrap;
+}
+
+.failureCtas {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.failureCta {
+  /* Door-row CTA voice (Splash .doorCta): accent mono, tight
+     tracking, underline on intent. */
+  font-family: var(--splash-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--splash-accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.failureCta:hover,
+.failureCta:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 /* Reduced motion — skip the entrance and hold the label steady. */
 @media (prefers-reduced-motion: reduce) {
