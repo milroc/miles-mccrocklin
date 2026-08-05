@@ -44,6 +44,10 @@ interface MasonryWallProps {
   // would 'wildlife' filter look like" preview without committing to
   // the filter. Empty string = no dim.
   previewTheme?: string;
+  // Resets every filter axis (Photography.tsx owns the state). Renders
+  // an inline "Clear filters →" inside the empty state so recovery
+  // lives next to the message, not only in the distant toolbar link.
+  onClear?: () => void;
 }
 
 // Curator review mode: when the page URL has ?meta=1, every tile renders
@@ -107,6 +111,7 @@ const FADE_MS = 160;
 export function MasonryWall({
   photos,
   previewTheme,
+  onClear,
 }: MasonryWallProps): JSX.Element {
   // Expand the hovered hero category to include its sub-cats, so any
   // tile tagged with a descendant counts as "matching" the preview.
@@ -177,12 +182,18 @@ export function MasonryWall({
   // old (non-empty) list — we want to keep rendering those tiles while
   // they fade out rather than snap to the empty message.
   if (displayed.length === 0) {
-    // Empty filter state. The "Clear filters →" link is owned by
-    // ChipRow (which has the state), so this component just announces
-    // the empty result. Photography.tsx handles the actual chip clear.
+    // Empty filter state, with recovery inline: same behavior as the
+    // ChipRow "Clear filters" link (both call Photography.tsx's clear).
     return (
       <div className={s.root} ref={containerRef}>
-        <p className={s.empty}>No photos match these filters.</p>
+        <p className={s.empty}>
+          No photos match these filters.
+          {onClear && (
+            <button type="button" className={s.emptyClear} onClick={onClear}>
+              Clear filters →
+            </button>
+          )}
+        </p>
       </div>
     );
   }

@@ -42,6 +42,26 @@
   margin: 0;
 }
 
+/* Return link back to the glyph's first occurrence in the prose.
+   Mono register so it reads as apparatus, not part of the sentence;
+   muted at rest, accent on intent. */
+.backref {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: var(--fs-eyebrow);
+  color: var(--muted);
+  text-decoration: none;
+  padding: 0 2px;
+}
+.backref:hover,
+.backref:focus-visible {
+  color: var(--accent);
+}
+.backref:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
 /* Pulse the targeted footnote so the reader sees where they landed.
    Keyframe holds the highlight for ~0.8s then fades over ~1.6s. */
 .glyph:target {

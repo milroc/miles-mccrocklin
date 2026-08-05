@@ -199,3 +199,30 @@
   text-transform: uppercase;
   color: var(--canvas-fg);
 }
+
+/* Inline recovery action inside the empty state — same mono register
+   and behavior as ChipRow's "Clear filters" link. */
+.emptyClear {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  display: block;
+  margin: 18px auto 0;
+  color: var(--canvas-fg-muted);
+  font-family: var(--mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: color 140ms ease;
+}
+.emptyClear:hover,
+.emptyClear:focus-visible {
+  color: var(--canvas-fg-strong);
+}
+.emptyClear:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

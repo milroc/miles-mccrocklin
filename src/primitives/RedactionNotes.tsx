@@ -27,7 +27,18 @@ export function RedactionNotes({ items }: RedactionNotesProps) {
             <dt id={`note-${r.id}`} className={s.glyph}>
               {r.glyph}
             </dt>
-            <dd className={s.context}>{r.context}</dd>
+            <dd className={s.context}>
+              {r.context}{' '}
+              {/* Return path: the inline glyph's first occurrence
+                  carries id="ref-{id}" (see RedactedText.tsx). */}
+              <a
+                className={s.backref}
+                href={`#ref-${r.id}`}
+                aria-label="Back to the text"
+              >
+                ↩
+              </a>
+            </dd>
           </Fragment>
         ))}
       </dl>
