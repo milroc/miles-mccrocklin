@@ -18,13 +18,9 @@ import { SummaryGallery } from './media/SummaryGallery';
 import { MediaProvider } from './media/MediaProvider';
 import { ModeContext, visible, isArchived as isArchivedItem } from './utils/mode';
 import { EDIT_ENABLED, EditToolbar, HighLevelFeedback, useEdit } from './edit';
-import ME from '../data/me.json' with { type: 'json' };
-import type { Mode, Resume } from './types';
+import { RESUME_DATA } from './resume-data';
+import type { Mode } from './types';
 import './App.css';
-
-// JSON imports infer as overly literal types — cast at the boundary to the
-// hand-written shape so consumers see the right type.
-const RESUME_DATA = ME as unknown as Resume;
 
 function isMode(v: string | null): v is Mode {
   return v === 'interactive' || v === 'text' || v === '1pager';

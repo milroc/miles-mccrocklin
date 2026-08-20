@@ -509,13 +509,15 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
     // below see the same shape regardless of which form Bun produced.
     const unwrap = <T,>(mod: unknown): T => {
       const m = mod as { default?: unknown };
-      if (m && typeof m === 'object' && 'default' in m && m.default && typeof m.default === 'object') {
-        return m.default as T;
+      const inner = m && typeof m === 'object' && 'default' in m ? m.default : undefined;
+      // Objects and functions both count: react-globe.gl's default export
+      // is a component function, the others are namespace objects.
+      if (inner && (typeof inner === 'object' || typeof inner === 'function')) {
+        return inner as T;
       }
       return mod as T;
     };
-    const Globe = ((globeMod as { default?: typeof import('react-globe.gl').default }).default
-      ?? (globeMod as unknown as typeof import('react-globe.gl').default));
+    const Globe = unwrap<typeof import('react-globe.gl').default>(globeMod);
     const reactDomClient = unwrap<typeof import('react-dom/client')>(reactDomClientMod);
     const React = unwrap<typeof import('react')>(reactMod);
     const topojsonClient = unwrap<typeof import('topojson-client')>(topojsonClientMod);
@@ -528,8 +530,24 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
     const decoded = topojsonClient.feature(
       topology as Parameters<typeof topojsonClient.feature>[0],
       topology.objects.countries as Parameters<typeof topojsonClient.feature>[1],
-    ) as unknown as { features: CountryFeature[] };
-    const countries = decoded.features;
+    );
+    // feature() returns a bare Feature for a single geometry and a
+    // FeatureCollection for a GeometryCollection; we always pass the
+    // latter. Keep the features that carry the `name` every lookup here
+    // indexes by, and the polygonal geometry the renderer needs — the
+    // shipped topology has both on every country, so a drop means the
+    // build produced something we don't know how to draw.
+    const rawFeatures = 'features' in decoded ? decoded.features : [decoded];
+    const countries: CountryFeature[] = rawFeatures.filter(
+      (f): f is CountryFeature =>
+        typeof f.properties?.name === 'string' &&
+        (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon'),
+    );
+    if (countries.length !== rawFeatures.length) {
+      console.warn(
+        `globe: skipped ${rawFeatures.length - countries.length} unnamed or non-polygon feature(s)`,
+      );
+    }
 
     // Per-country materials are created UPFRONT in a shimmer-loading
     // state (uHasPhoto = 0). Each country's texture lazily loads in the
@@ -1282,7 +1300,17 @@ export async function mountGlobe(
       addEventListener?: (type: string, listener: () => void) => void;
       removeEventListener?: (type: string, listener: () => void) => void;
     };
-    pointOfView: (pov: { lat?: number; lng?: number; altitude?: number }, transitionMs?: number) => void;
+    // three-globe's pointOfView is an overloaded accessor: no arguments
+    // reads the current camera pose, one argument moves the camera.
+    pointOfView: {
+      (): { lat?: number; lng?: number; altitude?: number };
+      (pov: { lat?: number; lng?: number; altitude?: number }, transitionMs?: number): void;
+    };
+    // The three.js renderer and camera behind the globe. Used for the
+    // full-res texture-upgrade check, the shader precompile kick, and
+    // the pixel-ratio cap on very large canvases.
+    renderer?: () => THREE_T.WebGLRenderer;
+    camera?: () => THREE_T.Camera;
     // Screen XY (relative to the globe canvas) → globe surface lat/lng,
     // or null if the ray misses the sphere. Used to find the country
     // under a click that landed on an arc mesh instead of the polygon.
@@ -1947,10 +1975,7 @@ export async function mountGlobe(
   // scene by the time we get here.
   let compileKicked = false;
   const tickPaint = (): void => {
-    const inst = globeRef.current as (typeof globeRef.current & {
-      camera?: () => THREE_T.Camera;
-      renderer?: () => THREE_T.WebGLRenderer;
-    }) | null;
+    const inst = globeRef.current;
     let sceneCount = -1;
     try { sceneCount = inst?.scene?.()?.children?.length ?? -1; } catch { /* scene not yet available */ }
     if (sceneCount > 1 && polygonFeed.length >= orderedCountries.length && !compileKicked) {
@@ -2057,11 +2082,9 @@ export async function mountGlobe(
       // through the pump instead of bursting.
       if (fullscreen && performance.now() - lastUpgradeCheck > 500) {
         lastUpgradeCheck = performance.now();
-        const pov = (inst as unknown as {
-          pointOfView: () => { lat?: number; lng?: number };
-        }).pointOfView();
+        const pov = inst?.pointOfView();
         if (typeof pov?.lat === 'number' && typeof pov?.lng === 'number') {
-          const renderer = (inst as unknown as { renderer?: () => THREE_T.WebGLRenderer }).renderer?.();
+          const renderer = inst?.renderer?.();
           const ratio = renderer?.getPixelRatio() ?? Math.min(2, window.devicePixelRatio || 1);
           const sphereFraction = Math.tan(Math.asin(1 / (1 + altitude))) / FOV_HALF_TAN;
           const spherePxNow = height * ratio * sphereFraction;
@@ -2091,10 +2114,7 @@ export async function mountGlobe(
     if (cancelled) return;
     void loadPhotos({
       getRenderer: () => {
-        const inst = globeRef.current as (typeof globeRef.current & {
-          renderer?: () => THREE_T.WebGLRenderer;
-        }) | null;
-        return inst?.renderer?.() ?? null;
+        return globeRef.current?.renderer?.() ?? null;
       },
       // isDragging only flips in fullscreen (splash keeps pointer
       // interaction off), so the splash pump never pauses.
@@ -2215,8 +2235,7 @@ export async function mountGlobe(
     {
       const dpr = Math.min(2, window.devicePixelRatio || 1);
       if (width * height * dpr * dpr > 6_000_000 && dpr > 1.5) {
-        (inst as unknown as { renderer?: () => THREE_T.WebGLRenderer })
-          .renderer?.()?.setPixelRatio(1.5);
+        inst.renderer?.()?.setPixelRatio(1.5);
       }
     }
     // Enable autoRotate on the next paint — one rAF gives the

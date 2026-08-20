@@ -9,10 +9,8 @@
 //      gets a glyph + a brief description.
 //
 // See `Redaction` in src/types.ts for the field contract.
-import ME from '../data/me.json' with { type: 'json' };
-import type { Redaction, Resume } from './types';
-
-const RESUME_DATA = ME as unknown as Resume;
+import { RESUME_DATA } from './resume-data';
+import type { Redaction } from './types';
 
 export type { Redaction };
 
