@@ -175,8 +175,21 @@ Writing specs here:
   (`clip-path: inset(50%)` under the globe canvas). Activate it with
   `.press('Enter')`; a mouse click can never reach it.
 - **Globe specs skip rather than fail** when WebGL is unavailable, via
-  `requireLiveGlobe`. Assert the documented failure path deliberately
-  instead, by disabling WebGL as `explorer.spec.ts` does.
+  `requireLiveGlobe` — except under `CI`, where the runner image's WebGL
+  is a fixed property and a silent loss of it would turn eight specs
+  into no-ops behind a green check. Assert the documented failure path
+  deliberately instead, as `explorer-no-webgl.spec.ts` does.
+- **Record a known defect with `test.fail()`, never `test.fixme`.** A
+  fixme skips: it sits in the output forever without checking anything,
+  and nothing tells you when the bug is gone. `test.fail()` runs the
+  spec, expects it to fail, and reports "expected to fail but passed"
+  the day someone fixes it — at which point they delete the annotation.
+  Put the call inside the test body; at describe scope it applies to
+  every test in the file. Two specs do this today, both for issue #80.
+  A `test.fail()` spec must fail *deterministically*, so pin down any
+  race first — the focus one waits for the panel's search box to hold
+  focus, because pressing Escape faster than TreeDropdown's
+  requestAnimationFrame wins the race and the bug doesn't reproduce.
 - **Every spec fails on an unexpected `console.error` or `pageerror`.**
   The fixture that does this is `{ auto: true }` — that flag is what
   makes it run at all, since no spec requests it by name. For a page

@@ -39,32 +39,6 @@ test.describe('explorer', () => {
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   });
 
-  test('the chrome hides after exactly the idle delay, and returns on activity', async ({
-    page,
-  }) => {
-    // A virtual clock, so this asserts the 3s contract from both sides
-    // instead of "eventually, within 30s". Wall-clock timing here is
-    // hopeless: several software-WebGL globes rendering in parallel push
-    // a setTimeout out by seconds, which is why the previous version had
-    // a 30s timeout and passed happily with the delay set to 250ms.
-    await page.clock.install();
-    await page.goto('/explorer/');
-    const title = page.getByText(/Explorer · \d+ countries/);
-    await expect(title).toBeVisible();
-
-    await page.clock.runFor(2_500);
-    await expect(title, 'still visible before the delay elapses')
-      .not.toHaveAttribute('aria-hidden', 'true');
-
-    await page.clock.runFor(1_000);
-    await expect(title, 'hidden once the delay elapses')
-      .toHaveAttribute('aria-hidden', 'true');
-
-    await page.mouse.move(500, 400);
-    await expect(title, 'cursor activity brings it back')
-      .not.toHaveAttribute('aria-hidden', 'true');
-  });
-
   test('the hidden country index lists every visitable country', async ({ page }) => {
     await requireLiveGlobe(page);
     const index = page.getByRole('navigation', { name: 'Countries' });
@@ -79,6 +53,39 @@ test.describe('explorer', () => {
     const names = await buttons.allInnerTexts();
     expect(new Set(names).size, 'country names are unique').toBe(names.length);
     expect([...names].sort((a, b) => a.localeCompare(b))).toEqual(names);
+  });
+});
+
+// Its own describe so the clock is installed before this page's only
+// navigation. Sharing the outer beforeEach meant installing a clock onto
+// an already-loaded page and then navigating again, which raced.
+test.describe('explorer — idle chrome', () => {
+  test('the chrome hides after exactly the idle delay, and returns on activity', async ({
+    page,
+  }) => {
+    // A virtual clock, so this asserts the 3s contract from both sides
+    // rather than "eventually, within 30s". Wall-clock timing here is
+    // hopeless — several software-WebGL globes rendering in parallel
+    // push a setTimeout out by seconds, which is why the previous
+    // version needed a 30s timeout and passed happily with the delay
+    // set to 250ms.
+    await page.clock.install();
+    await page.goto('/explorer/');
+
+    const title = page.locator('p', { hasText: /Explorer · \d+ countries/ });
+    await expect(title).toHaveAttribute('aria-hidden', 'false');
+
+    await page.clock.runFor(2_500);
+    await expect(title, 'still shown before the delay elapses')
+      .toHaveAttribute('aria-hidden', 'false');
+
+    await page.clock.runFor(1_000);
+    await expect(title, 'hidden once the delay elapses')
+      .toHaveAttribute('aria-hidden', 'true');
+
+    await page.mouse.move(500, 400);
+    await expect(title, 'cursor activity brings it back')
+      .toHaveAttribute('aria-hidden', 'false');
   });
 });
 

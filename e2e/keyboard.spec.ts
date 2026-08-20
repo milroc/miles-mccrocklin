@@ -51,22 +51,39 @@ test.describe('keyboard', () => {
     await expect(page.getByRole('listbox')).toBeHidden();
   });
 
-  // KNOWN GAP, found while writing this suite: dismissing a filter
-  // dropdown with Escape leaves focus on the removed search input, so it
-  // falls to <body>. A keyboard visitor who opens a filter, changes
-  // their mind and presses Escape is returned to the top of the
-  // document instead of to the control they were on. WAI-ARIA's
-  // dismissal pattern asks for focus to return to the trigger.
+  // KNOWN GAP (issue #80): once focus is inside an open filter dropdown,
+  // Escape unmounts the panel and focus falls to <body> rather than
+  // returning to the trigger. A keyboard visitor who opens a filter,
+  // changes their mind and presses Escape is sent to the top of the
+  // document. WAI-ARIA's dismissal pattern asks for focus to return to
+  // the control that opened the popup.
   //
-  // Left as fixme so the gap stays visible and this spec is what closes
-  // it.
-  test.fixme('Escape returns focus to the dropdown trigger', async ({ page }) => {
+  // The wait below is what makes this deterministic. TreeDropdown moves
+  // focus into the panel from a requestAnimationFrame, so pressing
+  // Escape immediately after opening is a race: win it and focus never
+  // left the trigger and the bug doesn't reproduce. Waiting for the
+  // searchbox first puts us in the state a real visitor is always in by
+  // the time they react.
+  //
+  // test.fail, not test.fixme: this runs, and is expected to fail. A
+  // skip would sit in the output forever without checking anything. The
+  // day the bug is fixed, Playwright reports "expected to fail but
+  // passed" and whoever fixed it deletes the annotation.
+  test('Escape returns focus to the dropdown trigger', async ({ page }) => {
+    // Inside the body, not at describe scope — a bare test.fail() there
+    // would apply to every test in the file.
+    test.fail();
     await page.goto('/photographer/');
     const trigger = page.locator('button[aria-haspopup="listbox"]').first();
     await trigger.focus();
     await page.keyboard.press('Enter');
-    await expect(page.getByRole('listbox')).toBeVisible();
+
+    const listbox = page.getByRole('listbox');
+    await expect(listbox).toBeVisible();
+    await expect(listbox.getByRole('searchbox')).toBeFocused();
+
     await page.keyboard.press('Escape');
+    await expect(listbox).toBeHidden();
     await expect(trigger).toBeFocused();
   });
 
@@ -109,16 +126,16 @@ test.describe('keyboard', () => {
     }
   });
 
-  // KNOWN GAP, found while writing this suite: /photographer/ renders no
-  // headings at all — not merely no h1. Its editorial intro ("I shoot
-  // wildlife, landscape, and culture…") is a <p>, so a screen-reader
-  // visitor gets no document outline and heading navigation, one of the
-  // primary ways screen readers move through a page, finds nothing.
+  // KNOWN GAP (issue #80): /photographer/ renders no headings at all —
+  // not merely no h1. Its editorial intro ("I shoot wildlife, landscape,
+  // and culture…") is a <p>, so a screen-reader visitor gets no document
+  // outline, and heading navigation — one of the primary ways screen
+  // readers move through a page — finds nothing.
   //
-  // Left as fixme rather than deleted so the gap stays visible and this
-  // spec is the thing that closes it. Delete the fixme when the page
+  // test.fail: see the note above. Delete the annotation when the page
   // grows a heading.
-  test.fixme('/photographer/ exposes a heading', async ({ page }) => {
+  test('/photographer/ exposes a heading', async ({ page }) => {
+    test.fail();
     await page.goto('/photographer/');
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
   });

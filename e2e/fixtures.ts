@@ -16,9 +16,12 @@ import {
 // Console noise the app does not own and cannot silence. Anything else
 // reaching console.error fails the test that provoked it.
 const IGNORED_CONSOLE = [
-  // Chromium's own note about the <iframe> allow/allowfullscreen pair
-  // that YouTube embeds ship with.
+  // Chromium's own notes about the <iframe> that YouTube embeds ship
+  // with: the allow/allowfullscreen pair, and the player asking for a
+  // Compute Pressure permission this document does not delegate.
+  // Neither is under this site's control, and neither indicates a fault.
   /Allow attribute will take precedence over 'allowfullscreen'/,
+  /^Permissions policy violation: compute-pressure is not allowed/,
   // Headless Chromium has no GPU; the software path still renders.
   /Automatic fallback to software WebGL has been deprecated/,
   // Anchored to Chromium's own prefixes. An unanchored /SwiftShader/
