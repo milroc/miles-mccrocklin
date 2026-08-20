@@ -15,7 +15,10 @@ interface EditableTextProps {
   value: string;
 }
 
-const Passthrough = ({ value }: EditableTextProps): unknown => value;
+// Both branches return a fragment rather than the bare string: a
+// component's contract is JSX, and React renders `<>{value}</>` to the
+// same text node with no wrapper element.
+const Passthrough = ({ value }: EditableTextProps): JSX.Element => <>{value}</>;
 
 function Editable({ path, value }: EditableTextProps) {
   const { active, pushEdit } = useEdit();
@@ -30,7 +33,7 @@ function Editable({ path, value }: EditableTextProps) {
     if (el.textContent !== value) el.textContent = value;
   }, [value]);
 
-  if (!active) return value as unknown as null;
+  if (!active) return <>{value}</>;
 
   return (
     <span

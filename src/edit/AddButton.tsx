@@ -10,15 +10,16 @@
 // Conditional-assignment on the literal EDIT_ENABLED constant →
 // `Stub` in prod, `Add` declaration unreferenced and DCE'd.
 import { EDIT_ENABLED } from './edit';
+import type { JsonValue } from './path';
 import { useEdit } from './EditContext';
 import s from './edit.module.css';
 
 interface AddButtonProps {
   // Path to the array the new item is appended to.
   path: string;
-  // The shape of the new item — string or any object the surrounding
-  // schema accepts.
-  template: unknown;
+  // The shape of the new item — string or any JSON object the
+  // surrounding schema accepts.
+  template: JsonValue;
   // Button label (e.g. "+ add bullet").
   label: string;
 }
