@@ -1,5 +1,5 @@
 // Every URL the site promises to answer, and what it answers with.
-import { test, expect } from './fixtures';
+import { test, expect, NAV_TIMEOUT } from './fixtures';
 
 const PILLARS = [
   { path: '/', title: /Miles McCrocklin/ },
@@ -93,20 +93,26 @@ test.describe('cross-page navigation', () => {
     );
 
     await nav.getByRole('link', { name: 'photographer' }).click();
-    await expect(page).toHaveURL(/\/photographer\/?$/);
+    await expect(page).toHaveURL(/\/photographer\/?$/, { timeout: NAV_TIMEOUT });
 
     await page
       .getByRole('navigation', { name: 'Site sections' })
       .getByRole('link', { name: 'explorer' })
       .click();
-    await expect(page).toHaveURL(/\/explorer\/?$/);
+    await expect(page).toHaveURL(/\/explorer\/?$/, { timeout: NAV_TIMEOUT });
 
     // Explorer's nav overlay fades after 3s of stillness so the globe can
-    // spin uncluttered, and the hidden plate stops taking pointer events.
-    // Keyboard activation is unaffected by that, so the way home is
-    // asserted here; explorer.spec.ts covers the pointer path against the
-    // rotate toggle.
-    await page.getByRole('link', { name: /home/i }).first().press('Enter');
-    await expect(page).toHaveURL(/\/$/);
+    // spin uncluttered. Keyboard activation is unaffected by the plate
+    // dropping pointer-events, so the way home is asserted here;
+    // explorer.spec.ts covers the pointer path against the rotate toggle.
+    //
+    // Selected by attribute rather than by role, though: the faded plate
+    // is aria-hidden, and an aria-hidden subtree is absent from the
+    // accessibility tree, so getByRole matches nothing once 3s of
+    // stillness have passed. That had not bitten yet only because the
+    // preceding assertions usually land inside the window. The links stay
+    // focusable while hidden, which is issue #83.
+    await page.locator('a[aria-label$="home"]').first().press('Enter');
+    await expect(page).toHaveURL(/\/$/, { timeout: NAV_TIMEOUT });
   });
 });

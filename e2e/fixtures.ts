@@ -115,11 +115,16 @@ export async function requireLiveGlobe(page: Page): Promise<void> {
   ).toBe('live');
 }
 
-// Two surfaces deliberately hide their chrome when the pointer goes
-// still — Explorer's nav/toolbar/title after 3s, the media viewer's
-// topbar and arrows after 1.2s — and the hidden plate stops taking
-// pointer events, so whatever is underneath (the globe canvas, the
-// photo) receives the click instead.
+// The media viewer hides its topbar and arrows 1.2s after the pointer
+// goes still, and the hidden plate stops taking pointer events, so the
+// photo underneath receives the click instead.
+//
+// Explorer does the same to its nav, toolbar and title after 3s, but is
+// no longer driven through here: its chrome sits under a starving WebGL
+// globe, which stretched the gap between waking the plate and pressing
+// it far enough that presses were swallowed outright. explorer.spec.ts
+// pins the chrome open with a country deep-link instead, and issue #79
+// tracks the underlying "faded plates are hard to click".
 //
 // That means a pointer click on those controls only lands inside the
 // window that cursor movement opens. Playwright's own retry loop does
@@ -172,16 +177,44 @@ export async function clickIdleChrome(page: Page, locator: Locator): Promise<voi
     'waking idle-hidden chrome so it accepts a pointer again',
   ).toPass({ timeout: 30_000, intervals: [200, 200, 400] });
 
-  // Raw mouse events rather than locator.click(). Playwright's click
-  // runs an actionability wait first, and on Explorer that wait outlives
-  // the 3s idle window — the chrome hides underneath it and the click
-  // never lands. Moving onto the control is itself the activity that
-  // keeps it awake, so pressing immediately afterwards is reliable.
+  // Raw mouse events rather than locator.click(). Playwright's click runs
+  // an actionability wait first, and that wait can outlive the idle
+  // window — the chrome hides underneath it and the click never lands.
+  //
+  // Two moves at distinct coordinates, because Chromium fires no
+  // mousemove for a move to the position the cursor already occupies, and
+  // a move that fires no mousemove wakes nothing. Then confirm the plate
+  // is taking pointers again and press straight away: waking is a React
+  // state change that lands a render later, so a mousedown dispatched
+  // behind an unrendered wake is hit-tested against pointer-events:none
+  // and goes to whatever sits underneath. Explorer demonstrated exactly
+  // that under six-worker stress, which is why it no longer uses this
+  // helper at all. Confirming immediately before the press is what keeps
+  // the remaining window down to a single round trip.
   const target = box!;
-  await page.mouse.move(target.x + target.width / 2, target.y + target.height / 2);
+  const cx = target.x + target.width / 2;
+  const cy = target.y + target.height / 2;
+  await page.mouse.move(cx - 2, cy - 2);
+  await page.mouse.move(cx, cy);
+  await expect(locator, 'still taking pointers at the moment of the press')
+    .toHaveCSS('pointer-events', 'auto', { timeout: 5_000 });
   await page.mouse.down();
   await page.mouse.up();
 }
+
+// A link click starts a full document navigation, and expect's 10s
+// default then measures how fast the destination loads rather than
+// whether the link works. /photographer/ inlines a 215-photo manifest
+// and /explorer/ ships three.js; on a two-core runner either can outrun
+// 10s, which is what failed CI on `mobile — a door tap navigates` with
+// the URL still empty and the navigation reported as unfinished.
+//
+// page.goto() gets Playwright's 30s navigation budget everywhere else in
+// this suite, so a click-driven navigation gets the same one. This is a
+// deadline on arriving at all, not on arriving quickly — nothing here
+// claims a page-load budget, and a spec that quietly did would be
+// asserting the runner's speed.
+export const NAV_TIMEOUT = 30_000;
 
 // ─── Filters ──────────────────────────────────────────────────────────
 

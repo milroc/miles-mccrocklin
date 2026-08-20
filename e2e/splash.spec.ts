@@ -1,6 +1,6 @@
 // The splash is the one page that is fully rendered before any
 // JavaScript runs, so it gets tested twice: as served, and as hydrated.
-import { test, expect, requireLiveGlobe } from './fixtures';
+import { test, expect, requireLiveGlobe, NAV_TIMEOUT } from './fixtures';
 
 test.describe('splash', () => {
   test.beforeEach(async ({ page }) => {
@@ -19,7 +19,9 @@ test.describe('splash', () => {
     const hero = page.getByRole('link', { name: /explorer/i }).first();
     await expect(hero).toHaveAttribute('href', '/explorer/');
     await hero.click();
-    await expect(page).toHaveURL(/\/explorer\/?$/);
+    // /explorer/ ships three.js; arriving is the assertion, not arriving
+    // inside expect's 10s default.
+    await expect(page).toHaveURL(/\/explorer\/?$/, { timeout: NAV_TIMEOUT });
   });
 
   test('both door rows link to their pillar', async ({ page }) => {

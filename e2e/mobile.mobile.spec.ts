@@ -3,7 +3,7 @@
 // with their own header and backdrop, and the masonry recomputes its
 // column count — so each is exercised on a real touch device profile
 // rather than a narrowed desktop one.
-import { test, expect, resultCount } from './fixtures';
+import { test, expect, resultCount, NAV_TIMEOUT } from './fixtures';
 
 test.describe('mobile — splash', () => {
   test('restacks to one column with every door reachable', async ({ page }) => {
@@ -29,7 +29,11 @@ test.describe('mobile — splash', () => {
   test('a door tap navigates', async ({ page }) => {
     await page.goto('/');
     await page.locator('a[data-id="photographer"]').tap();
-    await expect(page).toHaveURL(/\/photographer\/?$/);
+    // NAV_TIMEOUT, not the 10s expect default: /photographer/ is the
+    // heaviest page here and CI's two-core runner took longer than that
+    // to finish the navigation, failing a spec about whether the door
+    // works on how fast the destination loads.
+    await expect(page).toHaveURL(/\/photographer\/?$/, { timeout: NAV_TIMEOUT });
   });
 });
 
