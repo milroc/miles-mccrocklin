@@ -281,19 +281,23 @@ function loadEvents(tier: Tier, strict: boolean): LabelEvent[] {
         if (strict) { console.error(msg); process.exit(1); }
         console.warn(msg);
       }
-      events.push({
+      const event: LabelEvent = {
         v: typeof o.v === 'number' ? o.v : undefined,
         id: o.id,
         timestamp: typeof o.timestamp === 'string' ? o.timestamp : sessionFile,
         tier,
         sessionFile,
         fields: o.fields as Record<string, unknown>,
-        ...(o.source_fingerprint && typeof o.source_fingerprint === 'object'
-          ? { source_fingerprint: o.source_fingerprint as { human: string; ai: string } }
-          : {}),
-        ...(typeof o.kind === 'string' && { kind: o.kind }),
-        ...(typeof o.dupe_signature === 'string' && { dupe_signature: o.dupe_signature }),
-      });
+      };
+      // The three optional fields are written only when the event line
+      // carried them, so a missing key stays missing rather than
+      // becoming an explicit undefined the writer would round-trip.
+      if (o.source_fingerprint && typeof o.source_fingerprint === 'object') {
+        event.source_fingerprint = o.source_fingerprint as { human: string; ai: string };
+      }
+      if (typeof o.kind === 'string') event.kind = o.kind;
+      if (typeof o.dupe_signature === 'string') event.dupe_signature = o.dupe_signature;
+      events.push(event);
     }
   }
   // Sort chronologically (sessionFile is the tiebreaker since session
