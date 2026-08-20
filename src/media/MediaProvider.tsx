@@ -104,7 +104,7 @@ export function MediaProvider({ children }: MediaProviderProps) {
     }
     const el = triggerRef.current;
     triggerRef.current = null;
-    if (el && typeof el.focus === 'function') {
+    if (el) {
       requestAnimationFrame(() => el.focus());
     }
   };

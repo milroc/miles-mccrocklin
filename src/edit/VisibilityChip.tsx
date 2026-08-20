@@ -9,6 +9,7 @@
 import { EDIT_ENABLED } from './edit';
 import { useEdit } from './EditContext';
 import { getAtPath } from './path';
+import { asString, isJsonObject } from '../utils/json';
 import type { Visibility } from '../types';
 import s from './edit.module.css';
 
@@ -36,9 +37,8 @@ function Chip({ path }: VisibilityChipProps) {
   // as 'not_1pager' to match visible()'s default.
   const item = getAtPath(displayResume, path);
   const current: Visibility =
-    item && typeof item === 'object' && !Array.isArray(item)
-      ? ((item as { visibility?: Visibility }).visibility ?? 'not_1pager')
-      : 'not_1pager';
+    (isJsonObject(item) ? asString(item.visibility) : undefined) as Visibility | undefined
+      ?? 'not_1pager';
 
   return (
     <span className={s.chip} aria-label="Visibility">

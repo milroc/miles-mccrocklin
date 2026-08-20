@@ -11,7 +11,7 @@
 // delete them.
 import { useContext } from 'react';
 import { RedactedText } from './RedactedText';
-import { ModeContext, visible, pickText, isArchived as isArchivedItem } from '../utils/mode';
+import { ModeContext, visible, pickText, isPlainText, isArchived as isArchivedItem } from '../utils/mode';
 import {
   AddButton, EDIT_ENABLED, EditableText, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
@@ -45,14 +45,14 @@ export function Bullets({ items, path }: BulletsProps) {
       {renderable.length > 0 && (
         <ul className="bullets">
           {renderable.map(({ it, i }) => {
-            const isObj = typeof it === 'object' && it !== null;
+            const isObj = !isPlainText(it);
             // ARCHIVED treatment is reserved for the explicit case —
             // a 1pager_only item shown in text mode (because edit
             // forces text) is a *mode mismatch*, not an archive.
             const archived = editActive && isArchivedItem(it);
             const itemPath = path ? joinPath(path, i) : '';
             const textPath = isObj ? joinPath(itemPath, 'text') : itemPath;
-            const text = pickText(it as RichText, mode);
+            const text = pickText(it, mode);
             return (
               <li key={i} data-archived={archived || undefined}>
                 {editActive && itemPath ? (

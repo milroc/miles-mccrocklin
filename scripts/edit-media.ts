@@ -4,6 +4,7 @@
 // Run: `bun scripts/edit-media.ts` then open http://localhost:4318
 
 import { serve } from "bun";
+import { isJsonObject, isString } from '../src/utils/json';
 import type { JsonValue } from "../src/utils/json";
 
 const PORT = Number(process.env.PORT ?? 4318);
@@ -21,11 +22,11 @@ function findMedia(node: JsonValue, path: (string | number)[], out: MediaItem[])
     node.forEach((v, i) => findMedia(v, [...path, i], out));
     return;
   }
-  if (node && typeof node === "object") {
-    if (typeof node.src === "string" && node.src.startsWith("media/")) {
+  if (isJsonObject(node)) {
+    if (isString(node.src) && node.src.startsWith("media/")) {
       const fields: Record<string, string> = {};
       for (const [k, v] of Object.entries(node)) {
-        if (typeof v === "string") fields[k] = v;
+        if (isString(v)) fields[k] = v;
       }
       out.push({ path, src: node.src, fields });
     }

@@ -315,11 +315,15 @@ function buildSelectionBorder(
 // Perf threshold for falling back to 2D static globe. WebGL globe is
 // expensive; on low-end Android we'd rather render the wireframe.
 function shouldUse2DFallback(): boolean {
-  const nav = navigator as Navigator & { deviceMemory?: number };
-  const deviceMemory = nav.deviceMemory;
-  const cores = navigator.hardwareConcurrency;
-  if (typeof deviceMemory === 'number' && deviceMemory < 4) return true;
-  if (typeof cores === 'number' && cores < 4) return true;
+  // Both are optional in practice: deviceMemory is Chromium-only, and
+  // hardwareConcurrency predates lib.dom's non-optional declaration of
+  // it. Absent means "no evidence of a low-end device", not zero.
+  const nav = navigator as Navigator & {
+    deviceMemory?: number;
+    hardwareConcurrency?: number;
+  };
+  if (nav.deviceMemory !== undefined && nav.deviceMemory < 4) return true;
+  if (nav.hardwareConcurrency !== undefined && nav.hardwareConcurrency < 4) return true;
   // Reduced-motion → no auto-rotate (handled in mount), but still allow
   // the WebGL globe; user opted into the splash already.
   return false;
@@ -446,6 +450,20 @@ interface GlobeAssets {
 // A point on the globe.
 type LatLng = { lat: number; lng: number };
 
+// A CJS namespace hides the real export behind `default`; an ESM one is
+// the export itself. Which of the two Bun produces depends on the
+// package, so unwrap() asks both questions here rather than at each
+// import site.
+function hasDefaultExport<T>(mod: T | { default: T }): mod is { default: T } {
+  return typeof mod === 'object' && mod !== null && 'default' in mod;
+}
+
+// Objects and functions both count: react-globe.gl's default export is
+// a component function, the others are namespace objects.
+function isModuleExport<T>(value: T): value is NonNullable<T> {
+  return value != null && (typeof value === 'object' || typeof value === 'function');
+}
+
 // The bbox summary bboxOf produces.
 type CountryBbox = { extentDeg: number; lat: number; lng: number };
 
@@ -534,17 +552,8 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
     // A dynamic import hands back either the export itself or a namespace
     // hiding it behind `default` — which of the two Bun produces depends
     // on whether the package ships CJS or ESM.
-    const unwrap = <T,>(mod: T | { default: T }): T => {
-      if (mod && typeof mod === 'object' && 'default' in mod) {
-        const inner = mod.default;
-        // Objects and functions both count: react-globe.gl's default
-        // export is a component function, the others are namespaces.
-        if (inner && (typeof inner === 'object' || typeof inner === 'function')) {
-          return inner;
-        }
-      }
-      return mod as T;
-    };
+    const unwrap = <T,>(mod: T | { default: T }): T =>
+      hasDefaultExport(mod) && isModuleExport(mod.default) ? mod.default : (mod as T);
     const Globe = unwrap<typeof import('react-globe.gl').default>(globeMod);
     const reactDomClient = unwrap<typeof import('react-dom/client')>(reactDomClientMod);
     const React = unwrap<typeof import('react')>(reactMod);
@@ -2078,7 +2087,7 @@ export async function mountGlobe(
       if (fullscreen && performance.now() - lastUpgradeCheck > 500) {
         lastUpgradeCheck = performance.now();
         const pov = inst?.pointOfView();
-        if (typeof pov?.lat === 'number' && typeof pov?.lng === 'number') {
+        if (pov) {
           const renderer = inst?.renderer?.();
           const ratio = renderer?.getPixelRatio() ?? Math.min(2, window.devicePixelRatio || 1);
           const sphereFraction = Math.tan(Math.asin(1 / (1 + altitude))) / FOV_HALF_TAN;
