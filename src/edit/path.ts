@@ -2,28 +2,26 @@
 // `/experience/0/achievements/2/text`. We deep-clone along the path on
 // `setAtPath` so the upstream React state stays immutable.
 
-type Json = unknown;
-
-export function getAtPath(obj: Json, path: string): Json {
+export function getAtPath(obj: unknown, path: string): unknown {
   if (!path || path === '/') return obj;
   const segs = path.split('/').filter(Boolean);
-  let cur: Json = obj;
+  let cur: unknown = obj;
   for (const s of segs) {
     if (cur == null) return undefined;
     if (Array.isArray(cur)) cur = cur[Number(s)];
-    else if (typeof cur === 'object') cur = (cur as Record<string, Json>)[s];
+    else if (typeof cur === 'object') cur = (cur as Record<string, unknown>)[s];
     else return undefined;
   }
   return cur;
 }
 
-export function setAtPath<T>(obj: T, path: string, value: Json): T {
+export function setAtPath<T>(obj: T, path: string, value: unknown): T {
   const segs = path.split('/').filter(Boolean);
   if (segs.length === 0) return value as T;
-  return cloneSet(obj as Json, segs, 0, value) as T;
+  return cloneSet(obj as unknown, segs, 0, value) as T;
 }
 
-function cloneSet(node: Json, segs: string[], i: number, value: Json): Json {
+function cloneSet(node: unknown, segs: string[], i: number, value: unknown): unknown {
   if (i === segs.length) return value;
   const seg = segs[i]!;
   if (Array.isArray(node)) {
@@ -32,7 +30,7 @@ function cloneSet(node: Json, segs: string[], i: number, value: Json): Json {
     next[idx] = cloneSet(node[idx], segs, i + 1, value);
     return next;
   }
-  const obj = (node ?? {}) as Record<string, Json>;
+  const obj = (node ?? {}) as Record<string, unknown>;
   return { ...obj, [seg]: cloneSet(obj[seg], segs, i + 1, value) };
 }
 
