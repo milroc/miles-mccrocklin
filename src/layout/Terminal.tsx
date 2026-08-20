@@ -17,7 +17,7 @@ const SESSION_GAP_MS = 380;
 
 const PHASES = ['shell', 'session', 'typing', 'done'] as const;
 type Phase = (typeof PHASES)[number];
-const PHASE_INDEX: Record<Phase, number> = { shell: 0, session: 1, typing: 2, done: 3 };
+const PHASE_INDEX = { shell: 0, session: 1, typing: 2, done: 3 } satisfies Record<Phase, number>;
 const atLeast = (phase: Phase, target: Phase): boolean =>
   PHASE_INDEX[phase] >= PHASE_INDEX[target];
 

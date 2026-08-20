@@ -185,6 +185,10 @@ function applyFilters(
   }).sort(rankFeatured);
 }
 
+// A selection set with every value the manifest no longer knows about
+// dropped, plus whether anything was in fact dropped.
+type FilteredSet = { next: Set<string>; changed: boolean };
+
 export function Photography({ manifest }: PhotographyProps): JSX.Element {
   const initial = useMemo(() => initFromUrl(), []);
   const [categories, setCategories] = useState<Set<string>>(initial.categories);
@@ -260,7 +264,7 @@ export function Photography({ manifest }: PhotographyProps): JSX.Element {
     const filterSet = (
       set: Set<string>,
       valid: Set<string>,
-    ): { next: Set<string>; changed: boolean } => {
+    ): FilteredSet => {
       const next = new Set<string>();
       let changed = false;
       for (const v of set) {

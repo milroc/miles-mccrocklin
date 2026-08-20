@@ -56,14 +56,14 @@ interface MeJson {
 
 // Splash social order — icons resolve from these ids in Splash.tsx.
 const SOCIAL_ORDER = ['github', 'linkedin', 'twitter', 'instagram', 'threads', 'email'] as const;
-const SOCIAL_LABELS: Record<(typeof SOCIAL_ORDER)[number], string> = {
+const SOCIAL_LABELS = {
   github: 'GitHub',
   linkedin: 'LinkedIn',
   twitter: 'X (Twitter)',
   instagram: 'Instagram',
   threads: 'Threads',
   email: 'Email',
-};
+} satisfies Record<(typeof SOCIAL_ORDER)[number], string>;
 
 export function buildSplashContent(): void {
   const journey = JSON.parse(readFileSync('./data/journey.json', 'utf8')) as JourneyJson;

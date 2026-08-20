@@ -486,7 +486,7 @@ async function main(): Promise<void> {
   const allJobs = loadAllJobs(opts.source);
   const queue = allJobs.filter((j) => shouldProcess(j, opts));
   const total = opts.limit != null ? Math.min(opts.limit, queue.length) : queue.length;
-  const bySource = { photography: 0, me: 0, atlas: 0 } as Record<PhotoJob['source'], number>;
+  const bySource = { photography: 0, me: 0, atlas: 0 } satisfies Record<PhotoJob['source'], number>;
   for (const j of queue) bySource[j.source] += 1;
   console.log(
     `  ${total} to classify (queue ${queue.length} of ${allJobs.length} total) ` +

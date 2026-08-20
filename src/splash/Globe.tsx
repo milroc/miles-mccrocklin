@@ -18,7 +18,7 @@ import journeyData from '../../data/journey.json' with { type: 'json' };
 // entry chunk; we use it only for type annotations on cached state.
 import type * as THREE_T from 'three';
 import type { MultiPolygon, Polygon } from 'geojson';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, MutableRefObject } from 'react';
 import type { GlobeMethods } from 'react-globe.gl';
 
 // react-globe.gl's own prop contract. Type-only, so the module stays
@@ -83,7 +83,7 @@ const VISITED_COUNTRIES: ReadonlySet<string> = canonicalVisitedNames(
 const VISITS_BY_COUNTRY: ReadonlyMap<string, readonly Visit[]> = (() => {
   const map = new Map<string, Visit[]>();
   for (const w of WAYPOINTS) {
-    const name = VISITED_NAME_ALIASES[w.label] ?? w.label;
+    const name = VISITED_NAME_ALIASES.get(w.label) ?? w.label;
     const visit: Visit = {
       startMonth: w.startMonth,
       startYear: w.startYear,
@@ -443,6 +443,24 @@ interface GlobeAssets {
   upgradePhotosForView: (lat: number, lng: number, spherePxNow: number, maxUpgrades: number) => void;
 }
 
+// A point on the globe.
+type LatLng = { lat: number; lng: number };
+
+// The bbox summary bboxOf produces.
+type CountryBbox = { extentDeg: number; lat: number; lng: number };
+
+// What the texture pump needs from its host each frame.
+type PumpOptions = {
+  getRenderer?: () => THREE_T.WebGLRenderer | null;
+  // When true, the pump idles this frame (e.g. mid-drag) so interaction
+  // keeps the full frame budget.
+  isBusy?: () => boolean;
+};
+
+// PumpOptions plus the initial camera anchor: photo loads sort
+// nearest-first so the visible hemisphere fills in before the far side.
+type LoadPhotosOptions = PumpOptions & { camera?: LatLng };
+
 // Bbox summary of a country polygon: largest angular span (degrees)
 // plus the bbox centroid. The span drives the splash texture-variant
 // pick — a country's on-screen size scales with its angular extent, so
@@ -451,7 +469,7 @@ interface GlobeAssets {
 // Antimeridian-wrapping bboxes (Russia) inflate toward 360 — harmless,
 // they clamp into the "big" bucket and their centroid is only used for
 // load ordering.
-function bboxOf(g: CountryGeometry): { extentDeg: number; lat: number; lng: number } {
+function bboxOf(g: CountryGeometry): CountryBbox {
   let minLng = 180, maxLng = -180, minLat = 90, maxLat = -90;
   const visit = (ring: number[][]): void => {
     for (const [lng, lat] of ring) {
@@ -935,10 +953,7 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
     // scope (not inside loadPhotos) so the /explorer/ on-demand
     // full-res upgrade path reuses the same queue, frame budget, and
     // drag-pause behavior as the initial drip.
-    let pumpOpts: {
-      getRenderer?: () => THREE_T.WebGLRenderer | null;
-      isBusy?: () => boolean;
-    } = {};
+    let pumpOpts: PumpOptions = {};
     interface Pending {
       tex: THREE_T.Texture;
       mat: THREE_T.ShaderMaterial;
@@ -1103,15 +1118,7 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
     };
 
     let photosReadyPromise: Promise<void> | null = null;
-    const loadPhotos = (opts: {
-      getRenderer?: () => THREE_T.WebGLRenderer | null;
-      // When true, the pump idles this frame (e.g. mid-drag) so
-      // interaction keeps the full frame budget.
-      isBusy?: () => boolean;
-      // Initial camera anchor; photo loads sort nearest-first so the
-      // visible hemisphere fills in before the far side.
-      camera?: { lat: number; lng: number };
-    } = {}): Promise<void> => {
+    const loadPhotos = (opts: LoadPhotosOptions = {}): Promise<void> => {
       if (photosReadyPromise) return photosReadyPromise;
       pumpOpts = { getRenderer: opts.getRenderer, isBusy: opts.isBusy };
       const camera = opts.camera;
@@ -1253,13 +1260,16 @@ export async function mountGlobe(
 
   // Sizing: tile mode uses a centered square at min(width, height);
   // fullscreen uses the entire viewport rect so the sphere fills the
+  // The mount's pixel size, which react-globe.gl needs stated explicitly.
+  type CanvasSize = { width: number; height: number };
+
   // page. react-globe.gl needs explicit pixel dimensions. Round to
   // integers — getBoundingClientRect returns fractional pixels that
   // drift by a fraction during page settle (font swap, image loads),
   // and our resize-debounce equality check needs to short-circuit on
   // those subpixel blips, otherwise every load triggers a spurious
   // re-render that flickers the dash animation and rebuilds bubbles.
-  function measure(): { width: number; height: number } {
+  function measure(): CanvasSize {
     const r = mountEl.getBoundingClientRect();
     const w = Math.round(fullscreen ? r.width : Math.min(r.width, r.height)) || 240;
     const h = Math.round(fullscreen ? r.height : Math.min(r.width, r.height)) || 240;
@@ -1299,7 +1309,7 @@ export async function mountGlobe(
   // toGlobeCoords), so use its type rather than a hand-written echo of
   // it. A plain mutable ref object, not React.createRef: the component
   // wants `current` to be undefined before mount, not null.
-  const globeRef: { current: GlobeMethods | undefined } = { current: undefined };
+  const globeRef: MutableRefObject<GlobeMethods | undefined> = { current: undefined };
 
   // Country-name → atlas entry. Used by the click handler to look up
   // photo data when the user taps a polygon. Names match the polygon
@@ -1504,7 +1514,7 @@ export async function mountGlobe(
   // sub-polygon and averages min/max lng/lat. Crude but stable —
   // good enough for "frame the country" camera moves; a true
   // geo-centroid would buy nothing visible at globe scale.
-  function polygonCentroid(g: CountryGeometry): { lat: number; lng: number } {
+  function polygonCentroid(g: CountryGeometry): LatLng {
     let minLng = 180;
     let maxLng = -180;
     let minLat = 90;

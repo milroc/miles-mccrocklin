@@ -23,11 +23,10 @@ export function Figure({ media }: FigureProps) {
   // initializers before the import wiring is complete).
   const sizeClass = (size: 'sm' | 'md' | 'lg'): string =>
     size === 'sm' ? s.sm! : size === 'lg' ? s.lg! : s.md!;
+  // Indexed by item count, so index 0 is deliberately empty.
   const nClass = (n: number): string => {
-    const map: Record<number, string | undefined> = {
-      1: s.n1, 2: s.n2, 3: s.n3, 4: s.n4, 5: s.n5, 6: s.n6,
-    };
-    return map[n] ?? '';
+    const byCount = [undefined, s.n1, s.n2, s.n3, s.n4, s.n5, s.n6];
+    return byCount[n] ?? '';
   };
   // 720px matches the desktop/tablet boundary used elsewhere (figure-grid,
   // lightbox peek mode). On mobile we split portraits into a phone-gallery

@@ -53,14 +53,14 @@ import s from './Splash.module.css';
 // data/journey.json. The generated module is a few hundred bytes, so
 // the bundle guard holds: me.json's prose never enters this chunk.
 // Icons are presentation, so the id → component map lives here.
-const SOCIAL_ICONS: Record<string, typeof FaGithub> = {
+const SOCIAL_ICONS = {
   github: FaGithub,
   linkedin: FaLinkedin,
   twitter: FaXTwitter,
   instagram: FaInstagram,
   threads: FaThreads,
   email: FaEnvelope,
-};
+} satisfies Record<string, typeof FaGithub>;
 
 // Match Header.tsx's syllable wrapper. Unlike the resume version, the
 // underline animation is dormant on splash (no handle links to drive

@@ -72,13 +72,13 @@ const HOST = process.env.HOST ?? "127.0.0.1";
 // canonical pillar. /long-form is in here too — the page is now
 // /builder, /long-form is kept for any inbound links from before the
 // rename.
-const LEGACY_TO_CANONICAL: Record<string, string> = {
+const LEGACY_TO_CANONICAL = {
   '/long-form':   '/builder/',
   '/dossier':     '/builder/',
   '/about':       '/builder/',
   '/work':        '/builder/',
   '/photography': '/photographer/',
-};
+} satisfies Record<string, string>;
 const legacyRouteMap: Record<string, () => Response> = {};
 for (const [slug, target] of Object.entries(LEGACY_TO_CANONICAL)) {
   const redirect = (): Response => Response.redirect(target, 302);

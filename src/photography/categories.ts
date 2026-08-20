@@ -83,7 +83,7 @@ export const CATEGORY_TREE: CategoryNode[] = [
 // classifier output keeps mapping to the right bucket without
 // re-running classify on every photo. Tag mapped to `null` means
 // "drop this tag entirely."
-export const LEGACY_THEME_REWRITES: Record<string, string | null> = {
+export const LEGACY_THEME_REWRITES = {
   // Culture taxonomy condensation:
   portrait: 'people',
   documentary: null,
@@ -95,7 +95,7 @@ export const LEGACY_THEME_REWRITES: Record<string, string | null> = {
   forest: null,
   desert: null,
   underwater: null,
-};
+} satisfies Record<string, string | null>;
 
 // Species sub-groups within a wildlife class — collapses related
 // species (multiple penguins, multiple primates) under a labelled

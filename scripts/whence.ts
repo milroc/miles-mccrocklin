@@ -65,9 +65,9 @@ function loadAllEvents(): Event[] {
 }
 
 // Tier precedence (highest first): refined > human > ai > ingest.
-const TIER_PRIORITY: Record<Tier, number> = {
+const TIER_PRIORITY = {
   refined: 4, human: 3, ai: 2, ingest: 1,
-};
+} satisfies Record<Tier, number>;
 
 // Empty values: human tier "clears" a field, others are no-ops.
 function isEmpty(v: JsonValue): boolean {
@@ -87,14 +87,14 @@ interface Winner {
 function resolveWinners(events: Event[]): Map<string, Winner | 'cleared'> {
   const winners = new Map<string, Winner | 'cleared'>();
   // Group events by tier in chronological order.
-  const byTier: Record<Tier, Event[]> = { ingest: [], ai: [], human: [], refined: [] };
-  for (const ev of events) byTier[ev.tier].push(ev);
+  const byTier = new Map<Tier, Event[]>(TIERS.map((t) => [t, []]));
+  for (const ev of events) byTier.get(ev.tier)?.push(ev);
 
   // Walk tiers low → high. Within each tier, latest write per field
   // overwrites earlier. Higher tier overrides lower entirely (per field).
   const state = new Map<string, Winner>();
   for (const tier of TIERS) {
-    for (const ev of byTier[tier]) {
+    for (const ev of byTier.get(tier) ?? []) {
       for (const [k, v] of Object.entries(ev.fields)) {
         if (isEmpty(v)) {
           if (tier === 'human') {
@@ -117,12 +117,12 @@ function fmtValue(v: JsonValue): string {
   return s.length > 120 ? s.slice(0, 117) + '…' : s;
 }
 
-const TIER_BADGE: Record<Tier, string> = {
+const TIER_BADGE = {
   ingest:  'ING',
   ai:      'AI ',
   human:   'HUM',
   refined: 'REF',
-};
+} satisfies Record<Tier, string>;
 
 function main(): void {
   const args = process.argv.slice(2);
