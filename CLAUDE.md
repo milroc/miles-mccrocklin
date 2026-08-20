@@ -136,3 +136,58 @@ checkout's render matches what the author saw.
 This is intentionally crude (a git-tracked event log inside the app repo).
 The plan is to move this to a more reliable storage layer later; until
 then, the working tree IS the database.
+
+## End-to-end tests
+
+`bun run test:e2e` runs the Playwright suite in `e2e/`. It drives the
+real UI: every page, every control, both viewports.
+
+Three projects, defined in `playwright.config.ts`:
+
+- **prod** — the default. Runs against `dist/` (built and served by
+  `scripts/serve-dist.ts` on :4318), because that is the artifact that
+  ships: prerendered splash markup, inlined photography manifest,
+  `EDIT_ENABLED` compiled to `false`.
+- **mobile** — `*.mobile.spec.ts`, iPhone 13 viewport + touch, on
+  Chromium. Covers the responsive branches only (splash restack,
+  bottom-sheet filters, masonry columns); this is not a cross-engine
+  matrix.
+- **dev** — `*.dev.spec.ts`, against `bun run dev` on :4317. Edit mode
+  is the only feature that exists solely in the dev build.
+
+Playwright starts and stops both servers itself; locally it reuses one
+already listening on either port.
+
+Writing specs here:
+
+- **Select by role and accessible name.** CSS Modules hash every class,
+  so `.locator('.tile')` cannot work. Where a role is not enough, use a
+  `data-*` attribute (`[data-figure-card]`, `[data-splash-globe-box]`,
+  `[data-id="builder"]`) and add one to the component if none fits.
+- **Two surfaces hide their chrome when the pointer goes still** —
+  Explorer's nav/toolbar/title after 3s, the media viewer's topbar and
+  arrows after 1.2s — and the hidden plate stops taking pointer events.
+  Use `clickIdleChrome` from `e2e/fixtures.ts` to click those, or take
+  the keyboard path, which is unaffected.
+- **The country index on /explorer/ is keyboard-only** by design
+  (`clip-path: inset(50%)` under the globe canvas). Activate it with
+  `.press('Enter')`; a mouse click can never reach it.
+- **Globe specs skip rather than fail** when WebGL is unavailable, via
+  `requireLiveGlobe`. Assert the documented failure path deliberately
+  instead, by disabling WebGL as `explorer.spec.ts` does.
+- **Every spec fails on an unexpected `console.error`.** Add genuinely
+  external noise to `IGNORED_CONSOLE` in `e2e/fixtures.ts`; don't
+  silence app errors there.
+- **Not every figure card is a lightbox trigger.** `FigureCarousel`
+  renders three copies of the strip, so two thirds of its cards are
+  loop clones (`aria-hidden`, `tabIndex -1`), and any card whose centre
+  falls in the masked edge zone carries `data-edge="true"` and centres
+  itself on click instead of opening. Specs that want a real trigger
+  use `[data-figure-card]:not([aria-hidden]):not([data-edge])`.
+
+  The edge-click behaviour itself is deliberately **not** covered: the
+  marker is recomputed from live geometry on every scroll, and
+  Playwright scrolls a target into view before clicking it, which moves
+  the card out of the zone under test. It resisted three approaches
+  (locator click, pinned element handle, raw mouse coordinates) and a
+  flaky spec here would be worse than none. Verify it by eye.

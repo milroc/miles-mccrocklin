@@ -15,3 +15,9 @@ scripts/.venv/
 # on the same step with mtime caching.
 media/portfolio/derived/
 data/photography-manifest.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
