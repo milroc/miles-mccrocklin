@@ -14,12 +14,26 @@ test.describe('explorer', () => {
     await page.goto('/explorer/');
   });
 
-  test('the loading wireframe gives way to the globe', async ({ page }) => {
-    // Before WebGL arrives the visitor sees a CSS wireframe and the word
-    // "loading" — never a blank screen.
-    await expect(page.getByText('loading')).toBeAttached();
+  test('the globe replaces the loading state', async ({ page }) => {
     await requireLiveGlobe(page);
     await expect(page.locator('canvas')).toBeVisible();
+  });
+
+  test('the pre-WebGL state shows a wireframe and says "loading"', async ({ page }) => {
+    // Held open on purpose. LoadingGlobe is rendered unconditionally, so
+    // asserting the label is merely *attached* can never fail — it says
+    // nothing about whether the visitor ever sees it. Stalling the
+    // topology fetch puts the page in the state this is about.
+    await page.route('**/world-countries-*.topo.json', async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 8_000));
+      await route.continue();
+    });
+    await page.goto('/explorer/');
+
+    await expect(page.getByText('loading')).toBeVisible();
+    await expect(page.locator('canvas')).toHaveCount(0);
+    // The wireframe is the visual during the wait — not a blank screen.
+    await expect(page.locator('[data-globe-failed]')).toHaveCount(0);
   });
 
   test('the title plate states the trip counts', async ({ page }) => {
@@ -117,10 +131,20 @@ test.describe('explorer — country panel', () => {
   });
 
   test('the selection is written to the URL so it can be shared', async ({ page }) => {
-    await openCountry(page);
+    const name = await openCountry(page);
     await expect.poll(() => new URL(page.url()).searchParams.get('country'), {
       timeout: 10_000,
     }).toBeTruthy();
+
+    // Shareable means the link reopens the same country, not merely that
+    // some parameter appeared. Asserting non-empty would pass on a URL
+    // that names the wrong place.
+    const shared = page.url();
+    await page.goto(shared);
+    await requireLiveGlobe(page);
+    await expect(page.getByRole('complementary', { name })).toBeVisible({
+      timeout: 30_000,
+    });
   });
 
   test('the close button dismisses the panel and clears the URL', async ({ page }) => {

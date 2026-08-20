@@ -53,7 +53,7 @@ test.describe('lightbox — from the photography wall', () => {
     await openFirstPhoto(page);
     const dialog = viewer(page);
     await expect(dialog).toHaveAttribute('aria-modal', 'true');
-    await expect(dialog.getByRole('button', { name: 'Close' })).toBeAttached();
+    await expect(dialog.getByRole('button', { name: 'Close' })).toBeVisible();
     // The counter is how a visitor knows where they are in the set.
     await expect(dialog.getByText(/^\d+ \/ \d+$/)).toBeVisible();
   });
@@ -104,7 +104,10 @@ test.describe('lightbox — from the photography wall', () => {
   test('the set wraps around rather than dead-ending', async ({ page }) => {
     await openFirstPhoto(page);
     const total = await scopeSize(page);
-    test.skip(total < 2, 'needs more than one photo in scope');
+    // A hard assertion: the wall ships 200+ photos, so a scope that
+    // small is a regression rather than a reason to skip.
+    expect(total, 'the unfiltered wall has photos to page through')
+      .toBeGreaterThan(1);
     expect(await settledIndex(page)).toBe(1);
 
     // Step back from the first photo; a viewer that stops here strands
