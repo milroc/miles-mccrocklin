@@ -124,25 +124,50 @@ export async function requireLiveGlobe(page: Page): Promise<void> {
 // That means a pointer click on those controls only lands inside the
 // window that cursor movement opens. Playwright's own retry loop does
 // not help: it waits without moving the mouse, so the chrome hides
-// under it and stays hidden. This wakes the chrome and clicks as one
-// gesture, retrying the gesture rather than the click.
+// under it and stays hidden.
+//
+// Only the idempotent half is retried. An earlier version retried the
+// click too, which is unsafe: a click that *lands* but whose internal
+// wait exceeds the timeout gets retried and applies the action twice.
+// CI caught it — two "Previous photo" presses from index 2 arrived at
+// 215 — and it would silently double any action taken this way.
+//
+// pointer-events inherits, so a button inside a faded plate computes to
+// `none`; waiting for `auto` is waiting for the chrome to be genuinely
+// interactive again rather than merely present.
 //
 // Keyboard paths need none of this, which is the point of testing both.
 export async function clickIdleChrome(page: Page, locator: Locator): Promise<void> {
-  // Settle the element once, outside the timed gesture — on a loaded
-  // machine Playwright's own visible/enabled/stable wait can eat the
-  // whole window before it even tries to click.
   await expect(locator).toBeAttached();
+
+  // Wake the chrome and take the control's position. Everything in here
+  // is a cursor move or a style read, so retrying is free of side
+  // effects.
+  let box: { x: number; y: number; width: number; height: number } | null = null;
   await expect(
     async () => {
       await page.mouse.move(400, 300);
-      await page.mouse.move(404, 304);
-      await locator.click({ timeout: 2_500, force: false });
+      const current = await locator.boundingBox();
+      expect(current, 'the control has a box to click').not.toBeNull();
+      await page.mouse.move(
+        current!.x + current!.width / 2,
+        current!.y + current!.height / 2,
+      );
+      await expect(locator).toHaveCSS('pointer-events', 'auto', { timeout: 1_000 });
+      box = current;
     },
-    // Named so a failure reads as "the idle window closed before the
-    // click landed" rather than an anonymous click timeout at 3am.
-    'clicking idle-hidden chrome within the window cursor activity opens',
-  ).toPass({ timeout: 40_000, intervals: [250, 250, 500] });
+    'waking idle-hidden chrome so it accepts a pointer again',
+  ).toPass({ timeout: 30_000, intervals: [200, 200, 400] });
+
+  // Raw mouse events rather than locator.click(). Playwright's click
+  // runs an actionability wait first, and on Explorer that wait outlives
+  // the 3s idle window — the chrome hides underneath it and the click
+  // never lands. Moving onto the control is itself the activity that
+  // keeps it awake, so pressing immediately afterwards is reliable.
+  const target = box!;
+  await page.mouse.move(target.x + target.width / 2, target.y + target.height / 2);
+  await page.mouse.down();
+  await page.mouse.up();
 }
 
 // ─── Filters ──────────────────────────────────────────────────────────

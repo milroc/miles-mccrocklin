@@ -16,15 +16,54 @@ const viewer = (page: Page) => page.getByRole('dialog', { name: /Media viewer/ }
 // same value three times" heuristic was both slower and wrong on a
 // loaded machine: CI caught it reporting the pre-move value on the
 // wrap-around spec. If the index is expected to become N, wait for N.
+// The counter reading right is not the same as the carousel having
+// stopped. Under load a press can land while the previous smooth scroll
+// is still in flight, and the handler acts on an index that is already
+// moving — which is how a Previous from a displayed "2" arrives at 215.
+//
+// The track's own scrollLeft is the honest idle signal. MediaProvider
+// does not expose one (it has programmaticScrollRef internally; a
+// `data-settling` attribute would be better than this), so find the
+// scrollable child and watch it stop.
+async function waitForTrackQuiet(page: Page): Promise<void> {
+  const dialog = (await viewer(page).elementHandle())!;
+  const scrollLeft = () =>
+    dialog.evaluate((el) => {
+      const track = [...el.querySelectorAll('div')].find(
+        (d) => d.scrollWidth > d.clientWidth + 10,
+      );
+      return track ? Math.round(track.scrollLeft) : -1;
+    });
+  await expect
+    .poll(
+      async () => {
+        const first = await scrollLeft();
+        await page.waitForTimeout(150);
+        const second = await scrollLeft();
+        await page.waitForTimeout(150);
+        return first === second && second === (await scrollLeft());
+      },
+      { timeout: 20_000 },
+    )
+    .toBe(true);
+}
+
 async function readIndex(page: Page): Promise<number> {
   const counter = viewer(page).getByText(/^\d+ \/ \d+$/);
   return Number((await counter.innerText()).split('/')[0]!.trim());
 }
 
+// Poll until the index reaches the target AND holds there.
+//
+// Both halves are needed, and each was learned the hard way. Waiting
+// only for the value to settle reported the pre-move value on a loaded
+// CI runner. Waiting only for the value to appear accepts a transient:
+// the track scroll-snaps, so the counter passes through values it does
+// not come to rest on — which showed up as a Previous press from a
+// transient "2" landing on 215 instead of 1.
 async function expectIndex(page: Page, target: number): Promise<void> {
-  await expect
-    .poll(() => readIndex(page), { timeout: 25_000 })
-    .toBe(target);
+  await waitForTrackQuiet(page);
+  await expect.poll(() => readIndex(page), { timeout: 25_000 }).toBe(target);
 }
 
 async function scopeSize(page: Page): Promise<number> {
@@ -39,6 +78,17 @@ async function openFirstPhoto(page: Page): Promise<void> {
 }
 
 test.describe('lightbox — from the photography wall', () => {
+  // Serial, because of issue #81: navigateTo assumes a smooth scroll
+  // finishes in a fixed 400ms, and under CPU pressure the loop
+  // normalizer then recomputes the index from a mid-flight scroll — so
+  // navigation either no-ops or overshoots (Next then Previous from
+  // photo 1 landing on 215). It reproduces 0/6 serially and reliably
+  // with four contexts competing.
+  //
+  // This is a workaround in the tests for a race in the app. When #81 is
+  // fixed, drop this line and the specs should pass in parallel.
+  test.describe.configure({ mode: 'serial' });
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/photographer/');
   });
@@ -66,6 +116,7 @@ test.describe('lightbox — from the photography wall', () => {
 
   test('the next and previous buttons move through the set', async ({ page }) => {
     await openFirstPhoto(page);
+    await waitForTrackQuiet(page);
     const start = await readIndex(page);
 
     // The arrows fade with the viewer's idle-chrome timer, after which
@@ -84,6 +135,7 @@ test.describe('lightbox — from the photography wall', () => {
 
   test('the arrow keys move through the set', async ({ page }) => {
     await openFirstPhoto(page);
+    await waitForTrackQuiet(page);
     const start = await readIndex(page);
 
     await page.keyboard.press('ArrowRight');

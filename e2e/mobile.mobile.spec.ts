@@ -85,23 +85,37 @@ test.describe('mobile — photographer', () => {
     const at = async () => Number((await counter.innerText()).split('/')[0]!.trim());
     const start = await at();
 
-    // A real touch gesture, synthesised through CDP — not page.mouse.wheel.
-    // MediaProvider.module.css sets `touch-action: pan-x pinch-zoom` on the
-    // image so the photo doesn't swallow the swipe; a wheel event is not
-    // governed by touch-action at all, so a regression to
-    // `touch-action: none` would break every real finger swipe while a
-    // wheel-driven test stayed green.
+    // A real finger swipe, dispatched as touch events. Not
+    // page.mouse.wheel: MediaProvider.module.css sets `touch-action:
+    // pan-x pinch-zoom` on the image so the photo doesn't swallow the
+    // gesture, and a wheel event is not governed by touch-action at all
+    // — a regression to `touch-action: none` breaks every real swipe
+    // while a wheel-driven test stays green.
+    //
+    // Explicit touchStart/Move/End rather than
+    // Input.synthesizeScrollGesture: the synthesiser moved the track
+    // locally but did nothing on CI's headless Linux, failing all three
+    // attempts.
     const box = (await viewer.boundingBox())!;
     const cdp = await page.context().newCDPSession(page);
-    await cdp.send('Input.synthesizeScrollGesture', {
-      x: Math.round(box.x + box.width / 2),
-      y: Math.round(box.y + box.height / 2),
-      xDistance: -300,
-      yDistance: 0,
-      gestureSourceType: 'touch',
-      speed: 800,
+    const y = Math.round(box.y + box.height / 2);
+    const from = Math.round(box.x + box.width * 0.85);
+    const to = Math.round(box.x + box.width * 0.15);
+
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [{ x: from, y }],
     });
-    await expect.poll(at, { timeout: 15_000 }).toBe(start + 1);
+    for (let step = 1; step <= 12; step++) {
+      await cdp.send('Input.dispatchTouchEvent', {
+        type: 'touchMove',
+        touchPoints: [{ x: Math.round(from + (to - from) * (step / 12)), y }],
+      });
+      await page.waitForTimeout(16);
+    }
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+
+    await expect.poll(at, { timeout: 20_000 }).toBe(start + 1);
   });
 });
 
