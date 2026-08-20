@@ -1,6 +1,6 @@
 // The splash is the one page that is fully rendered before any
 // JavaScript runs, so it gets tested twice: as served, and as hydrated.
-import { test, expect, waitForGlobe } from './fixtures';
+import { test, expect, requireLiveGlobe } from './fixtures';
 
 test.describe('splash', () => {
   test.beforeEach(async ({ page }) => {
@@ -49,8 +49,7 @@ test.describe('splash', () => {
   });
 
   test('the WebGL globe replaces the CSS wireframe', async ({ page }) => {
-    const state = await waitForGlobe(page);
-    test.skip(state !== 'live', `globe unavailable in this environment (${state})`);
+    await requireLiveGlobe(page);
     // data-live is what crossfades the wireframe out. If it never lands
     // the visitor stares at a static wireframe forever.
     await expect(page.locator('[data-splash-globe-box]')).toHaveAttribute(

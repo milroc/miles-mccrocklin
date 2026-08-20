@@ -92,18 +92,27 @@ export async function waitForGlobe(page: Page): Promise<GlobeState> {
   return state === 'webgl' || state === 'load' ? state : 'live';
 }
 
-// Insist on the real thing. Skips rather than fails when the runner has
-// no working WebGL, so a GPU-less environment reports honestly instead
-// of turning every globe assertion red.
+// Insist on the real thing, everywhere.
+//
+// This used to skip when WebGL was missing, on the theory that a
+// GPU-less machine should report honestly rather than turn every globe
+// assertion red. That theory was wrong twice over. playwright.config.ts
+// forces software rendering (--use-angle=swiftshader), which needs no
+// GPU at all — and across every local run and every CI run on
+// ubuntu-latest, the skip branch has never once been taken. It was dead
+// weight guarding a case that does not arise, and dead weight that could
+// silently turn thirteen specs into no-ops behind a green check.
+//
+// So: a hard assertion, with a message that says what to do about it.
 export async function requireLiveGlobe(page: Page): Promise<void> {
   const state = await waitForGlobe(page);
-  // In CI, WebGL availability is a fixed property of the runner image.
-  // Skipping there would turn ~8 globe specs into silent no-ops behind a
-  // green check the first time the image loses SwiftShader.
-  if (process.env.CI) {
-    expect(state, 'CI runner must have working WebGL').toBe('live');
-  }
-  test.skip(state !== 'live', `globe unavailable in this environment (${state})`);
+  expect(
+    state,
+    'the globe never reached its live WebGL state. Software rendering is ' +
+      'forced in playwright.config.ts, so this means the browser or its ' +
+      'system libraries are broken rather than that the machine lacks a ' +
+      'GPU — try `bunx playwright install --with-deps chromium`.',
+  ).toBe('live');
 }
 
 // Two surfaces deliberately hide their chrome when the pointer goes

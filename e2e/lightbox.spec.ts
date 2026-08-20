@@ -8,29 +8,23 @@ type Page = import('@playwright/test').Page;
 const tiles = (page: Page) => page.getByRole('button').filter({ has: page.locator('img') });
 const viewer = (page: Page) => page.getByRole('dialog', { name: /Media viewer/ });
 
-// The viewer's track scroll-snaps and animates, so the counter can pass
-// through an intermediate value mid-flight. Everything here reads the
-// index only once it has stopped moving.
+// The viewer's track scroll-snaps and animates, so the counter passes
+// through intermediate values mid-flight.
 //
-// `changedFrom` waits for the move to begin before waiting for it to
-// end; without it a slow machine can be sampled three times before the
-// scroll has even started and report "settled" on the old value.
-async function settledIndex(page: Page, changedFrom?: number): Promise<number> {
+// Assertions poll to a known target rather than trying to detect that
+// motion has stopped. The previous "wait for it to change, then read the
+// same value three times" heuristic was both slower and wrong on a
+// loaded machine: CI caught it reporting the pre-move value on the
+// wrap-around spec. If the index is expected to become N, wait for N.
+async function readIndex(page: Page): Promise<number> {
   const counter = viewer(page).getByText(/^\d+ \/ \d+$/);
-  const read = async () => Number((await counter.innerText()).split('/')[0]!.trim());
+  return Number((await counter.innerText()).split('/')[0]!.trim());
+}
 
-  if (changedFrom !== undefined) {
-    await expect.poll(read, { timeout: 20_000 }).not.toBe(changedFrom);
-  }
-  let last = await read();
-  let stable = 0;
-  for (let i = 0; i < 60 && stable < 3; i++) {
-    await page.waitForTimeout(100);
-    const now = await read();
-    stable = now === last ? stable + 1 : 0;
-    last = now;
-  }
-  return last;
+async function expectIndex(page: Page, target: number): Promise<void> {
+  await expect
+    .poll(() => readIndex(page), { timeout: 25_000 })
+    .toBe(target);
 }
 
 async function scopeSize(page: Page): Promise<number> {
@@ -72,33 +66,31 @@ test.describe('lightbox — from the photography wall', () => {
 
   test('the next and previous buttons move through the set', async ({ page }) => {
     await openFirstPhoto(page);
-    const start = await settledIndex(page);
+    const start = await readIndex(page);
 
     // The arrows fade with the viewer's idle-chrome timer, after which
     // the photo itself takes the click — so each press has to wake them.
     await clickIdleChrome(page, viewer(page).getByRole('button', { name: 'Next photo' }));
     // Exactly one step. navigateTo/onScroll does real index arithmetic
     // across three loop copies; "it moved" would pass on an off-by-one.
-    const next = await settledIndex(page, start);
-    expect(next).toBe(start + 1);
+    await expectIndex(page, start + 1);
 
     await clickIdleChrome(
       page,
       viewer(page).getByRole('button', { name: 'Previous photo' }),
     );
-    expect(await settledIndex(page, next)).toBe(start);
+    await expectIndex(page, start);
   });
 
   test('the arrow keys move through the set', async ({ page }) => {
     await openFirstPhoto(page);
-    const start = await settledIndex(page);
+    const start = await readIndex(page);
 
     await page.keyboard.press('ArrowRight');
-    const next = await settledIndex(page, start);
-    expect(next).toBe(start + 1);
+    await expectIndex(page, start + 1);
 
     await page.keyboard.press('ArrowLeft');
-    expect(await settledIndex(page, next)).toBe(start);
+    await expectIndex(page, start);
   });
 
   test('the set wraps around rather than dead-ending', async ({ page }) => {
@@ -108,12 +100,12 @@ test.describe('lightbox — from the photography wall', () => {
     // small is a regression rather than a reason to skip.
     expect(total, 'the unfiltered wall has photos to page through')
       .toBeGreaterThan(1);
-    expect(await settledIndex(page)).toBe(1);
+    await expectIndex(page, 1);
 
     // Step back from the first photo; a viewer that stops here strands
     // the visitor at an edge with a live-looking button.
     await page.keyboard.press('ArrowLeft');
-    expect(await settledIndex(page, 1)).toBe(total);
+    await expectIndex(page, total);
   });
 
   test('focus is trapped inside the dialog and returns on close', async ({ page }) => {
@@ -159,6 +151,15 @@ test.describe('lightbox — from the photography wall', () => {
     );
     const shown = await page.getByText(/\d+ photos?$/).first().innerText();
     const expected = Number(shown.replace(/\D+/g, ''));
+    expect(expected).toBeGreaterThan(0);
+
+    // Wait for the wall itself to reflect the filter before clicking.
+    // The counter and the URL update ahead of the masonry re-render, so
+    // clicking straight after them can hit a tile left over from the
+    // unfiltered set — which carries the unfiltered scope with it. CI
+    // caught exactly that: 215 photos in a viewer opened from a wall
+    // showing 13.
+    await expect.poll(() => tiles(page).count(), { timeout: 20_000 }).toBe(expected);
 
     await openFirstPhoto(page);
     const total = await scopeSize(page);

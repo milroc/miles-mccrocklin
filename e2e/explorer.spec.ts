@@ -189,8 +189,7 @@ test.describe('explorer — country panel', () => {
 test.describe('explorer — deep links', () => {
   test('?country= opens that country on load', async ({ page }) => {
     await page.goto('/explorer/?country=usa');
-    const state = await waitForGlobe(page);
-    test.skip(state !== 'live', `globe unavailable in this environment (${state})`);
+    await requireLiveGlobe(page);
     // The param speaks ISO-3166; the panel is titled with the globe's
     // own display name, which differs ("United States of America").
     await expect(
