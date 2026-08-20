@@ -18,7 +18,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { Resume, Visibility } from '../types';
-import type { JsonValue } from './path';
+import type { JsonValue } from '../utils/json';
 import { EDIT_ENABLED } from './edit';
 import {
   applyChanges,

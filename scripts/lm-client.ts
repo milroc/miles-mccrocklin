@@ -15,6 +15,7 @@
 // the Claude CLI; vision calls may not.
 
 import { spawn, spawnSync } from 'node:child_process';
+import type { JsonObject, JsonValue } from '../src/utils/json';
 import sharp from 'sharp';
 
 // Maximum long-edge size (px) sent to the model. 1280 is the largest
@@ -911,7 +912,7 @@ function findBalancedJsonObjects(text: string): string[] {
 const REFINEMENT_KEYS = new Set([
   'caption', 'alt', 'country', 'theme', 'species', 'story', 'entities',
 ]);
-function scoreCandidate(parsed: unknown): number {
+function scoreCandidate(parsed: JsonValue): number {
   if (!parsed || typeof parsed !== 'object') return -1;
   const obj = parsed as Record<string, unknown>;
   let score = 0;
@@ -927,7 +928,7 @@ function scoreCandidate(parsed: unknown): number {
 // then search for the best matching balanced JSON object in what's
 // left. Returns the parsed object; throws with the raw response on
 // failure so the operator can see what went wrong.
-export function extractJsonObject(raw: string): Record<string, unknown> {
+export function extractJsonObject(raw: string): JsonObject {
   const original = raw;
   // Drop formal <think>…</think> blocks first.
   let cleaned = raw.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
@@ -939,16 +940,16 @@ export function extractJsonObject(raw: string): Record<string, unknown> {
   // emit example JSON inside its reasoning preamble; the real answer
   // is whichever one has the most expected refinement keys.
   const candidates = findBalancedJsonObjects(cleaned);
-  let bestParsed: Record<string, unknown> | null = null;
+  let bestParsed: JsonObject | null = null;
   let bestScore = -1;
   let lastError: Error | null = null;
   for (const c of candidates) {
     try {
-      const parsed = JSON.parse(c);
+      const parsed = JSON.parse(c) as JsonValue;
       const score = scoreCandidate(parsed);
       if (score > bestScore) {
         bestScore = score;
-        bestParsed = parsed as Record<string, unknown>;
+        bestParsed = parsed as JsonObject;
       }
     } catch (e) {
       lastError = e as Error;

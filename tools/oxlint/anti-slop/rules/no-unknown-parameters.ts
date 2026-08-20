@@ -39,6 +39,22 @@ function parameterName(parameter: Parameter, sourceText: string): string {
     : sourceText.replace(/\s*:\s*unknown\s*$/u, "");
 }
 
+// LOCAL AMENDMENT (miles-mccrocklin): a promise rejection handler's
+// parameter is `unknown` because that is what the language guarantees —
+// any value can be thrown, exactly as in a `catch` binding, which this
+// rule already leaves alone. Annotating it is stricter than omitting it
+// (the default is `any`), so flagging it pushed the codebase the wrong
+// way. Recognised shapes: `p.catch(fn)` and `p.then(onOk, fn)`.
+function isRejectionHandler(node: ParameterOwner): boolean {
+  const call = node.parent;
+  if (call?.type !== "CallExpression" || call.callee.type !== "MemberExpression") return false;
+  const method = call.callee.property;
+  if (method.type !== "Identifier") return false;
+  if (method.name === "catch") return call.arguments[0] === node;
+  if (method.name === "then") return call.arguments[1] === node;
+  return false;
+}
+
 /** Disallow unknown inputs except explicitly named error-cause enrichment. */
 export const noUnknownParametersRule = defineRule({
   meta: {
@@ -54,6 +70,7 @@ export const noUnknownParametersRule = defineRule({
   },
   createOnce(context) {
     const checkParameters = (node: ParameterOwner) => {
+      if (isRejectionHandler(node)) return;
       for (const parameter of node.params) {
         const annotation = parameterAnnotation(parameter);
         if (annotation?.typeAnnotation.type !== "TSUnknownKeyword") continue;

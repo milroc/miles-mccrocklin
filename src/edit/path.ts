@@ -2,23 +2,12 @@
 // `/experience/0/achievements/2/text`. We deep-clone along the path on
 // `setAtPath` so the upstream React state stays immutable.
 
-// The tree these helpers walk is `data/me.json`, so a node is a JSON
-// value: a leaf, a list, or a string-keyed record. Naming that union is
-// what lets the walk narrow structurally instead of asserting its way
-// down, and it tells callers what came back — `unknown` made every one
-// of them re-derive a shape the walker already knew.
-export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | undefined
-  | JsonValue[]
-  | JsonObject;
-
-export interface JsonObject {
-  [key: string]: JsonValue;
-}
+// The tree these helpers walk is `data/me.json`, so a node is a JsonValue
+// (src/utils/json.ts). Naming that union is what lets the walk narrow
+// structurally instead of asserting its way down, and it tells callers
+// what came back — `unknown` made every one of them re-derive a shape
+// the walker already knew.
+import type { JsonObject, JsonValue } from '../utils/json';
 
 export function getAtPath(obj: JsonValue, path: string): JsonValue {
   if (!path || path === '/') return obj;

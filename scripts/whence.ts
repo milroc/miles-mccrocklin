@@ -9,6 +9,7 @@
 //   bun run scripts/whence.ts <namespaced-id> <field>   # one field
 
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import type { JsonObject, JsonValue } from '../src/utils/json';
 import { join, resolve } from 'node:path';
 
 const ROOT = resolve(import.meta.dir, '..');
@@ -22,7 +23,7 @@ interface Event {
   timestamp: string;
   tier: Tier;
   sessionFile: string;
-  fields: Record<string, unknown>;
+  fields: JsonObject;
   source_fingerprint?: { human: string; ai: string };
 }
 
@@ -38,14 +39,14 @@ function loadAllEvents(): Event[] {
         const trimmed = line.trim();
         if (!trimmed) continue;
         try {
-          const o = JSON.parse(trimmed) as Record<string, unknown>;
+          const o = JSON.parse(trimmed) as JsonObject;
           if (typeof o.id !== 'string') continue;
           const event: Event = {
             id: o.id,
             timestamp: typeof o.timestamp === 'string' ? o.timestamp : sessionFile,
             tier,
             sessionFile,
-            fields: (o.fields ?? {}) as Record<string, unknown>,
+            fields: (o.fields ?? {}) as JsonObject,
           };
           if (o.source_fingerprint) {
             event.source_fingerprint = o.source_fingerprint as { human: string; ai: string };
@@ -69,7 +70,7 @@ const TIER_PRIORITY: Record<Tier, number> = {
 };
 
 // Empty values: human tier "clears" a field, others are no-ops.
-function isEmpty(v: unknown): boolean {
+function isEmpty(v: JsonValue): boolean {
   return v == null || v === '' || (Array.isArray(v) && v.length === 0);
 }
 
@@ -77,7 +78,7 @@ interface Winner {
   tier: Tier;
   timestamp: string;
   sessionFile: string;
-  value: unknown;
+  value: JsonValue;
 }
 
 // Walk events highest priority first, then chronological within tier.
@@ -111,7 +112,7 @@ function resolveWinners(events: Event[]): Map<string, Winner | 'cleared'> {
   return winners;
 }
 
-function fmtValue(v: unknown): string {
+function fmtValue(v: JsonValue): string {
   const s = JSON.stringify(v);
   return s.length > 120 ? s.slice(0, 117) + '…' : s;
 }

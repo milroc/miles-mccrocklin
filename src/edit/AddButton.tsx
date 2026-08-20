@@ -10,7 +10,7 @@
 // Conditional-assignment on the literal EDIT_ENABLED constant →
 // `Stub` in prod, `Add` declaration unreferenced and DCE'd.
 import { EDIT_ENABLED } from './edit';
-import type { JsonValue } from './path';
+import type { JsonValue } from '../utils/json';
 import { useEdit } from './EditContext';
 import s from './edit.module.css';
 

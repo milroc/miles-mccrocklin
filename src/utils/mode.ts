@@ -8,9 +8,17 @@ export const ModeContext = createContext<Mode>('interactive');
 // from 1-pager). Existing items without a visibility field keep working.
 const DEFAULT_VISIBILITY: Visibility = 'not_1pager';
 
-function getVisibility(item: unknown): Visibility {
-  if (typeof item !== 'string' && item != null && typeof item === 'object') {
-    const v = (item as { visibility?: Visibility }).visibility;
+// Everything these three are asked about is a node of the resume tree:
+// a bare string (RichText with no metadata) or an object that may carry
+// a `visibility`. That, and nothing more, is the contract.
+export type Renderable = string | { visibility?: Visibility } | null | undefined;
+
+function getVisibility(item: Renderable): Visibility {
+  if (item != null && typeof item !== 'string') {
+    const v = item.visibility;
+    // The value list is re-checked at runtime because RESUME_DATA is
+    // asserted from JSON rather than parsed: a typo in me.json arrives
+    // here typed as a Visibility but isn't one.
     if (v === 'all' || v === 'not_1pager' || v === '1pager_only' || v === 'archived') {
       return v;
     }
@@ -23,11 +31,11 @@ function getVisibility(item: unknown): Visibility {
 // text mode is hidden by visible() but isn't *archived*; it's just a
 // mode mismatch. In edit mode we render everything but the archived
 // styling (faded + "ARCHIVED" tag) is reserved for the explicit case.
-export function isArchived(item: unknown): boolean {
+export function isArchived(item: Renderable): boolean {
   return getVisibility(item) === 'archived';
 }
 
-export function visible(item: unknown, mode: Mode): boolean {
+export function visible(item: Renderable, mode: Mode): boolean {
   const v = getVisibility(item);
   if (v === 'archived') return false;
   if (v === 'all') return true;

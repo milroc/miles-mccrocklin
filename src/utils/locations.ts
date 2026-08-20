@@ -17,6 +17,8 @@
 // Antarctica gets its real ISO code (ATA) so it sits next to countries
 // in the data layer even though it's a continent.
 
+import type { JsonValue } from './json';
+
 export interface LocationRow {
   /** ISO-3166-1 alpha-3 code. Lowercase here, callers uppercase as needed. */
   code: string;
@@ -147,7 +149,7 @@ function keyOf(input: string): string {
  * to a canonical lowercase ISO-3 code. Returns undefined when the input
  * doesn't match any known location.
  */
-export function normalizeCountryCode(input: unknown): string | undefined {
+export function normalizeCountryCode(input: JsonValue): string | undefined {
   if (typeof input !== 'string') return undefined;
   const key = keyOf(input);
   if (!key) return undefined;

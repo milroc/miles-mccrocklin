@@ -57,6 +57,7 @@ import {
   renameSync, unlinkSync, writeFileSync,
 } from 'node:fs';
 import { join, resolve } from 'node:path';
+import type { JsonObject, JsonValue } from '../src/utils/json';
 import {
   chatText, DEFAULT_CLAUDE_MODEL, DEFAULT_ENDPOINT, ensureLmStudioRunning,
   ensureTextModelLoaded, extractJsonObject, isClaudeCliAvailable,
@@ -153,7 +154,7 @@ const PROSE_FIELDS = new Set(['caption', 'alt', 'story']);
 // aliases). Inputs that don't resolve are dropped at output time so
 // the manifest builder doesn't choke on a code it can't map to a
 // continent. Single source of truth: scripts/locations.ts.
-function normalizeCountrySlug(raw: unknown): string | undefined {
+function normalizeCountrySlug(raw: JsonValue): string | undefined {
   return normalizeCountryCode(raw);
 }
 
@@ -165,7 +166,7 @@ interface LabelEvent {
   timestamp: string;
   tier: Tier;
   sessionFile: string;
-  fields: Record<string, unknown>;
+  fields: JsonObject;
   // refined events embed the fingerprint of inputs they came from so
   // we can detect when the inputs have changed and re-refine.
   source_fingerprint?: { human: string; ai: string };
@@ -183,11 +184,25 @@ interface AtlasEntry {
   image?: string;
 }
 
-interface MeItem {
+type MeItem = {
   id: string;
   type?: string;
   src: string;
   aspect?: number;
+};
+
+// Parse rather than assume: an item missing id or src is reported and
+// skipped instead of merging labels onto an undefined key.
+function isMeItem(it: JsonValue): it is MeItem {
+  return (
+    typeof it === 'object' &&
+    it !== null &&
+    !Array.isArray(it) &&
+    typeof it.id === 'string' &&
+    typeof it.src === 'string' &&
+    (it.type === undefined || typeof it.type === 'string') &&
+    (it.aspect === undefined || typeof it.aspect === 'number')
+  );
 }
 
 interface MergedEntry {
@@ -219,7 +234,7 @@ export function appendEvent(
   tier: Tier,
   sessionStampStr: string,
   id: string,
-  fields: Record<string, unknown>,
+  fields: JsonObject,
   extras: Partial<Pick<LabelEvent, 'source_fingerprint'>> = {},
 ): void {
   const dir = ensureLabelsDir(tier);
@@ -274,7 +289,7 @@ function loadEvents(tier: Tier, strict: boolean): LabelEvent[] {
         continue;
       }
       if (typeof parsed !== 'object' || parsed === null) continue;
-      const o = parsed as Record<string, unknown>;
+      const o = parsed as JsonObject;
       if (typeof o.id !== 'string' || typeof o.fields !== 'object' || o.fields === null) continue;
       if (o.v == null) {
         const msg = `merge-labels: ${path}: event missing "v" version field — assuming v=1`;
@@ -287,7 +302,7 @@ function loadEvents(tier: Tier, strict: boolean): LabelEvent[] {
         timestamp: typeof o.timestamp === 'string' ? o.timestamp : sessionFile,
         tier,
         sessionFile,
-        fields: o.fields as Record<string, unknown>,
+        fields: o.fields as JsonObject,
       };
       // The three optional fields are written only when the event line
       // carried them, so a missing key stays missing rather than
@@ -312,27 +327,33 @@ function loadEvents(tier: Tier, strict: boolean): LabelEvent[] {
 // Walk me.json's nested structure for sabbatical-travel items. Matches
 // loadSabbaticalTravel in classify-photography.ts so the two scripts
 // agree on what counts as a sabbatical photo.
-function loadSabbaticalItems(me: Record<string, unknown>): MeItem[] {
+function loadSabbaticalItems(me: JsonObject): MeItem[] {
   const out: MeItem[] = [];
-  const visit = (node: unknown): void => {
+  const visit = (node: JsonValue): void => {
     if (Array.isArray(node)) { node.forEach(visit); return; }
     if (typeof node !== 'object' || node === null) return;
-    const obj = node as Record<string, unknown>;
-    const items = obj.items;
+    const items = node.items;
     if (Array.isArray(items)) {
       const isSabbatical = items.every(
         (it) =>
           typeof it === 'object' &&
           it !== null &&
-          typeof (it as Record<string, unknown>).src === 'string' &&
-          ((it as Record<string, unknown>).src as string).includes('sabbatical-travel/'),
+          !Array.isArray(it) &&
+          typeof it.src === 'string' &&
+          it.src.includes('sabbatical-travel/'),
       );
       if (isSabbatical) {
-        items.forEach((it) => out.push(it as MeItem));
+        const parsed = items.filter(isMeItem);
+        if (parsed.length !== items.length) {
+          console.warn(
+            `merge-labels: skipped ${items.length - parsed.length} sabbatical-travel item(s) missing id/src`,
+          );
+        }
+        out.push(...parsed);
         return;
       }
     }
-    Object.values(obj).forEach(visit);
+    Object.values(node).forEach(visit);
   };
   visit(me);
   return out;
@@ -382,7 +403,7 @@ function buildBaseMap(): BaseMap {
   }
 
   // me-* entries from me.json sabbatical-travel.
-  const me = JSON.parse(readFileSync(ME_JSON, 'utf8')) as Record<string, unknown>;
+  const me = JSON.parse(readFileSync(ME_JSON, 'utf8')) as JsonObject;
   const meItems = loadSabbaticalItems(me).filter((it) => !it.type || it.type === 'image');
   for (const item of meItems) {
     const nsId = `me-${item.id}`;
@@ -701,7 +722,7 @@ async function runRefinement(
         prompt: buildRefinePrompt(aiLabels, notes),
       });
       const parsed = extractJsonObject(raw);
-      const fields: Record<string, unknown> = {};
+      const fields: JsonObject = {};
       for (const k of Object.keys(parsed)) {
         if (!REFINED_FIELDS.has(k)) continue;
         const v = parsed[k];
@@ -1004,7 +1025,7 @@ async function runDupeMerge(
         prompt: buildDupeMergePrompt(canonicalState, dupeStates),
       });
       const parsed = extractJsonObject(raw);
-      const fields: Record<string, unknown> = {};
+      const fields: JsonObject = {};
       for (const k of Object.keys(parsed)) {
         if (!REFINED_FIELDS.has(k)) continue;
         const v = parsed[k];

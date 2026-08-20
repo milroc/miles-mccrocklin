@@ -44,6 +44,7 @@
 //   bun run scripts/build-photography-manifest.ts
 
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import type { JsonObject, JsonValue } from '../src/utils/json';
 import { basename, dirname, join, relative, resolve } from 'node:path';
 import sharp from 'sharp';
 import type { PhotographyEntry, PhotographyManifest } from '../src/types';
@@ -82,13 +83,27 @@ interface AtlasEntry {
   local_image?: AtlasLocalImage;
 }
 
-interface MeMediaItem {
+type MeMediaItem = {
   id: string;
   type: string;
   src: string;
   caption?: string;
   aspect?: number;
   tag?: string;
+};
+
+// me.json's media items are hand-authored, so the scan parses rather
+// than assumes: an item missing one of the three required fields is
+// reported and skipped instead of reaching the manifest half-formed.
+function isMeMediaItem(it: JsonValue): it is MeMediaItem {
+  return (
+    typeof it === 'object' &&
+    it !== null &&
+    !Array.isArray(it) &&
+    typeof it.id === 'string' &&
+    typeof it.type === 'string' &&
+    typeof it.src === 'string'
+  );
 }
 
 // Per-prose-field provenance: which tier of the labels pipeline wrote
@@ -203,7 +218,7 @@ async function readAspect(src: string): Promise<number> {
   return w / h;
 }
 
-function validatePhotographyEntry(e: unknown, idx: number): PhotographyJsonEntry {
+function validatePhotographyEntry(e: JsonValue, idx: number): PhotographyJsonEntry {
   if (typeof e !== 'object' || e === null) {
     throw new Error(`photography.json[${idx}]: not an object`);
   }
@@ -227,30 +242,36 @@ function validatePhotographyEntry(e: unknown, idx: number): PhotographyJsonEntry
 // Extract sabbatical-travel carousel items from me.json. They live deep
 // in the dossier; this scan is robust to schema drift as long as a media
 // group's items[] all share the sabbatical-travel/ src prefix.
-function loadSabbaticalTravel(me: Record<string, unknown>): MeMediaItem[] {
+function loadSabbaticalTravel(me: JsonObject): MeMediaItem[] {
   const out: MeMediaItem[] = [];
-  const visit = (node: unknown): void => {
+  const visit = (node: JsonValue): void => {
     if (Array.isArray(node)) {
       node.forEach(visit);
       return;
     }
     if (typeof node !== 'object' || node === null) return;
-    const obj = node as Record<string, unknown>;
-    const items = obj.items;
+    const items = node.items;
     if (Array.isArray(items)) {
       const isSabbatical = items.every(
         (it) =>
           typeof it === 'object' &&
           it !== null &&
-          typeof (it as Record<string, unknown>).src === 'string' &&
-          ((it as Record<string, unknown>).src as string).includes('sabbatical-travel/'),
+          !Array.isArray(it) &&
+          typeof it.src === 'string' &&
+          it.src.includes('sabbatical-travel/'),
       );
       if (isSabbatical) {
-        items.forEach((it) => out.push(it as MeMediaItem));
+        const parsed = items.filter(isMeMediaItem);
+        if (parsed.length !== items.length) {
+          console.warn(
+            `build-photography-manifest: skipped ${items.length - parsed.length} sabbatical-travel item(s) missing id/type/src`,
+          );
+        }
+        out.push(...parsed);
         return;
       }
     }
-    Object.values(obj).forEach(visit);
+    Object.values(node).forEach(visit);
   };
   visit(me);
   return out;
@@ -323,10 +344,10 @@ function composeProseProvenance(
 export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
   const me = JSON.parse(
     await Bun.file(join(ROOT, 'data', 'me.json')).text(),
-  ) as Record<string, unknown>;
+  ) as JsonObject;
   const photographyRaw = JSON.parse(
     await Bun.file(join(ROOT, 'data', 'photography.json')).text(),
-  ) as unknown[];
+  ) as JsonValue[];
   const atlas = JSON.parse(
     await Bun.file(join(ROOT, 'data', 'photo-atlas.json')).text(),
   ) as AtlasEntry[];
