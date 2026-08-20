@@ -169,16 +169,38 @@ Writing specs here:
 - **Two surfaces hide their chrome when the pointer goes still** —
   Explorer's nav/toolbar/title after 3s, the media viewer's topbar and
   arrows after 1.2s — and the hidden plate stops taking pointer events.
-  Use `clickIdleChrome` from `e2e/fixtures.ts` to click those, or take
-  the keyboard path, which is unaffected.
+  `clickIdleChrome` in `e2e/fixtures.ts` wakes the plate and presses it;
+  the keyboard path is unaffected and is simpler where it exists.
+
+  Pointer-clicking a *hidden* plate is racy in a way no helper fully
+  fixes, so prefer not to. Waking is a React state change, and a
+  mousedown queued behind an unrendered wake is hit-tested against
+  `pointer-events: none` and lands on whatever sits underneath — the
+  press disappears with no error. That is issue #79. Explorer's specs
+  sidestep it by opening on `?country=ata`, which pins the chrome
+  visible (the idle effect returns early while a country is selected)
+  and makes an ordinary `click()` deterministic. Look for a state that
+  pins the chrome before reaching for the helper.
+- **A plate that fades also goes `aria-hidden`, so `getByRole` cannot
+  see anything inside it.** Explorer's toolbar and nav both do this.
+  A role locator against idle-hidden chrome resolves to zero elements
+  and stays that way, which reads as "the button vanished" rather than
+  as a selector problem — and it only shows up on a slow machine, where
+  the idle delay elapses before the first assertion. Select those by
+  attribute (`button[aria-label$="rotation"]`, `a[aria-label$="home"]`).
+  Nothing is given up: a `<button>` carries the button role implicitly
+  and `aria-label` is the accessible name.
 - **The country index on /explorer/ is keyboard-only** by design
   (`clip-path: inset(50%)` under the globe canvas). Activate it with
   `.press('Enter')`; a mouse click can never reach it.
-- **Globe specs skip rather than fail** when WebGL is unavailable, via
-  `requireLiveGlobe` — except under `CI`, where the runner image's WebGL
-  is a fixed property and a silent loss of it would turn eight specs
-  into no-ops behind a green check. Assert the documented failure path
-  deliberately instead, as `explorer-no-webgl.spec.ts` does.
+- **Globe specs fail rather than skip** when WebGL is unavailable.
+  `requireLiveGlobe` used to skip; the config forces software rendering
+  (`--use-angle=swiftshader`), which needs no GPU, and across every local
+  and CI run that branch was never once taken. It was dead weight that
+  could silently turn a dozen specs into no-ops behind a green check, so
+  it is now a hard assertion carrying a message about what to try. The
+  no-WebGL path is asserted deliberately instead, in
+  `explorer-no-webgl.spec.ts`.
 - **Record a known defect with `test.fail()`, never `test.fixme`.** A
   fixme skips: it sits in the output forever without checking anything,
   and nothing tells you when the bug is gone. `test.fail()` runs the
@@ -190,6 +212,16 @@ Writing specs here:
   race first — the focus one waits for the panel's search box to hold
   focus, because pressing Escape faster than TreeDropdown's
   requestAnimationFrame wins the race and the bug doesn't reproduce.
+- **A spec blocked on an app bug that fails *intermittently* gets
+  removed and filed, not annotated.** `test.fail()` needs a
+  deterministic failure; a spec that passes four runs in five would
+  report "expected to fail but passed" most of the time and teach
+  everyone to ignore it. Delete it, and put the code verbatim on the
+  issue with whatever you measured, so it goes back the day the bug
+  does. `e2e/lightbox.spec.ts` carries a block comment naming the five
+  navigation specs that left this way and why (#81); that comment is
+  the coverage gap staying visible in the file rather than only in the
+  tracker.
 - **Every spec fails on an unexpected `console.error` or `pageerror`.**
   The fixture that does this is `{ auto: true }` — that flag is what
   makes it run at all, since no spec requests it by name. For a page

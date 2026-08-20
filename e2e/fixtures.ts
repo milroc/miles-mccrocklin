@@ -194,10 +194,31 @@ export async function clickIdleChrome(page: Page, locator: Locator): Promise<voi
   const target = box!;
   const cx = target.x + target.width / 2;
   const cy = target.y + target.height / 2;
+
+  // Wake, then confirm, then re-arm, then press.
+  //
+  // The wake needs two moves at distinct coordinates because Chromium
+  // fires no mousemove for a move to the position the cursor already
+  // occupies, and a move that fires no mousemove wakes nothing.
   await page.mouse.move(cx - 2, cy - 2);
   await page.mouse.move(cx, cy);
-  await expect(locator, 'still taking pointers at the moment of the press')
+
+  // The media viewer does not re-show on the move itself: a hidden plate
+  // schedules a 500ms one-shot so incidental cursor drift doesn't flash
+  // the chrome back. So wait for the plate to actually be taking pointers
+  // rather than assuming the move did it.
+  await expect(locator, 'the plate came back and is taking pointers')
     .toHaveCSS('pointer-events', 'auto', { timeout: 5_000 });
+
+  // One more move now that it is up. With the chrome already visible the
+  // page re-arms its hide countdown synchronously inside the handler — no
+  // React state change, so no render to wait on — which hands the press
+  // the full delay instead of whatever was left of it after the wait
+  // above. Without this the press inherits a countdown that started when
+  // the plate appeared, and a 1.2s viewer timer can expire inside a
+  // single slow round trip.
+  await page.mouse.move(cx + 2, cy + 2);
+  await page.mouse.move(cx, cy);
   await page.mouse.down();
   await page.mouse.up();
 }
