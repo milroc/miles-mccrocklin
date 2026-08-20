@@ -16,7 +16,10 @@ jobs:
       # Chromium only. The suite's mobile project runs the iPhone 13
       # profile on Chromium rather than WebKit, so one browser covers it.
       - run: bunx playwright install --with-deps chromium
-      - run: bun run test:e2e
+      # --fail-on-flaky-tests: this suite's job is to prove a refactor
+      # changed no behaviour. A real intermittent regression quietly
+      # passing on retry would defeat exactly that.
+      - run: bun run test:e2e -- --fail-on-flaky-tests
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

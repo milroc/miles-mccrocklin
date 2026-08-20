@@ -2,7 +2,7 @@
 // it checks the specific promises this site makes: that every pillar can
 // be operated without a pointer, that focus is always visible somewhere,
 // and that no page traps a Tab.
-import { test, expect } from './fixtures';
+import { test, expect, requireLiveGlobe } from './fixtures';
 
 const PAGES = ['/', '/builder/', '/photographer/', '/resume/'];
 
@@ -83,15 +83,15 @@ test.describe('keyboard', () => {
 
   test('the explorer is operable without a pointer at all', async ({ page }) => {
     await page.goto('/explorer/');
+    // requireLiveGlobe distinguishes "no WebGL here" from "the globe
+    // mounted but never handed its country set back" — the second is a
+    // real regression, and the previous catch-all swallowed it into a
+    // skip after burning 30s.
+    await requireLiveGlobe(page);
     const buttons = page
       .getByRole('navigation', { name: 'Countries' })
       .getByRole('button');
-    const ready = await expect
-      .poll(() => buttons.count(), { timeout: 30_000 })
-      .toBeGreaterThan(0)
-      .then(() => true)
-      .catch(() => false);
-    test.skip(!ready, 'globe unavailable in this environment');
+    await expect.poll(() => buttons.count(), { timeout: 30_000 }).toBeGreaterThan(0);
 
     // The country index is the pointer-free path into the globe, and the
     // panel it opens closes with Escape.

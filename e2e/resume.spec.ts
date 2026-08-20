@@ -34,11 +34,13 @@ test.describe('resume — modes', () => {
       await toolbar.getByRole('button', { name: label }).click();
       await expect(page.locator('[data-app]')).toHaveClass(new RegExp(`mode-${mode}`));
 
-      const pressed = await toolbar
-        .getByRole('button')
-        .filter({ has: page.locator('[aria-pressed="true"]') })
-        .count();
-      expect(pressed, 'modes are mutually exclusive').toBeLessThanOrEqual(1);
+      // aria-pressed is on the buttons themselves. filter({ has }) looks
+      // for a *descendant*, so it counted zero every time and `0 <= 1`
+      // could never fail.
+      await expect(
+        toolbar.locator('button[aria-pressed="true"]'),
+        'exactly one mode is pressed',
+      ).toHaveCount(1);
       await expect(toolbar.getByRole('button', { name: label })).toHaveAttribute(
         'aria-pressed',
         'true',
@@ -85,6 +87,33 @@ test.describe('resume — modes', () => {
   });
 });
 
+type Page = import('@playwright/test').Page;
+
+// The Airbnb reviews sit behind *two* nested disclosures: the sabbatical
+// entry collapses every track after the first, and the Reviews component
+// is itself a <details> that starts closed. Nothing below either was
+// reachable from a test until these existed.
+async function openSabbatical(page: Page): Promise<void> {
+  const more = page.getByRole('button', { name: /Learn more about my sabbatical/ });
+  await expect(more).toBeVisible();
+  await more.click();
+  await expect(page.getByRole('button', { name: /Show less/ })).toBeVisible();
+}
+
+// Returns the reviews disclosure. Scoping to it matters: the resume
+// page's own root is an <article>, so a bare getByRole('article') picks
+// up the whole document alongside the five cards.
+async function openReviews(page: Page) {
+  await openSabbatical(page);
+  const details = page
+    .locator('details')
+    .filter({ has: page.locator('summary', { hasText: /guest reviews/ }) });
+  await expect(details, 'the reviews disclosure is present').toBeVisible();
+  await details.locator('summary').click();
+  await expect(details.getByRole('article').first()).toBeVisible();
+  return details;
+}
+
 test.describe('resume — content affordances', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/resume/');
@@ -92,7 +121,7 @@ test.describe('resume — content affordances', () => {
 
   test('redaction glyphs link to their note and back', async ({ page }) => {
     const glyph = page.getByRole('link', { name: /Redacted variable/ }).first();
-    test.skip((await glyph.count()) === 0, 'no redactions in the current resume');
+    await expect(glyph, 'the resume carries redactions').toBeVisible();
 
     const href = await glyph.getAttribute('href');
     expect(href).toMatch(/^#note-/);
@@ -105,18 +134,78 @@ test.describe('resume — content affordances', () => {
   });
 
   test('a review translates and reverts', async ({ page }) => {
-    const translate = page.getByRole('button', { name: /Translate to English/ }).first();
-    test.skip((await translate.count()) === 0, 'no translated reviews present');
+    // This spec skipped on every run before, because the reviews are two
+    // disclosures deep and nothing opened them — Track/Reviews/ReviewCard
+    // had zero coverage. Assert the fixture exists rather than skipping
+    // when it doesn't: the data is committed alongside the code.
+    const details = await openReviews(page);
+    const cards = details.getByRole('article');
 
-    const card = translate.locator('xpath=ancestor::article[1]');
+    // Pin the card by position, not by the button inside it: the toggle
+    // renames itself to "Show original" on click, so a locator chained
+    // off its name stops resolving the moment it is used.
+    const total = await cards.count();
+    let index = -1;
+    for (let i = 0; i < total; i++) {
+      const has = await cards
+        .nth(i)
+        .getByRole('button', { name: /Translate to English/ })
+        .count();
+      if (has > 0) {
+        index = i;
+        break;
+      }
+    }
+    expect(index, 'a translated review is present in me.json').toBeGreaterThanOrEqual(0);
+
+    const card = cards.nth(index);
     const original = await card.innerText();
 
-    await translate.click();
+    await card.getByRole('button', { name: /Translate to English/ }).click();
     await expect(card.getByRole('button', { name: /Show original/ })).toBeVisible();
     await expect.poll(() => card.innerText()).not.toBe(original);
 
     await card.getByRole('button', { name: /Show original/ }).click();
+    await expect(card.getByRole('button', { name: /Translate to English/ })).toBeVisible();
     await expect.poll(() => card.innerText()).toBe(original);
+  });
+
+  test('the sabbatical disclosure reveals its tracks and closes again', async ({
+    page,
+  }) => {
+    const more = page.locator('#sabbatical-more');
+    await expect(more).toHaveCount(0);
+
+    await openSabbatical(page);
+    // The collapsed tracks — Real Estate, photography — live only here.
+    await expect(more).toBeVisible();
+    await expect(more).toContainText(/real estate investor/i);
+
+    await page.getByRole('button', { name: /Show less/ }).click();
+    await expect(more).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /Learn more about my sabbatical/ }))
+      .toBeVisible();
+  });
+
+  test('the reviews disclosure expands and collapses', async ({ page }) => {
+    const details = await openReviews(page);
+    const cards = details.getByRole('article');
+    await expect.poll(() => cards.count()).toBeGreaterThan(1);
+    // Every card states its rating to screen readers, not just as stars.
+    await expect(cards).toHaveCount(
+      await details.getByRole('img', { name: /out of 5/ }).count(),
+    );
+
+    await details.getByRole('button', { name: 'collapse' }).click();
+    await expect(cards.first()).toBeHidden();
+  });
+
+  test('the reviews link out to the Airbnb listing', async ({ page }) => {
+    const details = await openReviews(page);
+    const link = details.getByRole('link', { name: /See all .* reviews on Airbnb/ });
+    await expect(link).toHaveAttribute('href', /^https?:/);
+    await expect(link).toHaveAttribute('target', '_blank');
+    await expect(link).toHaveAttribute('rel', /noreferrer/);
   });
 
   test('the terminal dock opens from the skills caption and closes', async ({ page }) => {
@@ -145,6 +234,7 @@ test.describe('resume — content affordances', () => {
 
   test('contact links are real and off-site ones open in a new tab', async ({ page }) => {
     const header = page.locator('header').first();
+    await expect(header.getByRole('link')).not.toHaveCount(0);
     for (const link of await header.getByRole('link').all()) {
       const href = await link.getAttribute('href');
       expect(href, 'every contact link has a destination').toBeTruthy();
@@ -178,7 +268,7 @@ test.describe('builder', () => {
     // sitting in the masked edge zone (data-edge), which centres itself
     // on click instead. Both are covered by their own specs.
     const figures = page.locator('[data-figure-card]:not([aria-hidden]):not([data-edge])');
-    test.skip((await figures.count()) === 0, 'builder page has no media cards');
+    await expect(figures, 'the builder page carries media cards').not.toHaveCount(0);
     await figures.first().click();
     await expect(page.getByRole('dialog', { name: /Media viewer/ })).toBeVisible();
   });

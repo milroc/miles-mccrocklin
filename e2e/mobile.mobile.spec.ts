@@ -97,7 +97,20 @@ test.describe('mobile — explorer', () => {
   test('shows the globe or says why it cannot', async ({ page }) => {
     await page.goto('/explorer/');
     // On a phone the title plate is the only instruction a visitor gets,
-    // and it must survive until they actually interact.
-    await expect(page.getByText(/tap any country/i)).toBeVisible();
+    // and it must survive until they actually interact — coarse pointers
+    // deliberately don't arm the idle timer. Asserted via aria-hidden,
+    // because the hidden state is opacity 0 and Playwright counts an
+    // opacity-0 element as visible.
+    // The instruction lives in an <em> inside the title plate; the plate
+    // is the <p> that carries aria-hidden, so assert on that.
+    const plate = page.getByText(/Explorer · \d+ countries/);
+    await expect(plate).toContainText(/tap any country/i);
+    await expect(plate).toBeVisible();
+
+    // Coarse pointers deliberately don't arm the idle timer: a touch
+    // visitor has no cursor to wiggle the chrome back, and the only
+    // recovering gesture also selects a country. The plate must survive.
+    await page.waitForTimeout(4_000);
+    await expect(plate).toHaveAttribute('aria-hidden', 'false');
   });
 });

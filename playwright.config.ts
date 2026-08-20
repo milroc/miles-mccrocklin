@@ -81,7 +81,13 @@ export default defineConfig({
     {
       command: 'bun run build && bun run scripts/serve-dist.ts',
       url: `http://127.0.0.1:${DIST_PORT}/`,
-      reuseExistingServer: !process.env.CI,
+      // Reuse is opt-in, not the default. With `!process.env.CI` here, a
+      // server left listening from an earlier run — or from another
+      // worktree — skips the `bun run build` step entirely and the suite
+      // silently grades a stale dist/. That produced both a false red
+      // and, worse, would produce a false green. Set E2E_REUSE_SERVER=1
+      // when iterating and you know the build is current.
+      reuseExistingServer: !!process.env.E2E_REUSE_SERVER,
       timeout: 180_000,
       stdout: 'pipe',
       stderr: 'pipe',
@@ -89,7 +95,7 @@ export default defineConfig({
     {
       command: 'bun run dev',
       url: `http://127.0.0.1:${DEV_PORT}/`,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !!process.env.E2E_REUSE_SERVER,
       timeout: 180_000,
       stdout: 'pipe',
       stderr: 'pipe',

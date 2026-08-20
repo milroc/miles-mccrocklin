@@ -43,6 +43,77 @@ test.describe('photographer — the wall', () => {
   });
 });
 
+// The graphic-content gate is a three-way handshake: the wall blurs a
+// flagged photo behind a Reveal button, the wall's revealed set is
+// handed to the viewer, and the viewer re-gates only what the visitor
+// has not already opted into. Removing it from both sides at once used
+// to pass every spec in this suite.
+test.describe('photographer — graphic content', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/photographer/');
+  });
+
+  // The aria-label of the photo behind the first gate. Read through the
+  // wrapper because the tile is aria-hidden while gated, so no role
+  // query can reach it — and read up front because revealing one photo
+  // re-renders the wall and renumbers "the first gate".
+  async function gatedPhotoLabel(page: import('@playwright/test').Page) {
+    const gate = page.getByRole('button', { name: 'Reveal graphic content' }).first();
+    await expect(gate).toBeVisible();
+    const tile = gate.locator('xpath=..').locator('button').first();
+    await expect(tile).toHaveAttribute('aria-hidden', 'true');
+    await expect(tile).toHaveAttribute('tabindex', '-1');
+    const label = await tile.getAttribute('aria-label');
+    expect(label, 'the gated photo is labelled').toBeTruthy();
+    return label!;
+  }
+
+  test('flagged photos are gated until revealed', async ({ page }) => {
+    const gates = page.getByRole('button', { name: 'Reveal graphic content' });
+    // A hard assertion, not a skip: the flag is in committed data, so
+    // it vanishing is a change someone should have to look at.
+    await expect(gates, 'photography.json flags graphic photos').not.toHaveCount(0);
+
+    const before = await gates.count();
+    await gates.first().click();
+    await expect.poll(() => gates.count()).toBe(before - 1);
+  });
+
+  test('a gated photo is unreachable until revealed', async ({ page }) => {
+    const label = await gatedPhotoLabel(page);
+
+    // While gated the photo is out of the accessibility tree and out of
+    // the tab order, and the overlay covers it so no click reaches it.
+    // getByRole cannot see an aria-hidden element, so its absence here
+    // IS the assertion.
+    await expect(page.getByRole('button', { name: label })).toHaveCount(0);
+
+    await page.getByRole('button', { name: 'Reveal graphic content' }).first().click();
+
+    // Pinned by the photo's own label: revealing re-renders the wall, so
+    // "the first gate" is a different photo afterwards.
+    const tile = page.getByRole('button', { name: label });
+    await expect(tile).toBeVisible();
+    await tile.click();
+    await expect(page.getByRole('dialog', { name: /Media viewer/ })).toBeVisible();
+  });
+
+  test('a photo revealed on the wall is not re-gated in the viewer', async ({
+    page,
+  }) => {
+    const label = await gatedPhotoLabel(page);
+    await page.getByRole('button', { name: 'Reveal graphic content' }).first().click();
+    await page.getByRole('button', { name: label }).click();
+
+    const viewer = page.getByRole('dialog', { name: /Media viewer/ });
+    await expect(viewer).toBeVisible();
+    // Asking the visitor to consent twice to the same photo is exactly
+    // what MasonryWall's revealed-set hand-off exists to prevent.
+    await expect(viewer.getByRole('button', { name: 'Reveal graphic content' }))
+      .toHaveCount(0);
+  });
+});
+
 test.describe('photographer — search', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/photographer/');
@@ -107,12 +178,19 @@ test.describe('photographer — faceted filters', () => {
     const listbox = page.getByRole('listbox');
     await expect(listbox).toBeVisible();
 
-    const before = await resultCount(page);
+    // Each option carries its own photo count, rolled up by a different
+    // code path (photoCounts) than the one that filters the wall
+    // (applyFilters). Asserting they agree is a real cross-check;
+    // asserting the wall merely got no larger is not — a filter that
+    // does nothing at all satisfies that.
     const option = listbox.getByRole('option').first();
     const name = (await option.innerText()).trim();
+    const expected = Number(name.match(/\((\d+)\)\s*$/)?.[1] ?? NaN);
+    expect(expected, 'the option states its photo count').not.toBeNaN();
+
     await option.click();
     await expect(option).toHaveAttribute('aria-selected', 'true');
-    await expect.poll(() => resultCount(page)).toBeLessThanOrEqual(before);
+    await expect.poll(() => resultCount(page)).toBe(expected);
 
     // Escape closes the panel and keeps the selection, which the trigger
     // now names instead of saying "Category".
@@ -174,12 +252,19 @@ test.describe('photographer — faceted filters', () => {
     const listbox = page.getByRole('listbox');
     await expect(listbox).toBeVisible();
 
-    const before = await resultCount(page);
-    await listbox.getByRole('option').first().click();
+    // Same cross-check as the category dropdown: the wall must end up
+    // showing exactly the number the option advertised. Proven necessary
+    // — with a `<=` assertion, stubbing the country predicate to `true`
+    // (a completely dead filter) still passed this spec.
+    const option = listbox.getByRole('option').first();
+    const expected = Number((await option.innerText()).match(/\((\d+)\)\s*$/)?.[1] ?? NaN);
+    expect(expected, 'the option states its photo count').not.toBeNaN();
+
+    await option.click();
     await expect.poll(async () => (await filterParams(page)).locations, {
       timeout: 10_000,
     }).toBeTruthy();
-    await expect.poll(() => resultCount(page)).toBeLessThanOrEqual(before);
+    await expect.poll(() => resultCount(page)).toBe(expected);
   });
 
   test('"Clear filters" appears only with a selection and resets everything', async ({

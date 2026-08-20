@@ -21,7 +21,12 @@ const IGNORED_CONSOLE = [
   /Allow attribute will take precedence over 'allowfullscreen'/,
   // Headless Chromium has no GPU; the software path still renders.
   /Automatic fallback to software WebGL has been deprecated/,
-  /GroupMarkerNotSet|SwiftShader|Failed to create GLES3 context/,
+  // Anchored to Chromium's own prefixes. An unanchored /SwiftShader/
+  // would also swallow anything the app logged about its renderer —
+  // `gl.getParameter(RENDERER)` reads "SwiftShader Device" here.
+  /^\[\.WebGL[^\]]*\]/,
+  /^GroupMarkerNotSet/,
+  /^Failed to create GLES3 context/,
 ];
 
 function isIgnored(message: ConsoleMessage): boolean {
@@ -29,18 +34,33 @@ function isIgnored(message: ConsoleMessage): boolean {
   return IGNORED_CONSOLE.some((pattern) => pattern.test(text));
 }
 
-export const test = base.extend<{ consoleErrors: string[] }>({
-  consoleErrors: async ({ page }, use) => {
+// `auto: true` is load-bearing: Playwright only builds a fixture a test
+// asks for by name, and no spec asks for this one. Without it the
+// listeners below are never attached and the guarantee is imaginary.
+export const test = base.extend<{
+  consoleErrors: string[];
+  // Per-spec escape hatch, declared with test.use() at the one place it
+  // applies. A spec that navigates to a page which is *itself* an error
+  // response gets Chromium's own network log for it; that is expected,
+  // and allowlisting it globally would hide every genuinely missing
+  // asset on every other page.
+  expectedConsoleErrors: RegExp[];
+}>({
+  expectedConsoleErrors: [[], { option: true }],
+
+  consoleErrors: [async ({ page, expectedConsoleErrors }, use) => {
     const errors: string[] = [];
     page.on('console', (message) => {
-      if (message.type() === 'error' && !isIgnored(message)) {
-        errors.push(message.text());
-      }
+      const text = message.text();
+      if (message.type() !== 'error') return;
+      if (isIgnored(message)) return;
+      if (expectedConsoleErrors.some((pattern) => pattern.test(text))) return;
+      errors.push(text);
     });
     page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
     await use(errors);
     expect(errors, 'console errors during this test').toEqual([]);
-  },
+  }, { auto: true }],
 });
 
 export { expect };
@@ -74,6 +94,12 @@ export async function waitForGlobe(page: Page): Promise<GlobeState> {
 // of turning every globe assertion red.
 export async function requireLiveGlobe(page: Page): Promise<void> {
   const state = await waitForGlobe(page);
+  // In CI, WebGL availability is a fixed property of the runner image.
+  // Skipping there would turn ~8 globe specs into silent no-ops behind a
+  // green check the first time the image loses SwiftShader.
+  if (process.env.CI) {
+    expect(state, 'CI runner must have working WebGL').toBe('live');
+  }
   test.skip(state !== 'live', `globe unavailable in this environment (${state})`);
 }
 
@@ -95,11 +121,16 @@ export async function clickIdleChrome(page: Page, locator: Locator): Promise<voi
   // machine Playwright's own visible/enabled/stable wait can eat the
   // whole window before it even tries to click.
   await expect(locator).toBeAttached();
-  await expect(async () => {
-    await page.mouse.move(400, 300);
-    await page.mouse.move(404, 304);
-    await locator.click({ timeout: 2_500, force: false });
-  }).toPass({ timeout: 40_000, intervals: [250, 250, 500] });
+  await expect(
+    async () => {
+      await page.mouse.move(400, 300);
+      await page.mouse.move(404, 304);
+      await locator.click({ timeout: 2_500, force: false });
+    },
+    // Named so a failure reads as "the idle window closed before the
+    // click landed" rather than an anonymous click timeout at 3am.
+    'clicking idle-hidden chrome within the window cursor activity opens',
+  ).toPass({ timeout: 40_000, intervals: [250, 250, 500] });
 }
 
 // ─── Filters ──────────────────────────────────────────────────────────

@@ -39,20 +39,30 @@ test.describe('explorer', () => {
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   });
 
-  test('the chrome hides when idle and returns on activity', async ({ page }) => {
-    const overlay = page.locator('[aria-label="Countries"]').locator('..');
+  test('the chrome hides after exactly the idle delay, and returns on activity', async ({
+    page,
+  }) => {
+    // A virtual clock, so this asserts the 3s contract from both sides
+    // instead of "eventually, within 30s". Wall-clock timing here is
+    // hopeless: several software-WebGL globes rendering in parallel push
+    // a setTimeout out by seconds, which is why the previous version had
+    // a 30s timeout and passed happily with the delay set to 250ms.
+    await page.clock.install();
+    await page.goto('/explorer/');
     const title = page.getByText(/Explorer · \d+ countries/);
     await expect(title).toBeVisible();
 
-    // The app's idle delay is 3s of stillness. The generous timeout is
-    // for the runner, not the product: several software-WebGL globes
-    // rendering in parallel can push a setTimeout out by seconds. What
-    // is being asserted is that the plate hides at all.
-    await expect(title).toHaveAttribute('aria-hidden', 'true', { timeout: 30_000 });
+    await page.clock.runFor(2_500);
+    await expect(title, 'still visible before the delay elapses')
+      .not.toHaveAttribute('aria-hidden', 'true');
+
+    await page.clock.runFor(1_000);
+    await expect(title, 'hidden once the delay elapses')
+      .toHaveAttribute('aria-hidden', 'true');
 
     await page.mouse.move(500, 400);
-    await expect(title).not.toHaveAttribute('aria-hidden', 'true');
-    expect(overlay).toBeTruthy();
+    await expect(title, 'cursor activity brings it back')
+      .not.toHaveAttribute('aria-hidden', 'true');
   });
 
   test('the hidden country index lists every visitable country', async ({ page }) => {
@@ -124,24 +134,24 @@ test.describe('explorer — country panel', () => {
   });
 
   test('album links open off-site in a new tab', async ({ page }) => {
-    // Not every country has albums; walk the index until one does.
-    const buttons = page.getByRole('navigation', { name: 'Countries' }).getByRole('button');
-    await expect.poll(() => buttons.count(), { timeout: 30_000 }).toBeGreaterThan(0);
+    // Antarctica is first in the index and carries four albums, so this
+    // asserts rather than hunts. Selected structurally: the visible
+    // "VIEW ALBUM →" text sits inside an aria-hidden span, so the
+    // accessible name is just the album title and a /album/i role query
+    // matches nothing (see issue #80). That is exactly why this spec
+    // used to skip on every run with 35 countries' link hygiene
+    // uncovered — never select these by name.
+    await page.goto('/explorer/?country=ata');
+    await requireLiveGlobe(page);
+    const panel = page.getByRole('complementary');
+    await expect(panel).toBeVisible({ timeout: 30_000 });
 
-    const total = Math.min(await buttons.count(), 12);
-    for (let i = 0; i < total; i++) {
-      await buttons.nth(i).press('Enter');
-      const albums = page.getByRole('link', { name: /album/i });
-      if ((await albums.count()) > 0) {
-        const link = albums.first();
-        await expect(link).toHaveAttribute('target', '_blank');
-        await expect(link).toHaveAttribute('rel', /noopener/);
-        await expect(link).toHaveAttribute('href', /^https?:/);
-        return;
-      }
-      await page.keyboard.press('Escape');
+    const albums = panel.locator('a[href^="https://"]');
+    await expect(albums, 'Antarctica carries album links').not.toHaveCount(0);
+    for (const link of await albums.all()) {
+      await expect(link).toHaveAttribute('target', '_blank');
+      await expect(link).toHaveAttribute('rel', /noopener/);
     }
-    test.skip(true, 'no country in the first dozen carries an album link');
   });
 });
 

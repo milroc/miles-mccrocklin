@@ -14,14 +14,36 @@
 //
 // Not a general-purpose server. `bun run scripts/serve-dist.ts`.
 import { serve } from 'bun';
-import { join, normalize } from 'node:path';
+import { readdir } from 'node:fs/promises';
+import { join, normalize, relative, sep } from 'node:path';
 
 const ROOT = join(import.meta.dir, '..', 'dist');
 const PORT = Number(process.env.PORT ?? 4318);
 const HOST = process.env.HOST ?? '127.0.0.1';
 
-// Resolve a request path to a file inside dist/, or null. Rejects any
-// path that escapes the root once normalized.
+// Resolve a request path to a file inside dist/, or null.
+//
+// Two things this has to get right to match Pages rather than the local
+// filesystem:
+//
+//   - Traversal. Any path that escapes dist/ once normalized is refused.
+//   - Case. APFS is case-insensitive, so `Bun.file('dist/Builder/
+//     index.html').exists()` answers true for a directory actually named
+//     `builder` — while Pages, on a case-sensitive filesystem, 404s it
+//     into the client-side redirect table. Without the segment check
+//     below, a case-sensitivity bug would pass locally, pass in CI on
+//     ext4, and only show up in production.
+async function existsExact(abs: string): Promise<boolean> {
+  if (!(await Bun.file(abs).exists())) return false;
+  let current = ROOT;
+  for (const segment of relative(ROOT, abs).split(sep)) {
+    const names = await readdir(current);
+    if (!names.includes(segment)) return false;
+    current = join(current, segment);
+  }
+  return true;
+}
+
 async function resolve(pathname: string): Promise<string | null> {
   const decoded = decodeURIComponent(pathname);
   const rel = normalize(decoded).replace(/^(\.\.[/\\])+/, '');
@@ -30,8 +52,9 @@ async function resolve(pathname: string): Promise<string | null> {
     : [rel, join(rel, 'index.html')];
   for (const candidate of candidates) {
     const abs = join(ROOT, candidate);
-    if (!abs.startsWith(ROOT)) continue;
-    if (await Bun.file(abs).exists()) return abs;
+    const inside = relative(ROOT, abs);
+    if (inside.startsWith('..') || inside === '') continue;
+    if (await existsExact(abs)) return abs;
   }
   return null;
 }

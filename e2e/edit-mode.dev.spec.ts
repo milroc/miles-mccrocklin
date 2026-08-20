@@ -144,13 +144,20 @@ test.describe('edit mode', () => {
 });
 
 test.describe('edit mode — production build', () => {
-  test('is compiled out of dist entirely', async ({ request }) => {
-    // The dev server is this project's baseURL, so ask the dist server
-    // directly. A prod bundle that still ships the edit chrome would put
-    // an authoring UI on the public site.
-    const response = await request.get('http://127.0.0.1:4318/resume/');
-    expect(response.status()).toBe(200);
-    const html = await response.text();
-    expect(html).not.toContain('Copy LLM');
+  // This project's baseURL is the dev server, so point at dist directly.
+  test.use({ baseURL: 'http://127.0.0.1:4318' });
+
+  test('never mounts on the public site', async ({ page }) => {
+    // Asserted against the *rendered* page, not the HTML. dist/resume/
+    // index.html is a 2.5 KB SPA shell, and `Copy LLM` genuinely does
+    // ship inside a JS chunk — the EditToolbar body is in the bundle,
+    // it is simply never mounted. Grepping the shell for that string
+    // could not tell the difference, and passed happily with
+    // EDIT_ENABLED=true putting the full authoring UI on the live site.
+    await page.goto('/resume/');
+    await expect(page.getByRole('toolbar', { name: 'Edit mode' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Copy LLM' })).toHaveCount(0);
+    await expect(page.locator('[contenteditable]')).toHaveCount(0);
+    await expect(page.getByLabel('Visibility')).toHaveCount(0);
   });
 });

@@ -77,8 +77,10 @@ test.describe('lightbox — from the photography wall', () => {
     // The arrows fade with the viewer's idle-chrome timer, after which
     // the photo itself takes the click — so each press has to wake them.
     await clickIdleChrome(page, viewer(page).getByRole('button', { name: 'Next photo' }));
+    // Exactly one step. navigateTo/onScroll does real index arithmetic
+    // across three loop copies; "it moved" would pass on an off-by-one.
     const next = await settledIndex(page, start);
-    expect(next).not.toBe(start);
+    expect(next).toBe(start + 1);
 
     await clickIdleChrome(
       page,
@@ -93,7 +95,7 @@ test.describe('lightbox — from the photography wall', () => {
 
     await page.keyboard.press('ArrowRight');
     const next = await settledIndex(page, start);
-    expect(next).not.toBe(start);
+    expect(next).toBe(start + 1);
 
     await page.keyboard.press('ArrowLeft');
     expect(await settledIndex(page, next)).toBe(start);

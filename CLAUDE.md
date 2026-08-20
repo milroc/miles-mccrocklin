@@ -155,8 +155,10 @@ Three projects, defined in `playwright.config.ts`:
 - **dev** — `*.dev.spec.ts`, against `bun run dev` on :4317. Edit mode
   is the only feature that exists solely in the dev build.
 
-Playwright starts and stops both servers itself; locally it reuses one
-already listening on either port.
+Playwright starts and stops both servers itself. It does **not** reuse a
+server already listening on those ports unless you set
+`E2E_REUSE_SERVER=1` — reuse skips the `bun run build` step, and a stale
+`dist/` graded as if it were current is worse than a slow run.
 
 Writing specs here:
 
@@ -175,9 +177,26 @@ Writing specs here:
 - **Globe specs skip rather than fail** when WebGL is unavailable, via
   `requireLiveGlobe`. Assert the documented failure path deliberately
   instead, by disabling WebGL as `explorer.spec.ts` does.
-- **Every spec fails on an unexpected `console.error`.** Add genuinely
-  external noise to `IGNORED_CONSOLE` in `e2e/fixtures.ts`; don't
-  silence app errors there.
+- **Every spec fails on an unexpected `console.error` or `pageerror`.**
+  The fixture that does this is `{ auto: true }` — that flag is what
+  makes it run at all, since no spec requests it by name. For a page
+  that legitimately produces one (the 404 route logs its own status),
+  declare it with `test.use({ expectedConsoleErrors: [...] })` at that
+  spec, not by widening the global `IGNORED_CONSOLE`.
+- **Assert the number the app computed, not a direction.** Each filter
+  option carries its own photo count, rolled up by a different code path
+  than the one that filters the wall, so `expect(resultCount).toBe(n)`
+  cross-checks two independent computations. `toBeLessThanOrEqual` does
+  not: a filter that does nothing satisfies it.
+- **Locators re-resolve on every use.** Anything selected by a name that
+  changes when clicked (a dropdown trigger that summarises its
+  selection, a Translate button that becomes "Show original") must be
+  pinned first — by index, by a stable label captured up front, or with
+  `elementHandle()`. Several specs carry a comment where this bit.
+- **`getByRole('article')` matches the resume page's own root**, and
+  `getByRole` cannot see an `aria-hidden` subtree at all. Scope to a
+  container, and remember that a control's absence from the role tree
+  is sometimes the assertion (the gated photo tiles).
 - **Not every figure card is a lightbox trigger.** `FigureCarousel`
   renders three copies of the strip, so two thirds of its cards are
   loop clones (`aria-hidden`, `tabIndex -1`), and any card whose centre
