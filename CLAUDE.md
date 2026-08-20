@@ -21,12 +21,33 @@ returns, `Record<string, unknown>` dictionaries, `typeof` narrowing
 used in place of boundary parsing, type assertions without a `SAFETY:`
 comment, and inferred types deliberately widened away.
 
+The tree is clean and CI keeps it that way (`.github/workflows/lint.yml`
+runs lint + typecheck on every PR).
+
 The vendored plugin is ours to edit. If a rule is wrong for this
 codebase, change the rule in `tools/oxlint/anti-slop/` and say why;
-don't sprinkle `oxlint-disable` at the call site. The fixes the rules
-want are real ones: parse at the I/O boundary into a named type, use
-`satisfies` instead of a widening annotation, and write down the
+don't sprinkle `oxlint-disable` at the call site. Two rules already
+carry a `LOCAL AMENDMENT` note explaining their carve-out
+(`no-unknown-parameters` for promise rejection handlers,
+`no-runtime-typeof` for free-global capability probes). The fixes the
+rules want are real ones: parse at the I/O boundary into a named type,
+use `satisfies` instead of a widening annotation, and write down the
 invariant that makes an assertion safe.
+
+Shared helpers the rules pushed us toward, worth reaching for before
+writing a new inline check:
+
+- `src/utils/json.ts` — `JsonValue` / `JsonObject`, the `is*` guards, and
+  the `as*` field readers. Both `src/` and `scripts/` walk parsed JSON
+  through these.
+- `src/utils/errors.ts` — `messageOf(cause)` instead of
+  `(e as Error).message`.
+- `src/utils/mode.ts` — `isPlainText` for the string-or-object form
+  shared by `RichText`, `Achievement` and `Project.description`;
+  `isVisibility` for the `visibility` field.
+
+`bun run lint` also reports oxlint's own default rules as *warnings*
+(unused vars, a couple of unicorn suggestions). Those are not gated.
 
 ## Design System
 

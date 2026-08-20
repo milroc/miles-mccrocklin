@@ -239,6 +239,9 @@ function findInstalledModel(
 async function fetchLoadedModelIds(endpoint: string): Promise<string[]> {
   const res = await fetch(`${endpoint}/models`);
   if (!res.ok) return [];
+  // SAFETY: the OpenAI-compatible /models response shape. Every read of
+  // it below is optional-chained, so a provider that answers differently
+  // yields an empty model list rather than a crash.
   const body = (await res.json()) as { data?: Array<{ id: string }> };
   return (body.data ?? []).map((m) => m.id);
 }
@@ -479,6 +482,7 @@ export async function autoDetectModel(endpoint: string): Promise<string> {
       `Is LM Studio's server running?`,
     );
   }
+  // SAFETY: as above — the /models response shape, read defensively.
   const body = await res.json() as { data?: Array<{ id: string }> };
   const ids = (body.data ?? []).map((m) => m.id);
   if (ids.length === 0) {
@@ -620,6 +624,9 @@ export async function chatVisionDetailed(opts: ChatVisionOptions): Promise<ChatV
         if (payload === '[DONE]') continue;
         if (!payload) continue;
         try {
+          // SAFETY: one SSE data frame from a chat-completions stream. Every
+          // field below is optional-chained; a frame that doesn't match
+          // contributes nothing to the accumulated text.
           const evt = JSON.parse(payload) as {
             choices?: Array<{ delta?: { content?: string } }>;
             usage?: ChatVisionUsage;
@@ -830,6 +837,9 @@ async function chatTextLmStudio(opts: ChatTextOptions): Promise<string> {
       const detail = await res.text().catch(() => '');
       return { ok: false, status: res.status, detail };
     }
+    // SAFETY: the chat-completions response shape. The fields are checked
+    // before use, and a response that doesn't match raises the explicit
+    // error below rather than propagating undefined.
     const parsed = await res.json() as {
       choices?: Array<{ message?: { content?: string; reasoning_content?: string } }>;
     };
@@ -915,6 +925,7 @@ const REFINEMENT_KEYS = new Set([
 ]);
 function scoreCandidate(parsed: JsonValue): number {
   if (!isJsonObject(parsed)) return -1;
+  // SAFETY: isJsonObject on the line above.
   const obj = parsed as JsonObject;
   let score = 0;
   for (const k of Object.keys(obj)) {
@@ -946,13 +957,18 @@ export function extractJsonObject(raw: string): JsonObject {
   let lastError: Error | null = null;
   for (const c of candidates) {
     try {
+      // SAFETY: JSON.parse returns any; JsonValue is the honest type. The
+      // candidate is scored, not trusted.
       const parsed = JSON.parse(c) as JsonValue;
       const score = scoreCandidate(parsed);
       if (score > bestScore) {
         bestScore = score;
+        // SAFETY: scoreCandidate returned >= 0, which it only does for an
+        // object (it returns -1 otherwise).
         bestParsed = parsed as JsonObject;
       }
     } catch (e) {
+      // SAFETY: the only thing thrown in this try is JSON.parse's SyntaxError.
       lastError = e as Error;
     }
   }

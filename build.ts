@@ -100,6 +100,9 @@ if (!result.success) {
       console.error('splash prerender failed: no JS output from ssr-entry build');
       process.exit(1);
     }
+    // SAFETY: ssrJs is the output of the ssr-entry build two lines up,
+    // and src/splash/ssr-entry.tsx exports exactly this function. If it
+    // ever stops, the destructure throws here and the build fails.
     const { renderSplash } = (await import(ssrJs.path)) as { renderSplash: () => string };
     const markup = renderSplash();
 

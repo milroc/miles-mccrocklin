@@ -19,6 +19,10 @@ async function loadManifest(): Promise<PhotographyManifest> {
       `photography-entry: failed to load manifest (${res.status} ${res.statusText})`,
     );
   }
+  // SAFETY: this fetches the manifest the build generated from this
+  // repo's own data, and the build fails if it can't produce one. A
+  // drifted manifest surfaces as a render-time error, not silent
+  // corruption of someone else's data.
   return res.json() as Promise<PhotographyManifest>;
 }
 

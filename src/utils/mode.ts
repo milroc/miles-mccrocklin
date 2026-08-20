@@ -1,6 +1,7 @@
 // Mode plumbing for the resume's three views (interactive / text / 1pager).
 import { createContext } from 'react';
 import type { Mode, RichText, Visibility } from '../types';
+import type { JsonValue } from './json';
 
 export const ModeContext = createContext<Mode>('interactive');
 // Default visibility when the field is missing — matches the legacy
@@ -24,16 +25,20 @@ export function isPlainText<T extends object>(value: string | T): value is strin
   return typeof value === 'string';
 }
 
+// Re-checked at runtime rather than trusted, because RESUME_DATA is
+// asserted from JSON rather than parsed: a typo in me.json arrives here
+// typed as a Visibility without being one.
+export function isVisibility(value: JsonValue): value is Visibility {
+  return (
+    value === 'all' ||
+    value === 'not_1pager' ||
+    value === '1pager_only' ||
+    value === 'archived'
+  );
+}
+
 function getVisibility(item: Renderable): Visibility {
-  if (isTaggable(item)) {
-    const v = item.visibility;
-    // The value list is re-checked at runtime because RESUME_DATA is
-    // asserted from JSON rather than parsed: a typo in me.json arrives
-    // here typed as a Visibility but isn't one.
-    if (v === 'all' || v === 'not_1pager' || v === '1pager_only' || v === 'archived') {
-      return v;
-    }
-  }
+  if (isTaggable(item) && isVisibility(item.visibility)) return item.visibility;
   return DEFAULT_VISIBILITY;
 }
 

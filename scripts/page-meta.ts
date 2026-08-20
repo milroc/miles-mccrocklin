@@ -52,6 +52,9 @@ export type MeContext = {
 export const PERSON_SCHEMA_PATHS = ['', 'builder/'] as const;
 
 export function loadMe(jsonPath = './data/me.json'): Me {
+  // SAFETY: repo-owned me.json read at build time. `Me` names only the
+  // handful of fields the page-meta generator reads, so a mismatch shows
+  // up as a build failure here.
   return JSON.parse(readFileSync(jsonPath, 'utf8')) as Me;
 }
 

@@ -25,7 +25,16 @@ export function getAtPath(obj: JsonValue, path: string): JsonValue {
 
 export function setAtPath<T extends JsonValue>(obj: T, path: string, value: JsonValue): T {
   const segs = path.split('/').filter(Boolean);
-  if (segs.length === 0) return value as T;
+  // SAFETY: both assertions restate the caller's own contract. An empty
+  // path replaces the whole tree, so the new value IS the result; a
+  // non-empty one clones the spine and leaves every node off the path
+  // as it was, so the result still has T's shape. Neither is knowable to
+  // TypeScript, which only sees JsonValue coming back from cloneSet.
+  if (segs.length === 0) {
+    // SAFETY: see above.
+    return value as T;
+  }
+  // SAFETY: see above.
   return cloneSet(obj, segs, 0, value) as T;
 }
 
@@ -61,6 +70,10 @@ export function joinPath(base: string, ...parts: (string | number)[]): string {
 export function deleteAtPath<T extends JsonValue>(obj: T, path: string): T {
   const segs = path.split('/').filter(Boolean);
   if (segs.length === 0) return obj;
+  // SAFETY: as in setAtPath — the clone rebuilds the spine and keeps
+  // every off-path node, so the result keeps T's shape. Deleting a
+  // required key would break that, but callers only ever delete array
+  // entries and optional fields.
   return cloneDelete(obj, segs, 0) as T;
 }
 

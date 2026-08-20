@@ -66,8 +66,14 @@ const SOCIAL_LABELS = {
 } satisfies Record<(typeof SOCIAL_ORDER)[number], string>;
 
 export function buildSplashContent(): void {
+  // SAFETY: all three are repo-owned files read at build time, and the
+  // three local types name only the fields this generator touches. A
+  // shape mismatch fails the build here rather than reaching the page.
   const journey = JSON.parse(readFileSync('./data/journey.json', 'utf8')) as JourneyJson;
+  // SAFETY: repo-owned splash.json; SplashJson names only the fields
+  // this generator reads, so drift fails the build here.
   const splash = JSON.parse(readFileSync('./data/splash.json', 'utf8')) as SplashJson;
+  // SAFETY: repo-owned me.json; MeJson names only contact_information.
   const ci = (JSON.parse(readFileSync('./data/me.json', 'utf8')) as MeJson).contact_information;
 
   const canonical = canonicalVisitedNames(journey.waypoints.map((w) => w.label));

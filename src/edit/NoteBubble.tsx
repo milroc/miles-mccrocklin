@@ -53,7 +53,7 @@ function Bubble({ path }: NoteBubbleProps) {
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === 'Escape') {
             e.preventDefault();
-            (e.currentTarget as HTMLElement).blur();
+            e.currentTarget.blur();
           }
         }}
       />

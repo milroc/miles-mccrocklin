@@ -31,6 +31,9 @@ interface FigureCardProps {
 export function FigureCard({ p, scope, hideTag, decorative }: FigureCardProps): ReactNode {
   const { open } = useContext(MediaCtx);
   const ar = p.aspect || 1;
+  // SAFETY: CSSProperties has no index signature for custom properties,
+  // but React passes any `--*` key straight through to the style
+  // attribute. FigureCard.module.css reads --ar for the aspect box.
   const cardStyle = { '--ar': ar } as CSSProperties;
   if (p.type === 'embed') {
     return (

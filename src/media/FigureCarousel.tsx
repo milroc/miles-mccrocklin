@@ -131,8 +131,8 @@ export function FigureCarousel({ matches, hideTags }: FigureCarouselProps) {
     const SMOOTH_MS = 700;
     let smoothEndTimer: ReturnType<typeof setTimeout> | null = null;
     const onClickCapture = (e: MouseEvent) => {
-      const target = e.target as HTMLElement | null;
-      const card = target?.closest('[data-figure-card]') as HTMLElement | null;
+      const target = e.target instanceof Element ? e.target : null;
+      const card = target?.closest('[data-figure-card]') ?? null;
       if (!card || !el.contains(card)) return;
       const elRect = el.getBoundingClientRect();
       const cardRect = card.getBoundingClientRect();

@@ -49,13 +49,13 @@ function FeedbackBlock() {
         onKeyDown={(e) => {
           if (e.key === 'Escape') {
             e.preventDefault();
-            (e.currentTarget as HTMLElement).blur();
+            e.currentTarget.blur();
           }
           // Enter inserts a newline (block comments are multi-line).
           // Cmd/Ctrl+Enter blurs to commit.
           if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
             e.preventDefault();
-            (e.currentTarget as HTMLElement).blur();
+            e.currentTarget.blur();
           }
         }}
       />

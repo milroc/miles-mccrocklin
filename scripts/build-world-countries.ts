@@ -95,6 +95,9 @@ const NAME_REMAP: ReadonlyMap<string, string> = new Map([
 
 console.log(`Fetching ${SOURCE_URL}…`);
 console.log(`Fetching ${ANTARCTICA_SOURCE_URL} (Antarctica)…`);
+// SAFETY: both URLs are pinned world-atlas releases whose TopoJSON
+// shape is fixed by the package version in SOURCE_URL. A shape change
+// fails immediately below, where objects.countries is read.
 const [topology, antTopology] = (await Promise.all([
   fetch(SOURCE_URL).then((r) => {
     if (!r.ok) throw new Error(`HTTP ${r.status} fetching ${SOURCE_URL}`);
@@ -109,11 +112,18 @@ const [topology, antTopology] = (await Promise.all([
   Topology<{ countries: GeometryCollection<{ name: string }>; land: GeometryCollection }>,
 ];
 
+// SAFETY: topojson-client's feature() returns a bare Feature for a
+// single geometry and a FeatureCollection for a GeometryCollection.
+// objects.countries is a GeometryCollection in both sources (asserted
+// above, and read as one here), so both calls take the collection arm.
 const countries = feature(topology, topology.objects.countries) as FeatureCollection<
   Geometry,
   { name: string }
 >;
 const antarcticaFeature = (
+  // SAFETY: as with `countries` above — a GeometryCollection in means a
+  // FeatureCollection out, and the Antarctica lookup below throws if
+  // the expected feature isn't there.
   feature(antTopology, antTopology.objects.countries) as FeatureCollection<
     Geometry,
     { name: string }
@@ -125,8 +135,15 @@ if (!antarcticaFeature) throw new Error('Antarctica missing from 110m source');
 // for relative comparisons within one country.
 const ringArea = (ring: number[][]): number => {
   let a = 0;
+  // SAFETY: GeoJSON Position is typed `number[]` because it admits an
+  // optional third elevation value; the first two entries are always
+  // present, and these sources are 2D throughout.
   for (let i = 0, n = ring.length; i < n; i++) {
+    // SAFETY: GeoJSON Position is `number[]` only because it admits an
+    // optional third elevation value; [lng, lat] are always present, and
+    // these sources are 2D throughout.
     const [x1, y1] = ring[i] as [number, number];
+    // SAFETY: as above.
     const [x2, y2] = ring[(i + 1) % n] as [number, number];
     a += x1 * y2 - x2 * y1;
   }
@@ -144,6 +161,8 @@ const ringArea = (ring: number[][]): number => {
 // quantization, so identical-arc rings round to the same key.
 const bboxKey = (ring: number[][]): string => {
   let xmin = Infinity, xmax = -Infinity, ymin = Infinity, ymax = -Infinity;
+  // SAFETY: as in ringArea — Position is `number[]` only to leave room
+  // for elevation; [lng, lat] are always the first two.
   for (const [x, y] of ring as [number, number][]) {
     if (x < xmin) xmin = x; if (x > xmax) xmax = x;
     if (y < ymin) ymin = y; if (y > ymax) ymax = y;
@@ -157,11 +176,11 @@ const bboxKey = (ring: number[][]): string => {
 const collectHoleKeys = (features: typeof countries.features): Set<string> => {
   const keys = new Set<string>();
   for (const f of features) {
-    const geom = f.geometry as { type: string; coordinates: unknown };
+    const geom = f.geometry;
     const polys = geom.type === 'MultiPolygon'
-      ? (geom.coordinates as number[][][][])
+      ? geom.coordinates
       : geom.type === 'Polygon'
-        ? [geom.coordinates as number[][][]]
+        ? [geom.coordinates]
         : [];
     for (const poly of polys) {
       // Skip the outer ring (poly[0]); collect bboxes of holes (poly[1..]).
@@ -193,7 +212,7 @@ const trimIslands = (
   stats: { dropped: number; downgraded: number; preservedEnclaves: number },
 ): Geometry => {
   if (g.type !== 'MultiPolygon') return g;
-  const polys = g.coordinates as number[][][][];
+  const polys = g.coordinates;
   if (polys.length <= 1) return g;
   const areas = polys.map((p) => ringArea(p[0]!));
   const maxArea = Math.max(...areas);
@@ -230,6 +249,10 @@ const roundGeom = (g: Geometry, decimals: number): Geometry => {
   const factor = 10 ** decimals;
   const map = (a: CoordNode): CoordNode =>
     Array.isArray(a) ? a.map(map) : Math.round(a * factor) / factor;
+  // SAFETY: Geometry's union includes GeometryCollection, which has no
+  // `coordinates`; every geometry reaching here came from the country
+  // features, which are Polygon or MultiPolygon. Rounding preserves the
+  // nesting depth, so the result is still the same geometry kind.
   return { ...g, coordinates: map((g as { coordinates: CoordNode }).coordinates) } as Geometry;
 };
 
@@ -305,13 +328,23 @@ const buildShippedTopology = (opts: BuildOptions): ShippedTopology => {
   };
   // Build un-quantized first so simplify weights are in degree²
   // (intuitive units), not in post-quantization integer units.
+  // SAFETY: topojson-server and topojson-simplify are typed loosely
+  // enough that a FeatureCollection in and a Topology out both need
+  // stating. The object key `countries` is what names the layer, and
+  // every read of the result below goes through objects.countries.
   const unq = toTopology({ countries: fc } as Parameters<typeof toTopology>[0]) as Topology<{
     countries: GeometryCollection<{ name: string }>;
   }>;
   const verticesBefore = unq.arcs.reduce((s, a) => s + a.length, 0);
+  // SAFETY: presimplify and simplify both return the same topology with
+  // arc weights added and thinned; @types/topojson-simplify widens that
+  // to the untyped Topology, losing the objects map we just named.
   const presimplified = presimplify(unq) as typeof unq;
+  // SAFETY: as above — simplify returns the same topology, thinned.
   const simplified = simplify(presimplified, opts.simplifyWeight) as typeof unq;
   const verticesAfter = simplified.arcs.reduce((s, a) => s + a.length, 0);
+  // SAFETY: same pair of loose signatures — quantize takes and returns
+  // the topology unchanged apart from coordinate precision.
   const final = quantize(
     simplified as Parameters<typeof quantize>[0],
     opts.quantization,
