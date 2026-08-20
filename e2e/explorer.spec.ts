@@ -41,7 +41,26 @@ test.describe('explorer', () => {
   });
 
   test('rotation toggles off and back on', async ({ page }) => {
-    const toggle = page.getByRole('button', { name: /rotation/i });
+    // Deliberately NOT getByRole. Toolbar wraps the button in a div that
+    // carries aria-hidden={!visible}, so the moment the chrome idles out
+    // the button leaves the accessibility tree and a role locator matches
+    // zero elements — including inside clickIdleChrome, whose entire job
+    // is to wake chrome that is hidden. The helper cannot resolve a
+    // control that its own precondition makes unresolvable.
+    //
+    // That is a real defect, not a slow machine: reproduced locally at
+    // one worker by waiting 4s before the first assertion. It passed here
+    // only because a fast page load put every assertion inside the 3s
+    // window; CI's slower boot fell outside it.
+    //
+    // An attribute selector reads the DOM, which keeps the element in
+    // both states. It gives up nothing the role locator was proving: a
+    // <button> element carries the button role implicitly, and matching
+    // on aria-label asserts the accessible name just as directly. The
+    // a11y-tree half of the contract is asserted in the idle-chrome
+    // describe below, where hidden is the state under test.
+    const toggle = page.locator('button[aria-label$="rotation"]');
+    await expect(toggle).toHaveCount(1);
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
     await expect(toggle).toContainText('rotate: on');
 
@@ -106,6 +125,36 @@ test.describe('explorer — idle chrome', () => {
     await page.mouse.move(500, 400);
     await expect(title, 'cursor activity brings it back')
       .toHaveAttribute('aria-hidden', 'false');
+  });
+
+  test('hidden chrome leaves the keyboard and accessibility trees too', async ({
+    page,
+  }) => {
+    // Fading the chrome out is only half of hiding it. If the button kept
+    // its place in the tab order and the accessibility tree, a keyboard
+    // or screen-reader visitor would land on a control that is invisible
+    // and, because the plate drops pointer-events, not clickable either.
+    // Toolbar handles both — aria-hidden on the wrapper, tabIndex -1 on
+    // the button — and this pins that down in each direction.
+    //
+    // It is also the contract that forces the rotation spec above to
+    // select by attribute: while this assertion holds, getByRole cannot
+    // see the control at all.
+    await page.goto('/explorer/');
+    const toggle = page.locator('button[aria-label$="rotation"]');
+    const byRole = page.getByRole('button', { name: /rotation/i });
+
+    await expect(toggle).toHaveAttribute('tabindex', '0');
+    await expect(byRole, 'reachable while the chrome is up').toHaveCount(1);
+
+    await expect(toggle, 'drops out of the tab order once idle')
+      .toHaveAttribute('tabindex', '-1', { timeout: 30_000 });
+    await expect(byRole, 'and out of the accessibility tree with it')
+      .toHaveCount(0);
+
+    await page.mouse.move(500, 400);
+    await expect(toggle, 'activity restores both').toHaveAttribute('tabindex', '0');
+    await expect(byRole).toHaveCount(1);
   });
 });
 

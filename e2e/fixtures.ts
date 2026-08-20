@@ -137,8 +137,21 @@ export async function requireLiveGlobe(page: Page): Promise<void> {
 // interactive again rather than merely present.
 //
 // Keyboard paths need none of this, which is the point of testing both.
+//
+// Pass a locator that reads the DOM — an attribute or data-* selector —
+// never getByRole. Explorer's chrome sets aria-hidden on the wrapper
+// while hidden, which removes its controls from the accessibility tree,
+// so a role locator matches nothing in exactly the state this helper
+// exists to recover from. (The media viewer hides its chrome with a
+// class instead, so role locators are safe there.)
 export async function clickIdleChrome(page: Page, locator: Locator): Promise<void> {
-  await expect(locator).toBeAttached();
+  // The default 10s expect timeout is a deadline on this page's boot,
+  // not on the control: Explorer ships three.js and a topology fetch, and
+  // a two-core runner can still be executing that when the first
+  // assertion runs. Every other wait on this page is budgeted at 30s.
+  await expect(locator, 'the page rendered its chrome').toBeAttached({
+    timeout: 30_000,
+  });
 
   // Wake the chrome and take the control's position. Everything in here
   // is a cursor move or a style read, so retrying is free of side
