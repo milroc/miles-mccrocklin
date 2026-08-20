@@ -222,7 +222,7 @@ function validatePhotographyEntry(e: JsonValue, idx: number): PhotographyJsonEnt
   if (typeof e !== 'object' || e === null) {
     throw new Error(`photography.json[${idx}]: not an object`);
   }
-  const o = e as Record<string, unknown>;
+  const o = e as JsonObject;
   const { id, src, theme } = o;
   if (typeof id !== 'string' || !id) {
     throw new Error(`photography.json[${idx}]: missing or invalid 'id'`);

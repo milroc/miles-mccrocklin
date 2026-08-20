@@ -18,6 +18,12 @@ import journeyData from '../../data/journey.json' with { type: 'json' };
 // entry chunk; we use it only for type annotations on cached state.
 import type * as THREE_T from 'three';
 import type { MultiPolygon, Polygon } from 'geojson';
+import type { ComponentProps } from 'react';
+import type { GlobeMethods } from 'react-globe.gl';
+
+// react-globe.gl's own prop contract. Type-only, so the module stays
+// dynamic-imported.
+type GlobeElementProps = ComponentProps<typeof import('react-globe.gl').default>;
 
 interface Waypoint {
   label: string;
@@ -1288,43 +1294,12 @@ export async function mountGlobe(
         (e): e is AtlasEntry & { render_kind: 'bubble' } => e.render_kind === 'bubble',
       );
 
-  const globeRef = React.createRef<{
-    controls: () => {
-      autoRotate: boolean;
-      autoRotateSpeed: number;
-      // OrbitControls dolly limits — camera distance from globe center.
-      minDistance: number;
-      maxDistance: number;
-      // OrbitControls.object is the camera; we read its position to
-      // derive the current altitude for the bubble-scale calculation
-      // in the rAF loop below.
-      object?: { position: { length: () => number } };
-      // OrbitControls extends EventDispatcher. We listen for 'start'
-      // (user begins drag/zoom) to feed the idle-rotate timer.
-      addEventListener?: (type: string, listener: () => void) => void;
-      removeEventListener?: (type: string, listener: () => void) => void;
-    };
-    // three-globe's pointOfView is an overloaded accessor: no arguments
-    // reads the current camera pose, one argument moves the camera.
-    pointOfView: {
-      (): { lat?: number; lng?: number; altitude?: number };
-      (pov: { lat?: number; lng?: number; altitude?: number }, transitionMs?: number): void;
-    };
-    // The three.js renderer and camera behind the globe. Used for the
-    // full-res texture-upgrade check, the shader precompile kick, and
-    // the pixel-ratio cap on very large canvases.
-    renderer?: () => THREE_T.WebGLRenderer;
-    camera?: () => THREE_T.Camera;
-    // Screen XY (relative to the globe canvas) → globe surface lat/lng,
-    // or null if the ray misses the sphere. Used to find the country
-    // under a click that landed on an arc mesh instead of the polygon.
-    toGlobeCoords: (x: number, y: number) => { lat: number; lng: number } | null;
-    // The underlying three.js scene. We attach the selection border
-    // line mesh here directly — three-globe doesn't have a "highlight
-    // one polygon" primitive, and polygonStrokeColor needs the stroke
-    // mesh built at polygon-creation time (it's off for perf).
-    scene: () => THREE_T.Scene;
-  }>();
+  // react-globe.gl declares the whole instance surface this module
+  // touches (controls, pointOfView, scene, camera, renderer,
+  // toGlobeCoords), so use its type rather than a hand-written echo of
+  // it. A plain mutable ref object, not React.createRef: the component
+  // wants `current` to be undefined before mount, not null.
+  const globeRef: { current: GlobeMethods | undefined } = { current: undefined };
 
   // Country-name → atlas entry. Used by the click handler to look up
   // photo data when the user taps a polygon. Names match the polygon
@@ -1820,9 +1795,10 @@ export async function mountGlobe(
   // entrance.
   function renderGlobe(): void {
     const animateIn = false;
-    root.render(
-      React.createElement(Globe, {
-        ref: globeRef,
+    // Built as its own object so every value below is type-checked
+    // against what it is, rather than erased into a bag of unknowns.
+    const globeProps = {
+      ref: globeRef,
         width,
         height,
         backgroundColor: 'rgba(0,0,0,0)',
@@ -1898,8 +1874,13 @@ export async function mountGlobe(
         // onPolygonClick / onArcClick drop clicks under any mouse drift.
         onPolygonHover: fullscreen ? polygonHoverFn : undefined,
         animateIn,
-      } as Record<string, unknown>),
-    );
+    };
+    // react-globe.gl types every data accessor as `(obj: object) => T`
+    // because the library can't know what went into polygonsData /
+    // arcsData / htmlElementsData. We do, and the accessors above say
+    // so; its ref type also predates renderer()/camera(). This is the
+    // one point where our narrower props meet the library's contract.
+    root.render(React.createElement(Globe, globeProps as GlobeElementProps));
   }
 
   // Resize observer guards (declared up here so the deferred 50m

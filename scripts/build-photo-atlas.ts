@@ -15,6 +15,7 @@
 // raw downloads in .context/portfolio-raw/ short-circuit re-fetches.
 
 import { mkdir, writeFile, readFile, rm } from 'node:fs/promises';
+import type { JsonObject } from '../src/utils/json';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import sharp from 'sharp';
@@ -50,14 +51,14 @@ const midPathFor = (destPath: string): string =>
 
 const ALBUM_HOST = 'https://milesmccrocklin.myportfolio.com';
 
-export interface AlbumRef {
+export type AlbumRef = {
   title: string;
   url: string;
   // Populated at build time from the portfolio index cover map. Used
   // by the frontend (CountryPanel) to render a thumbnail next to each
   // album in the country detail panel.
   source_image_url?: string;
-}
+};
 
 interface SingleEntry {
   country: string;
@@ -97,10 +98,10 @@ interface BubbleEntry {
 // relative path to the JPEG. Use for countries we haven't yet published
 // a portfolio album for but already have suitable shots in
 // media/sabbatical-travel or similar.
-export interface LocalImageRef {
+export type LocalImageRef = {
   title: string;
   path: string;
-}
+};
 
 // Flat photo card overlay — rendered on a tangent-plane shader at
 // lat/lng. Used for countries where the polygon's UV mapping distorts
@@ -787,7 +788,7 @@ async function main() {
     // Built by assignment rather than one literal so lat/lng can be
     // omitted outright for polygon entries. Insertion order is the
     // atlas JSON's key order, so keep the writes in field order.
-    const record: Record<string, unknown> = {
+    const record: JsonObject = {
       country: entry.country,
       country_slug: entry.country_slug,
       render_kind: entry.render_kind,

@@ -22,6 +22,7 @@
 // Delete a whole `=== <id> ===` block to leave that item alone.
 
 import { spawnSync } from "node:child_process";
+import type { JsonObject } from '../src/utils/json';
 import type { JsonValue } from "../src/utils/json";
 import {
   mkdtempSync,
@@ -42,7 +43,7 @@ interface UiItem {
   caption?: string;
   subtype?: string;
   // ref kept so we can mutate in place
-  _ref: Record<string, unknown>;
+  _ref: JsonObject;
 }
 
 function findUiItems(node: JsonValue, out: UiItem[] = []): UiItem[] {

@@ -515,7 +515,7 @@ async function main(): Promise<void> {
       const result = await classifyOne(opts.endpoint, model, dataUrl);
 
       if (!opts.dryRun) {
-        const fields: Record<string, unknown> = { theme: result.themes };
+        const fields: JsonObject = { theme: result.themes };
         if (result.caption) fields.caption = result.caption;
         if (result.alt) fields.alt = result.alt;
         if (result.country) fields.country = result.country;
