@@ -18,6 +18,7 @@
 // in the data layer even though it's a continent.
 
 import type { JsonValue } from './json';
+import { isString } from './json';
 
 export interface LocationRow {
   /** ISO-3166-1 alpha-3 code. Lowercase here, callers uppercase as needed. */
@@ -150,7 +151,7 @@ function keyOf(input: string): string {
  * doesn't match any known location.
  */
 export function normalizeCountryCode(input: JsonValue): string | undefined {
-  if (typeof input !== 'string') return undefined;
+  if (!isString(input)) return undefined;
   const key = keyOf(input);
   if (!key) return undefined;
   return INDEX.get(key);

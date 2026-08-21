@@ -37,6 +37,7 @@
 
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
 import type { JsonObject, JsonValue } from '../src/utils/json';
+import { asString, isJsonObject, isString } from '../src/utils/json';
 import { join, resolve } from 'node:path';
 import {
   chatVision, DEFAULT_ENDPOINT, ensureLmStudioRunning, ensureVisionModelLoaded,
@@ -266,12 +267,12 @@ function normalizeResult(o: JsonObject, raw: string): ClassifyResult {
   // normalizer so we accept the canonical code OR the legacy slug OR
   // a display name and end up with a canonical ISO-3 code regardless.
   const country = normalizeCountryCode(o.country);
-  const caption = typeof o.caption === 'string' ? o.caption.trim() : undefined;
-  const alt = typeof o.alt === 'string' ? o.alt.trim() : undefined;
-  const story = typeof o.story === 'string' ? o.story.trim() : undefined;
+  const caption = asString(o.caption)?.trim();
+  const alt = asString(o.alt)?.trim();
+  const story = asString(o.story)?.trim();
 
   let species: string | undefined;
-  if (typeof o.species === 'string' && themes.includes('wildlife')) {
+  if (isString(o.species) && themes.includes('wildlife')) {
     const s = o.species.trim();
     if (s) species = s;
   }
@@ -292,10 +293,10 @@ function normalizeResult(o: JsonObject, raw: string): ClassifyResult {
   };
 }
 
-function normalizeCategoryThemes(raw: unknown[]): string[] {
+function normalizeCategoryThemes(raw: JsonValue[]): string[] {
   const direct = new Set<string>();
   for (const t of raw) {
-    if (typeof t !== 'string') continue;
+    if (!isString(t)) continue;
     const norm = t.toLowerCase().trim().replace(/[\s_]+/g, '-');
     if (ALL_CATEGORY_IDS.has(norm)) direct.add(norm);
   }
@@ -307,11 +308,11 @@ function normalizeCategoryThemes(raw: unknown[]): string[] {
   return [...out];
 }
 
-function normalizeTreatments(raw: unknown[]): string[] {
+function normalizeTreatments(raw: JsonValue[]): string[] {
   const out: string[] = [];
   const seen = new Set<string>();
   for (const t of raw) {
-    if (typeof t !== 'string') continue;
+    if (!isString(t)) continue;
     const norm = t.toLowerCase().trim().replace(/[\s_]+/g, '-');
     if (!ALL_TREATMENT_TAGS.has(norm)) continue;
     if (seen.has(norm)) continue;
@@ -322,11 +323,11 @@ function normalizeTreatments(raw: unknown[]): string[] {
   return out;
 }
 
-function normalizeEntityList(raw: unknown[], max: number): string[] {
+function normalizeEntityList(raw: JsonValue[], max: number): string[] {
   const out: string[] = [];
   const seen = new Set<string>();
   for (const t of raw) {
-    if (typeof t !== 'string') continue;
+    if (!isString(t)) continue;
     const norm = t.trim().toLowerCase();
     if (!norm || norm.length > 60) continue;
     if (seen.has(norm)) continue;
@@ -360,9 +361,9 @@ function isMeItem(it: JsonValue): it is MeItem {
     typeof it === 'object' &&
     it !== null &&
     !Array.isArray(it) &&
-    typeof it.id === 'string' &&
-    typeof it.type === 'string' &&
-    typeof it.src === 'string'
+    isString(it.id) &&
+    isString(it.type) &&
+    isString(it.src)
   );
 }
 
@@ -370,16 +371,12 @@ function loadSabbaticalTravel(me: JsonObject): MeItem[] {
   const out: MeItem[] = [];
   const visit = (node: JsonValue): void => {
     if (Array.isArray(node)) { node.forEach(visit); return; }
-    if (typeof node !== 'object' || node === null) return;
+    if (!isJsonObject(node)) return;
     const items = node.items;
     if (Array.isArray(items)) {
       const isSabbatical = items.every(
         (it) =>
-          typeof it === 'object' &&
-          it !== null &&
-          !Array.isArray(it) &&
-          typeof it.src === 'string' &&
-          it.src.includes('sabbatical-travel/'),
+          isJsonObject(it) && asString(it.src)?.includes('sabbatical-travel/') === true,
       );
       if (isSabbatical) {
         const parsed = items.filter(isMeItem);

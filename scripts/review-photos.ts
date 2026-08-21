@@ -30,6 +30,7 @@
 
 import { appendFileSync, existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import type { JsonObject, JsonValue } from '../src/utils/json';
+import { asNumber, asString, isBoolean, isJsonObject, isNumber, isString } from '../src/utils/json';
 import { join, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import { serve } from 'bun';
@@ -114,11 +115,11 @@ function isMeItem(it: JsonValue): it is MeItem {
     typeof it === 'object' &&
     it !== null &&
     !Array.isArray(it) &&
-    typeof it.id === 'string' &&
-    typeof it.src === 'string' &&
-    (it.type === undefined || typeof it.type === 'string') &&
-    (it.aspect === undefined || typeof it.aspect === 'number') &&
-    (it.caption === undefined || typeof it.caption === 'string')
+    isString(it.id) &&
+    isString(it.src) &&
+    (it.type === undefined || isString(it.type)) &&
+    (it.aspect === undefined || isNumber(it.aspect)) &&
+    (it.caption === undefined || isString(it.caption))
   );
 }
 
@@ -170,16 +171,12 @@ function loadSabbaticalItems(me: JsonObject): MeItem[] {
   const out: MeItem[] = [];
   const visit = (node: JsonValue): void => {
     if (Array.isArray(node)) { node.forEach(visit); return; }
-    if (typeof node !== 'object' || node === null) return;
+    if (!isJsonObject(node)) return;
     const items = node.items;
     if (Array.isArray(items)) {
       const isSabbatical = items.every(
         (it) =>
-          typeof it === 'object' &&
-          it !== null &&
-          !Array.isArray(it) &&
-          typeof it.src === 'string' &&
-          it.src.includes('sabbatical-travel/'),
+          isJsonObject(it) && asString(it.src)?.includes('sabbatical-travel/') === true,
       );
       if (isSabbatical) {
         const parsed = items.filter(isMeItem);
@@ -232,10 +229,10 @@ function loadHumanOverlay(): HumanOverlay {
       if (!trimmed) continue;
       try {
         const o = JSON.parse(trimmed) as JsonObject;
-        if (typeof o.id !== 'string') continue;
+        if (!isString(o.id)) continue;
         const eventFields = o.fields as JsonObject | undefined;
-        if (!eventFields || typeof eventFields !== 'object') continue;
-        const ts = typeof o.timestamp === 'string' ? o.timestamp : '';
+        if (!isJsonObject(eventFields)) continue;
+        const ts = isString(o.timestamp) ? o.timestamp : '';
         events.push({ ts, sessionFile, id: o.id, fields: eventFields });
       } catch { /* skip malformed */ }
     }
@@ -251,7 +248,7 @@ function loadHumanOverlay(): HumanOverlay {
       if (k === 'curator_notes') {
         // Append non-empty notes to the per-id chronology. Empty notes
         // are a "clear" gesture and don't show up as a prior entry.
-        if (typeof v === 'string' && v.trim()) {
+        if (isString(v) && v.trim()) {
           let chrono = notes.get(ev.id);
           if (!chrono) { chrono = []; notes.set(ev.id, chrono); }
           chrono.push({ ts: ev.ts, sessionFile: ev.sessionFile, text: v.trim() });
@@ -303,21 +300,21 @@ function loadEntries(): ReviewEntry[] {
       id,
       src: e.src as string,
       source: 'photography',
-      aspect: typeof e.aspect === 'number' ? e.aspect : undefined,
-      caption: typeof e.caption === 'string' ? e.caption : undefined,
-      alt: typeof e.alt === 'string' ? e.alt : undefined,
-      country: typeof e.country === 'string' ? e.country : undefined,
-      city: typeof e.city === 'string' ? e.city : undefined,
-      state: typeof e.state === 'string' ? e.state : undefined,
+      aspect: asNumber(e.aspect),
+      caption: asString(e.caption),
+      alt: asString(e.alt),
+      country: asString(e.country),
+      city: asString(e.city),
+      state: asString(e.state),
       theme: Array.isArray(e.theme) ? e.theme as string[] : undefined,
-      species: typeof e.species === 'string' ? e.species : undefined,
-      story: typeof e.story === 'string' ? e.story : undefined,
+      species: asString(e.species),
+      story: asString(e.story),
       entities: Array.isArray(e.entities) ? e.entities as string[] : undefined,
-      album_url: typeof e.album_url === 'string' ? e.album_url : undefined,
+      album_url: asString(e.album_url),
       featured: e.featured === true,
       graphic: e.graphic === true,
-      dupeOf: typeof e.dupeOf === 'string' ? e.dupeOf : undefined,
-      sort_order: typeof e.sort_order === 'number' ? e.sort_order : undefined,
+      dupeOf: asString(e.dupeOf),
+      sort_order: asNumber(e.sort_order),
     }));
   }
 
@@ -331,20 +328,20 @@ function loadEntries(): ReviewEntry[] {
       src: item.src,
       source: 'me',
       aspect: item.aspect,
-      caption: typeof c.caption === 'string' ? c.caption : item.caption,
-      alt: typeof c.alt === 'string' ? c.alt : undefined,
-      country: typeof c.country === 'string' ? c.country : undefined,
-      city: typeof c.city === 'string' ? c.city : undefined,
-      state: typeof c.state === 'string' ? c.state : undefined,
+      caption: isString(c.caption) ? c.caption : item.caption,
+      alt: asString(c.alt),
+      country: asString(c.country),
+      city: asString(c.city),
+      state: asString(c.state),
       theme: Array.isArray(c.theme) ? c.theme as string[] : undefined,
-      species: typeof c.species === 'string' ? c.species : undefined,
-      story: typeof c.story === 'string' ? c.story : undefined,
+      species: asString(c.species),
+      story: asString(c.story),
       entities: Array.isArray(c.entities) ? c.entities as string[] : undefined,
-      sort_order: typeof c.sort_order === 'number' ? c.sort_order : undefined,
+      sort_order: asNumber(c.sort_order),
       // Sabbatical photos default to featured=true in the manifest
       // builder; mirror that here so the review UI's featured checkbox
       // matches what ships. Explicit false in the side table wins.
-      featured: typeof c.featured === 'boolean' ? c.featured : true,
+      featured: isBoolean(c.featured) ? c.featured : true,
     }));
   }
 
@@ -357,19 +354,19 @@ function loadEntries(): ReviewEntry[] {
       id,
       src: a.image,
       source: 'atlas',
-      caption: typeof c.caption === 'string' ? c.caption : undefined,
-      alt: typeof c.alt === 'string' ? c.alt : undefined,
-      country: typeof c.country === 'string'
+      caption: asString(c.caption),
+      alt: asString(c.alt),
+      country: isString(c.country)
         ? c.country
         : (normalizeCountryCode(a.country_slug) ?? a.country_slug),
-      city: typeof c.city === 'string' ? c.city : undefined,
-      state: typeof c.state === 'string' ? c.state : undefined,
+      city: asString(c.city),
+      state: asString(c.state),
       theme: Array.isArray(c.theme) ? c.theme as string[] : undefined,
-      species: typeof c.species === 'string' ? c.species : undefined,
-      story: typeof c.story === 'string' ? c.story : undefined,
+      species: asString(c.species),
+      story: asString(c.story),
       entities: Array.isArray(c.entities) ? c.entities as string[] : undefined,
-      sort_order: typeof c.sort_order === 'number' ? c.sort_order : undefined,
-      featured: typeof c.featured === 'boolean' ? c.featured : false,
+      sort_order: asNumber(c.sort_order),
+      featured: isBoolean(c.featured) ? c.featured : false,
     }));
   }
 
@@ -1934,14 +1931,14 @@ function html(themes: string[]): string {
         const bf = b.featured ? 1 : 0;
         if (af !== bf) return bf - af;
         if (af) {
-          const ao = (typeof a.sort_order === 'number') ? a.sort_order : Infinity;
-          const bo = (typeof b.sort_order === 'number') ? b.sort_order : Infinity;
+          const ao = (isNumber(a.sort_order)) ? a.sort_order : Infinity;
+          const bo = (isNumber(b.sort_order)) ? b.sort_order : Infinity;
           return ao - bo;
         }
         return 0;
       });
       const preserveId = opts && opts.preserveId;
-      const fallbackPos = opts && typeof opts.fallbackPos === 'number'
+      const fallbackPos = opts && isNumber(opts.fallbackPos)
         ? opts.fallbackPos : 0;
       if (preserveId) {
         const idx = filtered.findIndex((e) => e.id === preserveId);
@@ -2048,7 +2045,7 @@ function html(themes: string[]): string {
       $('needs_edit').checked = !!e.needs_edit;
       $('omit').checked = !!e.omit;
       $('sort_order').value =
-        (typeof e.sort_order === 'number') ? String(e.sort_order) : '';
+        (isNumber(e.sort_order)) ? String(e.sort_order) : '';
       // Pre-populate structured-override inputs with the current merged
       // value. The dirty set tracks which inputs the curator has actually
       // touched so we only send changed fields. A field shows "edited"
@@ -2153,7 +2150,7 @@ function html(themes: string[]): string {
       };
       if (e) {
         const rawOrder = $('sort_order').value.trim();
-        const curOrder = (typeof e.sort_order === 'number') ? String(e.sort_order) : '';
+        const curOrder = (isNumber(e.sort_order)) ? String(e.sort_order) : '';
         if (rawOrder !== curOrder) {
           if (rawOrder === '') {
             out.sort_order = '';
@@ -2251,7 +2248,7 @@ function html(themes: string[]): string {
       if ($('needs_edit').checked !== !!e.needs_edit) return true;
       if ($('omit').checked !== !!e.omit) return true;
       const rawOrder = $('sort_order').value.trim();
-      const curOrder = (typeof e.sort_order === 'number') ? String(e.sort_order) : '';
+      const curOrder = (isNumber(e.sort_order)) ? String(e.sort_order) : '';
       if (rawOrder !== curOrder) return true;
       if (dirtyOverrides.size > 0) return true;
       return false;
@@ -3059,7 +3056,7 @@ function html(themes: string[]): string {
         if (reorderDirty) {
           rankBadge.textContent = '#' + (i + 1);
           rankBadge.title = 'new rank (unsaved)';
-        } else if (typeof e.sort_order === 'number') {
+        } else if (isNumber(e.sort_order)) {
           rankBadge.textContent = '#' + (i + 1);
           rankBadge.title = 'rank · sort_order=' + e.sort_order;
         } else {

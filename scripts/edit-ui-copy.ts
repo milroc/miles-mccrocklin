@@ -23,6 +23,7 @@
 
 import { spawnSync } from "node:child_process";
 import type { JsonObject } from '../src/utils/json';
+import { asString, isJsonObject, isString } from '../src/utils/json';
 import type { JsonValue } from "../src/utils/json";
 import {
   mkdtempSync,
@@ -49,17 +50,17 @@ interface UiItem {
 function findUiItems(node: JsonValue, out: UiItem[] = []): UiItem[] {
   if (Array.isArray(node)) {
     for (const v of node) findUiItems(v, out);
-  } else if (node && typeof node === "object") {
+  } else if (isJsonObject(node)) {
     if (
       node.subtype === "ui" &&
-      typeof node.id === "string" &&
-      typeof node.src === "string"
+      isString(node.id) &&
+      isString(node.src)
     ) {
       out.push({
         id: node.id,
         src: node.src,
-        tag: typeof node.tag === "string" ? node.tag : undefined,
-        caption: typeof node.caption === "string" ? node.caption : undefined,
+        tag: asString(node.tag),
+        caption: asString(node.caption),
         subtype: "ui",
         _ref: node,
       });

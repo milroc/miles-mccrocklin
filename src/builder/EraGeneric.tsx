@@ -12,15 +12,21 @@ import { Figure } from '../media/Figure';
 import { BuilderProse } from './BuilderProse';
 import { EraChrome } from '../entries/EraChrome';
 import type { Achievement, Era as EraData } from '../types';
+import { isPlainText } from '../utils/mode';
 
 interface EraGenericProps {
   era: EraData;
 }
 
-function firstAchievementText(achievements?: ReadonlyArray<Achievement>): string | undefined {
+// Accepts the bare-string form too: me.json's achievement arrays mix
+// plain strings with the object form, same as Bullets takes.
+function firstAchievementText(
+  achievements?: ReadonlyArray<Achievement | string>,
+): string | undefined {
   if (!achievements || achievements.length === 0) return undefined;
   const a = achievements[0];
-  return typeof a === 'string' ? a : a.text;
+  if (a === undefined) return undefined;
+  return isPlainText(a) ? a : a.text;
 }
 
 export function EraGeneric({ era }: EraGenericProps): JSX.Element | null {

@@ -13,8 +13,19 @@ const DEFAULT_VISIBILITY: Visibility = 'not_1pager';
 // a `visibility`. That, and nothing more, is the contract.
 export type Renderable = string | { visibility?: Visibility } | null | undefined;
 
+// The object arm of Renderable — the only one that can carry metadata.
+function isTaggable(item: Renderable): item is { visibility?: Visibility } {
+  return item != null && typeof item !== 'string';
+}
+
+// RichText, Achievement and Project.description all read "a bare string,
+// or the object form". One guard answers which for all of them.
+export function isPlainText<T extends object>(value: string | T): value is string {
+  return typeof value === 'string';
+}
+
 function getVisibility(item: Renderable): Visibility {
-  if (item != null && typeof item !== 'string') {
+  if (isTaggable(item)) {
     const v = item.visibility;
     // The value list is re-checked at runtime because RESUME_DATA is
     // asserted from JSON rather than parsed: a typo in me.json arrives
@@ -49,7 +60,7 @@ export function visible(item: Renderable, mode: Mode): boolean {
 // else). Falls back to `text` if `short` is missing.
 export function pickText(item: RichText | null | undefined, mode: Mode): string {
   if (item == null) return '';
-  if (typeof item === 'string') return item;
+  if (isPlainText(item)) return item;
   if (mode === '1pager' && item.short) return item.short;
   return item.text ?? '';
 }

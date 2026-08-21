@@ -15,6 +15,7 @@
 // the Claude CLI; vision calls may not.
 
 import { spawn, spawnSync } from 'node:child_process';
+import { isJsonObject, isNumber, isString } from '../src/utils/json';
 import type { JsonObject, JsonValue } from '../src/utils/json';
 import sharp from 'sharp';
 
@@ -567,7 +568,7 @@ export async function chatVisionDetailed(opts: ChatVisionOptions): Promise<ChatV
     stream: true,
     stream_options: { include_usage: true },
   };
-  if (typeof maxTokens === 'number' && maxTokens > 0) body.max_tokens = maxTokens;
+  if (isNumber(maxTokens) && maxTokens > 0) body.max_tokens = maxTokens;
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), timeoutMs);
   const startedAt = performance.now();
@@ -624,7 +625,7 @@ export async function chatVisionDetailed(opts: ChatVisionOptions): Promise<ChatV
             usage?: ChatVisionUsage;
           };
           const chunk = evt.choices?.[0]?.delta?.content;
-          if (typeof chunk === 'string' && chunk.length > 0) {
+          if (isString(chunk) && chunk.length > 0) {
             content_acc += chunk;
             if (onDelta) {
               // Don't let a misbehaving callback kill the stream.
@@ -808,7 +809,7 @@ async function chatTextLmStudio(opts: ChatTextOptions): Promise<string> {
     // explicit clamp if they want; -1 turns it off entirely.
     if (maxTokens === -1) {
       // explicit "no cap" sentinel — leave field off the request.
-    } else if (typeof maxTokens === 'number' && maxTokens > 0) {
+    } else if (isNumber(maxTokens) && maxTokens > 0) {
       body.max_tokens = maxTokens;
     } else {
       body.max_tokens = 32768;
@@ -913,7 +914,7 @@ const REFINEMENT_KEYS = new Set([
   'caption', 'alt', 'country', 'theme', 'species', 'story', 'entities',
 ]);
 function scoreCandidate(parsed: JsonValue): number {
-  if (!parsed || typeof parsed !== 'object') return -1;
+  if (!isJsonObject(parsed)) return -1;
   const obj = parsed as JsonObject;
   let score = 0;
   for (const k of Object.keys(obj)) {

@@ -45,6 +45,7 @@
 
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import type { JsonObject, JsonValue } from '../src/utils/json';
+import { asString, isJsonObject, isString } from '../src/utils/json';
 import { basename, dirname, join, relative, resolve } from 'node:path';
 import sharp from 'sharp';
 import type { PhotographyEntry, PhotographyManifest } from '../src/types';
@@ -100,9 +101,9 @@ function isMeMediaItem(it: JsonValue): it is MeMediaItem {
     typeof it === 'object' &&
     it !== null &&
     !Array.isArray(it) &&
-    typeof it.id === 'string' &&
-    typeof it.type === 'string' &&
-    typeof it.src === 'string'
+    isString(it.id) &&
+    isString(it.type) &&
+    isString(it.src)
   );
 }
 
@@ -219,18 +220,18 @@ async function readAspect(src: string): Promise<number> {
 }
 
 function validatePhotographyEntry(e: JsonValue, idx: number): PhotographyJsonEntry {
-  if (typeof e !== 'object' || e === null) {
+  if (!isJsonObject(e)) {
     throw new Error(`photography.json[${idx}]: not an object`);
   }
   const o = e as JsonObject;
   const { id, src, theme } = o;
-  if (typeof id !== 'string' || !id) {
+  if (!isString(id) || !id) {
     throw new Error(`photography.json[${idx}]: missing or invalid 'id'`);
   }
-  if (typeof src !== 'string' || !src) {
+  if (!isString(src) || !src) {
     throw new Error(`photography.json[${idx}]: missing or invalid 'src'`);
   }
-  if (theme != null && (!Array.isArray(theme) || theme.some((t) => typeof t !== 'string'))) {
+  if (theme != null && (!Array.isArray(theme) || theme.some((t) => !isString(t)))) {
     throw new Error(`photography.json[${idx}]: 'theme' must be string[]`);
   }
   // The two required fields are checked above and carried through as the
@@ -249,16 +250,12 @@ function loadSabbaticalTravel(me: JsonObject): MeMediaItem[] {
       node.forEach(visit);
       return;
     }
-    if (typeof node !== 'object' || node === null) return;
+    if (!isJsonObject(node)) return;
     const items = node.items;
     if (Array.isArray(items)) {
       const isSabbatical = items.every(
         (it) =>
-          typeof it === 'object' &&
-          it !== null &&
-          !Array.isArray(it) &&
-          typeof it.src === 'string' &&
-          it.src.includes('sabbatical-travel/'),
+          isJsonObject(it) && asString(it.src)?.includes('sabbatical-travel/') === true,
       );
       if (isSabbatical) {
         const parsed = items.filter(isMeMediaItem);

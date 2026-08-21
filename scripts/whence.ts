@@ -9,6 +9,7 @@
 //   bun run scripts/whence.ts <namespaced-id> <field>   # one field
 
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { isString } from '../src/utils/json';
 import type { JsonObject, JsonValue } from '../src/utils/json';
 import { join, resolve } from 'node:path';
 
@@ -40,10 +41,10 @@ function loadAllEvents(): Event[] {
         if (!trimmed) continue;
         try {
           const o = JSON.parse(trimmed) as JsonObject;
-          if (typeof o.id !== 'string') continue;
+          if (!isString(o.id)) continue;
           const event: Event = {
             id: o.id,
-            timestamp: typeof o.timestamp === 'string' ? o.timestamp : sessionFile,
+            timestamp: isString(o.timestamp) ? o.timestamp : sessionFile,
             tier,
             sessionFile,
             fields: (o.fields ?? {}) as JsonObject,

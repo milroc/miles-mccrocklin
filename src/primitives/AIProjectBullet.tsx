@@ -2,7 +2,7 @@
 // the bullet's hanging indent (standard list convention).
 import { useContext } from 'react';
 import { RedactedText } from './RedactedText';
-import { ModeContext, pickText, isArchived as isArchivedItem } from '../utils/mode';
+import { ModeContext, pickText, isPlainText, isArchived as isArchivedItem } from '../utils/mode';
 import {
   EDIT_ENABLED, EditableText, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
@@ -18,14 +18,15 @@ export function AIProjectBullet({ p, path }: AIProjectBulletProps) {
   const mode = useContext(ModeContext);
   const edit = useEdit();
   const editActive = EDIT_ENABLED && edit.active;
-  const desc = pickText(
-    typeof p.description === 'string' ? p.description : (p.description as RichText),
-    mode,
-  );
+  const desc = pickText(p.description, mode);
   const archived = editActive && isArchivedItem(p);
-  const descPath = path ? (typeof p.description === 'string'
-    ? joinPath(path, 'description')
-    : joinPath(path, 'description', 'text')) : '';
+  // The bare-string form is edited at the description path itself; the
+  // object form's editable value is its `text` child.
+  const descPath = path
+    ? (isPlainText(p.description)
+        ? joinPath(path, 'description')
+        : joinPath(path, 'description', 'text'))
+    : '';
   return (
     <li data-archived={archived || undefined}>
       {editActive && path ? (

@@ -58,6 +58,7 @@ import {
 } from 'node:fs';
 import { join, resolve } from 'node:path';
 import type { JsonObject, JsonValue } from '../src/utils/json';
+import { asNumber, asString, isJsonObject, isNumber, isString } from '../src/utils/json';
 import {
   chatText, DEFAULT_CLAUDE_MODEL, DEFAULT_ENDPOINT, ensureLmStudioRunning,
   ensureTextModelLoaded, extractJsonObject, isClaudeCliAvailable,
@@ -198,10 +199,10 @@ function isMeItem(it: JsonValue): it is MeItem {
     typeof it === 'object' &&
     it !== null &&
     !Array.isArray(it) &&
-    typeof it.id === 'string' &&
-    typeof it.src === 'string' &&
-    (it.type === undefined || typeof it.type === 'string') &&
-    (it.aspect === undefined || typeof it.aspect === 'number')
+    isString(it.id) &&
+    isString(it.src) &&
+    (it.type === undefined || isString(it.type)) &&
+    (it.aspect === undefined || isNumber(it.aspect))
   );
 }
 
@@ -279,27 +280,27 @@ function loadEvents(tier: Tier, strict: boolean): LabelEvent[] {
     for (const line of text.split('\n')) {
       const trimmed = line.trim();
       if (!trimmed) continue;
-      let parsed: unknown;
+      let parsed: JsonValue;
       try {
-        parsed = JSON.parse(trimmed);
+        parsed = JSON.parse(trimmed) as JsonValue;
       } catch {
         const msg = `merge-labels: malformed line in ${path}: ${trimmed.slice(0, 80)}`;
         if (strict) { console.error(msg); process.exit(1); }
         console.warn(msg);
         continue;
       }
-      if (typeof parsed !== 'object' || parsed === null) continue;
-      const o = parsed as JsonObject;
-      if (typeof o.id !== 'string' || typeof o.fields !== 'object' || o.fields === null) continue;
+      if (!isJsonObject(parsed)) continue;
+      const o = parsed;
+      if (!isString(o.id) || !isJsonObject(o.fields)) continue;
       if (o.v == null) {
         const msg = `merge-labels: ${path}: event missing "v" version field — assuming v=1`;
         if (strict) { console.error(msg); process.exit(1); }
         console.warn(msg);
       }
       const event: LabelEvent = {
-        v: typeof o.v === 'number' ? o.v : undefined,
+        v: asNumber(o.v),
         id: o.id,
-        timestamp: typeof o.timestamp === 'string' ? o.timestamp : sessionFile,
+        timestamp: isString(o.timestamp) ? o.timestamp : sessionFile,
         tier,
         sessionFile,
         fields: o.fields as JsonObject,
@@ -307,11 +308,11 @@ function loadEvents(tier: Tier, strict: boolean): LabelEvent[] {
       // The three optional fields are written only when the event line
       // carried them, so a missing key stays missing rather than
       // becoming an explicit undefined the writer would round-trip.
-      if (o.source_fingerprint && typeof o.source_fingerprint === 'object') {
+      if (isJsonObject(o.source_fingerprint)) {
         event.source_fingerprint = o.source_fingerprint as { human: string; ai: string };
       }
-      if (typeof o.kind === 'string') event.kind = o.kind;
-      if (typeof o.dupe_signature === 'string') event.dupe_signature = o.dupe_signature;
+      if (isString(o.kind)) event.kind = o.kind;
+      if (isString(o.dupe_signature)) event.dupe_signature = o.dupe_signature;
       events.push(event);
     }
   }
@@ -331,16 +332,12 @@ function loadSabbaticalItems(me: JsonObject): MeItem[] {
   const out: MeItem[] = [];
   const visit = (node: JsonValue): void => {
     if (Array.isArray(node)) { node.forEach(visit); return; }
-    if (typeof node !== 'object' || node === null) return;
+    if (!isJsonObject(node)) return;
     const items = node.items;
     if (Array.isArray(items)) {
       const isSabbatical = items.every(
         (it) =>
-          typeof it === 'object' &&
-          it !== null &&
-          !Array.isArray(it) &&
-          typeof it.src === 'string' &&
-          it.src.includes('sabbatical-travel/'),
+          isJsonObject(it) && asString(it.src)?.includes('sabbatical-travel/') === true,
       );
       if (isSabbatical) {
         const parsed = items.filter(isMeItem);
@@ -387,8 +384,8 @@ function buildBaseMap(): BaseMap {
     const entry: MergedEntry = {
       id: nsId,
       src: e.src as string,
-      ...(typeof e.aspect === 'number' && { aspect: e.aspect }),
-      ...(typeof e.dupeOf === 'string' && { dupeOf: e.dupeOf }),
+      ...(isNumber(e.aspect) && { aspect: e.aspect }),
+      ...(isString(e.dupeOf) && { dupeOf: e.dupeOf }),
     };
     if (!entries.has(nsId)) {
       // Dedupe entries with the same id. The source file occasionally
@@ -410,7 +407,7 @@ function buildBaseMap(): BaseMap {
     const entry: MergedEntry = {
       id: nsId,
       src: item.src,
-      ...(typeof item.aspect === 'number' && { aspect: item.aspect }),
+      ...(isNumber(item.aspect) && { aspect: item.aspect }),
     };
     entries.set(nsId, entry);
     idToSrc.set(nsId, item.src);
@@ -491,7 +488,7 @@ function applyTier(
         const out: string[] = [];
         const seen = new Set<string>();
         for (const raw of v) {
-          if (typeof raw !== 'string') continue;
+          if (!isString(raw)) continue;
           const trimmed = raw.trim();
           if (!trimmed) continue;
           const mapped = THEME_REWRITES[trimmed];
@@ -617,7 +614,7 @@ function collectHumanNotes(id: string, humanEvents: LabelEvent[]): string {
   for (const ev of humanEvents) {
     if (ev.id !== id) continue;
     const note = ev.fields.curator_notes;
-    if (typeof note !== 'string' || !note.trim()) continue;
+    if (!isString(note) || !note.trim()) continue;
     chunks.push(note.trim());
   }
   return chunks.join('\n\n');
@@ -655,7 +652,7 @@ async function runRefinement(
   const latestHuman = new Map<string, string>();
   for (const ev of humanEvents) {
     const note = ev.fields.curator_notes;
-    if (typeof note !== 'string' || !note.trim()) continue;
+    if (!isString(note) || !note.trim()) continue;
     latestHuman.set(ev.id, ev.timestamp);
   }
 
@@ -727,7 +724,7 @@ async function runRefinement(
         if (!REFINED_FIELDS.has(k)) continue;
         const v = parsed[k];
         if (v == null) continue;
-        if (typeof v === 'string' && v.trim() === '') continue;
+        if (isString(v) && v.trim() === '') continue;
         if (Array.isArray(v) && v.length === 0) continue;
         if (k === 'country') {
           const norm = normalizeCountrySlug(v);
@@ -926,7 +923,7 @@ async function runDupeMerge(
         if (tier === 'human') dupeOfMap.delete(ev.id);
         continue;
       }
-      if (typeof v === 'string') dupeOfMap.set(ev.id, v);
+      if (isString(v)) dupeOfMap.set(ev.id, v);
     }
   };
   apply(ingestEvents, 'ingest');
@@ -969,7 +966,7 @@ async function runDupeMerge(
   const lastDupeMerge = new Map<string, string>();
   for (const ev of refinedEvents) {
     if (ev.kind !== DUPE_KIND) continue;
-    if (typeof ev.dupe_signature === 'string') lastDupeMerge.set(ev.id, ev.dupe_signature);
+    if (isString(ev.dupe_signature)) lastDupeMerge.set(ev.id, ev.dupe_signature);
   }
   const allEvents = [...ingestEvents, ...aiEvents, ...refinedEvents, ...humanEvents];
 
@@ -1030,7 +1027,7 @@ async function runDupeMerge(
         if (!REFINED_FIELDS.has(k)) continue;
         const v = parsed[k];
         if (v == null) continue;
-        if (typeof v === 'string' && v.trim() === '') continue;
+        if (isString(v) && v.trim() === '') continue;
         if (Array.isArray(v) && v.length === 0) continue;
         if (k === 'country') {
           const norm = normalizeCountrySlug(v);
@@ -1283,7 +1280,7 @@ export async function merge(opts: Partial<CliOptions> = {}): Promise<void> {
     for (const ev of humanEvents) {
       const v = ev.fields.dupeOf;
       if (v == null || v === '') { dupeOfMap.delete(ev.id); continue; }
-      if (typeof v === 'string') dupeOfMap.set(ev.id, v);
+      if (isString(v)) dupeOfMap.set(ev.id, v);
     }
     // For each given id, pull in (a) anything pointing AT it (other
     // dupes of the same canonical) and (b) its canonical, transitively.
@@ -1319,11 +1316,11 @@ export async function merge(opts: Partial<CliOptions> = {}): Promise<void> {
     const hasNoteCandidates = humanEvents.some((ev) => {
       if (!inScope(ev.id)) return false;
       const note = ev.fields.curator_notes;
-      return typeof note === 'string' && note.trim() && aiEvents.some((a) => a.id === ev.id);
+      return isString(note) && note.trim() && aiEvents.some((a) => a.id === ev.id);
     });
     const hasDupeCandidates = humanEvents.some((ev) =>
       inScope(ev.id) &&
-      typeof ev.fields.dupeOf === 'string' && (ev.fields.dupeOf as string).length > 0,
+      isString(ev.fields.dupeOf) && (ev.fields.dupeOf as string).length > 0,
     );
 
     // Shared bootstrap: decide which backend to use, then prepare it.

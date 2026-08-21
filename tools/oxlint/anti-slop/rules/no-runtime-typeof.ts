@@ -1,6 +1,6 @@
 import { defineRule } from "@oxlint/plugins";
 
-import type { ESTree } from "@oxlint/plugins";
+import type { ESTree, Scope } from "@oxlint/plugins";
 
 type RuntimeFunction = ESTree.ArrowFunctionExpression | ESTree.Function;
 
@@ -21,6 +21,27 @@ function isInsideTypeGuard(node: ESTree.Node): boolean {
 		current = current.parent;
 	}
 	return false;
+}
+
+// LOCAL AMENDMENT (miles-mccrocklin): `typeof window === 'undefined'` is
+// not narrowing a value, it is asking whether a global exists at all —
+// the standard SSR / capability probe, and the only expression that can
+// ask without throwing a ReferenceError. Allowed when the operand is a
+// bare identifier with no binding anywhere in the file's scope chain,
+// which is exactly the free-global case; `typeof someLocal` still
+// reports.
+function isFreeGlobalProbe(
+	node: ESTree.UnaryExpression,
+	context: { sourceCode: { getScope: (node: ESTree.Node) => Scope | null } },
+): boolean {
+	if (node.argument.type !== "Identifier") return false;
+	const name = node.argument.name;
+	let scope: Scope | null = context.sourceCode.getScope(node);
+	while (scope !== null) {
+		if (scope.set.has(name)) return false;
+		scope = scope.upper;
+	}
+	return true;
 }
 
 /** Disallow runtime typeof checks that narrow unparsed values instead of decoding them. */
@@ -57,7 +78,8 @@ export const noRuntimeTypeofRule = defineRule({
 					option.allowInTypeGuards === true;
 				if (
 					node.operator === "typeof" &&
-					(!allowInTypeGuards || !isInsideTypeGuard(node))
+					(!allowInTypeGuards || !isInsideTypeGuard(node)) &&
+					!isFreeGlobalProbe(node, context)
 				) {
 					context.report({ node, messageId: "runtimeTypeof" });
 				}
