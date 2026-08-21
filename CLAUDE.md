@@ -11,6 +11,23 @@ never the reverse. A data module both sides need lives in `src/`
 (e.g. `src/utils/locations.ts`, the ISO-3166 country table) and the
 scripts reach up to it.
 
+## Linting
+
+`bun run lint` runs [oxlint](https://oxc.rs) with the vendored
+[anti-slop](https://github.com/dmmulroy/anti-slop) plugin
+(`tools/oxlint/anti-slop/`, configured in `oxlint.config.ts`). The
+plugin rejects low-evidence TypeScript: `unknown` parameters and
+returns, `Record<string, unknown>` dictionaries, `typeof` narrowing
+used in place of boundary parsing, type assertions without a `SAFETY:`
+comment, and inferred types deliberately widened away.
+
+The vendored plugin is ours to edit. If a rule is wrong for this
+codebase, change the rule in `tools/oxlint/anti-slop/` and say why;
+don't sprinkle `oxlint-disable` at the call site. The fixes the rules
+want are real ones: parse at the I/O boundary into a named type, use
+`satisfies` instead of a widening annotation, and write down the
+invariant that makes an assertion safe.
+
 ## Design System
 
 Always read `DESIGN.md` before making any visual or UI decisions.
