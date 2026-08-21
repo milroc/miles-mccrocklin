@@ -11,6 +11,10 @@
     "dev": "NODE_ENV=development bun --hot dev.ts",
     "build": "NODE_ENV=production bun build.ts",
     "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
+    "serve:dist": "bun run scripts/serve-dist.ts",
     "edit-ui": "bun scripts/edit-ui-copy.ts",
     "build:world-countries": "bun run scripts/build-world-countries.ts"
   },
@@ -24,6 +28,7 @@
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@types/geojson": "^7946.0.16",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
