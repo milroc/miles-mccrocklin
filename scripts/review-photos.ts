@@ -202,7 +202,7 @@ interface HumanOverlay {
   // Latest-wins per non-note field (featured, graphic, dupeOf, structured
   // overrides). Used to project the on-disk merged state forward so the
   // UI reflects pending edits before merge runs.
-  fields: Map<string, Record<string, unknown>>;
+  fields: Map<string, JsonObject>;
   // FULL chronological list of curator_notes events per id. Each save
   // appends a new event; the UI shows them as separate prior notes and
   // doesn't pre-populate the new-note textarea with them. The merger
@@ -219,11 +219,11 @@ interface HumanOverlay {
 // uses — an empty input means "remove this field" (or, for notes, a
 // retroactive blank doesn't get listed as a prior note).
 function loadHumanOverlay(): HumanOverlay {
-  const fields = new Map<string, Record<string, unknown>>();
+  const fields = new Map<string, JsonObject>();
   const notes = new Map<string, PriorNote[]>();
   if (!existsSync(HUMAN_DIR)) return { fields, notes };
   const files = readdirSync(HUMAN_DIR).filter((f) => f.endsWith('.jsonl')).sort();
-  const events: Array<{ ts: string; sessionFile: string; id: string; fields: Record<string, unknown> }> = [];
+  const events: Array<{ ts: string; sessionFile: string; id: string; fields: JsonObject }> = [];
   for (const f of files) {
     const sessionFile = f.replace(/\.jsonl$/, '');
     const text = readFileSync(join(HUMAN_DIR, f), 'utf8');
@@ -231,9 +231,9 @@ function loadHumanOverlay(): HumanOverlay {
       const trimmed = line.trim();
       if (!trimmed) continue;
       try {
-        const o = JSON.parse(trimmed) as Record<string, unknown>;
+        const o = JSON.parse(trimmed) as JsonObject;
         if (typeof o.id !== 'string') continue;
-        const eventFields = o.fields as Record<string, unknown> | undefined;
+        const eventFields = o.fields as JsonObject | undefined;
         if (!eventFields || typeof eventFields !== 'object') continue;
         const ts = typeof o.timestamp === 'string' ? o.timestamp : '';
         events.push({ ts, sessionFile, id: o.id, fields: eventFields });
@@ -268,10 +268,10 @@ function loadHumanOverlay(): HumanOverlay {
 // Build the unified review-entry list from all three sources, attaching
 // merged labels from the output files + curator notes from JSONL.
 function loadEntries(): ReviewEntry[] {
-  const photoArr = JSON.parse(readFileSync(PHOTOGRAPHY_JSON, 'utf8')) as Array<Record<string, unknown>>;
+  const photoArr = JSON.parse(readFileSync(PHOTOGRAPHY_JSON, 'utf8')) as Array<JsonObject>;
   const me = JSON.parse(readFileSync(ME_JSON, 'utf8')) as JsonObject;
   const classifications = existsSync(PHOTO_CLASSIFICATIONS_JSON)
-    ? JSON.parse(readFileSync(PHOTO_CLASSIFICATIONS_JSON, 'utf8')) as Record<string, Record<string, unknown>>
+    ? JSON.parse(readFileSync(PHOTO_CLASSIFICATIONS_JSON, 'utf8')) as Record<string, JsonObject>
     : {};
   const humanOverlay = loadHumanOverlay();
 
@@ -547,7 +547,7 @@ function mergeStream(opts: { ids: string[]; skipRefine?: boolean }): Response {
   let child: ReturnType<typeof spawn>;
   const stream = new ReadableStream({
     start(controller) {
-      const send = (evt: Record<string, unknown>): void => {
+      const send = (evt: JsonObject): void => {
         try {
           controller.enqueue(encoder.encode('data: ' + JSON.stringify(evt) + '\n\n'));
         } catch { /* client may have disconnected */ }
@@ -3570,11 +3570,11 @@ const server = serve({
     }
     if (p.startsWith('/api/photo/') && req.method === 'PUT') {
       const id = decodeURIComponent(p.slice('/api/photo/'.length));
-      const patch = await req.json() as Record<string, unknown>;
+      const patch = await req.json() as JsonObject;
 
       // Keep only known human-tier fields. Empty values pass through —
       // the merger treats empty in the human tier as "clear".
-      const fields: Record<string, unknown> = {};
+      const fields: JsonObject = {};
       for (const [k, v] of Object.entries(patch)) {
         if (!HUMAN_FIELDS.has(k)) continue;
         fields[k] = v;

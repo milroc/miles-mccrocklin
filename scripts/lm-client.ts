@@ -551,11 +551,11 @@ export async function chatVisionDetailed(opts: ChatVisionOptions): Promise<ChatV
   if (urls.length === 0) {
     throw new Error('chatVision requires at least one image (imageUrl or imageUrls)');
   }
-  const content: Array<Record<string, unknown>> = [{ type: 'text', text: prompt }];
+  const content: Array<JsonObject> = [{ type: 'text', text: prompt }];
   for (const url of urls) {
     content.push({ type: 'image_url', image_url: { url } });
   }
-  const body: Record<string, unknown> = {
+  const body: JsonObject = {
     model,
     temperature,
     messages: [{ role: 'user', content }],
@@ -788,7 +788,7 @@ async function chatTextLmStudio(opts: ChatTextOptions): Promise<string> {
   const callOnce = async (useJsonMode: boolean): Promise<{ ok: true; content: string } | { ok: false; status: number; detail: string }> => {
     const ctl = new AbortController();
     const t = setTimeout(() => ctl.abort(), timeoutMs);
-    const body: Record<string, unknown> = {
+    const body: JsonObject = {
       model,
       temperature,
       messages,
@@ -914,7 +914,7 @@ const REFINEMENT_KEYS = new Set([
 ]);
 function scoreCandidate(parsed: JsonValue): number {
   if (!parsed || typeof parsed !== 'object') return -1;
-  const obj = parsed as Record<string, unknown>;
+  const obj = parsed as JsonObject;
   let score = 0;
   for (const k of Object.keys(obj)) {
     if (REFINEMENT_KEYS.has(k)) score += 1;

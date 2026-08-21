@@ -211,7 +211,7 @@ interface MergedEntry {
   aspect?: number;
   dupeOf?: string;
   // Plus arbitrary label fields applied by the merge.
-  [k: string]: unknown;
+  [k: string]: JsonValue;
 }
 
 // ─── Helpers exported for callers (review-photos, classify, ingest) ──
@@ -379,7 +379,7 @@ function buildBaseMap(): BaseMap {
   const srcToId = new Map<string, string>();
 
   // photo-* entries from the (structural-only) photography.json.
-  const photoRaw = JSON.parse(readFileSync(PHOTOGRAPHY_JSON, 'utf8')) as Array<Record<string, unknown>>;
+  const photoRaw = JSON.parse(readFileSync(PHOTOGRAPHY_JSON, 'utf8')) as Array<JsonObject>;
   for (const e of photoRaw) {
     const bareId = e.id as string;
     if (!bareId) continue;
@@ -547,7 +547,7 @@ function clearProseProvenance(entry: MergedEntry, field: string): void {
 // Build the prompt that turns AI labels + curator notes → improved
 // structured labels. Kept here rather than in lm-client because the
 // shape (which fields are expected back) is merger-specific.
-function buildRefinePrompt(aiLabels: Record<string, unknown>, notes: string): string {
+function buildRefinePrompt(aiLabels: JsonObject, notes: string): string {
   return [
     'You refine structured labels for a single photograph in a personal',
     'portfolio. The AI classifier produced labels from the image alone.',
@@ -596,8 +596,8 @@ function buildRefinePrompt(aiLabels: Record<string, unknown>, notes: string): st
 function resolveAiState(
   id: string,
   aiEvents: LabelEvent[],
-): Record<string, unknown> {
-  const out: Record<string, unknown> = {};
+): JsonObject {
+  const out: JsonObject = {};
   for (const ev of aiEvents) {
     if (ev.id !== id) continue;
     for (const [k, v] of Object.entries(ev.fields)) {
@@ -635,7 +635,7 @@ interface RefineContext {
 // Single-line machine-readable status event. The streaming merge
 // endpoint in scripts/review-photos.ts scans stdout for these and
 // pumps them out as SSE events with the same shape.
-function emitProgressLine(ctx: RefineContext, event: Record<string, unknown>): void {
+function emitProgressLine(ctx: RefineContext, event: JsonObject): void {
   if (!ctx.emitProgress) return;
   process.stdout.write('PROGRESS ' + JSON.stringify(event) + '\n');
 }
@@ -812,8 +812,8 @@ function resolveCurrentState(
   aiEvents: LabelEvent[],
   refinedEvents: LabelEvent[],
   humanEvents: LabelEvent[],
-): Record<string, unknown> {
-  const out: Record<string, unknown> = {};
+): JsonObject {
+  const out: JsonObject = {};
   const apply = (events: LabelEvent[], tier: Tier, allowed: Set<string>) => {
     for (const ev of events) {
       if (ev.id !== id) continue;
@@ -859,8 +859,8 @@ function clusterFingerprint(
 }
 
 function buildDupeMergePrompt(
-  canonicalState: Record<string, unknown>,
-  dupes: Array<{ id: string; state: Record<string, unknown> }>,
+  canonicalState: JsonObject,
+  dupes: Array<{ id: string; state: JsonObject }>,
 ): string {
   const lines: string[] = [
     'Multiple photographs of the same scene were marked as duplicates by',
@@ -993,7 +993,7 @@ async function runDupeMerge(
       continue;
     }
 
-    const dupeStates: Array<{ id: string; state: Record<string, unknown> }> = [];
+    const dupeStates: Array<{ id: string; state: JsonObject }> = [];
     let skipCluster = false;
     for (const dupeId of dupeIds) {
       const dupeEntry = base.get(dupeId);
@@ -1078,9 +1078,9 @@ async function runDupeMerge(
 // Build the on-disk photography.json shape from a merged entry. Drops
 // the `photo-` prefix to keep photography.json IDs bare (matches
 // pre-pipeline format).
-function toPhotographyOutput(entry: MergedEntry): Record<string, unknown> {
+function toPhotographyOutput(entry: MergedEntry): JsonObject {
   const bareId = entry.id.startsWith('photo-') ? entry.id.slice('photo-'.length) : entry.id;
-  const out: Record<string, unknown> = { id: bareId, src: entry.src };
+  const out: JsonObject = { id: bareId, src: entry.src };
   if (entry.aspect != null) out.aspect = entry.aspect;
   // Label fields in a deterministic order matching the pre-pipeline file.
   const labelOrder = [
@@ -1108,8 +1108,8 @@ function toPhotographyOutput(entry: MergedEntry): Record<string, unknown> {
 // they reach it for photo-* entries (which live in photography.json).
 // curator_notes is intentionally excluded — it's pure provenance, not
 // shipped to the public manifest.
-function toClassificationFields(entry: MergedEntry): Record<string, unknown> {
-  const out: Record<string, unknown> = {};
+function toClassificationFields(entry: MergedEntry): JsonObject {
+  const out: JsonObject = {};
   for (const k of [
     'theme', 'caption', 'alt', 'story', 'entities',
     'country', 'city', 'state', 'species',
@@ -1502,7 +1502,7 @@ export async function merge(opts: Partial<CliOptions> = {}): Promise<void> {
     }
 
     if (photoOnly.size > 0) {
-      const existing = JSON.parse(readFileSync(PHOTOGRAPHY_JSON, 'utf8')) as Array<Record<string, unknown>>;
+      const existing = JSON.parse(readFileSync(PHOTOGRAPHY_JSON, 'utf8')) as Array<JsonObject>;
       let touched = 0;
       for (let i = 0; i < existing.length; i++) {
         const bareId = existing[i].id as string;
@@ -1526,7 +1526,7 @@ export async function merge(opts: Partial<CliOptions> = {}): Promise<void> {
 
     if (meAtlasOnly.size > 0) {
       const existing = existsSync(PHOTO_CLASSIFICATIONS_JSON)
-        ? JSON.parse(readFileSync(PHOTO_CLASSIFICATIONS_JSON, 'utf8')) as Record<string, Record<string, unknown>>
+        ? JSON.parse(readFileSync(PHOTO_CLASSIFICATIONS_JSON, 'utf8')) as Record<string, JsonObject>
         : {};
       let touched = 0;
       for (const id of meAtlasOnly) {
@@ -1545,7 +1545,7 @@ export async function merge(opts: Partial<CliOptions> = {}): Promise<void> {
         touched += 1;
       }
       // Re-sort alphabetically for stable order after the in-place edit.
-      const sorted: Record<string, Record<string, unknown>> = {};
+      const sorted: Record<string, JsonObject> = {};
       for (const key of Object.keys(existing).sort()) sorted[key] = existing[key];
       const tmp = PHOTO_CLASSIFICATIONS_JSON + '.tmp';
       writeFileSync(tmp, JSON.stringify(sorted, null, 2) + '\n');
@@ -1562,12 +1562,12 @@ export async function merge(opts: Partial<CliOptions> = {}): Promise<void> {
     const entry = baseMap.entries.get(nsId);
     if (!entry) return null;
     return toPhotographyOutput(entry);
-  }).filter((x): x is Record<string, unknown> => x != null);
+  }).filter((x): x is JsonObject => x != null);
 
   //    photo-classifications.json (src-keyed, sorted alphabetically for
   //    deterministic diffs). Includes me-* and atlas-* entries that
   //    have any classifiable label field.
-  const classifications: Record<string, Record<string, unknown>> = {};
+  const classifications: Record<string, JsonObject> = {};
   const meAndAtlasIds = [...baseMap.entries.keys()].filter(
     (id) => id.startsWith('me-') || id.startsWith('atlas-'),
   );
@@ -1580,7 +1580,7 @@ export async function merge(opts: Partial<CliOptions> = {}): Promise<void> {
     classifications[entry.src] = fields;
   }
   // Sort keys alphabetically for stable on-disk ordering.
-  const sortedClassifications: Record<string, Record<string, unknown>> = {};
+  const sortedClassifications: Record<string, JsonObject> = {};
   for (const key of Object.keys(classifications).sort()) {
     sortedClassifications[key] = classifications[key];
   }
