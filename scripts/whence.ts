@@ -40,16 +40,17 @@ function loadAllEvents(): Event[] {
         try {
           const o = JSON.parse(trimmed) as Record<string, unknown>;
           if (typeof o.id !== 'string') continue;
-          out.push({
+          const event: Event = {
             id: o.id,
             timestamp: typeof o.timestamp === 'string' ? o.timestamp : sessionFile,
             tier,
             sessionFile,
             fields: (o.fields ?? {}) as Record<string, unknown>,
-            ...(o.source_fingerprint
-              ? { source_fingerprint: o.source_fingerprint as { human: string; ai: string } }
-              : {}),
-          });
+          };
+          if (o.source_fingerprint) {
+            event.source_fingerprint = o.source_fingerprint as { human: string; ai: string };
+          }
+          out.push(event);
         } catch { /* skip malformed */ }
       }
     }
