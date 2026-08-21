@@ -1,10 +1,9 @@
 // /explorer/ — the fullscreen globe. Every affordance here either drives
 // the globe or reads its selection back out, so most of these specs need
-// a live WebGL context and skip honestly without one.
+// a live WebGL context; requireLiveGlobe asserts one rather than skipping.
 import {
   test,
   expect,
-  waitForGlobe,
   requireLiveGlobe,
 } from './fixtures';
 
