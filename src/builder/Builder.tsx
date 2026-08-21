@@ -29,11 +29,8 @@ import { EduEntry } from '../entries/EduEntry';
 import { ModeContext } from '../utils/mode';
 import { BuilderFooter } from './BuilderFooter';
 import { ExperienceEntryGeneric } from './ExperienceEntryGeneric';
-import ME from '../../data/me.json' with { type: 'json' };
-import type { Resume } from '../types';
+import { RESUME_DATA } from '../resume-data';
 import '../App.css';
-
-const RESUME_DATA = ME as unknown as Resume;
 
 export function Builder(): JSX.Element {
   const r = RESUME_DATA;

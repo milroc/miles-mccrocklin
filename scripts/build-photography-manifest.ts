@@ -208,16 +208,20 @@ function validatePhotographyEntry(e: unknown, idx: number): PhotographyJsonEntry
     throw new Error(`photography.json[${idx}]: not an object`);
   }
   const o = e as Record<string, unknown>;
-  if (typeof o.id !== 'string' || !o.id) {
+  const { id, src, theme } = o;
+  if (typeof id !== 'string' || !id) {
     throw new Error(`photography.json[${idx}]: missing or invalid 'id'`);
   }
-  if (typeof o.src !== 'string' || !o.src) {
+  if (typeof src !== 'string' || !src) {
     throw new Error(`photography.json[${idx}]: missing or invalid 'src'`);
   }
-  if (o.theme != null && (!Array.isArray(o.theme) || o.theme.some((t) => typeof t !== 'string'))) {
+  if (theme != null && (!Array.isArray(theme) || theme.some((t) => typeof t !== 'string'))) {
     throw new Error(`photography.json[${idx}]: 'theme' must be string[]`);
   }
-  return o as unknown as PhotographyJsonEntry;
+  // The two required fields are checked above and carried through as the
+  // narrowed strings; the optional label fields ride along untouched —
+  // scripts/merge-labels.ts owns their shape.
+  return { ...o, id, src } as PhotographyJsonEntry;
 }
 
 // Extract sabbatical-travel carousel items from me.json. They live deep

@@ -58,8 +58,6 @@ const JPEG_QUALITY = 92;
 // else (caption/alt/country/theme/...) flows through the labels
 // pipeline. dupeOf is curator-authored but lives on the structural row
 // because it identifies the photo's identity within the source file.
-const STRUCTURAL_FIELDS = ['id', 'src', 'aspect', 'dupeOf'] as const;
-
 interface PhotographyEntryJson {
   id: string;
   src: string;
@@ -308,12 +306,10 @@ async function ingest(): Promise<void> {
 // re-merged yet. Defensive — bootstrap is supposed to leave only
 // structural, but be tolerant.
 function stripToStructural(e: PhotographyEntryJson): PhotographyEntryJson {
-  const rec = e as unknown as Record<string, unknown>;
-  const out: Record<string, unknown> = {};
-  for (const k of STRUCTURAL_FIELDS) {
-    if (rec[k] != null) out[k] = rec[k];
-  }
-  return out as unknown as PhotographyEntryJson;
+  const out: PhotographyEntryJson = { id: e.id, src: e.src };
+  if (e.aspect != null) out.aspect = e.aspect;
+  if (e.dupeOf != null) out.dupeOf = e.dupeOf;
+  return out;
 }
 
 if (import.meta.main) {
