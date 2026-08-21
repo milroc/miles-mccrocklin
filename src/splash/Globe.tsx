@@ -17,6 +17,7 @@ import journeyData from '../../data/journey.json' with { type: 'json' };
 // is erased at compile time, so it doesn't pull three into the splash
 // entry chunk; we use it only for type annotations on cached state.
 import type * as THREE_T from 'three';
+import type { MultiPolygon, Polygon } from 'geojson';
 
 interface Waypoint {
   label: string;
@@ -138,6 +139,10 @@ export type AtlasEntry =
       primary_album?: AtlasAlbum;
       secondary_albums?: AtlasAlbum[];
     };
+
+// The bubble arm of the AtlasEntry union — the only entries handed to
+// htmlElementsData, and the only ones carrying lat/lng.
+type OverlayAtlasEntry = AtlasEntry & { render_kind: 'bubble' };
 
 // Build arc data: connect each consecutive pair of waypoints. With N
 // waypoints we produce N-1 segments. Each segment carries its position
@@ -367,8 +372,13 @@ interface MountGlobeOptions {
 type CountryFeature = {
   type: 'Feature';
   properties: { name: string };
-  geometry: object;
+  geometry: CountryGeometry;
 };
+
+// Every country in the shipped topology is a Polygon or a MultiPolygon —
+// scripts/build-world-countries.ts emits nothing else. Naming that lets
+// bboxOf/polygonCentroid walk the rings without re-asserting the shape.
+type CountryGeometry = Polygon | MultiPolygon;
 
 // Shape of the TopoJSON file we ship for country polygons.
 // topojson-client.feature() turns this into a FeatureCollection at
@@ -435,10 +445,7 @@ interface GlobeAssets {
 // Antimeridian-wrapping bboxes (Russia) inflate toward 360 — harmless,
 // they clamp into the "big" bucket and their centroid is only used for
 // load ordering.
-function bboxOf(geometry: object): { extentDeg: number; lat: number; lng: number } {
-  const g = geometry as
-    | { type: 'Polygon'; coordinates: number[][][] }
-    | { type: 'MultiPolygon'; coordinates: number[][][][] };
+function bboxOf(g: CountryGeometry): { extentDeg: number; lat: number; lng: number } {
   let minLng = 180, maxLng = -180, minLat = 90, maxLat = -90;
   const visit = (ring: number[][]): void => {
     for (const [lng, lat] of ring) {
@@ -1490,10 +1497,7 @@ export async function mountGlobe(
   // sub-polygon and averages min/max lng/lat. Crude but stable —
   // good enough for "frame the country" camera moves; a true
   // geo-centroid would buy nothing visible at globe scale.
-  function polygonCentroid(geometry: object): { lat: number; lng: number } {
-    const g = geometry as
-      | { type: 'Polygon'; coordinates: number[][][] }
-      | { type: 'MultiPolygon'; coordinates: number[][][][] };
+  function polygonCentroid(g: CountryGeometry): { lat: number; lng: number } {
     let minLng = 180;
     let maxLng = -180;
     let minLat = 90;
@@ -1525,10 +1529,10 @@ export async function mountGlobe(
   // (set in loadGlobeAssets), which biases their depth values so they
   // always win the depth test against neighboring non-photo caps and
   // against each other.
-  const polygonCapMaterialFn = (d: object): THREE_T.Material | undefined =>
-    photoMaterials.get((d as CountryFeature).properties.name);
-  const polygonCapColorFn = (d: object): string => {
-    const name = (d as CountryFeature).properties.name;
+  const polygonCapMaterialFn = (d: CountryFeature): THREE_T.Material | undefined =>
+    photoMaterials.get(d.properties.name);
+  const polygonCapColorFn = (d: CountryFeature): string => {
+    const name = d.properties.name;
     if (photoMaterials.has(name)) return 'rgba(0,0,0,0)'; // ignored when capMaterial is set, but keeps `hasCap` truthy
     if (VISITED_COUNTRIES.has(name)) return 'rgba(58, 107, 74, 0.78)'; // --splash-accent — visited but no photo (e.g. The Bahamas)
     return 'rgba(184, 181, 173, 0.55)'; // --canvas-fg @ ~55% — un-visited
@@ -1558,12 +1562,11 @@ export async function mountGlobe(
   // Phase-stagger by journey order: the first arc starts at the cycle's
   // beginning; each subsequent arc trails the previous by
   // (arcStaggerCycles / arcSpan) of one dash cycle.
-  const arcDashInitialGapFn = (d: object): number =>
-    ((d as Arc).order / arcSpan) * arcStaggerCycles;
-  const htmlLatFn = (d: object): number => (d as AtlasEntry & { lat: number }).lat;
-  const htmlLngFn = (d: object): number => (d as AtlasEntry & { lng: number }).lng;
-  const htmlElementFn = (d: object): HTMLElement => {
-    const entry = d as AtlasEntry & { lat: number; lng: number };
+  const arcDashInitialGapFn = (d: Arc): number =>
+    (d.order / arcSpan) * arcStaggerCycles;
+  const htmlLatFn = (d: OverlayAtlasEntry): number => d.lat;
+  const htmlLngFn = (d: OverlayAtlasEntry): number => d.lng;
+  const htmlElementFn = (entry: OverlayAtlasEntry): HTMLElement => {
     const wrap = document.createElement('div');
     wrap.dataset.splashGlobeBubble = 'true';
     wrap.title = entry.country;
@@ -1652,8 +1655,8 @@ export async function mountGlobe(
   // Hover fires with the polygon under the cursor (or null when the
   // cursor leaves a polygon entirely). Drives a dim cream outline on
   // clickable countries so users know which polygons respond.
-  const polygonHoverFn = (poly: object | null): void => {
-    const name = poly ? (poly as CountryFeature).properties.name : null;
+  const polygonHoverFn = (poly: CountryFeature | null): void => {
+    const name = poly ? poly.properties.name : null;
     setHoveredCountry(name);
   };
   // Custom click detection. We bypass three-globe's onPolygonClick /
