@@ -36,15 +36,20 @@ interface CategoryDropdownProps {
 // Bucket the species in a single wildlife class into named subgroups +
 // an Other catch-all. Subgroups (named or Other) only render when
 // they have 2+ members; singletons stay flat under the class.
+// A wildlife class split three ways: subgroups big enough to render as
+// their own branch, the 2+ leftovers that become an "Other" branch, and
+// the leftovers that stay flat under the class.
+type ClassPartition = {
+  named: { def: SubgroupDef; members: string[] }[];
+  other: string[];
+  orphans: string[];
+};
+
 function partitionClass(
   classId: string,
   species: string[],
   s2g: Map<string, SubgroupDef>,
-): {
-  named: { def: SubgroupDef; members: string[] }[];
-  other: string[];
-  orphans: string[];
-} {
+): ClassPartition {
   const byGroup = new Map<string, string[]>();
   const unmatched: string[] = [];
   for (const sp of species) {

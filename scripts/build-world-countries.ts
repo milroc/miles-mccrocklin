@@ -72,26 +72,26 @@ const GEO_OUT_PATH = new URL('../data/world-countries-50m.json', import.meta.url
 // generator — was authored against the long-form names, so we
 // rewrite the short labels here to keep the public name surface
 // stable. Anything not listed passes through unchanged.
-const NAME_REMAP: Readonly<Record<string, string>> = {
-  'Bahamas': 'The Bahamas',
-  'Bosnia and Herz.': 'Bosnia and Herzegovina',
-  'Central African Rep.': 'Central African Republic',
-  'Congo': 'Republic of the Congo',
-  "Côte d'Ivoire": 'Ivory Coast',
-  'Dem. Rep. Congo': 'Democratic Republic of the Congo',
-  'Dominican Rep.': 'Dominican Republic',
-  'Eq. Guinea': 'Equatorial Guinea',
-  'Falkland Is.': 'Falkland Islands',
-  'Fr. S. Antarctic Lands': 'French Southern and Antarctic Lands',
-  'N. Cyprus': 'Northern Cyprus',
-  'S. Sudan': 'South Sudan',
-  'Serbia': 'Republic of Serbia',
-  'Solomon Is.': 'Solomon Islands',
-  'Tanzania': 'United Republic of Tanzania',
-  'Timor-Leste': 'East Timor',
-  'W. Sahara': 'Western Sahara',
-  'eSwatini': 'Swaziland',
-};
+const NAME_REMAP: ReadonlyMap<string, string> = new Map([
+  ['Bahamas', 'The Bahamas'],
+  ['Bosnia and Herz.', 'Bosnia and Herzegovina'],
+  ['Central African Rep.', 'Central African Republic'],
+  ['Congo', 'Republic of the Congo'],
+  ["Côte d'Ivoire", 'Ivory Coast'],
+  ['Dem. Rep. Congo', 'Democratic Republic of the Congo'],
+  ['Dominican Rep.', 'Dominican Republic'],
+  ['Eq. Guinea', 'Equatorial Guinea'],
+  ['Falkland Is.', 'Falkland Islands'],
+  ['Fr. S. Antarctic Lands', 'French Southern and Antarctic Lands'],
+  ['N. Cyprus', 'Northern Cyprus'],
+  ['S. Sudan', 'South Sudan'],
+  ['Serbia', 'Republic of Serbia'],
+  ['Solomon Is.', 'Solomon Islands'],
+  ['Tanzania', 'United Republic of Tanzania'],
+  ['Timor-Leste', 'East Timor'],
+  ['W. Sahara', 'Western Sahara'],
+  ['eSwatini', 'Swaziland'],
+]);
 
 console.log(`Fetching ${SOURCE_URL}…`);
 console.log(`Fetching ${ANTARCTICA_SOURCE_URL} (Antarctica)…`);
@@ -242,6 +242,13 @@ const remappedForHoleScan = countries.features.map((f) => ({
 }));
 const HOLE_KEYS = collectHoleKeys(remappedForHoleScan);
 
+// The remapped feature set plus how many features the NAME_REMAP table
+// renamed, which the build log reports.
+type RemappedFeatures = {
+  features: Feature<Geometry, { name: string }>[];
+  renamed: number;
+};
+
 // Apply name remap + Antarctica substitution + island trim. The
 // returned features feed both the wire topology and the GeoJSON
 // sidecar.
@@ -249,11 +256,11 @@ const remapFeatures = (
   raw: typeof countries.features,
   trimRatio: number,
   stats: { dropped: number; downgraded: number; preservedEnclaves: number },
-): { features: Feature<Geometry, { name: string }>[]; renamed: number } => {
+): RemappedFeatures => {
   let renamed = 0;
   const features = raw.map((f) => {
     const original = f.properties.name;
-    const mapped = NAME_REMAP[original];
+    const mapped = NAME_REMAP.get(original);
     if (mapped) renamed++;
     const sourceGeom = original === 'Antarctica' ? antarcticaFeature.geometry : f.geometry;
     return {
@@ -276,7 +283,9 @@ type BuildOptions = {
   simplifyWeight: number;
   quantization: number;
 };
-const buildShippedTopology = (opts: BuildOptions): {
+// What one build pass produced: the wire topology plus the counters the
+// run reports at the end.
+type ShippedTopology = {
   topology: Topology<{ countries: GeometryCollection<{ name: string }> }>;
   stats: {
     polygonsDropped: number;
@@ -285,7 +294,9 @@ const buildShippedTopology = (opts: BuildOptions): {
     verticesBefore: number;
     verticesAfter: number;
   };
-} => {
+};
+
+const buildShippedTopology = (opts: BuildOptions): ShippedTopology => {
   const trimStats = { dropped: 0, downgraded: 0, preservedEnclaves: 0 };
   const { features } = remapFeatures(countries.features, opts.trimRatio, trimStats);
   const fc: FeatureCollection<Geometry, { name: string }> = {

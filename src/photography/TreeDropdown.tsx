@@ -58,7 +58,11 @@ interface TreeDropdownProps {
   rows: TreeRow[];
 }
 
-function defaultSummary(rows: TreeRow[], placeholder: string): { label: string; active: boolean } {
+// The collapsed trigger's text plus whether any row is selected (which
+// drives the active styling).
+type Summary = { label: string; active: boolean };
+
+function defaultSummary(rows: TreeRow[], placeholder: string): Summary {
   const onLabels: string[] = [];
   for (const r of rows) if (r.check === 'on') onLabels.push(r.label);
   if (onLabels.length === 0) return { label: placeholder, active: false };

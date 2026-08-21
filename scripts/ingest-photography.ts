@@ -79,10 +79,20 @@ interface AtlasEntry {
   country_slug: string;
 }
 
-const MONTH_INDEX: Record<string, number> = {
-  Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
-  Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
-};
+const MONTH_INDEX: ReadonlyMap<string, number> = new Map([
+  ['Jan', 0],
+  ['Feb', 1],
+  ['Mar', 2],
+  ['Apr', 3],
+  ['May', 4],
+  ['Jun', 5],
+  ['Jul', 6],
+  ['Aug', 7],
+  ['Sep', 8],
+  ['Oct', 9],
+  ['Nov', 10],
+  ['Dec', 11],
+]);
 
 function slugify(name: string): string {
   return name
@@ -125,8 +135,8 @@ function buildTripRanges(
       !t.startMonth || t.startYear == null ||
       !t.endMonth   || t.endYear == null
     ) continue;
-    const sm = MONTH_INDEX[t.startMonth];
-    const em = MONTH_INDEX[t.endMonth];
+    const sm = MONTH_INDEX.get(t.startMonth);
+    const em = MONTH_INDEX.get(t.endMonth);
     if (sm == null || em == null) continue;
     const start = Date.UTC(t.startYear, sm, 1, 0, 0, 0);
     const lastDay = new Date(Date.UTC(t.endYear, em + 1, 0)).getUTCDate();

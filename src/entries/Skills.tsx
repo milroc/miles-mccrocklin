@@ -6,11 +6,11 @@ import {
 import type { RichText, SkillSet } from '../types';
 import s from './Skills.module.css';
 
-const SKILL_LABELS: Record<keyof SkillSet, string> = {
+const SKILL_LABELS = {
   domains: 'Domains',
   stack: 'Stack',
   force_multipliers: 'Force Multipliers',
-};
+} satisfies Record<keyof SkillSet, string>;
 const SKILL_ORDER: (keyof SkillSet)[] = ['domains', 'stack', 'force_multipliers'];
 
 interface SkillsProps {
