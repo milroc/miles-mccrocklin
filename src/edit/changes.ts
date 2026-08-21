@@ -5,11 +5,11 @@
 // "Copy LLM" prompt, which the user pastes into an in-repo agent that
 // applies them to `data/me.json`.
 import type { Resume, Visibility } from '../types';
-import { getAtPath, setAtPath, deleteAtPath, pathStartsWith } from './path';
+import { getAtPath, setAtPath, deleteAtPath, pathStartsWith, type JsonValue } from './path';
 
 export type ChangeRecord =
   // User typed in-place. `value` is whatever the field becomes.
-  | { kind: 'edit'; path: string; value: unknown }
+  | { kind: 'edit'; path: string; value: JsonValue }
   // User changed visibility. `path` points at the *item* (not its
   // visibility key); the agent should set `visibility` on it.
   | { kind: 'visibility'; path: string; value: Visibility }
@@ -18,7 +18,7 @@ export type ChangeRecord =
   // User clicked "+ add" on an array. `path` points at the array;
   // `value` is the new item to append at the end. Multiple `add`
   // records at the same path coexist (they all append, in order).
-  | { kind: 'add'; path: string; value: unknown }
+  | { kind: 'add'; path: string; value: JsonValue }
   // Free-form instruction the agent should interpret.
   | { kind: 'feedback'; path: string; value: string };
 

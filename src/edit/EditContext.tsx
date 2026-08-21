@@ -18,6 +18,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { Resume, Visibility } from '../types';
+import type { JsonValue } from './path';
 import { EDIT_ENABLED } from './edit';
 import {
   applyChanges,
@@ -48,10 +49,10 @@ interface EditApi {
   hasResumeChanges: boolean;
 
   // Edit primitives — each appends one change-record (with smart collapse).
-  pushEdit: (path: string, value: unknown) => void;
+  pushEdit: (path: string, value: JsonValue) => void;
   pushVisibility: (path: string, value: Visibility) => void;
   pushDelete: (path: string) => void;
-  pushAdd: (path: string, value: unknown) => void;
+  pushAdd: (path: string, value: JsonValue) => void;
   pushFeedback: (path: string, value: string) => void;
   clearFeedback: (path: string) => void;
 
@@ -112,7 +113,7 @@ function RealEditProvider({ initialResume, children }: EditProviderProps) {
     } catch {/* storage disabled — no-op */}
   }, [changes]);
 
-  const pushEdit = useCallback((path: string, value: unknown) => {
+  const pushEdit = useCallback((path: string, value: JsonValue) => {
     setChanges((cs) => pushChange(cs, { kind: 'edit', path, value }));
   }, []);
   const pushVisibility = useCallback((path: string, value: Visibility) => {
@@ -121,7 +122,7 @@ function RealEditProvider({ initialResume, children }: EditProviderProps) {
   const pushDelete = useCallback((path: string) => {
     setChanges((cs) => pushChange(cs, { kind: 'delete', path }));
   }, []);
-  const pushAdd = useCallback((path: string, value: unknown) => {
+  const pushAdd = useCallback((path: string, value: JsonValue) => {
     setChanges((cs) => pushChange(cs, { kind: 'add', path, value }));
   }, []);
   const pushFeedback = useCallback((path: string, value: string) => {

@@ -33,13 +33,13 @@ type MediaSubtype = 'photo' | 'ui';
 // override, me.json item.caption, atlas album title) or structural.
 // The lightbox keys off this to render a "by AI" badge next to AI prose.
 type ProseProvenanceTier = 'ai' | 'refined';
-export interface ProseProvenance {
+export type ProseProvenance = {
   caption?: ProseProvenanceTier;
   alt?: ProseProvenanceTier;
   story?: ProseProvenanceTier;
-}
+};
 
-export interface MediaItem {
+export type MediaItem = {
   id: string;
   type: MediaType;
   src: string;
@@ -67,9 +67,9 @@ export interface MediaItem {
   // See ProseProvenance above — populated on photography-page items so
   // the lightbox can tag AI-written captions.
   prose_provenance?: ProseProvenance;
-}
+};
 
-export interface MediaGroup {
+export type MediaGroup = {
   layout: MediaLayout;
   // `align` and `size` apply when layout is 'stack' (marginalia float).
   align?: 'left' | 'right';
@@ -84,7 +84,7 @@ export interface MediaGroup {
   // stack layouts where tags otherwise sit in the corner of each card.
   hide_tags?: boolean;
   items: MediaItem[];
-}
+};
 
 // ----- Lightbox plumbing ----------------------------------------------
 
@@ -100,7 +100,7 @@ export interface MediaContextValue {
 // window.__PHOTOGRAPHY_MANIFEST__. The /photographer page reads this once
 // on mount with no fetch round trip.
 
-export interface PhotographyEntry {
+export type PhotographyEntry = {
   id: string;
   // Original src under media/, used for the lightbox full-size fallback
   // when no derived variant exists.
@@ -174,9 +174,9 @@ export interface PhotographyEntry {
   crit_notes?: string;
   // Per-prose-field provenance — see ProseProvenance for semantics.
   prose_provenance?: ProseProvenance;
-}
+};
 
-export interface PhotographyManifest {
+export type PhotographyManifest = {
   photos: PhotographyEntry[];
   // Unique theme tags across photos, sorted by photo count desc.
   themes: string[];
@@ -193,7 +193,7 @@ export interface PhotographyManifest {
   // `continent` field powers the grouped Location filter; assigned at
   // build time from a static slug→continent map (see scripts/build-photography-manifest.ts).
   countries: { slug: string; name: string; continent: string }[];
-}
+};
 
 // Window globals injected by build.ts template injection.
 declare global {
@@ -204,7 +204,7 @@ declare global {
 
 // ----- Resume top-level -----------------------------------------------
 
-export interface Contact {
+export type Contact = {
   // Full legal name. Used in places that want the formal identity (e.g.,
   // the printed 1-pager). For Google search display, OG titles, and the
   // JSON-LD Person schema, prefer `display_name`.
@@ -234,23 +234,23 @@ export interface Contact {
   twitter: string;
   instagram?: string;
   threads?: string;
-}
+};
 
-export interface Achievement {
+export type Achievement = {
   text: string;
   short?: string;
   visibility?: Visibility;
-}
+};
 
-interface ProjectMetrics {
+type ProjectMetrics = {
   commits?: number;
   lines_added?: number;
   lines_removed?: number;
   private_repos?: number;
   methodology?: string;
-}
+};
 
-export interface Project {
+export type Project = {
   name: string;
   repo?: string;
   url?: string;
@@ -258,9 +258,9 @@ export interface Project {
   description: string | { text: string };
   stack?: string[];
   metrics?: ProjectMetrics;
-}
+};
 
-export interface Track {
+export type Track = {
   period: string;
   focus: string;
   visibility?: Visibility;
@@ -275,9 +275,9 @@ export interface Track {
   media?: MediaGroup;
   // Inline reviews block (e.g., the Real Estate Airbnb testimonials).
   reviews?: ReviewsData;
-}
+};
 
-export interface Era {
+export type Era = {
   period: string;
   focus: string;
   role?: string;
@@ -289,9 +289,9 @@ export interface Era {
   // place of the bulleted achievements. When absent, EraGeneric falls
   // back to the first achievement's text. Never shown on /resume/.
   builder_tagline?: string;
-}
+};
 
-export interface Job {
+export type Job = {
   company: string;
   shortened_title?: string;
   role: string;
@@ -310,9 +310,9 @@ export interface Job {
   // /resume/ still renders it. Use for short / older roles you don't
   // want on the public-facing intro.
   hide_on_builder?: boolean;
-}
+};
 
-export interface School {
+export type School = {
   institution: string;
   degree: string;
   degree_short?: string;
@@ -321,15 +321,15 @@ export interface School {
   end_date: string;
   visibility?: Visibility;
   details?: Achievement[];
-}
+};
 
-export interface SkillSet {
+export type SkillSet = {
   domains?: (Achievement | string)[];
   stack?: (Achievement | string)[];
   force_multipliers?: (Achievement | string)[];
-}
+};
 
-export interface CommunityEntry {
+export type CommunityEntry = {
   group: string;
   role: string;
   start_date: string;
@@ -338,13 +338,13 @@ export interface CommunityEntry {
   details?: string | { text: string };
   // Inline media for this community entry (talks, photos, etc.).
   media?: MediaGroup;
-}
+};
 
 // Redaction registry — Greek-letter variables that stand in for figures
 // intentionally withheld from the public resume. Each entry powers two
 // surfaces: the inline anchor + tooltip in running prose (RedactedText) and
 // the Notes section at the end of the resume (RedactionNotes).
-export interface Redaction {
+export type Redaction = {
   // DOM-safe anchor name. The inline glyph renders as
   // `<a href="#note-{id}">` and the matching footnote `<dt>` carries
   // `id="note-{id}"`. Use lowercase Greek letter names ("alpha", etc).
@@ -357,9 +357,9 @@ export interface Redaction {
   // Notes section (everywhere). Should describe what the variable
   // represents without revealing the specific numeric value.
   context: string;
-}
+};
 
-export interface Resume {
+export type Resume = {
   contact_information: Contact;
   summary: string;
   // Top-level summary gallery (was the `summary-gallery` slot).
@@ -369,11 +369,11 @@ export interface Resume {
   skills: SkillSet;
   community_organization: CommunityEntry[];
   redactions?: Redaction[];
-}
+};
 
 // ----- Reviews (Airbnb testimonials) ----------------------------------
 
-export interface Review {
+export type Review = {
   reviewer: string;
   location: string;
   rating: number;
@@ -389,9 +389,9 @@ export interface Review {
   // strings as the original-language source. Falls back to no highlights
   // if missing on a translated review.
   translation_highlights?: string[];
-}
+};
 
-export interface ReviewsData {
+export type ReviewsData = {
   listing: string;
   listing_url?: string;
   host: string;
@@ -399,4 +399,4 @@ export interface ReviewsData {
   total_reviews: string;
   best_host_reviews: Review[];
   recurring_host_praise_themes?: string[];
-}
+};

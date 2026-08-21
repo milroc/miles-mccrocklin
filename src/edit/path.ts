@@ -2,26 +2,44 @@
 // `/experience/0/achievements/2/text`. We deep-clone along the path on
 // `setAtPath` so the upstream React state stays immutable.
 
-export function getAtPath(obj: unknown, path: string): unknown {
+// The tree these helpers walk is `data/me.json`, so a node is a JSON
+// value: a leaf, a list, or a string-keyed record. Naming that union is
+// what lets the walk narrow structurally instead of asserting its way
+// down, and it tells callers what came back — `unknown` made every one
+// of them re-derive a shape the walker already knew.
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | JsonValue[]
+  | JsonObject;
+
+export interface JsonObject {
+  [key: string]: JsonValue;
+}
+
+export function getAtPath(obj: JsonValue, path: string): JsonValue {
   if (!path || path === '/') return obj;
   const segs = path.split('/').filter(Boolean);
-  let cur: unknown = obj;
+  let cur: JsonValue = obj;
   for (const s of segs) {
     if (cur == null) return undefined;
     if (Array.isArray(cur)) cur = cur[Number(s)];
-    else if (typeof cur === 'object') cur = (cur as Record<string, unknown>)[s];
+    else if (typeof cur === 'object') cur = cur[s];
     else return undefined;
   }
   return cur;
 }
 
-export function setAtPath<T>(obj: T, path: string, value: unknown): T {
+export function setAtPath<T extends JsonValue>(obj: T, path: string, value: JsonValue): T {
   const segs = path.split('/').filter(Boolean);
   if (segs.length === 0) return value as T;
-  return cloneSet(obj as unknown, segs, 0, value) as T;
+  return cloneSet(obj, segs, 0, value) as T;
 }
 
-function cloneSet(node: unknown, segs: string[], i: number, value: unknown): unknown {
+function cloneSet(node: JsonValue, segs: string[], i: number, value: JsonValue): JsonValue {
   if (i === segs.length) return value;
   const seg = segs[i]!;
   if (Array.isArray(node)) {
@@ -30,7 +48,9 @@ function cloneSet(node: unknown, segs: string[], i: number, value: unknown): unk
     next[idx] = cloneSet(node[idx], segs, i + 1, value);
     return next;
   }
-  const obj = (node ?? {}) as Record<string, unknown>;
+  // A missing or leaf node under a longer path becomes a fresh record —
+  // writing `/a/b` into a tree with no `/a` creates it.
+  const obj: JsonObject = node != null && typeof node === 'object' ? node : {};
   return { ...obj, [seg]: cloneSet(obj[seg], segs, i + 1, value) };
 }
 
@@ -48,13 +68,13 @@ export function joinPath(base: string, ...parts: (string | number)[]): string {
 // every later element's index shifts down by one — callers that hold
 // stale paths after a delete need to re-derive). For objects it
 // deletes the key. Returns a new tree; original is untouched.
-export function deleteAtPath<T>(obj: T, path: string): T {
+export function deleteAtPath<T extends JsonValue>(obj: T, path: string): T {
   const segs = path.split('/').filter(Boolean);
   if (segs.length === 0) return obj;
-  return cloneDelete(obj as unknown, segs, 0) as T;
+  return cloneDelete(obj, segs, 0) as T;
 }
 
-function cloneDelete(node: unknown, segs: string[], i: number): unknown {
+function cloneDelete(node: JsonValue, segs: string[], i: number): JsonValue {
   const seg = segs[i]!;
   // Last segment — perform the delete on this container.
   if (i === segs.length - 1) {
@@ -65,8 +85,7 @@ function cloneDelete(node: unknown, segs: string[], i: number): unknown {
       return next;
     }
     if (node && typeof node === 'object') {
-      const obj = node as Record<string, unknown>;
-      const { [seg]: _drop, ...rest } = obj;
+      const { [seg]: _drop, ...rest } = node;
       return rest;
     }
     return node;
@@ -79,8 +98,7 @@ function cloneDelete(node: unknown, segs: string[], i: number): unknown {
     return next;
   }
   if (node && typeof node === 'object') {
-    const obj = node as Record<string, unknown>;
-    return { ...obj, [seg]: cloneDelete(obj[seg], segs, i + 1) };
+    return { ...node, [seg]: cloneDelete(node[seg], segs, i + 1) };
   }
   return node;
 }

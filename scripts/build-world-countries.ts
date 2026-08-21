@@ -221,14 +221,16 @@ const trimIslands = (
 // precision was ~400 m) shrinks the GeoJSON sidecar significantly
 // with zero practical effect. Apply uniformly so shared arcs across
 // adjacent features still round to identical values.
+// A GeoJSON coordinate tree: a number, or a list of them, nested to
+// whatever depth the geometry kind needs (Position, LineString ring,
+// Polygon, MultiPolygon).
+type CoordNode = number | CoordNode[];
+
 const roundGeom = (g: Geometry, decimals: number): Geometry => {
   const factor = 10 ** decimals;
-  const map = (a: unknown): unknown => {
-    if (typeof a === 'number') return Math.round(a * factor) / factor;
-    if (Array.isArray(a)) return a.map(map);
-    return a;
-  };
-  return { ...g, coordinates: map((g as { coordinates: unknown }).coordinates) } as Geometry;
+  const map = (a: CoordNode): CoordNode =>
+    Array.isArray(a) ? a.map(map) : Math.round(a * factor) / factor;
+  return { ...g, coordinates: map((g as { coordinates: CoordNode }).coordinates) } as Geometry;
 };
 
 // Hole bboxes across the entire (post-Antarctica-substitution) dataset.
