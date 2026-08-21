@@ -84,6 +84,10 @@ const server = serve({
     }
 
     if (url.pathname === "/api/save" && req.method === "POST") {
+      // SAFETY: this dev-only server is reachable from localhost and is
+      // only ever called by the page it serves, which posts exactly this
+      // body. A malformed one throws while walking the paths below,
+      // which is the right outcome for a local editing tool.
       const { updates, reorders } = (await req.json()) as {
         updates: Update[];
         reorders: Reorder[];

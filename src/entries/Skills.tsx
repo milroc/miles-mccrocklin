@@ -3,7 +3,7 @@ import { ModeContext, visible, pickText, isArchived as isArchivedItem } from '..
 import {
   AddButton, EDIT_ENABLED, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import type { RichText, SkillSet } from '../types';
+import type { SkillSet } from '../types';
 import s from './Skills.module.css';
 
 const SKILL_LABELS = {
@@ -46,7 +46,7 @@ export function Skills({ skills, path }: SkillsProps) {
                   {renderable.map(({ item, i }, j) => {
                     const itemPath = joinPath(path, k, i);
                     const archived = isArchivedItem(item);
-                    const text = pickText(item as RichText, mode);
+                    const text = pickText(item, mode);
                     return (
                       <span
                         key={i}
@@ -69,7 +69,7 @@ export function Skills({ skills, path }: SkillsProps) {
                   )}
                 </>
               ) : (
-                renderable.map(({ item }) => pickText(item as RichText, mode)).join(', ')
+                renderable.map(({ item }) => pickText(item, mode)).join(', ')
               )}
             </dd>
           </Fragment>

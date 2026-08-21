@@ -177,7 +177,7 @@ export function TreeDropdown({
     // alone misses outside-taps on iOS Safari when the page wasn't
     // already focused.
     const onDocPointer = (e: PointerEvent): void => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
+      if (e.target instanceof Node && rootRef.current && !rootRef.current.contains(e.target)) {
         setOpen(false);
       }
     };

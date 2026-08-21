@@ -223,6 +223,7 @@ function validatePhotographyEntry(e: JsonValue, idx: number): PhotographyJsonEnt
   if (!isJsonObject(e)) {
     throw new Error(`photography.json[${idx}]: not an object`);
   }
+  // SAFETY: isJsonObject on the line above.
   const o = e as JsonObject;
   const { id, src, theme } = o;
   if (!isString(id) || !id) {
@@ -237,6 +238,8 @@ function validatePhotographyEntry(e: JsonValue, idx: number): PhotographyJsonEnt
   // The two required fields are checked above and carried through as the
   // narrowed strings; the optional label fields ride along untouched —
   // scripts/merge-labels.ts owns their shape.
+  // SAFETY: id and src are the narrowed strings checked above; the
+  // optional label fields ride through as merge-labels.ts wrote them.
   return { ...o, id, src } as PhotographyJsonEntry;
 }
 
@@ -318,6 +321,8 @@ function loadClassificationSideTable(): Record<string, SideClassification> {
   if (!existsSync(path)) return {};
   const raw = readFileSync(path, 'utf8').trim();
   if (!raw) return {};
+  // SAFETY: the side table is written by classify-photography.ts in
+  // this repo, keyed by photo id. Missing keys read as undefined.
   return JSON.parse(raw) as Record<string, SideClassification>;
 }
 
@@ -339,12 +344,18 @@ function composeProseProvenance(
 }
 
 export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
+  // SAFETY: repo-owned me.json, read at build time. The scan below
+  // narrows every node it touches.
   const me = JSON.parse(
     await Bun.file(join(ROOT, 'data', 'me.json')).text(),
   ) as JsonObject;
+  // SAFETY: photography.json is this repo's merge output; each row is
+  // validated by validatePhotographyEntry before use.
   const photographyRaw = JSON.parse(
     await Bun.file(join(ROOT, 'data', 'photography.json')).text(),
   ) as JsonValue[];
+  // SAFETY: photo-atlas.json is build-photo-atlas.ts output, committed
+  // in this repo; AtlasEntry is the shape that script writes.
   const atlas = JSON.parse(
     await Bun.file(join(ROOT, 'data', 'photo-atlas.json')).text(),
   ) as AtlasEntry[];
@@ -655,7 +666,9 @@ export async function buildPhotographyManifest(): Promise<PhotographyManifest> {
   // slug field is the ISO-3 code (storage format). Display layer uses
   // the name. A code missing from the locations table is a build-time
   // error so unmapped values can't silently slip through to the client.
-  const usedCountries = new Set(photos.map((p) => p.country).filter(Boolean) as string[]);
+  const usedCountries = new Set(
+    photos.map((p) => p.country).filter((c): c is string => Boolean(c)),
+  );
   const countries = [...usedCountries]
     .map((code) => {
       const continent = CONTINENT_BY_CODE[code];

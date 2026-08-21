@@ -15,7 +15,7 @@ import { ModeContext, visible, pickText, isPlainText, isArchived as isArchivedIt
 import {
   AddButton, EDIT_ENABLED, EditableText, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import type { Achievement, RichText } from '../types';
+import type { Achievement } from '../types';
 import './Bullets.css';
 
 interface BulletsProps {

@@ -252,6 +252,10 @@ export function useEdit(): EditApi {
 
 const STUB: EditApi = {
   active: false,
+  // SAFETY: the production stub. EDIT_ENABLED is a build-time literal
+  // false there, so nothing ever reads this field — the whole object
+  // exists to satisfy the context's type without pulling the real
+  // provider into the bundle.
   displayResume: {} as Resume,
   changes: [],
   dirty: false,

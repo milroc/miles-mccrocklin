@@ -9,7 +9,7 @@
 //   bun run scripts/whence.ts <namespaced-id> <field>   # one field
 
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { isString } from '../src/utils/json';
+import { asJsonObject, isString } from '../src/utils/json';
 import type { JsonObject, JsonValue } from '../src/utils/json';
 import { join, resolve } from 'node:path';
 
@@ -40,6 +40,9 @@ function loadAllEvents(): Event[] {
         const trimmed = line.trim();
         if (!trimmed) continue;
         try {
+          // SAFETY: the line parsed, and every JSONL event in data/
+          // photography-labels/ is an object. Its fields are read through the
+          // guards below, and a non-object line is skipped by the id check.
           const o = JSON.parse(trimmed) as JsonObject;
           if (!isString(o.id)) continue;
           const event: Event = {
@@ -47,9 +50,12 @@ function loadAllEvents(): Event[] {
             timestamp: isString(o.timestamp) ? o.timestamp : sessionFile,
             tier,
             sessionFile,
-            fields: (o.fields ?? {}) as JsonObject,
+            fields: asJsonObject(o.fields) ?? {},
           };
           if (o.source_fingerprint) {
+            // SAFETY: guarded as an object on the line above. The fingerprint is
+            // only ever compared for equality against one this repo wrote, so a
+            // malformed one causes a re-refine, not a wrong result.
             event.source_fingerprint = o.source_fingerprint as { human: string; ai: string };
           }
           out.push(event);

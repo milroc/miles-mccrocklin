@@ -49,11 +49,16 @@ function Editable({ path, value }: EditableTextProps) {
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
-          (e.currentTarget as HTMLElement).blur();
+          e.currentTarget.blur();
         }
       }}
     />
   );
 }
 
-export const EditableText = (EDIT_ENABLED ? Editable : Passthrough) as React.FC<EditableTextProps>;
+export const EditableText =
+  // SAFETY: both arms take EditableTextProps and return JSX; the
+  // assertion only collapses the ternary's union of two function types
+  // into the single component type callers use. EDIT_ENABLED is a
+  // literal, so the unused arm is dead code the bundler drops.
+  (EDIT_ENABLED ? Editable : Passthrough) as React.FC<EditableTextProps>;

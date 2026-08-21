@@ -24,9 +24,9 @@ function Toolbar() {
   };
 
   // Per-kind change counts so the toolbar is a glanceable status line.
-  const counts = changes.reduce(
+  const counts = changes.reduce<Record<string, number>>(
     (acc, c) => { acc[c.kind] = (acc[c.kind] ?? 0) + 1; return acc; },
-    {} as Record<string, number>,
+    {},
   );
   const summary: string[] = [];
   if (counts.edit) summary.push(`${counts.edit} edit${counts.edit === 1 ? '' : 's'}`);

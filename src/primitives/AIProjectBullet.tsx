@@ -6,7 +6,7 @@ import { ModeContext, pickText, isPlainText, isArchived as isArchivedItem } from
 import {
   EDIT_ENABLED, EditableText, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
-import type { Project, RichText } from '../types';
+import type { Project } from '../types';
 
 interface AIProjectBulletProps {
   p: Project;

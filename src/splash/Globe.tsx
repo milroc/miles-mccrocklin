@@ -17,7 +17,7 @@ import journeyData from '../../data/journey.json' with { type: 'json' };
 // is erased at compile time, so it doesn't pull three into the splash
 // entry chunk; we use it only for type annotations on cached state.
 import type * as THREE_T from 'three';
-import type { MultiPolygon, Polygon } from 'geojson';
+import type { MultiPolygon, Polygon, Position } from 'geojson';
 import type { ComponentProps, MutableRefObject } from 'react';
 import type { GlobeMethods } from 'react-globe.gl';
 
@@ -71,6 +71,9 @@ export interface CountrySelection {
 // accent — currently just The Bahamas (1988–2001 visit predates the
 // digital archive), but stays correct as new visits land before their
 // albums do.
+// SAFETY: journey.json is repo-owned and imported directly, so the JSON
+// import's inferred shape and JourneyJson describe the same file; the
+// assertion only narrows its `kind` strings to the union.
 const WAYPOINTS: Waypoint[] = (journeyData as JourneyJson).waypoints;
 
 const VISITED_COUNTRIES: ReadonlySet<string> = canonicalVisitedNames(
@@ -206,8 +209,8 @@ const POLYGON_ALTITUDE = 0.01;
 // polygon edges along great circles so the selection border curves
 // with the globe instead of cutting chords through the sphere.
 function slerpLngLat(
-  a: [number, number],
-  b: [number, number],
+  a: Position,
+  b: Position,
   t: number,
 ): [number, number] {
   const phA = (a[1] * Math.PI) / 180;
@@ -222,7 +225,7 @@ function slerpLngLat(
   const zB = Math.sin(phB);
   const om = Math.acos(Math.max(-1, Math.min(1, xA * xB + yA * yB + zA * zB)));
   const so = Math.sin(om);
-  if (so < 1e-10) return a;
+  if (so < 1e-10) return [a[0]!, a[1]!];
   const sA = Math.sin((1 - t) * om) / so;
   const sB = Math.sin(t * om) / so;
   const x = xA * sA + xB * sB;
@@ -240,19 +243,17 @@ function slerpLngLat(
 // three-conic-polygon-geometry's `polar2Cartesian` so the line sits
 // exactly above the rendered polygon cap, not a rotated copy of it.
 function buildSelectionBorder(
-  feature: { geometry: object },
+  feature: { geometry: CountryGeometry },
   radius: number,
   THREE: typeof THREE_T,
   opacity: number = 1.0,
 ): THREE_T.Object3D {
-  type Ring = Array<[number, number]>;
-  const geom = feature.geometry as { type: string; coordinates: Ring[] | Ring[][] };
-  const rings: Ring[] = [];
+  const geom = feature.geometry;
+  const rings: Position[][] = [];
   if (geom.type === 'Polygon') {
-    const c = geom.coordinates as Ring[];
-    if (c[0]) rings.push(c[0]);
-  } else if (geom.type === 'MultiPolygon') {
-    for (const poly of geom.coordinates as Ring[][]) {
+    if (geom.coordinates[0]) rings.push(geom.coordinates[0]);
+  } else {
+    for (const poly of geom.coordinates) {
       if (poly[0]) rings.push(poly[0]);
     }
   }
@@ -318,6 +319,10 @@ function shouldUse2DFallback(): boolean {
   // Both are optional in practice: deviceMemory is Chromium-only, and
   // hardwareConcurrency predates lib.dom's non-optional declaration of
   // it. Absent means "no evidence of a low-end device", not zero.
+  // SAFETY: deviceMemory is a Chromium extension lib.dom doesn't
+  // declare, and hardwareConcurrency predates its non-optional
+  // declaration. Widening to optional makes both reads honest — the
+  // checks below treat absent as "no evidence of a low-end device".
   const nav = navigator as Navigator & {
     deviceMemory?: number;
     hardwareConcurrency?: number;
@@ -541,7 +546,13 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
       import('react'),
       import('three'),
       import('topojson-client'),
+      // SAFETY: both fetches hit files this repo's build generates
+      // (build-world-countries.ts, build-photo-atlas.ts) and ship in the
+      // same deploy as this code, so their shapes move together. A
+      // mismatch surfaces as the WebGL failure path, which the splash
+      // already handles by keeping the CSS wireframe.
       fetch(polygonsUrl).then((r) => r.json() as Promise<TopoJsonRoot>),
+      // SAFETY: as above.
       fetch('/data/photo-atlas.json').then((r) => r.json() as Promise<AtlasEntry[]>),
     ]);
     // Bun's dynamic-import namespace shape varies by source module: CJS
@@ -553,6 +564,8 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
     // hiding it behind `default` — which of the two Bun produces depends
     // on whether the package ships CJS or ESM.
     const unwrap = <T,>(mod: T | { default: T }): T =>
+      // SAFETY: the namespace had no usable `default`, so the module IS
+      // the export — the ESM arm of the union the parameter declares.
       hasDefaultExport(mod) && isModuleExport(mod.default) ? mod.default : (mod as T);
     const Globe = unwrap<typeof import('react-globe.gl').default>(globeMod);
     const reactDomClient = unwrap<typeof import('react-dom/client')>(reactDomClientMod);
@@ -565,7 +578,13 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
     // expanded coordinate sequences are byte-identical on both sides
     // of every shared border — no slivers, no holes.
     const decoded = topojsonClient.feature(
+      // SAFETY: @types/topojson-client types feature() against the
+      // package's own Topology/GeometryObject rather than structurally,
+      // so the topology we fetched needs restating. The features that
+      // come back are filtered on name and geometry kind below rather
+      // than trusted.
       topology as Parameters<typeof topojsonClient.feature>[0],
+      // SAFETY: as above.
       topology.objects.countries as Parameters<typeof topojsonClient.feature>[1],
     );
     // feature() returns a bare Feature for a single geometry and a
@@ -850,14 +869,13 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
           };
           // GeoJSON: Polygon = [rings]; MultiPolygon = [polygons[rings]].
           // Rings are arrays of [lng, lat] pairs.
-          type Ring = Array<[number, number]>;
-          const geom = feature.geometry as { type: string; coordinates: Ring[] | Ring[][] };
+          const geom = feature.geometry;
           if (geom.type === 'Polygon') {
-            for (const ring of geom.coordinates as Ring[]) {
+            for (const ring of geom.coordinates) {
               for (const [lng, lat] of ring) project(lng, lat);
             }
-          } else if (geom.type === 'MultiPolygon') {
-            for (const poly of geom.coordinates as Ring[][]) {
+          } else {
+            for (const poly of geom.coordinates) {
               for (const ring of poly) {
                 for (const [lng, lat] of ring) project(lng, lat);
               }
@@ -925,9 +943,7 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
       photoMaterials.set(entry.country, mat);
       shimmerMaterials.push(mat);
       const bbox = bboxOf(countryFeature.geometry);
-      const anchor = 'lat' in entry && 'lng' in entry
-        ? (entry as AtlasEntry & { lat: number; lng: number })
-        : bbox;
+      const anchor = 'lat' in entry && 'lng' in entry ? entry : bbox;
       const src = photoSrcOf(entry, bbox.extentDeg);
       photoLoadJobs.push({
         country: entry.country,
@@ -978,6 +994,9 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
     const applyJob = (job: Pending): void => {
         job.mat.uniforms.uPhoto.value = job.tex;
       job.mat.uniforms.uHasPhoto.value = 1.0;
+      // SAFETY: THREE.Texture.image is `any` — it holds whatever the
+      // loader produced. Ours is always an HTMLImageElement from
+      // TextureLoader; the width/height reads are guarded anyway.
       const img = job.tex.image as { width?: number; height?: number } | undefined;
       if (job.isFlat && img && img.width && img.height) {
         // Aspect-cover: photo fills the country's bbox while
@@ -1389,6 +1408,9 @@ export async function mountGlobe(
     const scene = inst?.scene?.();
     if (scene) scene.remove(mesh);
     mesh.traverse((obj) => {
+      // SAFETY: traverse() yields plain Object3D, but Mesh and Line
+      // subclasses carry geometry/material. Both reads are optional-
+      // chained, so a node without them is skipped rather than thrown on.
       const o = obj as THREE_T.Object3D & {
         geometry?: { dispose: () => void };
         material?: { dispose: () => void };
@@ -1495,9 +1517,7 @@ export async function mountGlobe(
     return inside;
   }
   function featureContains(feature: CountryFeature, lng: number, lat: number): boolean {
-    const g = feature.geometry as
-      | { type: 'Polygon'; coordinates: number[][][] }
-      | { type: 'MultiPolygon'; coordinates: number[][][][] };
+    const g = feature.geometry;
     if (g.type === 'Polygon') {
       const [outer, ...holes] = g.coordinates;
       if (!outer || !pointInRing(lng, lat, outer)) return false;
@@ -1628,6 +1648,9 @@ export async function mountGlobe(
     // Photos aren't critical-path: deprioritize behind any future
     // user-initiated nav. Modern Chrome/Safari honor this; older
     // browsers ignore the attribute harmlessly.
+    // SAFETY: fetchPriority ships in every browser that reaches this
+    // path but is missing from the lib.dom in use here. Writing an
+    // unknown property is a no-op where it isn't supported.
     (img as HTMLImageElement & { fetchPriority?: string }).fetchPriority = 'low';
     wrap.appendChild(img);
     return wrap;
@@ -1714,7 +1737,7 @@ export async function mountGlobe(
   // Bubbles set their own cursor via CSS (pointer when data-clickable).
   function updateCanvasCursor(): void {
     if (!fullscreen) return;
-    const canvas = mountEl.querySelector('canvas') as HTMLElement | null;
+    const canvas = mountEl.querySelector('canvas');
     if (!canvas) return;
     const next = isDragging
       ? 'grabbing'
@@ -1899,6 +1922,11 @@ export async function mountGlobe(
     // arcsData / htmlElementsData. We do, and the accessors above say
     // so; its ref type also predates renderer()/camera(). This is the
     // one point where our narrower props meet the library's contract.
+    // SAFETY: the props object above is fully typed; the only mismatch
+    // is that react-globe.gl declares each data accessor as
+    // `(obj: object) => T` because it can't know what went into
+    // polygonsData / arcsData / htmlElementsData. We put those arrays
+    // there, so the narrower accessors are the accurate ones.
     root.render(React.createElement(Globe, globeProps as GlobeElementProps));
   }
 

@@ -27,6 +27,14 @@ interface MediaProviderProps {
 // The jump lands on a visually identical slide, so navigation feels infinite.
 const COPIES = 3;
 
+// `track.children` is an HTMLCollection of Element, but every slide the
+// track renders is a div. One place to narrow, so the reads below don't
+// each restate it.
+function slideAt(track: HTMLElement, index: number): HTMLElement | null {
+  const el = track.children[index];
+  return el instanceof HTMLElement ? el : null;
+}
+
 export function MediaProvider({ children }: MediaProviderProps) {
   // openIdx is an index into the *rendered* track (which contains COPIES ×
   // scope.length slides). null when the lightbox is closed. The logical
@@ -128,9 +136,12 @@ export function MediaProvider({ children }: MediaProviderProps) {
     if (!track || !N) return false;
     const slides = track.children;
     if (slides.length < N * COPIES) return false;
-    const a = (slides[0] as HTMLElement).offsetLeft;
-    copyBStartRef.current = (slides[N] as HTMLElement).offsetLeft;
-    copyCStartRef.current = (slides[2 * N] as HTMLElement).offsetLeft;
+    const a = slideAt(track, 0)?.offsetLeft;
+    const b = slideAt(track, N)?.offsetLeft;
+    const c = slideAt(track, 2 * N)?.offsetLeft;
+    if (a === undefined || b === undefined || c === undefined) return false;
+    copyBStartRef.current = b;
+    copyCStartRef.current = c;
     setWidthRef.current = copyBStartRef.current - a;
     return setWidthRef.current > 0;
   };
@@ -144,10 +155,10 @@ export function MediaProvider({ children }: MediaProviderProps) {
     if (openIdx == null) return;
     const track = trackRef.current;
     if (!track) return;
-    const slide = track.children[openIdx] as HTMLElement | undefined;
+    const slide = slideAt(track, openIdx);
     if (!slide) return;
     programmaticScrollRef.current = true;
-    slide.scrollIntoView({ behavior: 'instant' as ScrollBehavior, inline: 'center', block: 'nearest' });
+    slide.scrollIntoView({ behavior: 'instant', inline: 'center', block: 'nearest' });
     requestAnimationFrame(() => {
       programmaticScrollRef.current = false;
       measureLoop();
@@ -245,7 +256,8 @@ export function MediaProvider({ children }: MediaProviderProps) {
     let closest = 0;
     let bestDist = Infinity;
     for (let i = 0; i < track.children.length; i++) {
-      const el = track.children[i] as HTMLElement;
+      const el = slideAt(track, i);
+      if (!el) continue;
       const slideCenter = el.offsetLeft + el.offsetWidth / 2;
       const d = Math.abs(slideCenter - trackCenter);
       if (d < bestDist) { bestDist = d; closest = i; }
@@ -286,8 +298,8 @@ export function MediaProvider({ children }: MediaProviderProps) {
   // Click on a peek slide (the partial neighbor on either side) navigates
   // to that slide — turns the peeks themselves into the prev/next hit area.
   const onTrackClick = (e: ReactMouseEvent<HTMLDivElement>): void => {
-    const target = e.target as HTMLElement | null;
-    const slide = target?.closest(`.${s.slide}`) as HTMLElement | null;
+    const target = e.target instanceof Element ? e.target : null;
+    const slide = target?.closest<HTMLElement>(`.${s.slide}`) ?? null;
     const idxAttr = slide?.dataset.idx;
     const idx = idxAttr != null ? Number.parseInt(idxAttr, 10) : NaN;
     if (Number.isFinite(idx) && idx !== openIdx) {
@@ -316,7 +328,7 @@ export function MediaProvider({ children }: MediaProviderProps) {
     const track = trackRef.current;
     if (!track) return;
     if (next < 0 || next >= track.children.length) return;
-    const slide = track.children[next] as HTMLElement | undefined;
+    const slide = slideAt(track, next);
     if (!slide) return;
     programmaticScrollRef.current = true;
     slide.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
@@ -350,7 +362,7 @@ export function MediaProvider({ children }: MediaProviderProps) {
         if (!focusables.length) return;
         const first = focusables[0]!;
         const last = focusables[focusables.length - 1]!;
-        const active = document.activeElement as HTMLElement | null;
+        const active = document.activeElement;
         if (!active || !dialog.contains(active)) {
           e.preventDefault();
           first.focus();
@@ -372,7 +384,7 @@ export function MediaProvider({ children }: MediaProviderProps) {
   // users don't read through the resume content while the dialog is up.
   useEffect(() => {
     if (openIdx == null) return;
-    const app = document.querySelector('[data-app]') as HTMLElement | null;
+    const app = document.querySelector<HTMLElement>('[data-app]');
     if (!app) return;
     app.setAttribute('inert', '');
     return () => app.removeAttribute('inert');
