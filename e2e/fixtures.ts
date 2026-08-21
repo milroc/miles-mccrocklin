@@ -32,6 +32,22 @@ const IGNORED_CONSOLE = [
   /^Failed to create GLES3 context/,
 ];
 
+// Uncaught exceptions are held to a stricter standard than console
+// noise — an app bug lands here, so this list stays as close to empty as
+// it can. It is for exceptions thrown by a dependency while the page is
+// already being torn down, where nothing a visitor does can reach them.
+const IGNORED_PAGEERRORS = [
+  // three.js's waitForProgramsToBeReady loop polls
+  // `materialProperties.currentProgram.isReady()` while shaders compile.
+  // Disposing the renderer mid-compile — which is what navigating away
+  // from /explorer/ does — clears currentProgram, and the next poll
+  // dereferences undefined. It is library-internal, it fires after the
+  // page has begun unloading, and no visitor who stays on the page can
+  // provoke it. Seen about once per several hundred CI specs. Issue #86
+  // has the reproduction and the argument for fixing it upstream of us.
+  /^Cannot read properties of undefined \(reading 'isReady'\)$/,
+];
+
 function isIgnored(message: ConsoleMessage): boolean {
   const text = message.text();
   return IGNORED_CONSOLE.some((pattern) => pattern.test(text));
@@ -60,7 +76,10 @@ export const test = base.extend<{
       if (expectedConsoleErrors.some((pattern) => pattern.test(text))) return;
       errors.push(text);
     });
-    page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
+    page.on('pageerror', (error) => {
+      if (IGNORED_PAGEERRORS.some((pattern) => pattern.test(error.message))) return;
+      errors.push(`pageerror: ${error.message}`);
+    });
     await use(errors);
     expect(errors, 'console errors during this test').toEqual([]);
   }, { auto: true }],

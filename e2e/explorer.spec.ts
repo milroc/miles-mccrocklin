@@ -152,17 +152,34 @@ test.describe('explorer — idle chrome', () => {
     const toggle = page.locator('button[aria-label$="rotation"]');
     const byRole = page.getByRole('button', { name: /rotation/i });
 
-    await expect(toggle).toHaveAttribute('tabindex', '0');
-    await expect(byRole, 'reachable while the chrome is up').toHaveCount(1);
+    // Every assertion about the chrome being *up* carries a NAV_IDLE_MS
+    // fuse, including the gap between two consecutive expects: the plate
+    // can go back down in between. CI caught exactly that here — tabindex
+    // read 0, then the role query found nothing a moment later. So the
+    // pair is asserted together, behind a wake, and retried as a unit.
+    // Everything inside is a cursor move or a read, so retrying is free
+    // of side effects.
+    const expectChromeUp = (): Promise<void> =>
+      expect(
+        async () => {
+          await page.mouse.move(400, 300);
+          await page.mouse.move(500, 400);
+          await expect(toggle).toHaveAttribute('tabindex', '0', { timeout: 1_000 });
+          await expect(byRole).toHaveCount(1, { timeout: 1_000 });
+        },
+        'the chrome is up, tabbable, and in the accessibility tree',
+      ).toPass({ timeout: 30_000, intervals: [200, 200, 400] });
 
+    await expectChromeUp();
+
+    // The other direction needs no such care: once the plate is down it
+    // stays down until something moves, and nothing here does.
     await expect(toggle, 'drops out of the tab order once idle')
       .toHaveAttribute('tabindex', '-1', { timeout: 30_000 });
     await expect(byRole, 'and out of the accessibility tree with it')
       .toHaveCount(0);
 
-    await page.mouse.move(500, 400);
-    await expect(toggle, 'activity restores both').toHaveAttribute('tabindex', '0');
-    await expect(byRole).toHaveCount(1);
+    await expectChromeUp();
   });
 });
 
