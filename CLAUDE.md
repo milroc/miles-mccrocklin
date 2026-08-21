@@ -175,6 +175,37 @@ This is intentionally crude (a git-tracked event log inside the app repo).
 The plan is to move this to a more reliable storage layer later; until
 then, the working tree IS the database.
 
+## The lint gate
+
+`bun run lint` (oxlint + the vendored anti-slop rules) and `bun run
+typecheck` are the two commands that decide whether work is publishable.
+They run in three places, deliberately overlapping:
+
+1. **`.github/workflows/lint.yml`** — on every pull request. The
+   authority; nothing below can be trusted over it.
+2. **`githooks/pre-push`** — before anything leaves the machine.
+   `core.hooksPath=githooks` is set by the `prepare` script, so it
+   arrives with `bun install` rather than needing anyone to remember it.
+3. **`.claude/settings.json`** — a `PreToolUse` hook on `Bash` that
+   blocks `gh pr create`, `gh pr ready` and `git push`. This is the one
+   an agent cannot step around: `--no-verify` skips the git hook, and
+   `gh pr create` on an already-pushed branch never touches it.
+
+All three call `scripts/preflight.sh`, so a local failure and a CI
+failure are the same failure.
+
+**Preflight checks a commit, not the working tree.** It builds a detached
+worktree of the ref being pushed (sharing the object store, borrowing
+`node_modules`) and runs the two commands there. Linting the working tree
+is simpler and wrong: it fails on scratch code that was never going to be
+pushed, and a gate that cries wolf is a gate people learn to bypass. What
+a reviewer sees is the commit, so that is what gets checked — which also
+means fixing a file on disk is not enough, the fix has to be committed.
+
+If a rule is genuinely wrong, change the rule in `oxlint.config.ts` and
+say why. Do not edit the hook to get past it, and do not reach for
+`--no-verify`; open the pull request as a draft instead.
+
 ## End-to-end tests
 
 `bun run test:e2e` runs the Playwright suite in `e2e/`. It drives the
