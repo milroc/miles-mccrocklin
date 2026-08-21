@@ -36,6 +36,7 @@
 //   bun scripts/classify-photography.ts --dry-run             # print, no writes
 
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
+import type { JsonObject, JsonValue } from '../src/utils/json';
 import { join, resolve } from 'node:path';
 import {
   chatVision, DEFAULT_ENDPOINT, ensureLmStudioRunning, ensureVisionModelLoaded,
@@ -250,7 +251,7 @@ async function classifyOne(
   return normalizeResult(extractJsonObject(raw), raw);
 }
 
-function normalizeResult(o: Record<string, unknown>, raw: string): ClassifyResult {
+function normalizeResult(o: JsonObject, raw: string): ClassifyResult {
   const rawThemes = Array.isArray(o.themes) ? o.themes : [];
   const themes = normalizeCategoryThemes(rawThemes);
   if (themes.length === 0) {
@@ -345,33 +346,53 @@ interface PhotoJob {
   hasExistingTheme: boolean;           // used by --skip-existing logic
 }
 
-interface MeItem {
+type MeItem = {
   id: string;
   type: string;
   src: string;
+};
+
+// Parse rather than assume: an item missing one of the three required
+// fields is reported and skipped instead of reaching the classifier
+// with an undefined id.
+function isMeItem(it: JsonValue): it is MeItem {
+  return (
+    typeof it === 'object' &&
+    it !== null &&
+    !Array.isArray(it) &&
+    typeof it.id === 'string' &&
+    typeof it.type === 'string' &&
+    typeof it.src === 'string'
+  );
 }
 
-function loadSabbaticalTravel(me: Record<string, unknown>): MeItem[] {
+function loadSabbaticalTravel(me: JsonObject): MeItem[] {
   const out: MeItem[] = [];
-  const visit = (node: unknown): void => {
+  const visit = (node: JsonValue): void => {
     if (Array.isArray(node)) { node.forEach(visit); return; }
     if (typeof node !== 'object' || node === null) return;
-    const obj = node as Record<string, unknown>;
-    const items = obj.items;
+    const items = node.items;
     if (Array.isArray(items)) {
       const isSabbatical = items.every(
         (it) =>
           typeof it === 'object' &&
           it !== null &&
-          typeof (it as Record<string, unknown>).src === 'string' &&
-          ((it as Record<string, unknown>).src as string).includes('sabbatical-travel/'),
+          !Array.isArray(it) &&
+          typeof it.src === 'string' &&
+          it.src.includes('sabbatical-travel/'),
       );
       if (isSabbatical) {
-        items.forEach((it) => out.push(it as MeItem));
+        const parsed = items.filter(isMeItem);
+        if (parsed.length !== items.length) {
+          console.warn(
+            `classify-photography: skipped ${items.length - parsed.length} sabbatical-travel item(s) missing id/type/src`,
+          );
+        }
+        out.push(...parsed);
         return;
       }
     }
-    Object.values(obj).forEach(visit);
+    Object.values(node).forEach(visit);
   };
   visit(me);
   return out;
@@ -401,7 +422,7 @@ function loadAllJobs(source: SourceFilter): PhotoJob[] {
 
   // me-*  (current merged state lives in photo-classifications.json keyed by src)
   if (source === 'all' || source === 'me') {
-    const me = JSON.parse(readFileSync(ME_JSON, 'utf8')) as Record<string, unknown>;
+    const me = JSON.parse(readFileSync(ME_JSON, 'utf8')) as JsonObject;
     const sideTable = existsSync(PHOTO_CLASSIFICATIONS_JSON)
       ? JSON.parse(readFileSync(PHOTO_CLASSIFICATIONS_JSON, 'utf8')) as Record<string, { theme?: string[] }>
       : {};

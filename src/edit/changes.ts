@@ -5,7 +5,8 @@
 // "Copy LLM" prompt, which the user pastes into an in-repo agent that
 // applies them to `data/me.json`.
 import type { Resume, Visibility } from '../types';
-import { getAtPath, setAtPath, deleteAtPath, pathStartsWith, type JsonValue } from './path';
+import { getAtPath, setAtPath, deleteAtPath, pathStartsWith } from './path';
+import type { JsonValue } from '../utils/json';
 
 export type ChangeRecord =
   // User typed in-place. `value` is whatever the field becomes.

@@ -22,6 +22,7 @@
 // Delete a whole `=== <id> ===` block to leave that item alone.
 
 import { spawnSync } from "node:child_process";
+import type { JsonValue } from "../src/utils/json";
 import {
   mkdtempSync,
   readFileSync,
@@ -44,26 +45,25 @@ interface UiItem {
   _ref: Record<string, unknown>;
 }
 
-function findUiItems(node: unknown, out: UiItem[] = []): UiItem[] {
+function findUiItems(node: JsonValue, out: UiItem[] = []): UiItem[] {
   if (Array.isArray(node)) {
     for (const v of node) findUiItems(v, out);
   } else if (node && typeof node === "object") {
-    const obj = node as Record<string, unknown>;
     if (
-      obj.subtype === "ui" &&
-      typeof obj.id === "string" &&
-      typeof obj.src === "string"
+      node.subtype === "ui" &&
+      typeof node.id === "string" &&
+      typeof node.src === "string"
     ) {
       out.push({
-        id: obj.id,
-        src: obj.src,
-        tag: typeof obj.tag === "string" ? obj.tag : undefined,
-        caption: typeof obj.caption === "string" ? obj.caption : undefined,
+        id: node.id,
+        src: node.src,
+        tag: typeof node.tag === "string" ? node.tag : undefined,
+        caption: typeof node.caption === "string" ? node.caption : undefined,
         subtype: "ui",
-        _ref: obj,
+        _ref: node,
       });
     }
-    for (const v of Object.values(obj)) findUiItems(v, out);
+    for (const v of Object.values(node)) findUiItems(v, out);
   }
   return out;
 }

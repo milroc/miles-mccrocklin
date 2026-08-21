@@ -16,7 +16,7 @@ import { RedactionLegend } from './primitives/RedactionLegend';
 import { RedactionNotes } from './primitives/RedactionNotes';
 import { SummaryGallery } from './media/SummaryGallery';
 import { MediaProvider } from './media/MediaProvider';
-import { ModeContext, visible, isArchived as isArchivedItem } from './utils/mode';
+import { ModeContext, visible, isArchived as isArchivedItem, type Renderable } from './utils/mode';
 import { EDIT_ENABLED, EditToolbar, HighLevelFeedback, useEdit } from './edit';
 import { RESUME_DATA } from './resume-data';
 import type { Mode } from './types';
@@ -102,9 +102,9 @@ export function App() {
   // ARCHIVED styling is reserved for items the user explicitly marked
   // `visibility: "archived"` — a 1pager_only item shown in text mode
   // is a *mode mismatch*, not an archive, and renders as normal.
-  const renderable = (item: unknown): boolean =>
+  const renderable = (item: Renderable): boolean =>
     editActive ? true : visible(item, mode);
-  const isArchived = (item: unknown): boolean =>
+  const isArchived = (item: Renderable): boolean =>
     editActive && isArchivedItem(item);
 
   const expEntries = r.experience.filter(renderable);

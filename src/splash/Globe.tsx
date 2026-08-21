@@ -507,13 +507,17 @@ async function loadGlobeAssets(fullscreen: boolean, spherePx: number): Promise<G
     // exports under `.default`, while ESM packages (three) expose them
     // directly on the namespace. Unwrap defensively so the call sites
     // below see the same shape regardless of which form Bun produced.
-    const unwrap = <T,>(mod: unknown): T => {
-      const m = mod as { default?: unknown };
-      const inner = m && typeof m === 'object' && 'default' in m ? m.default : undefined;
-      // Objects and functions both count: react-globe.gl's default export
-      // is a component function, the others are namespace objects.
-      if (inner && (typeof inner === 'object' || typeof inner === 'function')) {
-        return inner as T;
+    // A dynamic import hands back either the export itself or a namespace
+    // hiding it behind `default` — which of the two Bun produces depends
+    // on whether the package ships CJS or ESM.
+    const unwrap = <T,>(mod: T | { default: T }): T => {
+      if (mod && typeof mod === 'object' && 'default' in mod) {
+        const inner = mod.default;
+        // Objects and functions both count: react-globe.gl's default
+        // export is a component function, the others are namespaces.
+        if (inner && (typeof inner === 'object' || typeof inner === 'function')) {
+          return inner;
+        }
       }
       return mod as T;
     };

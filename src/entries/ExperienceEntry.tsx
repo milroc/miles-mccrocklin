@@ -8,7 +8,7 @@ import { Track } from './Track';
 import { Figure } from '../media/Figure';
 import { SabbaticalEntry } from './SabbaticalEntry';
 import { InlineEntry } from './InlineEntry';
-import { ModeContext, visible, isArchived as isArchivedItem } from '../utils/mode';
+import { ModeContext, visible, isArchived as isArchivedItem, type Renderable } from '../utils/mode';
 import {
   EDIT_ENABLED, NoteBubble, VisibilityChip, joinPath, useEdit,
 } from '../edit';
@@ -33,9 +33,9 @@ export function ExperienceEntry({ job, path, archived }: ExperienceEntryProps) {
   // Per-child filter helper that mirrors App-level renderable() so eras
   // and tracks honor the edit-shows-all rule too. ARCHIVED treatment is
   // reserved for explicit `visibility: "archived"`.
-  const childRenderable = (item: unknown): boolean =>
+  const childRenderable = (item: Renderable): boolean =>
     editActive || visible(item, mode);
-  const childArchived = (item: unknown): boolean =>
+  const childArchived = (item: Renderable): boolean =>
     editActive && isArchivedItem(item);
 
   return (

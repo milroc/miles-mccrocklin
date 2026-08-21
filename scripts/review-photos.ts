@@ -29,6 +29,7 @@
 // so subsequent dupe lookups are instant.
 
 import { appendFileSync, existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import type { JsonObject, JsonValue } from '../src/utils/json';
 import { join, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import { serve } from 'bun';
@@ -104,7 +105,22 @@ interface ReviewEntry {
 }
 
 interface AtlasEntry { country: string; country_slug: string; image?: string; }
-interface MeItem { id: string; type?: string; src: string; aspect?: number; caption?: string; }
+type MeItem = { id: string; type?: string; src: string; aspect?: number; caption?: string; };
+
+// Parse rather than assume: an item missing id or src is reported and
+// skipped instead of showing up in the review UI with no identity.
+function isMeItem(it: JsonValue): it is MeItem {
+  return (
+    typeof it === 'object' &&
+    it !== null &&
+    !Array.isArray(it) &&
+    typeof it.id === 'string' &&
+    typeof it.src === 'string' &&
+    (it.type === undefined || typeof it.type === 'string') &&
+    (it.aspect === undefined || typeof it.aspect === 'number') &&
+    (it.caption === undefined || typeof it.caption === 'string')
+  );
+}
 
 const atlas = JSON.parse(readFileSync(ATLAS_JSON, 'utf8')) as AtlasEntry[];
 // Country dropdown options. Storage value is the ISO-3 code (so all
@@ -150,27 +166,33 @@ const COUNTRIES = LOCATIONS
   .sort((a, b) => a.name.localeCompare(b.name));
 
 // Walk me.json's nested structure for sabbatical-travel items.
-function loadSabbaticalItems(me: Record<string, unknown>): MeItem[] {
+function loadSabbaticalItems(me: JsonObject): MeItem[] {
   const out: MeItem[] = [];
-  const visit = (node: unknown): void => {
+  const visit = (node: JsonValue): void => {
     if (Array.isArray(node)) { node.forEach(visit); return; }
     if (typeof node !== 'object' || node === null) return;
-    const obj = node as Record<string, unknown>;
-    const items = obj.items;
+    const items = node.items;
     if (Array.isArray(items)) {
       const isSabbatical = items.every(
         (it) =>
           typeof it === 'object' &&
           it !== null &&
-          typeof (it as Record<string, unknown>).src === 'string' &&
-          ((it as Record<string, unknown>).src as string).includes('sabbatical-travel/'),
+          !Array.isArray(it) &&
+          typeof it.src === 'string' &&
+          it.src.includes('sabbatical-travel/'),
       );
       if (isSabbatical) {
-        items.forEach((it) => out.push(it as MeItem));
+        const parsed = items.filter(isMeItem);
+        if (parsed.length !== items.length) {
+          console.warn(
+            `review-photos: skipped ${items.length - parsed.length} sabbatical-travel item(s) missing id/src`,
+          );
+        }
+        out.push(...parsed);
         return;
       }
     }
-    Object.values(obj).forEach(visit);
+    Object.values(node).forEach(visit);
   };
   visit(me);
   return out;
@@ -247,7 +269,7 @@ function loadHumanOverlay(): HumanOverlay {
 // merged labels from the output files + curator notes from JSONL.
 function loadEntries(): ReviewEntry[] {
   const photoArr = JSON.parse(readFileSync(PHOTOGRAPHY_JSON, 'utf8')) as Array<Record<string, unknown>>;
-  const me = JSON.parse(readFileSync(ME_JSON, 'utf8')) as Record<string, unknown>;
+  const me = JSON.parse(readFileSync(ME_JSON, 'utf8')) as JsonObject;
   const classifications = existsSync(PHOTO_CLASSIFICATIONS_JSON)
     ? JSON.parse(readFileSync(PHOTO_CLASSIFICATIONS_JSON, 'utf8')) as Record<string, Record<string, unknown>>
     : {};

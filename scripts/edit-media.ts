@@ -4,6 +4,7 @@
 // Run: `bun scripts/edit-media.ts` then open http://localhost:4318
 
 import { serve } from "bun";
+import type { JsonValue } from "../src/utils/json";
 
 const PORT = Number(process.env.PORT ?? 4318);
 const ROOT = new URL("..", import.meta.url).pathname;
@@ -15,27 +16,26 @@ type MediaItem = {
   fields: Record<string, string>;
 };
 
-function findMedia(node: unknown, path: (string | number)[], out: MediaItem[]): void {
+function findMedia(node: JsonValue, path: (string | number)[], out: MediaItem[]): void {
   if (Array.isArray(node)) {
     node.forEach((v, i) => findMedia(v, [...path, i], out));
     return;
   }
   if (node && typeof node === "object") {
-    const obj = node as Record<string, unknown>;
-    if (typeof obj.src === "string" && obj.src.startsWith("media/")) {
+    if (typeof node.src === "string" && node.src.startsWith("media/")) {
       const fields: Record<string, string> = {};
-      for (const [k, v] of Object.entries(obj)) {
+      for (const [k, v] of Object.entries(node)) {
         if (typeof v === "string") fields[k] = v;
       }
-      out.push({ path, src: obj.src, fields });
+      out.push({ path, src: node.src, fields });
     }
-    for (const [k, v] of Object.entries(obj)) {
+    for (const [k, v] of Object.entries(node)) {
       findMedia(v, [...path, k], out);
     }
   }
 }
 
-function setAtPath(root: any, path: (string | number)[], key: string, value: unknown): void {
+function setAtPath(root: any, path: (string | number)[], key: string, value: JsonValue): void {
   let cur = root;
   for (const p of path) cur = cur[p];
   cur[key] = value;
